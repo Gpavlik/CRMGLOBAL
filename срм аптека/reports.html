@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/jpg" href="bol.jpg">
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+  <title>Звіт</title>
+  <style>
+body {
+  font-family: Arial, sans-serif;
+  margin: 0; padding: 0;
+  background: linear-gradient(135deg, #009400, #004d00);
+  color: #ffffff;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* базові стилі таблиці */
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-top: 20px;
+  overflow-x: auto;
+  display: block;
+}
+
+th, td {
+  border: 1px solid #7a7a7a;
+  padding: 6px;
+  text-align: center;
+  font-size: 0.95rem;
+}
+
+th {
+  background: #adadad;
+  color: #000;
+}
+
+td.name { text-align: left; font-weight: bold; }
+td { background-color: rgba(255,255,255,0.05); }
+td.to-sell { text-align: center; font-weight: bold; color: white; }
+
+.filters {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  margin: 10px;
+  font-weight: bold;
+  text-align: left;
+  max-width: 100%;
+}
+
+input, select {
+  width: 100%;
+  max-width: 500px;
+  padding: 10px;
+  margin-top: 5px;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+button {
+  width: 200px;
+  padding: 12px;
+  margin-top: 10px;
+  background-color: #004d00;
+  color: #ffffff;
+  border: solid 1px #c2ffc2;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+button:hover { background-color: #25a525; }
+
+.buttons {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-top: 20px;
+}
+
+/* 📱 Телефони (до 480px) */
+@media (max-width: 480px) {
+  h3 { font-size: 1.2rem; }
+  p { font-size: 0.9rem; }
+  table { font-size: 0.75rem; }
+  th, td { padding: 4px; }
+  input, select { max-width: 95%; }
+  button {
+    width: 100%;
+    font-size: 0.9rem;
+  }
+  .buttons { grid-template-columns: 1fr; }
+}
+
+/* 📲 Планшети (481px–768px) */
+@media (min-width: 481px) and (max-width: 768px) {
+  h3 { font-size: 1.4rem; }
+  p { font-size: 1rem; }
+  table { font-size: 0.85rem; }
+  th, td { padding: 5px; }
+  input, select { max-width: 90%; }
+  button { width: 70%; font-size: 1rem; }
+  .buttons { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* 💻 Десктопи (769px і більше) */
+@media (min-width: 769px) {
+  h3 { font-size: 1.6rem; }
+  p { font-size: 1rem; }
+  table { font-size: 0.95rem; }
+  th, td { padding: 6px; }
+  input { max-width: 120px; }
+  select { max-width: 300px; }
+  button { width: 200px; }
+  .buttons { grid-template-columns: repeat(3, 1fr); }
+}
+/* Контейнер селекта */
+.select2-container .select2-selection--multiple {
+  background-color: #ffffff;   /* темно-зелений фон */
+  border: 1px solid #25a525;  /* світло-зелена рамка */
+  border-radius: 8px;
+  min-height: 45px;           /* більший розмір */
+  padding: 6px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+/* Випадаючий список */
+.select2-container .select2-dropdown {
+  background-color: #009400;
+  color: #fff;
+  border: 1px solid #25a525;
+  font-size: small;
+}
+
+/* Пошукове поле */
+.select2-container .select2-search__field {
+  background-color: #fff;
+  color: #000;
+  border: none;
+  padding: 6px;
+  font-size: 1rem;
+}
+.custom-select2.select2-container--default 
+.select2-selection--multiple 
+.select2-selection__choice {
+  position: relative !important;        /* базовий контейнер для абсолютного позиціонування */
+  background-color: #009400 !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 20px !important;
+  margin: 4px !important;
+  font-size: 0.95rem !important;
+  display: inline-block !important;
+  white-space: normal !important;       /* дозволяє перенос рядків */
+  overflow-wrap: break-word !important; /* переносить довгі слова */
+  word-break: break-word !important;
+  max-width: 50ch !important;           /* обмеження ~50 символів */
+  box-sizing: border-box !important;
+  padding: 6px 6px 6px 20px !important; /* відступи для тексту */
+}
+
+/* Текст всередині тегу */
+.custom-select2.select2-container--default 
+.select2-selection--multiple 
+.select2-selection__choice__display {
+  display: block !important;
+  color: #fff !important;
+  line-height: 1.3 !important;
+  padding-right: 24px !important;       /* резервуємо місце під хрестик */
+}
+
+/* Хрестик справа вгорі */
+.custom-select2.select2-container--default 
+.select2-selection--multiple 
+.select2-selection__choice__remove {
+  position: absolute !important;             /* відстань справа */
+  color: #03ff03 !important;
+  font-weight: bold !important;
+  cursor: pointer !important;
+  font-size: 30px !important;
+  border: none !important;
+  border-radius: 50%;
+  line-height: 0.5 !important;
+  width: 10px !important;
+
+}
+.custom-select2.select2-container--default 
+.select2-selection--multiple 
+.select2-selection__choice__remove:hover {
+  color: #ff7070 !important;
+  background-color: #25a52500 !important;
+}
+
+</style>
+</head>
+<body>
+  <h1>Звіти</h1>
+  <p id="userInfo"></p>
+  <img src="./logo.svg" alt="logo" width="260">
+
+  <div class="filters">
+    <label>Дата від: <input type="date" id="startDate"></label>
+    <label>Дата до: <input type="date" id="endDate"></label>
+  </div>
+
+  <!-- селект користувача показуємо лише адміну -->
+  <div class="filters" id="userFilter" style="display:none;">
+    <label>Користувач:
+      <select id="userName">
+        <option value="">Всі</option>
+        <option value="fedir">Олександр Красніков</option>
+        <option value="olena">Тетяна Романовська</option>
+        <option value="office">Офіс</option>
+        <option value="andriy">Тетяна Кліменко</option>
+        <option value="maria">Тетяна Демус</option>
+        <option value="serhiy">Ілона Бабенко</option>
+      </select>
+    </label>
+  </div>
+
+  <div class="filters" id="partnerFilter">
+    <label for="partnerSelect">Партнер:
+    <select id="partnerSelect" multiple="multiple" style="width:300px;"></select>
+</label>
+    <label for="productSelect">Продукт:
+    <select id="productSelect" multiple="multiple" style="width:300px;"></select>
+</label>
+  </div>
+
+  <div class="buttons">
+    <button onclick="loadReport('pharmacy')">Аптечні візити</button>
+    <!--<button onclick="loadReport('pharmacyPhoto')">Фото</button>-->
+    <button onclick="loadReport('partner')">Візити до партнерів</button>
+    <button onclick="loadReport('doctor')">Візити до лікарів</button>
+    <button onclick="loadReport('contacts')">Контактні особи</button>
+    <button onclick="loadReport('calendar')">Календар</button>
+  </div><br><br><br>
+    <div class="buttons">  
+    <button onclick="resetFilters()">Скинути фільтри</button>
+    <a href="menu.html"><button class="button">Перейти в меню</button></a>
+  </div>
+<div id="filters" style="display:none;">
+  <label>Місто:
+    <select id="cityFilter"><option value="">Всі</option></select>
+  </label>
+  <label>ЛПЗ:
+    <select id="lpzFilter"><option value="">Всі</option></select>
+  </label>
+  <label>Спеціальність:
+    <select id="specialtyFilter"><option value="">Всі</option></select>
+  </label>
+</div>
+  <div style="margin-top: 20px; padding-left: 20px" id="report"></div>
+
+  <div class="buttons">
+    <button onclick="exportToExcel()">Експортувати в Excel</button>
+  </div>
+
+  <img src="./ph.png" alt="logo" width="260">
+<button id="scrollTopBtn" style="display:none; position:fixed; bottom:20px; right:20px; z-index:99;">
+  ↑ Вгору
+</button>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+  <script>
+    // показуємо кнопку при прокрутці вниз
+window.onscroll = function() {
+  const btn = document.getElementById("scrollTopBtn");
+  if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+    btn.style.display = "block";
+  } else {
+    btn.style.display = "none";
+  }
+};
+
+// плавна прокрутка вгору
+document.getElementById("scrollTopBtn").addEventListener("click", () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+$(document).ready(function() {
+  $("#partnerSelect").select2({
+    placeholder: "Оберіть партнера",
+    allowClear: true,
+    width: '300px'
+  });
+  $("#partnerSelect").next(".select2-container").addClass("custom-select2");
+
+  $("#productSelect").select2({
+    placeholder: "Оберіть продукт",
+    allowClear: true,
+    width: '300px'
+  });
+  $("#productSelect").next(".select2-container").addClass("custom-select2");
+});
+
+
+const userNames = {
+  fedir: "Олександр Красніков",
+  olena: "Тетяна Романовська",
+  office: "Офіс",
+  andriy: "Тетяна Кліменко",
+  maria: "Тетяна Демус",
+  serhiy: "Ілона Бабенко",
+  admin: "admin"
+};
+
+const userMap = {
+  fedir: [9,798,31,15,41,26,32,66,47,17,121,61,52,76,29,22,94,23,16,55,1,2,3,4,5],
+  olena: [11,53,45,146,181,27,601,108,10,1,2,3,4,5,51,49],
+  office: [1,2,3,4,5],
+  andriy: [18,19,1,2,3,4,5],
+  maria: [49,46,36,7,28,30,37,14,56,38,60,1,2,3,4,5],
+  serhiy: [12,75,13,8,21,67,48,1,2,3,4,5]
+};
+
+const productNames = [
+  "CLK№50","CLK№5","CLK№25","CL2GK№50","HPAg","Ultra","Solomini№5","Secret№2",
+  "Secret","Duet","Syphilis","Rota","CLpH№25","CLpH№1","ActimPROM","HIV","HCV",
+  "HBsAg","StrA","Influenza","CovidAg","CovidAg+Influenza","TnI","CardioCombo",
+  "multy5","multy10"
+];
+
+const currentUser = localStorage.getItem("currentUser");
+const info = document.getElementById("userInfo");
+
+if (currentUser && userNames[currentUser]) {
+  info.textContent = "Користувач: " + userNames[currentUser];
+} else {
+  info.textContent = "Користувач: невідомий";
+}
+
+// селект користувача показуємо лише адміну
+if (currentUser === "admin") {
+  document.getElementById("userFilter").style.display = "block";
+}
+
+let selectedPartnerName = "";
+let selectedProductName = "";
+let visits = [];        // глобально зберігаємо дані
+
+
+// ініціалізація партнерів
+function initPartners(userKey) {
+  const partners = JSON.parse(localStorage.getItem("partners")) || [];
+  const ids = userMap[userKey] || [];
+
+  // Перевіряємо типи: приводимо все до рядка
+  const filtered = (userKey === "admin") 
+    ? partners 
+    : partners.filter(p => ids.map(String).includes(String(p.id)));
+
+  const partnerSelect = $("#partnerSelect");
+  partnerSelect.empty();
+  filtered.forEach(p => {
+    partnerSelect.append(new Option(p.name, p.name));
+  });
+
+  // Якщо Select2 вже ініціалізований — просто оновлюємо
+  if (partnerSelect.hasClass("select2-hidden-accessible")) {
+    partnerSelect.trigger("change");
+  } else {
+    partnerSelect.select2({
+      placeholder: "Оберіть партнера",
+      allowClear: true,
+      width: '300px'
+    });
+  }
+
+  partnerSelect.on("change", function() {
+    selectedPartnerName = $(this).val() || [];
+  });
+}
+
+// ініціалізація продуктів
+function initProducts() {
+  const productSelect = $("#productSelect");
+  productSelect.empty();
+  productNames.forEach(name => {
+    productSelect.append(new Option(name, name));
+  });
+
+  productSelect.select2({
+    placeholder: "Оберіть продукт",
+    allowClear: true
+  });
+
+  productSelect.on("change", function() {
+    selectedProductName = $(this).val() || [];
+  });
+}
+let currentType = ""; // глобально зберігаємо тип звіту
+
+function normalizeDate(d) {
+  // ISO формат YYYY-MM-DD
+  if (/^\d{4}-\d{2}-\d{2}$/.test(d)) return d;
+
+  // Український формат DD.MM.YYYY
+  if (/^\d{2}\.\d{2}\.\d{4}$/.test(d)) {
+    const [day, month, year] = d.split(".");
+    return `${year}-${month}-${day}`;
+  }
+
+  return d; // fallback
+}
+
+async function loadReport(type) {
+  currentType = type;
+
+  const startDate = document.getElementById("startDate").value;
+  const endDate = document.getElementById("endDate").value;
+
+  let userKey = currentUser;
+  let selectedUserKey = null;
+  if (userKey === "admin") {
+    selectedUserKey = document.getElementById("userName").value;
+  }
+
+  // читаємо дані з кешу
+  let data = JSON.parse(localStorage.getItem(type + "Cache")) || [];
+
+  // 🔎 Фільтрація для всіх типів (крім contacts)
+  if (type !== "contacts") {
+    data = data.filter(row => {
+      let matchUser = true;
+      if (userKey === "admin" && selectedUserKey) {
+        matchUser = row.userName === userNames[selectedUserKey];
+      } else {
+        matchUser = row.userName === userNames[userKey];
+      }
+
+      let matchDate = true;
+      const d = normalizeDate(row.date);
+      if (startDate) matchDate = matchDate && d >= startDate;
+      if (endDate) matchDate = matchDate && d <= endDate;
+
+      const matchPartner = selectedPartnerName.length
+        ? selectedPartnerName.includes(row.partnerName)
+        : true;
+
+      const matchProduct = selectedProductName.length
+        ? selectedProductName.includes(row.product)
+        : true;
+
+      return matchUser && matchDate && matchPartner && matchProduct;
+    });
+    // 🆕 застосовуємо дедуплікацію
+    data = deduplicateVisits(data);
+  }
+
+  // перед рендером ховаємо всі додаткові фільтри
+  document.getElementById("filters").style.display = "none";
+  document.getElementById("partnerFilter").style.display = "none";
+
+   if (type === "contacts") {
+    renderContactsReport();
+  } else if (type === "calendar") {
+  const data = JSON.parse(localStorage.getItem("calendarCache")) || [];
+  renderCalendarReport(data);
+  } else if (type === "pharmacy") {
+    renderPharmacyReport(data);
+    document.getElementById("partnerFilter").style.display = "flex";
+  } else if (type === "partner") {
+    renderPartnerReport(data);
+    document.getElementById("partnerFilter").style.display = "flex";
+  } else if (type === "doctor") {
+    renderDoctorVisitsReport(data);
+    populateFilters(data);
+    document.getElementById("filters").style.display = "block"; // показуємо селекти лікарів
+  } else {
+    renderDefaultTable(data);
+  }
+
+  window.lastReportData = data;
+}
+
+
+// слухач для селектора користувача (адмін)
+document.getElementById("userName").addEventListener("change", () => {
+  if (currentType) {
+    loadReport(currentType); // одразу перезапускаємо поточний звіт
+  }
+});
+
+// слухач для селектора партнерів
+document.getElementById("partnerSelect").addEventListener("change", () => {
+  if (currentType) loadReport(currentType);
+});
+
+// слухач для селектора продуктів
+document.getElementById("productSelect").addEventListener("change", () => {
+  if (currentType) loadReport(currentType);
+});
+
+// слухачі для фільтрів лікарських візитів
+["cityFilter","lpzFilter","specialtyFilter"].forEach(id => {
+  document.getElementById(id).addEventListener("change", () => {
+    if (currentType === "doctor") {
+      const filtered = applyFilters(window.lastReportData || []);
+      renderDoctorVisitsReport(filtered);
+    }
+  });
+});
+
+function deduplicateVisits(data) {
+  const grouped = {};
+
+  data.forEach(row => {
+    // ключ: дата + ідентифікатор (партнер/лікар/аптека)
+    const key = `${row.date}_${row.partnerName || row.doctor || row.pharmacy}`;
+
+    if (!grouped[key]) {
+      grouped[key] = row;
+    } else {
+      // залишаємо той, що пізніше за часом
+      const existingTime = grouped[key].time || "00:00";
+      const newTime = row.time || "00:00";
+      if (newTime > existingTime) {
+        grouped[key] = row;
+      }
+    }
+  });
+
+  return Object.values(grouped);
+}
+
+
+function resetFilters() {
+  document.getElementById("startDate").value = "";
+  document.getElementById("endDate").value = "";
+  document.getElementById("partnerSelect").value = "";
+  document.getElementById("productSelect").value = "";
+
+  if (currentUser === "admin") {
+    document.getElementById("userName").value = "";
+  }
+
+  selectedPartnerName = "";
+  selectedProductName = "";
+
+  initPartners(currentUser);
+  initProducts();
+
+  // ховаємо селекти лікарів
+  document.getElementById("filters").style.display = "none";
+  document.getElementById("cityFilter").innerHTML = "<option value=''>Всі</option>";
+  document.getElementById("lpzFilter").innerHTML = "<option value=''>Всі</option>";
+  document.getElementById("specialtyFilter").innerHTML = "<option value=''>Всі</option>";
+
+  // ховаємо селекти аптек/партнерів
+  document.getElementById("partnerFilter").style.display = "none";
+
+  document.getElementById("report").innerHTML = "<p>Фільтри скинуто. Оберіть нові параметри.</p>";
+}
+
+function renderPharmacyReport(data) {
+  let html = "";
+  data.forEach(v => {
+    html += `
+      <h3>${v.userName} — ${v.date} ${v.time}</h3>
+      <p>${v.partnerName}, ${v.city}, ${v.address}</p>
+      <p>Контакт: ${v.contactName || "-"} (${v.contactPhone || "-"})</p>
+      <p>Викладка: ${v.display || "-"}, Обізнаність: ${v.awareness || "-"}</p>
+      <p>Коментар: ${v.comment || "-"}</p>
+      <table>
+        <tr><th>Продукт</th><th>Наявність</th><th>Кількість</th><th>Конкурент</th></tr>
+    `;
+    (v.products || []).forEach(p => {
+      html += `<tr>
+        <td>${p.product || p.name || "-"}</td>
+        <td>${p.available || "-"}</td>
+        <td>${p.quantity || "-"}</td>
+        <td>${p.competitors || p.competitor || "-"}</td>
+      </tr>`;
+    });
+    html += "</table><hr/>";
+  });
+  document.getElementById("report").innerHTML = html;
+  window.lastReportData = data;
+}
+function renderPartnerReport(data) {
+  let html = "";
+  data.forEach(v => {
+    html += `
+      <h3>${v.userName} — ${v.partnerName} (${v.date})</h3>
+      <p>Статус: ${v.status || "-"}</p>
+      <p>Коментар: ${v.comment || "-"}</p>
+      <table>
+        <tr>
+          <th>Назва</th><th>%</th><th>Кількість</th><th>Пенетрація</th>
+          <th>Залишки</th><th>Термін придатності</th><th>Конкурент</th>
+          <th>ВТМ</th><th>Ексклюзив</th><th>Умови %</th>
+        </tr>
+    `;
+    (v.products || []).forEach(p => {
+      const hasData = Object.values(p).some(val => val && val !== "");
+      if (hasData) {
+        html += `<tr>
+          <td>${p.product || p.name || "-"}</td>
+          <td>${p.percent || "-"}</td>
+          <td>${p.quantity || "-"}</td>
+          <td>${p.penetration || "-"}</td>
+          <td>${p.stock || "-"}</td>
+          <td>${formatExpiry(p.expiry)}</td>
+          <td>${p.competitor || "-"}</td>
+          <td>${p.vtm || "-"}</td>
+          <td>${p.exclusive || "-"}</td>
+          <td>${p.conditions || "-"}</td>
+        </tr>`;
+      }
+    });
+    html += "</table><hr/>";
+  });
+  document.getElementById("report").innerHTML = html;
+  window.lastReportData = data;
+}
+
+function formatExpiry(expiry) {
+  if (!expiry) return "-";
+  try {
+    const d = new Date(expiry);
+    // повертаємо тільки місяць та рік
+    const month = d.toLocaleString("uk-UA", { month: "long" });
+    const year = d.getFullYear();
+    return `${month} ${year}`;
+  } catch {
+    return expiry; // якщо не вдалося розпарсити, показуємо як є
+  }
+}
+function renderDoctorVisitsReport(data) {
+  const grouped = {};
+  data.forEach(row => {
+    const key = `${row.userName}_${row.date}_${row.time}_${row.doctor}`;
+    if (!grouped[key]) {
+      grouped[key] = {
+        userName: row.userName,
+        date: row.date,
+        time: row.time,
+        region: row.region,
+        city: row.city,
+        lpz: row.lpz,
+        specialty: row.specialty,
+        doctor: row.doctor,
+        products: []
+      };
+    }
+
+    grouped[key].products.push({
+      product: row.product,
+      agreement: row.agreement,
+      competitors: row.competitors,
+      //presentationShown: row.presentationShown,
+      //slides: row.slides
+    });
+  });
+
+  let html = "";
+  Object.values(grouped).forEach(v => {
+    html += `
+      <h3>${v.userName} — ${v.date} ${v.time}</h3>
+      <p>Лікар: ${v.doctor} (${v.specialty})</p>
+      <p>ЛПЗ: ${v.lpz}, ${v.city}, ${v.region}</p>
+      <table>
+        <tr>
+          <th>Продукт</th>
+          <th>Домовленість</th>
+          <th>Конкуренти</th>
+          <!--<th>Презентація</th>-->
+          <!--<th>Слайди</th>-->
+        </tr>
+    `;
+    v.products.forEach(p => {
+      html += `<tr>
+        <td>${p.product || "-"}</td>
+        <td>${p.agreement || "-"}</td>
+        <td>${p.competitors || "-"}</td>
+        <!--<td>${p.presentationShown || "-"}</td>-->
+        <!--<td>${p.slides || "-"}</td>-->
+      </tr>`;
+    });
+    html += "</table><hr/>";
+  });
+
+  document.getElementById("report").innerHTML = html;
+  window.lastReportData = data;
+}
+function populateFilters(data) {
+  const citySelect = document.getElementById("cityFilter");
+  const lpzSelect = document.getElementById("lpzFilter");
+  const specialtySelect = document.getElementById("specialtyFilter");
+
+  // очищаємо
+  citySelect.innerHTML = "<option value=''>Всі</option>";
+  lpzSelect.innerHTML = "<option value=''>Всі</option>";
+  specialtySelect.innerHTML = "<option value=''>Всі</option>";
+
+  const cities = [...new Set(data.map(r => r.city).filter(Boolean))];
+  cities.forEach(c => citySelect.innerHTML += `<option value="${c}">${c}</option>`);
+
+  // каскадність
+  citySelect.onchange = () => {
+    const filteredLpzs = [...new Set(data.filter(r => !citySelect.value || r.city === citySelect.value).map(r => r.lpz).filter(Boolean))];
+    lpzSelect.innerHTML = "<option value=''>Всі</option>";
+    filteredLpzs.forEach(l => lpzSelect.innerHTML += `<option value="${l}">${l}</option>`);
+    specialtySelect.innerHTML = "<option value=''>Всі</option>";
+  };
+
+  lpzSelect.onchange = () => {
+    const filteredSpecs = [...new Set(data.filter(r => (!citySelect.value || r.city === citySelect.value) && (!lpzSelect.value || r.lpz === lpzSelect.value)).map(r => r.specialty).filter(Boolean))];
+    specialtySelect.innerHTML = "<option value=''>Всі</option>";
+    filteredSpecs.forEach(s => specialtySelect.innerHTML += `<option value="${s}">${s}</option>`);
+  };
+}
+
+
+function applyFilters(data) {
+  const city = document.getElementById("cityFilter").value;
+  const lpz = document.getElementById("lpzFilter").value;
+  const specialty = document.getElementById("specialtyFilter").value;
+
+  return data.filter(r =>
+    (!city || r.city === city) &&
+    (!lpz || r.lpz === lpz) &&
+    (!specialty || r.specialty === specialty)
+  );
+}
+function renderContactsReport() {
+  const pharmacies = JSON.parse(localStorage.getItem("pharmacyCache")) || [];
+  const partners = JSON.parse(localStorage.getItem("partnerCache")) || [];
+
+  let userKey = currentUser;
+  let selectedUserKey = null;
+  if (userKey === "admin") {
+    selectedUserKey = document.getElementById("userName").value;
+  }
+
+  // об’єднуємо всі візити
+  let allContacts = [...pharmacies, ...partners];
+
+  // фільтрація по користувачу
+  allContacts = allContacts.filter(v => {
+    if (userKey === "admin" && selectedUserKey) {
+      return v.userName === userNames[selectedUserKey];
+    } else {
+      return v.userName === userNames[userKey];
+    }
+  });
+
+  if (!allContacts.length) {
+    document.getElementById("report").innerHTML = "<p>Немає даних</p>";
+    return;
+  }
+
+  let html = "<table>";
+  html += "<tr><th>Користувач</th><th>Партнер/Аптека</th><th>Місто</th><th>Адреса</th><th>Контакт</th></tr>";
+
+  allContacts.forEach(v => {
+    html += `<tr>
+      <td>${v.userName}</td>
+      <td>${v.partnerName || "-"}</td>
+      <td>${v.city || "-"}</td>
+      <td>${v.address || "-"}</td>
+      <td>${v.contactName || "-"} (${v.contactPhone || "-"})</td>
+    </tr>`;
+  });
+
+  html += "</table>";
+  document.getElementById("report").innerHTML = html;
+  window.lastReportData = allContacts;
+}
+
+
+
+
+// дефолтна таблиця
+function renderDefaultTable(data) {
+  let html = "<table><tr>";
+  Object.keys(data[0]).forEach(key => html += "<th>" + key + "</th>");
+  html += "</tr>";
+  data.forEach(row => {
+    html += "<tr>";
+    Object.values(row).forEach(val => html += "<td>" + val + "</td>");
+    html += "</tr>";
+  });
+  html += "</table>";
+  document.getElementById("report").innerHTML = html;
+}
+
+// запуск ініціалізації після завантаження сторінки
+document.addEventListener("DOMContentLoaded", () => {
+  initPartners(currentUser);
+  initProducts();
+});
+
+
+// слухач для селектора партнерів
+document.getElementById("partnerSelect").addEventListener("change", () => {
+  if (currentType) {
+    loadReport(currentType);
+  }
+});
+
+// слухач для селектора продуктів
+document.getElementById("productSelect").addEventListener("change", () => {
+  if (currentType) {
+    loadReport(currentType);
+  }
+});
+
+// слухачі для фільтрів лікарських візитів
+["cityFilter","lpzFilter","specialtyFilter"].forEach(id => {
+  document.getElementById(id).addEventListener("change", () => {
+    if (currentType === "doctor") {
+      const filtered = applyFilters(window.lastReportData || []);
+      renderDoctorVisitsReport(filtered);
+    }
+  });
+});
+document.addEventListener("DOMContentLoaded", () => {
+  initPartners(currentUser);
+  initProducts();
+
+  // фонове завантаження календарних візитів
+  preloadCalendarVisits();
+});
+
+async function preloadCalendarVisits() {
+  try {
+    const url = "https://script.google.com/macros/s/AKfycbz_uLWhj_ww5YLdnrdgGWu9l2AGraznsiGjVSV8dnMuPygaK8vJRKlv-7O9Ou0krKzIAA/exec?type=calendar";
+    const res = await fetch(url);
+    const raw = await res.text();
+    const data = JSON.parse(raw);
+
+    localStorage.setItem("calendarCache", JSON.stringify(data));
+    console.log("✅ Календарні візити закешовано:", data.length);
+  } catch (err) {
+    console.error("❌ Помилка при завантаженні календарних візитів:", err);
+  }
+}
+function renderCalendarReport(data) {
+  if (!data || !data.length) {
+    document.getElementById("report").innerHTML = "<p>Немає даних календаря</p>";
+    return;
+  }
+
+  let html = "<table>";
+  html += "<tr><th>Користувач</th><th>Дата</th><th>Час</th><th>Партнер/ЛПЗ</th><th>Місто</th><th>Адреса</th><th>Коментар</th></tr>";
+
+  data.forEach(v => {
+    html += `<tr>
+      <td>${v.userName || "-"}</td>
+      <td>${v.date || "-"}</td>
+      <td>${v.time || "-"}</td>
+      <td>${v.partnerName || v.lpz || "-"}</td>
+      <td>${v.city || "-"}</td>
+      <td>${v.address || "-"}</td>
+      <td>${v.comment || "-"}</td>
+    </tr>`;
+  });
+
+  html += "</table>";
+  document.getElementById("report").innerHTML = html;
+  window.lastReportData = data;
+}
+
+
+function exportToExcel() {
+  const data = window.lastReportData || [];
+  if (!data.length) {
+    alert("Немає даних для експорту");
+    return;
+  }
+
+  // створюємо нову книгу
+  const wb = XLSX.utils.book_new();
+
+  // перетворюємо масив об’єктів у аркуш
+  const ws = XLSX.utils.json_to_sheet(data);
+
+  // додаємо аркуш у книгу
+  XLSX.utils.book_append_sheet(wb, ws, "Report");
+
+  // генеруємо файл .xlsx
+  XLSX.writeFile(wb, "report.xlsx");
+}
+</script>
+</body>
+</html>

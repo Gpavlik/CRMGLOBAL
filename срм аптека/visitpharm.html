@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Візит в аптеку</title>
+  <link rel="icon" type="image/jpg" href="bol.jpg">
+  <style>
+body {
+  font-family: Arial, sans-serif;
+  margin: 0; padding: 0;
+  background: linear-gradient(135deg, #009400, #004d00);
+  color: #ffffff;
+  min-height: 100vh;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+table {
+  border-collapse: collapse;
+  width: 95%;
+  margin-top: 20px;
+}
+
+th, td {
+  border: 1px solid #ffffff;
+  padding: 8px;
+  text-align: center;
+  word-wrap: break-word;
+}
+
+th {
+  background: #adadad;
+  color: #000;
+}
+
+td.name { text-align: left; }
+tbody tr:hover { background-color: #26a12b; }
+
+input, select {
+  border: 1px solid #ffffff;
+  padding: 10px;
+  border-radius: 4px;
+  font-size: 13px;
+  width: 100%;
+  margin: 0;
+  box-sizing: border-box;
+  background-color: #effff0;
+  color: #000;
+}
+
+label {
+  display: block;
+  margin: 10px auto 5px auto;
+  font-weight: bold;
+  width: 100%;
+  max-width: 500px;
+  text-align: center;
+}
+
+button {
+  width: 220px;
+  padding: 12px;
+  margin-top: 10px;
+  background-color: #004d00;
+  color: #ffffff;
+  border: solid 1px #c2ffc2;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+button:hover { background-color: #003300; }
+
+input[type="checkbox"] {
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  border: 2px solid #333;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: #fff;
+  transition: background-color 0.5s ease;
+}
+input[type="checkbox"]:checked { background-color: #4caf50; }
+
+h3 {
+  margin-top: 30px;
+  text-align: center;
+  color: #fff;
+}
+
+td.to-sell { text-align: center; font-weight: bold; color: white; }
+
+.available { width: 24px; height: 24px; }
+.quantity { width: 60px; }
+.competitors { width: 150px; }
+
+/* Сітки */
+.date-time-partner {
+  padding-left: 20px;
+  max-width: 90%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.date-knowledge {
+  padding-left: 20px;
+  max-width: 90%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+/* 📱 Телефони */
+@media (max-width: 480px) {
+  h1 { font-size: 1.4rem; }
+  h3 { font-size: 1.2rem; }
+  input, select { font-size: 0.9rem; }
+  button { width: 100%; font-size: 0.9rem; }
+  table { font-size: 0.75rem; }
+  th, td { padding: 4px; }
+  .date-time-partner, .date-knowledge {
+    grid-template-columns: 1fr; /* одна колонка */
+  }
+}
+
+/* 📲 Планшети */
+@media (min-width: 481px) and (max-width: 768px) {
+  h1 { font-size: 1.6rem; }
+  h3 { font-size: 1.3rem; }
+  input, select { font-size: 1rem; }
+  button { width: 80%; }
+  table { font-size: 0.85rem; }
+  th, td { padding: 6px; }
+  .date-time-partner, .date-knowledge {
+    grid-template-columns: repeat(2, 1fr); /* дві колонки */
+  }
+}
+
+/* 💻 Десктопи */
+@media (min-width: 769px) {
+  h1 { font-size: 1.8rem; }
+  h3 { font-size: 1.4rem; }
+  input, select { max-width: 500px; }
+  button { width: 220px; }
+  table { font-size: 1rem; }
+  .date-time-partner, .date-knowledge {
+    grid-template-columns: repeat(2, 1fr); /* дві колонки */
+  }
+}.modal {
+  position: fixed;
+  z-index: 9999;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+}
+.modal-content {
+  padding: 20px;
+   background: linear-gradient(135deg, #009400, #004d00);
+  border-radius: 8px;
+  text-align: center;
+}
+.spinner {
+  border: 6px solid #f3f3f3;
+  border-top: 6px solid #3498db;
+  border-radius: 50%;
+  width: 40px; height: 40px;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 10px;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+</style>
+<body>
+  <h1>Візит в аптеку</h1>
+  <img src="./logo.svg" alt="logo" width="260">
+    <p id="userInfo"></p>
+<form id="pharmacyVisitForm">
+  <div class="date-time-partner" >
+      <input type="date" id="visitDate" readonly hidden required>
+      <input type="time" id="visitTime" readonly hidden required>
+    <label>Партнер:</label>
+      <select id="partnerSelect" required></select>
+    <label>Місто:</label>
+      <select id="city" required></select>
+    <label>Адреса:</label>
+    <input type="text" id="pharmacySearch" placeholder="Введіть назву або адресу"><br>
+      <select id="pharmacyAddress" required></select>
+    <label>Особа:</label>
+      <input type="text" id="contactName">
+    <label>Телефон:</label>
+      <input type="text" id="contactPhone">
+  </div><br>
+  <div class="date-knowledge" >
+    <label>Викладка:</label>
+      <input type="checkbox" class="available" id="pharmacyDisplay" required>
+    <label>Обізнаність:</label>
+      <select id="pharmacyAwareness" required>
+          <option value="">Оберіть рівень</option>
+          <option value="high">Висока</option>
+          <option value="medium">Середня</option>
+          <option value="low">Низька</option>
+      </select>
+  </div>
+  <label>Коментар:</label>
+  <input type="text" id="pharmacyComment">
+ 
+<form id="photoForm" action="https://script.google.com/macros/s/AKfycbw360K3q2Nnc0B2c6D9VLcOsL-3EBA2r307Xcde5Kclxxlztc0KVgpbXujlbjhqlXMY4Q/exec" method="POST" mode= "no-cors" enctype="multipart/form-data" style="display:none;">
+  <input type="hidden" name="action" value="savePharmacyPhoto">
+  <input type="hidden" name="userName" id="userNameField">
+  <input type="hidden" name="date" id="dateField">
+  <input type="hidden" name="time" id="timeField">
+  <input type="hidden" name="partnerId" id="partnerIdField">
+  <input type="hidden" name="partnerName" id="partnerNameField">
+  <input type="hidden" name="city" id="cityField">
+  <input type="hidden" name="address" id="addressField">
+  <input type="hidden" name="photo" id="photoField">
+</form>
+  <!-- Таблиця продуктів -->
+  <table border="1" id="productsTable">
+    <thead>
+      <tr>
+        <th>Продукт</th>
+        <th>Наявність</th>
+        <th>Кількість</th>
+        <th>Конкуренти</th>
+        </tr>
+    </thead>
+    <tbody>
+      <!-- рядки генерує JS -->
+    </tbody>
+  </table>
+
+  <br>
+  <div style="text-align: center; display: flex; gap: 10px; flex-direction: row; flex-wrap: wrap; justify-content: center;" >  
+ <!-- Кнопка для фото -->
+<!--<button type="button" id="cameraBtn">📸 Зробити фото</button>-->
+
+<!-- Інпут для камери -->
+<!--<input type="file" id="cameraInput" accept="image/*" capture="environment" style="display:none;">-->
+
+<!-- Кнопка для галереї -->
+<!--<button type="button" id="galleryBtn">🖼️ Додати з галереї</button>
+<input type="file" id="galleryInput" accept="image/*" style="display:none;">-->
+
+<!-- Прев’ю -->
+<!--<div id="photoPreview" style="margin-top:10px;">
+  <img id="previewImg" src="" alt="Прев’ю фото" style="max-width:200px; display:none; border:1px solid #ccc;"/>
+</div>-->
+  <button type="button" id="saveVisitBtn">Зберегти візит</button>
+   <button><a style="text-decoration: none; color: white;" href="calendar.html">Перейти в календар</a></button>
+<a href="menu.html"><button>Перейти в меню</button></a>
+  </div>    
+</form>
+
+  <img src="./ph.png" alt="logo" width="260">
+  <!-- Модалка очікування -->
+<div id="loadingModal" class="modal" style="display:none;">
+  <div class="modal-content">
+    <div class="spinner"></div>
+    <p>Збереження даних... будь ласка, зачекайте</p>
+  </div>
+</div>
+<script>
+// Зчитуємо userName з URL або localStorage
+function getQueryParam(name) {
+  const urlParams = new URLSearchParams(window.location.search);
+  return urlParams.get(name);
+}
+
+const currentUserName = getQueryParam("userName") || localStorage.getItem("currentUserName");
+if (currentUserName) {
+  document.getElementById("userInfo").innerText = "Користувач: " + currentUserName;
+  localStorage.setItem("currentUserName", currentUserName);
+}
+
+// Користувачі та карта партнерів
+const userNames = {
+  fedir: "Олександр Красніков",
+  olena: "Тетяна Романовська",
+  office: "Офіс",
+  andriy: "Тетяна Кліменко",
+  maria: "Тетяна Демус",
+  serhiy: "Ілона Бабенко"
+};
+
+const userMap = {
+  fedir: [9,798,31,15,41,26,32,66,47,17,121,61,52,76,29,22,94,23,16,55,1,2,3,4,5],
+  olena: [11,53,45,146,181,27,601,108,10,1,2,3,4,5,51,49],
+  office: [1,2,3,4,5],
+  andriy: [18,19,1,2,3,4,5],
+  maria: [49,46,36,7,28,30,37,14,56,38,60,1,2,3,4,5],
+  serhiy: [12,75,13,8,21,67,48,1,2,3,4,5]
+};
+const currentUser = localStorage.getItem("currentUser");
+let selectedPartnerName = "";
+
+if (!currentUser) {
+  alert("Будь ласка, увійдіть спочатку!");
+  window.location.href = "login.html";
+} else {
+  document.getElementById("userInfo").textContent =
+    "Ви увійшли як: " + (userNames[currentUser] || currentUser);
+}
+// Список продуктів
+const productList = [
+  "CLK№50","CLK№5","CLK№25","CL2GK№50","HPAg","Ultra","Solomini№5","Secret№2",
+  "Secret","Duet","Syphilis","Rota","CLpH№25","CLpH№1","ActimPROM","HIV","HCV",
+  "HBsAg","StrA","Influenza","CovidAg","CovidAg+Influenza","TnI","CardioCombo",
+  "multy5","multy10"
+];
+
+// Отримання аптек з Google Sheet
+async function fetchPharmacies() {
+  const url = "https://docs.google.com/spreadsheets/d/1rdFPBwtSvxLiY5K7v7Vm07sNseWlBJQT/gviz/tq?tqx=out:json&sheet=sheet1";
+  const res = await fetch(url);
+  const text = await res.text();
+  const json = JSON.parse(text.substr(47).slice(0, -2));
+
+  return json.table.rows.map(r => ({
+    partnerId: parseInt(r.c[0]?.v, 10),
+    partnerName: r.c[1]?.v || "",
+    city: r.c[2]?.v || "",
+    address: r.c[3]?.v || ""
+  }));
+}
+
+// Ініціалізація партнерів
+async function initPartners(userKey) {
+  const pharmacies = await fetchPharmacies();
+  localStorage.setItem("pharmacies", JSON.stringify(pharmacies));
+  console.log("▶ Завантажено аптек:", pharmacies.length);
+
+  const ids = userMap[userKey] || [];
+  const filtered = pharmacies.filter(p => ids.includes(p.partnerId));
+
+  const partnerSelect = document.getElementById("partnerSelect");
+  partnerSelect.innerHTML = `<option value="">Оберіть партнера</option>`;
+
+  [...new Set(filtered.map(p => p.partnerName))].forEach(name => {
+    const pid = filtered.find(p => p.partnerName === name).partnerId;
+    partnerSelect.innerHTML += `<option value="${pid}">${name}</option>`;
+  });
+}
+
+// Заповнення міст для вибраного партнера
+function initCitySelect(userKey, partnerId) {
+  const pharmacies = JSON.parse(localStorage.getItem("pharmacies")) || [];
+  const ids = userMap[userKey] || [];
+  const filtered = pharmacies.filter(p => ids.includes(p.partnerId) && p.partnerId == partnerId);
+
+  const citySelect = document.getElementById("city");
+  citySelect.innerHTML = `<option value="">Оберіть місто</option>`;
+
+  [...new Set(filtered.map(p => p.city))].forEach(city => {
+    citySelect.innerHTML += `<option value="${city}">${city}</option>`;
+  });
+}
+// Фільтрація аптек за введеним текстом
+document.getElementById("pharmacySearch").addEventListener("input", (e) => {
+  const searchValue = e.target.value.toLowerCase();
+  const partnerId = document.getElementById("partnerSelect").value;
+  const city = document.getElementById("city").value;
+
+  const pharmacies = JSON.parse(localStorage.getItem("pharmacies")) || [];
+  const ids = userMap[currentUser] || [];
+
+  // фільтруємо по партнеру, місту і введеному тексту
+  const filtered = pharmacies.filter(p =>
+    ids.includes(p.partnerId) &&
+    p.partnerId == partnerId &&
+    p.city === city &&
+    (p.address.toLowerCase().includes(searchValue) || p.partnerName.toLowerCase().includes(searchValue))
+  );
+
+  const addressSelect = document.getElementById("pharmacyAddress");
+  addressSelect.innerHTML ="";
+
+  filtered.forEach(p => {
+    addressSelect.innerHTML += `<option value="${p.address}">${p.address}</option>`;
+  });
+});
+
+// Заповнення адрес для вибраного партнера і міста
+function initAddressSelect(userKey, partnerId, city) {
+  const pharmacies = JSON.parse(localStorage.getItem("pharmacies")) || [];
+  const ids = userMap[userKey] || [];
+  const filtered = pharmacies.filter(p => ids.includes(p.partnerId) && p.partnerId == partnerId && p.city === city);
+
+  const addressSelect = document.getElementById("pharmacyAddress");
+  addressSelect.innerHTML += `<option value="">Оберіть аптеку</option>`;
+
+  filtered.forEach(p => {
+    addressSelect.innerHTML += `<option value="${p.address}">${p.address}</option>`;
+  });
+}
+
+document.addEventListener("DOMContentLoaded", async () => {
+  // виставляємо дату й час
+  const now = new Date();
+  const yyyy = now.getFullYear();
+  const mm = String(now.getMonth() + 1).padStart(2, "0");
+  const dd = String(now.getDate()).padStart(2, "0");
+  document.getElementById("visitDate").value = `${yyyy}-${mm}-${dd}`;
+
+  const hh = String(now.getHours()).padStart(2, "0");
+  const min = String(now.getMinutes()).padStart(2, "0");
+  document.getElementById("visitTime").value = `${hh}:${min}`;
+
+  // логіка з користувачем
+  const currentUser = localStorage.getItem("currentUser");
+  if (!currentUser) {
+    alert("Будь ласка, увійдіть спочатку!");
+    window.location.href = "index.html";
+    return;
+  }
+
+  await initPartners(currentUser);
+
+  document.getElementById("partnerSelect").addEventListener("change", (e) => {
+    initCitySelect(currentUser, e.target.value);
+  });
+
+  document.getElementById("city").addEventListener("change", (e) => {
+    const partnerId = document.getElementById("partnerSelect").value;
+    initAddressSelect(currentUser, partnerId, e.target.value);
+  });
+
+  // генерація таблиці продуктів
+  const tbody = document.querySelector("#productsTable tbody");
+  productList.forEach(name => {
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td>${name}</td>
+      <td><input type="checkbox" class="available"></td>
+      <td><input type="number" class="quantity" min="0"></td>
+      <td><input type="text" class="competitors"></td>
+    `;
+    tbody.appendChild(row);
+  });
+});
+
+document.getElementById('saveVisitBtn').onclick = async () => {
+  // показуємо модалку очікування
+  document.getElementById('loadingModal').style.display = 'flex';
+
+  try {
+    await savePharmacyVisit(); // твоя функція відправки на бекенд
+      // невелика пауза, щоб бекенд встиг записати
+    setTimeout(() => {
+      location.reload();
+    }, 10000);// після успішного збереження — оновлення сторінки
+     } catch (err) {
+    alert("Помилка при збереженні даних");
+    console.error(err);
+    // ховаємо модалку, щоб користувач міг повторити дію
+    document.getElementById('loadingModal').style.display = 'none';
+  }
+};
+
+
+
+function savePharmacyVisit() {
+  const rows = document.querySelectorAll("#productsTable tbody tr");
+  const productsData = [];
+
+  rows.forEach(row => {
+    const name = row.cells[0].innerText;
+    const available = row.querySelector(".available").checked;
+    const quantity = row.querySelector(".quantity").value;
+    const competitors = row.querySelector(".competitors").value;
+
+    if (available || quantity || competitors) {
+      productsData.push({ name, available, quantity, competitors });
+    }
+  });
+
+  const urlParams = new URLSearchParams(window.location.search);
+  let userName = urlParams.get("userName") || localStorage.getItem("currentUserName");
+  if (!userName) {
+    const currentUser = localStorage.getItem("currentUser");
+    userName = userNames[currentUser] || currentUser;
+  }
+
+  const date = document.getElementById("visitDate").value;
+  const time = document.getElementById("visitTime").value;
+
+  // Генеруємо VisitID один раз
+
+let visitId = urlParams.get("visitId");
+if (!visitId) {
+  visitId = Date.now(); // якщо не з календаря
+}
+
+
+  const shortData = {
+    action: "savePharmacyVisitShort",
+    userName,
+    date,
+    time,
+    partnerId: document.getElementById("partnerSelect").value,
+    partnerName: document.getElementById("partnerSelect").options[
+      document.getElementById("partnerSelect").selectedIndex
+    ].text,
+    city: document.getElementById("city").value,
+    address: document.getElementById("pharmacyAddress").value,
+    contactName: document.getElementById("contactName").value,
+    contactPhone: document.getElementById("contactPhone").value,
+    display: document.getElementById("pharmacyDisplay").checked,
+    awareness: document.getElementById("pharmacyAwareness").value,
+    comment: document.getElementById("pharmacyComment").value,
+    visitId
+  };
+
+  navigator.geolocation.getCurrentPosition(async pos => {
+    const lat = pos.coords.latitude;
+    const lon = pos.coords.longitude;
+
+    shortData.lat = lat;
+    shortData.lon = lon;
+
+    try {
+      // короткі дані
+      await fetch("https://script.google.com/macros/s/AKfycbz_uLWhj_ww5YLdnrdgGWu9l2AGraznsiGjVSV8dnMuPygaK8vJRKlv-7O9Ou0krKzIAA/exec", {
+        method: "POST",
+        mode: "no-cors",
+        body: JSON.stringify(shortData),
+        headers: { "Content-Type": "application/json" }
+      });
+
+      // продукти з VisitID + викладка, обізнаність, коментар
+      if (productsData.length > 0) {
+        await fetch("https://script.google.com/macros/s/AKfycbz_uLWhj_ww5YLdnrdgGWu9l2AGraznsiGjVSV8dnMuPygaK8vJRKlv-7O9Ou0krKzIAA/exec", {
+          method: "POST",
+          mode: "no-cors",
+          body: JSON.stringify({
+            action: "savePharmacyProducts",
+            userName,
+            date,
+            time,
+            partnerId: shortData.partnerId,
+            partnerName: shortData.partnerName,
+            city: shortData.city,
+            address: shortData.address,
+            display: shortData.display,
+            awareness: shortData.awareness,
+            comment: shortData.comment,
+            visitId,
+            data: productsData
+          }),
+          headers: { "Content-Type": "application/json" }
+        });
+      }
+
+      alert("Аптечний візит збережено!");
+      //location.reload();
+    } catch (err) {
+      console.error("Помилка збереження:", err);
+      alert("Не вдалося зберегти візит");
+    }
+  });
+}
+
+
+/*Виклик камери
+document.getElementById("cameraBtn").addEventListener("click", () => {
+  document.getElementById("cameraInput").click();
+});
+
+// Виклик галереї
+document.getElementById("galleryBtn").addEventListener("click", () => {
+  document.getElementById("galleryInput").click();
+});
+
+// Обробка фото з камери
+document.getElementById("cameraInput").addEventListener("change", (event) => {
+  const file = event.target.files[0];
+  if (file) handleFile(file);
+});
+
+// Обробка фото з галереї
+document.getElementById("galleryInput").addEventListener("change", (event) => {
+  const file = event.target.files[0];
+  if (file) handleFile(file);
+});
+
+// Загальна функція обробки файлу
+function handleFile(file) {
+  const reader = new FileReader();
+  reader.onload = async (e) => {
+    const photoBase64 = e.target.result;
+    if (!photoBase64 || !photoBase64.startsWith("data:image")) {
+      console.error("Некоректне фото");
+      return;
+    }
+    showPreview(photoBase64);
+    await sendPhoto(photoBase64);
+  };
+  reader.readAsDataURL(file);
+}
+
+// Прев’ю
+function showPreview(photo) {
+  const preview = document.getElementById("previewImg");
+  preview.src = photo;
+  preview.style.display = "block";
+  console.log("▶ Прев’ю фото оновлено");
+}
+
+// Відправка фото
+async function sendPhoto(photoBase64) {
+  // базові дані
+  const userNames = {
+    fedir: "Олександр Красніков",
+    olena: "Тетяна Романовська",
+    office: "Офіс",
+    andriy: "Тетяна Кліменко",
+    maria: "Тетяна Демус",
+    serhiy: "Ілона Бабенко",
+    admin: "admin"
+  };
+  let userKey = localStorage.getItem("currentUser");
+  let userName = userNames[userKey] || userKey || "невідомий";
+
+  // створюємо FormData
+  const formData = new FormData();
+  formData.append("action", "savePharmacyPhoto");
+  formData.append("userName", userName);
+  formData.append("date", document.getElementById("visitDate")?.value || "");
+  formData.append("time", document.getElementById("visitTime")?.value || "");
+  formData.append("partnerId", document.getElementById("partnerSelect")?.value || "");
+  formData.append("partnerName", document.getElementById("partnerSelect")?.options[
+    document.getElementById("partnerSelect")?.selectedIndex
+  ]?.text || "");
+  formData.append("city", document.getElementById("city")?.value || "");
+  formData.append("address", document.getElementById("pharmacyAddress")?.value || "");
+
+  // додаємо фото як Base64
+  if (photoBase64) {
+    formData.append("photo", photoBase64);
+  }
+
+  try {
+    const res = await fetch("https://script.google.com/macros/s/AKfycbw360K3q2Nnc0B2c6D9VLcOsL-3EBA2r307Xcde5Kclxxlztc0KVgpbXujlbjhqlXMY4Q/exec", {
+      method: "POST",
+      mode: "no-cors", // залишаємо, як ти просив
+      body: formData
+    });
+
+    console.log("▶ Дані відправлені через FormData");
+    alert("Фото та дані відправлені у Google Таблицю!");
+  } catch (err) {
+    console.error("Помилка відправки:", err);
+    alert("Не вдалося відправити дані");
+  }
+}*/
+</script>
+</body>
+</html>

@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/jpg" href="bol.jpg">
+  <title>Меню</title>
+<!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <!-- JustGage + Raphael -->
+  <script src="https://cdn.jsdelivr.net/npm/raphael"></script>
+  <script src="https://cdn.jsdelivr.net/npm/justgage"></script>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  margin: 0; padding: 0;
+  background: linear-gradient(135deg, #009400, #004d00);
+  color: #ffffff;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+button {
+  width: 200px; padding: 12px; margin-top: 10px;
+  background-color: #004d00; color: #ffffff;
+  border: solid 1px #c2ffc2; border-radius: 6px; font-size: 1rem;
+  cursor: pointer; transition: background 0.3s ease;
+}
+.btn {
+  background-color: #c20000; border: solid 1px #ffc2c2;
+}
+button:hover { background-color: #2aaf2a; }
+.buttons {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-top: 20px;
+}
+h1 { margin-top: 30px; text-align: center; font-size: 2rem; }
+/* 📱 Телефони (до 480px) */
+@media (max-width: 480px) {
+  button {
+    width: 100%; /* кнопки на всю ширину */
+    font-size: 0.9rem;
+  }
+  .buttons {
+    grid-template-columns: 1fr; /* одна колонка */
+    gap: 8px;
+  }
+  h1 {
+    font-size: 1.5rem; /* менший заголовок */
+  }
+}
+/* 📲 Планшети (481px–768px) */
+@media (min-width: 481px) and (max-width: 768px) {
+  button {
+    width: 90%; /* ширші кнопки */
+    font-size: 1rem;
+  }
+  .buttons {
+    grid-template-columns: repeat(2, 1fr); /* дві колонки */
+    gap: 8px;
+  }
+  h1 {
+    font-size: 1.8rem;
+  }
+}
+/* 💻 Десктопи (769px і більше) */
+@media (min-width: 769px) {
+  button {
+    width: 200px;
+  }
+  .buttons {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  h1 {
+    font-size: 2rem;
+  }
+}
+
+#filters {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  margin: 10px;
+  font-weight: bold;
+  text-align: left;
+  max-width: 100%;
+}
+
+input, select {
+  width: 100%;
+  max-width: 500px;
+  padding: 10px;
+  margin-top: 5px;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+/* ===== Адаптація для планшетів ===== */
+@media (max-width: 1024px) {
+  
+  input, select {
+    max-width: 300px;
+    font-size: 0.95rem;
+  }
+}
+
+/* ===== Адаптація для мобільних ===== */
+@media (max-width: 600px) {
+  body {
+    align-items: stretch;
+  }
+  
+  #filters {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 15px;
+  }
+  input, select {
+    width: 90%;
+    max-width: 90%;
+    font-size: 1rem;
+  }
+  label {
+    margin: 5px 0;
+    text-align: center;
+  }
+}
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 30px;
+}
+
+/* ===== Спідометри ===== */
+.gauges-container {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+.gauge-block {
+  text-align: center;
+  width: 200px;
+}
+
+.gauge-info {
+  margin-top: 8px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #ffffff;
+}
+    #userInfoTop {
+  position: absolute;
+  top: 10px;
+  left: 15px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #ffffff;
+}
+</style>
+</head>
+<body>
+     <h1>Меню</h1>
+    <div id="userInfoTop"></div>
+<br>
+  <img src="./logo.svg" alt="logo" width="260">
+  <div id="menu">
+  <div class="buttons">
+  <button id="base" onclick="goTo('newdoc.html')">База лікарів</button>  
+  <button id="visits" onclick="goTo('docvisit.html')">Візити</button>
+  <button onclick="goTo('reports.html')">Звіти</button>
+  <button id="calendar" onclick="goTo('calendar.html')">Календар</button>
+  <button id="reportMenuItem" style="display:none;" onclick="goTo('GPS.html')">GPS</button>
+  <button id="materials" onclick="goTo('presentations.html')">Корисні матеріали</button>  
+  <button id="reportMenuItem2" onclick="goTo('Promoask.html')">Замовлення промо</button>
+  <button id="reportMenuItem3" onclick="goTo('Businestrip.html')">Відрядження</button>
+  <button class="btn" onclick="goTo('index.html')">Вийти</button>
+  </div>
+</div><br><br>
+<div class="container">
+  <div id="filters">
+        <select id="userFilter" style="display:none;">
+      <option value="">Виберіть співробітника</option>
+      <option value="demian">Дем'ян Загородній</option>
+        <option value="vitaliy">Віталій Гаптенко</option>
+        <option value="olga">Ольга Леонова</option>
+        <option value="katya">Катерина Скрябіна</option>
+        <option value="stavka">Ставка</option>
+    </select>
+    </label>
+    <!--<input type="date" id="startDate">-->
+    <select id="specialtyFilter" class="select2">
+      <option value="Всі спеціальності">Всі спеціальності</option>
+      <option value="Травматологія">Травматологія</option>
+      <option value="Ревматологія">Ревматологія</option>
+      <option value="Анестезіологія">Анестезіологія</option>
+    </select>
+  </div>
+  <div class="dashboard">
+  <div class="gauges-container">
+    <div class="gauge-block">Сьогодні
+      <div id="gaugeDay"></div>
+      <div id="gaugeDayInfo" class="gauge-info"></div>
+    </div>
+    <div class="gauge-block">Цей тиждень
+      <div id="gaugeWeek"></div>
+      <div id="gaugeWeekInfo" class="gauge-info"></div>
+    </div>
+    <div class="gauge-block">Цей місяць
+      <div id="gaugeMonth"></div>
+      <div id="gaugeMonthInfo" class="gauge-info"></div>
+    </div>
+    <div class="gauge-block">Цей квартал
+      <div id="gaugeQuarter"></div>
+      <div id="gaugeQuarterInfo" class="gauge-info"></div>
+    </div>
+
+  </div>
+  <img src="./ph.png" alt="logo" width="260" style="margin-top: 30px; justify-self: center;">
+ </div>
+  
+<script>
+  function goTo(page) {
+  window.location.href = page;
+}
+  document.addEventListener("DOMContentLoaded", () => {
+    const currentUser = localStorage.getItem("currentUser");
+
+    // показуємо кнопку лише адміну
+    if (currentUser === "admink") {
+      document.getElementById("reportMenuItem").style.display = "block";
+      document.getElementById("userFilter").style.display = "block";
+      document.getElementById("reportMenuItem2").style.display = "none";
+      document.getElementById("reportMenuItem3").style.display = "none";
+      document.getElementById("base").style.display = "none";
+      document.getElementById("visits").style.display = "none";
+      document.getElementById("calendar").style.display = "none";
+      document.getElementById("materials").style.display = "none";
+    }
+  });
+
+// ===== Користувачі =====
+const userNames = {
+  demian: "Дем'ян Загородній",
+  vitaliy: "Віталій Гаптенко",
+  olga: "Ольга Леонова",
+  katya: "Катерина Скрябіна",
+  stavka: "Ставка",
+  admink: "admin"
+};
+
+const currentUser = localStorage.getItem("currentUser") || "admink";
+
+// ===== План на день =====
+const planDay = { travma:5, revma:0, Anest:3};
+
+// ===== Кешування =====
+function saveCache(type, data, lastRow) {
+  localStorage.setItem(type + "Cache", JSON.stringify(data));
+  localStorage.setItem(type + "LastRow", lastRow);
+}
+
+function loadCache(type) {
+  const raw = localStorage.getItem(type + "Cache");
+  if (!raw) {
+    // якщо кеш ще не створений — ініціалізуємо пустий масив
+    localStorage.setItem(type + "Cache", JSON.stringify([]));
+    return [];
+  }
+  return JSON.parse(raw);
+}
+
+function loadLastRow(type) {
+  const raw = localStorage.getItem(type + "LastRow");
+  if (!raw) {
+    localStorage.setItem(type + "LastRow", 1); // перший рядок — шапка
+    return 1;
+  }
+  return Number(raw);
+}
+
+
+
+async function fetchIncremental(type, userKey) {
+  const lastRow = loadLastRow(type);
+  const url = `https://script.google.com/macros/s/AKfycbxMDNAS6nal0EJvDk1U33cXA8l3n0CVOuiEjdozUcpFZTWMliDRAJZmPp5COUW6LRIt/exec?type=${type}&userName=${userNames[userKey]}&lastRow=${lastRow}`;
+  console.log(`🔗 Інкрементальний запит: ${url}`);
+  mode: "no-cors"
+  try {
+    const resp = await fetch(url);
+    const data = await resp.json();
+
+    let cache = loadCache(type);
+
+    if (data.length > 0) {
+      // визначаємо ключ унікальності залежно від типу
+      const makeKey = (v) => {
+        if (type === "doctor") return v.date + "_" + v.doctor;
+        return v.visitId || (v.date + "_" + v.time);
+      };
+
+      const seen = new Set(cache.map(makeKey));
+      const fresh = data.filter(v => !seen.has(makeKey(v)));
+
+      if (fresh.length > 0) {
+        cache = cache.concat(fresh);
+        const newLastRow = lastRow + fresh.length;
+        saveCache(type, cache, newLastRow);
+        console.log(`✅ Оновлено кеш [${type}]: додано ${fresh.length} нових записів`);
+      } else {
+        console.log(`ℹ️ Нових даних для [${type}] немає`);
+      }
+    }
+
+    return cache;
+  } catch (err) {
+    console.error(`❌ Помилка запиту [${type}]:`, err);
+    return loadCache(type);
+  }
+}
+
+
+// ===== Допоміжні функції =====
+function countWorkingDays(startDate, endDate) {
+  let count = 0, d = new Date(startDate);
+  while (d <= endDate) {
+    const day = d.getDay();
+    if (day !== 0 && day !== 6) count++;
+    d.setDate(d.getDate()+1);
+  }
+  return count;
+}
+function uniqueDoctorVisits(visits) {
+  const set = new Set();
+  visits.forEach(v => set.add(v.date + "_" + v.doctor));
+  return set.size;
+}
+
+// ===== Глобальні змінні для спідометрів =====
+let gaugeDay, gaugeWeek, gaugeMonth, gaugeQuarter;
+
+// ===== Ініціалізація спідометрів =====
+function initGauges() {
+  gaugeDay = new JustGage({ id:"gaugeDay", value:0, min:0, max:100, label:"%", levelColors:["#30B32D","#FFDD00","#F03E3E"], pointer:true });
+  gaugeWeek = new JustGage({ id:"gaugeWeek", value:0, min:0, max:100, label:"%", levelColors:["#30B32D","#FFDD00","#F03E3E"], pointer:true });
+  gaugeMonth = new JustGage({ id:"gaugeMonth", value:0, min:0, max:100, label:"%", levelColors:["#30B32D","#FFDD00","#F03E3E"], pointer:true });
+  gaugeQuarter = new JustGage({ id:"gaugeQuarter", value:0, min:0, max:100, label:"%", levelColors:["#30B32D","#FFDD00","#F03E3E"], pointer:true });
+}
+
+// ===== Оновлення спідометра =====
+function updateGauge(id, value) {
+  if (id === "gaugeDay" && gaugeDay) gaugeDay.refresh(value);
+  if (id === "gaugeWeek" && gaugeWeek) gaugeWeek.refresh(value);
+  if (id === "gaugeMonth" && gaugeMonth) gaugeMonth.refresh(value);
+  if (id === "gaugeQuarter" && gaugeQuarter) gaugeQuarter.refresh(value);
+}
+function isSameDay(d1, d2) {
+  return d1.getFullYear() === d2.getFullYear() &&
+         d1.getMonth() === d2.getMonth() &&
+         d1.getDate() === d2.getDate();
+}
+// ===== Основна логіка =====
+function loadData(userKey) {
+  const specialty = $("#specialtyFilter").val();
+
+  const today = new Date();
+  const startOfWeek = new Date(today);
+  startOfWeek.setDate(today.getDate() - today.getDay() + 1);
+  const endOfWeek = new Date(startOfWeek);
+  endOfWeek.setDate(startOfWeek.getDate() + 6);
+
+  const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+  const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+
+  const quarter = Math.floor(today.getMonth() / 3);
+  const startOfQuarter = new Date(today.getFullYear(), quarter * 3, 1);
+  const endOfQuarter = new Date(today.getFullYear(), quarter * 3 + 3, 0);
+
+  const periods = {
+    day: { start: today, end: today },
+    week: { start: startOfWeek, end: endOfWeek },
+    month: { start: startOfMonth, end: endOfMonth },
+    quarter: { start: startOfQuarter, end: endOfQuarter }
+  };
+
+  let doctorVisits = loadCache("doctor");
+
+  if (userKey) {
+    const userName = userNames[userKey] || userKey;
+    doctorVisits = doctorVisits.filter(v => v.userName === userName);
+  }
+
+  // 👉 кількість співробітників для множення планів
+  const userCount = (!userKey && currentUser === "admink") 
+    ? $("#userFilter option").length - 1 // мінус "Всі"
+    : 1;
+
+  for (const [key, period] of Object.entries(periods)) {
+    redrawGauges(key, doctorVisits, specialty, period, userCount);
+  }
+}
+
+// ===== Перемальовування спідометрів =====
+function redrawGauges(key, doctorVisits, specialty, period, userCount) {
+  // фільтруємо лікарські
+  doctorVisits = doctorVisits.filter(v => {
+    const d = parseDate(v.date);
+    if (!d) return false;
+    if (key === "day") return isSameDay(d, period.start);
+    return d >= period.start && d <= period.end;
+  });
+
+  let factTotal = 0;
+  let planTotal = 0;
+  const days = countWorkingDays(period.start, period.end);
+
+  if (specialty && specialty !== "Всі спеціальності") {
+    const filteredDoctors = doctorVisits.filter(v =>
+      v.specialty && v.specialty.trim().toLowerCase() === specialty.trim().toLowerCase()
+    );
+    factTotal = uniqueDoctorVisits(filteredDoctors);
+
+    const specNorm = specialty.trim().toLowerCase();
+    if (specNorm === "травматологія") planTotal = planDay.travma * days * userCount;
+    else if (specNorm === "ревматологія") planTotal = planDay.revma * days * userCount;
+    else if (specNorm === "анестезіологія") planTotal = planDay.Anest * days * userCount;
+
+  } else {
+    const factDoctors = uniqueDoctorVisits(doctorVisits);
+    factTotal = factDoctors;
+
+    // сума планів по всіх спеціальностях × кількість співробітників
+    planTotal = (planDay.travma + planDay.revma + planDay.Anest) * days * userCount;
+  }
+
+  const percent = planTotal > 0 ? (factTotal / planTotal) * 100 : 0;
+  const gaugeId = "gauge" + key.charAt(0).toUpperCase() + key.slice(1);
+
+  updateGauge(gaugeId, percent);
+
+  const infoId = gaugeId + "Info";
+  document.getElementById(infoId).textContent =
+    `Факт: ${factTotal} | План: ${planTotal} | ${percent.toFixed(1)}%`;
+}
+
+// ===== Унікальність аптечних візитів =====
+function uniquePharmacyVisits(visits) {
+  const set = new Set();
+  visits.forEach(v => set.add(v.date + "_" + v.address));
+  return set.size;
+}
+
+// ===== Оновлення кешу і перемальовування =====
+async function refreshData(type, userKey) {
+  // тягнемо нові дані
+  await fetchIncremental(type, userKey);
+
+  // завжди малюємо з кешу (навіть якщо нових даних немає)
+  loadData(userKey);
+}
+
+// ===== Ініціалізація =====
+initGauges();
+
+const today = new Date().toISOString().split("T")[0];
+$("#startDate").val(today);
+
+// Малюємо одразу з кешу
+loadData(currentUser);
+
+// Оновлюємо кеш і перемальовуємо
+refreshData("doctor", currentUser);
+
+// При зміні фільтрів — перемальовуємо з кешу
+$("#userFilter, #specialtyFilter, #partnerSelect, #productSelect, #startDate").on("change", function() {
+  let userKey;
+
+  if (currentUser === "admink") {
+    userKey = $("#userFilter").val();
+    if (!userKey) {
+      // 👉 якщо адмін і нічого не вибрано → показуємо всіх
+      loadData(null); 
+      return;
+    }
+  } else {
+    userKey = currentUser;
+  }
+
+  loadData(userKey);
+});
+
+
+
+// ===== Парсинг дати =====
+function parseDate(str) {
+  if (!str) return null;
+  if (str.includes(".")) {
+    const [day, month, year] = str.split(".");
+    return new Date(parseInt(year), parseInt(month)-1, parseInt(day));
+  }
+  return new Date(str); // ISO формат
+}
+document.addEventListener("DOMContentLoaded", () => {
+  const today = new Date();
+  const options = { year: 'numeric', month: 'long', day: 'numeric' };
+  const formattedDate = today.toLocaleDateString('uk-UA', options);
+
+  const userName = userNames[currentUser] || currentUser;
+
+  document.getElementById("userInfoTop").textContent =
+    `${formattedDate} | ${userName}`;
+});
+</script>
+</body>
+</html>

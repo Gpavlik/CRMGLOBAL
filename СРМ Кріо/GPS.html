@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>Маршрут співробітника (Leaflet)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/jpg" href="bol.jpg">
+
+  <!-- Leaflet CSS/JS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <style>
+    #map { height: 800px; width: 90%; max-width: 1000px; margin: 20px auto; border: 1px solid #c2ffc2; border-radius: 20px; }
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: linear-gradient(135deg, #009400, #004d00); color: #fff; min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
+    label { display: block; margin: 10px auto 5px auto; font-weight: bold; width: 500px; text-align: left; }
+    input, select { width: 500px; padding: 10px; margin: 5px auto 15px auto; border: none; border-radius: 6px; font-size: 1rem; box-sizing: border-box; }
+    button { width: 200px; padding: 12px; margin: 10px 15px; background-color: #004d00; color: #fff; border: solid 1px #c2ffc2; border-radius: 6px; font-size: 1rem; cursor: pointer; transition: background 0.3s ease; }
+    button:hover { background-color: #003300; }
+    .controls { display: flex; justify-content: center; gap: 20px; }
+   /* базові стилі */
+.doctor {
+  background-color: #007bff;
+}
+.partner {
+  background-color: #28a745;
+}
+.pharmacy {
+  background-color: #ffc107;
+  color: #000;
+}
+
+.doctor, .partner, .pharmacy {
+  transition: background-color 0.3s ease, color 0.3s ease;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+/* активний стан */
+.doctor.active {
+  background-color: #0056b3; /* темніший синій */
+  color: #fff;
+}
+.partner.active {
+  background-color: #1e7e34; /* темніший зелений */
+  color: #fff;
+}
+.pharmacy.active {
+  background-color: #e0a800; /* темніший жовтий */
+  color: #fff;
+}
+</style>
+</head>
+<body>
+<h2>GPS моніторинг</h2>
+<br>
+  <img src="./logo.svg" alt="logo" width="260">
+<br>
+  <label>Співробітник:</label>
+  <select id="userFilter">
+      <option value="">Виберіть співробітника</option>
+      <<option value="demian">Дем'ян Загородній</option>
+        <option value="vitaliy">Віталій Гаптенко</option>
+        <option value="olga">Ольга Леонова</option>
+        <option value="katya">Катерина Скрябіна</option>
+        <option value="stavka">Ставка</option>
+  </select>
+
+  <label>Початок:</label>
+  <input type="date" id="startDate" value="2026-04-01">
+  <label>Кінець:</label>
+  <input type="date" id="endDate" value="2026-04-30">
+
+  <div class="controls">
+  <button id="btnDoctor" onclick="toggleType('doctor')">Показати</button>
+  <button onclick="clearMap()">Очистити карту</button>
+  <button onclick="window.location.href='menu.html'">Перейти в меню</button>
+  </div>
+
+  <div id="map"></div>
+<br>
+<img src="./ph.png" alt="logo" width="260">
+
+<br>
+<script>
+// ===== Кеш-функції =====
+const userMap = {
+  "demian": "Дем'ян Загородній",
+  "vitaliy": "Віталій Гаптенко",
+  "olga": "Ольга Леонова",
+  "katya": "Катерина Скрябіна",
+  "stavka": "Ставка"
+};
+
+
+function loadCache(type) {
+  const raw = localStorage.getItem(type + "Cache");
+  return raw ? JSON.parse(raw) : [];
+}
+
+// ===== Ініціалізація карти =====
+let map = L.map('map').setView([50.45, 30.52], 7);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '&copy; OpenStreetMap contributors'
+}).addTo(map);
+
+// ===== Очистка карти =====
+function clearMap() {
+  map.eachLayer(layer => {
+    if (layer instanceof L.CircleMarker || layer instanceof L.Polyline) {
+      map.removeLayer(layer);
+    }
+  });
+}
+function normalizeDate(d) {
+  // ISO формат YYYY-MM-DD
+  if (/^\d{4}-\d{2}-\d{2}$/.test(d)) return d;
+
+  // Український формат DD.MM.YYYY
+  if (/^\d{2}\.\d{2}\.\d{4}$/.test(d)) {
+    const [day, month, year] = d.split(".");
+    return `${year}-${month}-${day}`;
+  }
+
+  return d; // fallback
+}
+
+// зберігаємо стан активних типів
+const activeTypes = {
+  doctor: false,
+  partner: false,
+  pharmacy: false
+};
+
+function toggleType(type) {
+  // перемикаємо стан
+  activeTypes[type] = !activeTypes[type];
+  // оновлюємо карту
+  showVisits();
+}
+
+function showVisits() {
+  clearMap();
+
+  const userKey = document.getElementById("userFilter").value;
+  const startDate = document.getElementById("startDate").value;
+  const endDate = document.getElementById("endDate").value;
+  const selectedUser = userMap[userKey] || "";
+
+  const doctors = loadCache("doctor");
+  const partners = loadCache("partner");
+  const pharmacies = loadCache("pharmacy");
+  let allVisits = [...doctors, ...partners, ...pharmacies];
+
+  // нормалізація дат
+  allVisits = allVisits.filter(v => {
+    const d = normalizeDate(v.date);
+    return v.userName === selectedUser &&
+           v.visitId &&
+           d >= startDate && d <= endDate;
+  });
+
+  const routeCoords = [];
+
+  allVisits.forEach(v => {
+    if (!v.lat || !v.lon) return;
+
+    let color = null;
+    let popupContent = `<b>${v.userName}</b><br>${v.date} ${v.time}`;
+
+    if (v.doctor && activeTypes.doctor) {
+      color = "blue";
+      popupContent += `<br><u>Лікар:</u> ${v.doctor}<br>ЛПЗ: ${v.lpz}`;
+    }
+    
+    if (!color) return; // якщо тип не активний — пропускаємо
+
+    const pos = [parseFloat(v.lat), parseFloat(v.lon)];
+    routeCoords.push(pos);
+
+    const marker = L.circleMarker(pos, {
+      radius: 6,
+      color: color,
+      fillColor: color,
+      fillOpacity: 0.8
+    }).addTo(map);
+
+    marker.bindPopup(popupContent);
+  });
+
+  if (routeCoords.length > 1) {
+    L.polyline(routeCoords, {color: "red", weight: 3}).addTo(map);
+    map.fitBounds(routeCoords);
+  }
+}
+</script>
+</body>
+</html>

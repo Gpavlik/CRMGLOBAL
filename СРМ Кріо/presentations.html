@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/jpg" href="bol.jpg">
+  <title>Документи</title>
+<!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <!-- JustGage + Raphael -->
+  <script src="https://cdn.jsdelivr.net/npm/raphael"></script>
+  <script src="https://cdn.jsdelivr.net/npm/justgage"></script>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  margin: 0; padding: 0;
+  background: linear-gradient(135deg, #009400, #004d00);
+  color: #ffffff;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+button {
+  width: 200px; padding: 12px; margin-top: 10px;
+  background-color: #004d00; color: #ffffff;
+  border: solid 1px #c2ffc2; border-radius: 6px; font-size: 1rem;
+  cursor: pointer; transition: background 0.3s ease;
+}
+.btn {
+  background-color: #c20000; border: solid 1px #ffc2c2;
+}
+button:hover { background-color: #2aaf2a; }
+.buttons {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-top: 20px;
+}
+h1 { margin-top: 30px; text-align: center; font-size: 2rem; }
+/* 📱 Телефони (до 480px) */
+@media (max-width: 480px) {
+  button {
+    width: 100%; /* кнопки на всю ширину */
+    font-size: 0.9rem;
+  }
+  .buttons {
+    grid-template-columns: 1fr; /* одна колонка */
+    gap: 8px;
+  }
+  h1 {
+    font-size: 1.5rem; /* менший заголовок */
+  }
+}
+/* 📲 Планшети (481px–768px) */
+@media (min-width: 481px) and (max-width: 768px) {
+  button {
+    width: 90%; /* ширші кнопки */
+    font-size: 1rem;
+  }
+  .buttons {
+    grid-template-columns: repeat(2, 1fr); /* дві колонки */
+    gap: 8px;
+  }
+  h1 {
+    font-size: 1.8rem;
+  }
+}
+/* 💻 Десктопи (769px і більше) */
+@media (min-width: 769px) {
+  button {
+    width: 200px;
+  }
+  .buttons {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  h1 {
+    font-size: 2rem;
+  }
+}
+a {
+  color: #ffffff;
+  text-decoration: none;
+}
+#filters {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  margin: 10px;
+  font-weight: bold;
+  text-align: left;
+  max-width: 100%;
+}
+
+input, select {
+  width: 100%;
+  max-width: 500px;
+  padding: 10px;
+  margin-top: 5px;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+/* ===== Адаптація для планшетів ===== */
+@media (max-width: 1024px) {
+  
+  input, select {
+    max-width: 300px;
+    font-size: 0.95rem;
+  }
+}
+
+/* ===== Адаптація для мобільних ===== */
+@media (max-width: 600px) {
+  body {
+    align-items: stretch;
+  }
+  
+  #filters {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 15px;
+  }
+  input, select {
+    width: 90%;
+    max-width: 90%;
+    font-size: 1rem;
+  }
+  label {
+    margin: 5px 0;
+    text-align: center;
+  }
+}
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 30px;
+}
+
+/* ===== Спідометри ===== */
+.gauges-container {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+.gauge-block {
+  text-align: center;
+  width: 200px;
+}
+
+.gauge-info {
+  margin-top: 8px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #ffffff;
+}
+    #userInfoTop {
+  position: absolute;
+  top: 10px;
+  left: 15px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #ffffff;
+}
+</style>
+</head>
+<body>
+     <h1>Документи</h1>
+    <div id="userInfoTop"></div>
+<br>
+  <img src="./logo.svg" alt="logo" width="260">
+  <div id="menu">
+  <div class="buttons">
+    <a id="Presentation1" style="text-decoration: none; font-size: smaller;" class="text__work" href="./Травмач.pdf" target="_blank" rel="noopener noreferrer"><button  type="button">Кіомедін</button></a>
+    <a id="Presentation1" style="text-decoration: none; font-size: smaller;" class="text__work" href="./Анест.pdf" target="_blank" rel="noopener noreferrer"><button  type="button">Кріо</button></a>
+    <button onclick="goTo('menu.html')">Меню</button>
+  </div>
+</div><br><br>
+<div class="dashboard">
+  <img src="./ph.png" alt="logo" width="260" style="margin-top: 30px; justify-self: center;">
+ </div>
+<script>
+  function goTo(page) {
+    window.location.href = page;
+  } 
+  </script>
+</body> 
+</html>

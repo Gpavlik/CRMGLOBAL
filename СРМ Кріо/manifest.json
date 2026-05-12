@@ -1,0 +1,6 @@
+{
+  "name": "CRM Reports",
+  "short_name": "Reports",
+  "start_url": "reports.html",
+  "display": "standalone"
+}

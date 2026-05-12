@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Календар планувальник</title>
+  <link rel="icon" type="image/jpg" href="bol.jpg">
+  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
+  <!-- Flatpickr CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+<!-- Flatpickr JS -->
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+<!-- Локалізація українська -->
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/uk.js"></script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0; padding: 0;
+      background: linear-gradient(135deg, #009400, #004d00);
+      color: #ffffff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .main-content {
+      display: flex;
+      justify-content: space-evenly;
+      align-items: center;
+      width: 90%;
+      max-width: 1200px;
+      margin-top: 20px;
+    }
+    #calendar {
+      max-width: 1200px;
+      width: 90%;
+      margin: 0 auto;
+      padding: 15px;
+      background: #2bac1f;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      height: 650px;
+    }
+    #addVisitForm {
+      margin: 20px auto;
+      width: 100%;
+      max-width: 500px;
+      padding: 15px;
+      border: 1px solid #ffffff;
+      border-radius: 8px;
+      background: #2bac1f;
+    }
+    #addVisitForm input, #addVisitForm select, #addVisitForm button {
+      margin: 5px 0;
+      padding: 8px;
+      width: 100%;
+      border-radius: 4px;
+      border: 1px solid #ffffff;
+    }
+    #addVisitForm button {
+      background: #127415;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+    }
+    #addVisitForm button:hover {
+      background: #388E3C;
+    }
+    input, select {
+      box-sizing: border-box;
+      border: 1px solid #ffffff;
+      padding: 4px;
+      border-radius: 4px;
+      font-size: 13px;
+      width: 100%; 
+      margin: 0px;
+      box-sizing: border-box;
+      background-color: #26a12b;
+      color: #fff;
+    }
+    :placeholder-shown {
+      background-color: #f5fdf6;
+      color: #fff;
+    }
+    /* фон модалки */
+.modal {
+  display: none; /* приховано за замовчуванням */
+  position: fixed; /* поверх усіх елементів */
+  z-index: 1000; /* високий пріоритет */
+  left: 0;
+  top: 0;
+  width: 100%; /* на всю ширину */
+  height: 100%; /* на всю висоту */
+  overflow: auto; /* прокрутка якщо контент великий */
+  background-color: rgba(0,0,0,0.5); /* напівпрозорий чорний фон */
+}
+
+/* контейнер контенту */
+.modal-content {
+  background-color: #009700;
+  margin: 10% auto; /* відступ зверху і по центру */
+  padding: 20px;
+  border-radius: 8px;
+  width: 400px; /* ширина модалки */
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  text-align: center;
+  color: white;
+}
+
+/* кнопки */
+.modal-content button, .modal-buttons button {
+  margin: 8px;
+  padding: 10px 16px;
+  border: solid 1px #c2ffc2;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#startBtn { background-color: #32CD32; color: #fff; }
+#rescheduleBtn { background-color: #1E90FF; color: #fff; }
+#confirmReschedule { background-color: #FFD700; color: #000; }
+#cancelBtn { background-color: #DC143C; color: #fff; }
+#confirmYes { background-color: #32CD32; color: #fff; }
+#confirmNo { background-color: #DC143C; color: #fff; }
+.button {
+      width: 200px; padding: 12px; margin-top: 10px;
+      background-color: #004d00; color: #ffffff;
+      border: solid 1px #c2ffc2; border-radius: 6px; font-size: 1rem;
+      cursor: pointer; transition: background 0.3s ease;
+    }
+     h3 { margin-top: 30px; text-align: center; }
+     ::placeholder {
+      color: white; 
+    }
+@media (max-width: 480px) {
+  #calendar {
+    height: 400px;
+    padding: 10px;
+  }
+}
+@media (max-width: 480px) {
+  .modal-content {
+    width: 90%;
+    margin: 30% auto;
+  }
+}
+@media (max-width: 480px) {
+  body { font-size: 0.9rem; }
+  h3 { font-size: 1.2rem; }
+  .main-content { flex-direction: column; }
+  #addVisitForm { padding: 10px; }
+  #addVisitForm input, #addVisitForm select, #addVisitForm button {
+    font-size: 0.9rem;
+  }
+}
+
+
+  </style>
+</head>
+<body>
+  <h2>Календар планувальник</h2>
+  <div class="main-content">
+  <img src="./logo.svg" alt="logo" width="260">
+  <!-- Форма додавання візиту -->
+  <div id="addVisitForm" class=>
+    <h3>Створити візит</h3>
+    <label>Партнер:</label>
+    <select id="partnerSelect"></select>
+    <button id="applyFilterBtn">Відфільтрувати</button>
+    <label>Дата:</label>
+    <input type="text" id="visitDate" placeholder="Оберіть дату"style='background-color: #26a12b; color: white;'>
+    <label for="visitTime">Час:</label>
+<select id="visitTime">
+  <option value="08:00">08:00</option>
+  <option value="08:30">08:30</option>
+  <option value="09:00">09:00</option>
+  <option value="09:30">09:30</option>
+  <option value="10:00">10:00</option>
+  <option value="10:30">10:30</option>
+  <option value="11:00">11:00</option>
+  <option value="11:30">11:30</option>
+  <option value="12:00">12:00</option>
+  <option value="12:30">12:30</option>
+  <option value="13:00">13:00</option>
+  <option value="13:30">13:30</option>
+  <option value="14:00">14:00</option>
+  <option value="14:30">14:30</option>
+  <option value="15:00">15:00</option>
+  <option value="15:30">15:30</option>
+  <option value="16:00">16:00</option>
+  <option value="16:30">16:30</option>
+  <option value="17:00">17:00</option>
+  <option value="17:30">17:30</option>
+  <option value="18:00">18:00</option>
+  <option value="18:30">18:30</option>
+</select>
+
+    <label>Коментар:</label>
+    <input type="text" id="visitComment" placeholder="Наприклад: перемовини, підпис документів"style='background-color: #26a12b; color: white;'>
+
+    <button onclick="addVisit()">Додати візит</button>
+  
+<label>Фільтр по статусу:</label>
+<select id="statusFilter">
+  <option value="all">Всі статуси</option>
+  <option value="Заплановано">Заплановано</option>
+  <option value="Перенесено">Перенесено</option>
+  <option value="Виконано">Виконано</option>
+  <option value="Відмінено">Відмінено</option>
+</select>
+</div>
+ <img src="./ph.png" alt="logo" width="260">
+</div >
+  <!-- Календар -->
+  <div id="calendar"></div>
+  <a href="menu.html"><button class="button">Перейти в меню</button></a>
+ 
+<!-- Модальне вікно -->
+<div id="visitModal" class="modal" style="display:none;">
+  <div class="modal-content">
+    <h3 id="modalTitle"></h3>
+    <button id="startBtn" >Почати</button>
+    <button id="rescheduleBtn">Перенести</button>
+    <input type="text" id="newDate" style="display:none;">
+    <select id="newTime" style="display:none;">
+  <option value="08:00">08:00</option>
+  <option value="08:30">08:30</option>
+  <option value="09:00">09:00</option>
+  <option value="09:30">09:30</option>
+  <option value="10:00">10:00</option>
+  <option value="10:30">10:30</option>
+  <option value="11:00">11:00</option>
+  <option value="11:30">11:30</option>
+  <option value="12:00">12:00</option>
+  <option value="12:30">12:30</option>
+  <option value="13:00">13:00</option>
+  <option value="13:30">13:30</option>
+  <option value="14:00">14:00</option>
+  <option value="14:30">14:30</option>
+  <option value="15:00">15:00</option>
+  <option value="15:30">15:30</option>
+  <option value="16:00">16:00</option>
+  <option value="16:30">16:30</option>
+  <option value="17:00">17:00</option>
+  <option value="17:30">17:30</option>
+  <option value="18:00">18:00</option>
+  <option value="18:30">18:30</option>
+</select>
+    <button id="confirmReschedule">Підтвердити перенесення</button>
+    <button id="cancelBtn">Відмінити</button>
+  </div>
+</div>
+<!-- Модалка підтвердження -->
+<div id="confirmModal" style="display:none; position:fixed; top:30%; left:50%; transform:translate(-50%,-30%);
+     background:#18ce00; border:1px solid #ccc; padding:20px; z-index:1000; border-radius: 4px;">
+  <h3 id="confirmTitle"></h3>
+  <div class="modal-buttons" style="margin-top:15px; text-align:center; justify-content: center;">
+    <button id="confirmYes">Підтвердити</button>
+    <button id="confirmNo">Скасувати</button>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+  <script>
+const userNames = {
+  fedir: "Олександр Красніков",
+  olena: "Тетяна Романовська",
+  office: "Офіс",
+  andriy: "Тетяна Кліменко",
+  maria: "Тетяна Демус",
+  serhiy: "Ілона Бабенко"
+};
+
+const userMap = {
+  fedir: [9,798,31,15,41,26,32,66,47,17,121,61,52,76,29,22,94,23,16,55],
+  olena: [11,53,45,146,181,27,601,108,10,51],
+  office: [1,2,3,4,5],
+  andriy: [18,19],
+  maria: [49,46,36,7,28,30,37,14,56,38,60],
+  serhiy: [12,75,13,8,21,67,48]
+};
+
+const currentUserKey = localStorage.getItem("currentUser");
+if (!currentUserKey) {
+  alert("Будь ласка, увійдіть спочатку!");
+  window.location.href = "index.html";
+} else {
+  const displayName = userNames[currentUserKey] || currentUserKey;
+  document.body.insertAdjacentHTML("afterbegin", "<p>Ви увійшли як: " + displayName + "</p>");
+}
+
+// універсальна функція отримання партнерів з Google Sheets
+async function fetchPartners(sheetId) {
+  try {
+    const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json&sheet=sheet1`;
+    const res = await fetch(url);
+    const text = await res.text();
+    const json = JSON.parse(text.substr(47).slice(0, -2));
+
+    return json.table.rows.map(r => {
+      const corpRaw = r.c[0]?.v || "";
+      const idMatch = corpRaw.match(/^(\d+)/);
+      const id = idMatch ? parseInt(idMatch[1], 10) : 0;
+      const name = corpRaw.replace(/^(\d+)\.\s*/, "");
+      return { id, name };
+    }).filter(p => p.id && p.name);
+  } catch (err) {
+    console.error("Помилка отримання партнерів:", err);
+    return [];
+  }
+}
+
+async function initPartners(user) {
+  const sheetId = "1CUEcXgBAUIKvg0k2JePbhSH-_S01HcEi"; // твій ID таблиці
+  const partners = await fetchPartners(sheetId);
+
+  console.log("▶ Отримано партнерів:", partners);
+
+  localStorage.setItem("partners", JSON.stringify(partners));
+
+  const ids = userMap[user] || [];
+  let filtered = partners.filter(p => ids.includes(p.id));
+
+  // якщо нічого не знайшли — показати всіх
+  if (filtered.length === 0) {
+    filtered = partners;
+  }
+
+  const partnerSelect = document.getElementById("partnerSelect");
+  if (!partnerSelect) {
+    console.error("Елемент partnerSelect не знайдено у DOM");
+    return;
+  }
+
+  partnerSelect.innerHTML = `<option value="all">Всі партнери</option>`;
+  filtered.forEach(p => {
+    partnerSelect.innerHTML += `<option value="${p.id}">${p.name}</option>`;
+  });
+
+  // завжди додаємо «Аптека»
+  partnerSelect.innerHTML += `<option value="pharmacy">Аптека</option>`;
+// завжди додаємо «Лікар»
+  partnerSelect.innerHTML += `<option value="doctor">Лікар</option>`;
+  //Завжди додаємо "відпустка"
+  partnerSelect.innerHTML += `<option value="leave">Відпустка</option>`;
+  //Завжди додаємо "ЛІКАРНЯНИЙ"
+  partnerSelect.innerHTML += `<option value="hospital">Лікарняний</option>`;
+  console.log("▶ initPartners: збережено партнерів", filtered.length);
+}
+
+
+let calendar;
+document.addEventListener("DOMContentLoaded", () => {
+  initPartners(currentUserKey);
+  const calendarEl = document.getElementById('calendar');
+
+  calendar = new FullCalendar.Calendar(calendarEl, {
+    initialView: 'timeGridWeek',
+    locale: 'uk',
+    headerToolbar: {
+      left: 'prev,next today',
+      center: 'title',
+      right: 'dayGridMonth,timeGridWeek,timeGridDay'
+    },
+    slotMinTime: "08:00:00",
+    slotMaxTime: "19:00:00",
+    allDaySlot: false,
+    hiddenDays: [0, 6],
+    firstDay: 1,
+    events: [],
+    editable: true,
+    eventClick: handleEventClick,
+    eventDidMount: styleEvent,
+
+eventDrop: function(info) {
+  const event = info.event;
+  const status = event.extendedProps.status;
+
+  if (status !== "Заплановано") {
+    info.revert();
+    return;
+  }
+
+  const newDate = event.startStr.split("T")[0];
+  const newTime = event.startStr.split("T")[1].substring(0,5);
+
+  const today = new Date();
+  today.setHours(0,0,0,0);
+  const chosenDate = new Date(newDate);
+  chosenDate.setHours(0,0,0,0);
+
+  if (chosenDate < today) {
+    info.revert();
+    return;
+  }
+
+  if (!isValidSlot(newTime)) {
+    info.revert();
+    return;
+  }
+
+  showConfirmModal(`Перенести візит на ${newDate} ${newTime}?`, async () => {
+    // головне — викликати бекенд‑оновлення
+    await updateDateInBackend(event, newDate, newTime);
+  }, () => {
+    info.revert();
+  });
+}
+
+  });
+
+  calendar.render();
+  loadVisits();
+});
+
+/*function renderVisits(visits) {
+  calendar.getEvents().forEach(e => e.remove());
+
+  visits.forEach(v => {
+    const startDateTime = normalizeDate(v.date, v.time);
+    if (!(startDateTime instanceof Date) || isNaN(startDateTime.getTime())) {
+      console.warn("Некоректна дата у візиті:", v);
+      return;
+    }
+
+    const endDateTime = new Date(startDateTime);
+    endDateTime.setMinutes(endDateTime.getMinutes() + 30);
+
+    calendar.addEvent({
+      id: v.visitId,
+      title: `${v.status}: ${v.partnerName}`, // 👈 краще використовувати doctor
+      start: startDateTime,
+      end: endDateTime,
+      extendedProps: v
+    });
+  });
+}*/
+function normalizeDate(dateStr, timeStr) {
+  if (!dateStr || !timeStr) return null;
+  const date = new Date(dateStr + "T" + timeStr);
+  return isNaN(date.getTime()) ? null : date;
+}
+// Функція показу модалки підтвердження
+function showConfirmModal(message, onYes, onNo) {
+  const modal = document.getElementById('confirmModal');
+  document.getElementById('confirmTitle').innerText = message;
+  modal.style.display = 'block';
+
+  const yesBtn = document.getElementById('confirmYes');
+  const noBtn = document.getElementById('confirmNo');
+
+  yesBtn.onclick = () => {
+    modal.style.display = 'none';
+    if (onYes) onYes();
+  };
+  noBtn.onclick = () => {
+    modal.style.display = 'none';
+    if (onNo) onNo();
+  };
+}
+// закриття модалки при кліку поза нею
+window.onclick = function(event) {
+  const modal = document.getElementById("visitModal");
+  if (event.target === modal) {
+    modal.style.display = "none";
+  }
+};
+function styleEvent(info) {
+  const status = info.event.extendedProps.status || info.event.title.split(":")[0];
+  if (status.includes("Заплановано")) info.el.style.backgroundColor = "#FFD700";
+  else if (status.includes("Перенесено")) info.el.style.backgroundColor = "#1E90FF";
+  else if (status.includes("Відмінено")) info.el.style.backgroundColor = "#DC143C";
+  else if (status.includes("Виконано")) info.el.style.backgroundColor = "#32CD32";
+
+  const comment = info.event.extendedProps.comment || "";
+  info.el.setAttribute("title", `${info.event.extendedProps.partnerName}\n${comment}`);
+
+  // зберігаємо посилання на елемент
+  info.event.setExtendedProp('elRef', info.el);
+}
+
+// допоміжна функція для зміни статусу
+async function markAsDone(event) {
+  event.setExtendedProp('status', 'Виконано');
+  event.setProp('title', `Виконано: ${event.extendedProps.partnerName}`);
+
+  const el = event.extendedProps.elRef;
+  if (el) styleEvent({ event, el });
+
+  await updateStatusInBackend(event, 'Виконано');
+}
+
+
+
+function handleEventClick(info) {
+  const event = info.event;
+  const visitId = event.extendedProps.visitId; // унікальний ID
+  const status = event.extendedProps.status;
+  const visitDate = new Date(event.start);
+  const today = new Date();
+  today.setHours(0,0,0,0);
+
+  // ❌ Відмінені та виконані візити не редагуються
+  if (status === "Відмінено" || status === "Виконано") {
+    return;
+  }
+
+  const isPast = visitDate < today;
+
+  document.getElementById('modalTitle').innerText = event.title;
+  document.getElementById('visitModal').style.display = 'block';
+
+  // Кнопка "Почати"
+document.getElementById('startBtn').onclick = () => {
+  showConfirmModal("Ви справді хочете почати цей візит?", async () => {
+    const today = new Date(); today.setHours(0,0,0,0);
+    const visitDay = new Date(event.start); visitDay.setHours(0,0,0,0);
+    if (visitDay < today) {
+      alert("Неможливо почати візит у минулому");
+      return;
+    }
+
+    const userName = event.extendedProps.userName;
+    const visitId = event.extendedProps.visitId;
+     // бекенд — дочекайся завершення
+    await updateStatusInBackend(event, 'Виконано');
+
+    // закриваємо модалку
+    document.getElementById('visitModal').style.display = 'none';
+    
+    // 🔀 редиректи по типу партнера
+    if (event.extendedProps.partnerId === "pharmacy" || event.extendedProps.partnerName === "Аптека") {
+      window.location.href = `visitpharm.html?userName=${encodeURIComponent(userName)}&visitId=${visitId}`;
+      return;
+    }
+
+    if (event.extendedProps.partnerId === "doctor" || event.extendedProps.partnerName === "Лікар") {
+      window.location.href = `docvisit.html?userName=${encodeURIComponent(userName)}&visitId=${visitId}`;
+      return;
+    }
+
+    if (event.extendedProps.partnerId === "partner" || event.extendedProps.partnerName === "Партнер") {
+      window.location.href = `partnervisit.html?userName=${encodeURIComponent(userName)}&visitId=${visitId}`;
+      return;
+    }
+
+    // 🟢 інші випадки — просто статус "Виконано"
+    event.setExtendedProp('status', 'Виконано');
+    event.setProp('title', `Виконано: ${event.extendedProps.partnerName}`);
+
+    const el = event.extendedProps.elRef;
+    if (el) styleEvent({ event, el });
+
+    // бекенд — дочекайся завершення
+    await updateStatusInBackend(event, 'Виконано');
+
+    // закриваємо модалку
+    document.getElementById('visitModal').style.display = 'none';
+
+    // редирект з паузою
+    /*setTimeout(() => {
+      window.location.href = `visits.html?partnerId=${event.extendedProps.partnerId}&visitId=${visitId}`;
+    }, 800);*/
+  }, () => {
+    // нічого не робимо
+  });
+};
+
+
+  // Кнопка "Перенести" — тільки якщо статус "Заплановано"
+  const rescheduleBtn = document.getElementById('rescheduleBtn');
+  const newDateInput = document.getElementById('newDate');
+  const newTimeInput = document.getElementById('newTime');
+  const confirmRescheduleBtn = document.getElementById('confirmReschedule');
+
+  if (status !== "Заплановано") {
+    rescheduleBtn.style.display = "none";
+    newDateInput.style.display = "none";
+    newTimeInput.style.display = "none";
+    confirmRescheduleBtn.style.display = "none";
+  } else {
+    rescheduleBtn.style.display = "inline-block";
+    rescheduleBtn.onclick = () => {
+      newDateInput.style.display = 'inline';
+      newTimeInput.style.display = 'inline';
+      confirmRescheduleBtn.style.display = 'inline-block';
+    };
+
+    confirmRescheduleBtn.onclick = () => {
+      const newDate = newDateInput.value;
+      const newTime = newTimeInput.value;
+
+      if (!newDate || !newTime) return;
+
+      const newDateObj = new Date(newDate);
+      newDateObj.setHours(0,0,0,0);
+
+      if (newDateObj < today) {
+        alert("Не можна перенести візит у минуле");
+        return;
+      }
+
+      if (!isValidSlot(newTime)) {
+        alert("Час має бути між 08:00 і 18:30 з кроком 30 хв");
+        return;
+      }
+
+      updateDateInBackend(event, newDate, newTime);
+      updateStatusInBackend(event, 'Перенесено');
+      document.getElementById('visitModal').style.display = 'none';
+    };
+  }
+
+  // Кнопка "Відмінити" — з підтвердженням
+  document.getElementById('cancelBtn').onclick = () => {
+    showConfirmModal("Ви справді хочете відмінити цей візит?", () => {
+      updateStatusInBackend(event, 'Відмінено');
+      document.getElementById('visitModal').style.display = 'none';
+    }, () => {
+      // нічого не робимо
+    });
+  };
+}
+function updateLocalStorageStatus(visitId, newStatus) {
+  const visits = JSON.parse(localStorage.getItem("visits")) || [];
+  const updated = visits.map(v => {
+    if (v.visitId == visitId) {
+      return { ...v, status: newStatus };
+    }
+    return v;
+  });
+  localStorage.setItem("visits", JSON.stringify(updated));
+}
+
+
+// Допоміжна функція для перевірки часу
+function isValidSlot(timeStr) {
+  const allowed = [];
+  for (let h = 8; h <= 18; h++) {
+    allowed.push(`${String(h).padStart(2,"0")}:00`);
+    if (h !== 18) allowed.push(`${String(h).padStart(2,"0")}:30`);
+  }
+  return allowed.includes(timeStr);
+}
+
+async function updateStatusInBackend(event, newStatus) {
+  // локально
+  event.setExtendedProp('status', newStatus);
+  event.setProp('title', `${newStatus}: ${event.extendedProps.partnerName}`);
+
+  // застосовуємо стилізацію через збережений елемент
+  const el = event.extendedProps.elRef;
+  if (el) {
+    styleEvent({ event: event, el: el });
+  }
+
+  // бекенд
+  await fetch("https://script.google.com/macros/s/AKfycbz_uLWhj_ww5YLdnrdgGWu9l2AGraznsiGjVSV8dnMuPygaK8vJRKlv-7O9Ou0krKzIAA/exec", {
+    method: "POST",
+    mode: "no-cors",
+    body: JSON.stringify({
+      action: "updateStatus",
+      visitId: event.extendedProps.visitId,
+      status: newStatus
+    })
+  });
+}
+// слухаємо зміну селектора партнера і статусу
+//document.getElementById("partnerSelect").addEventListener("change", filterVisits);
+//document.getElementById("statusFilter").addEventListener("change", filterVisits);
+
+// кнопка "Відфільтрувати"
+document.getElementById("applyFilterBtn").addEventListener("click", () => {
+  filterVisits();
+});
+
+function padTime(timeStr) {
+  const [h, m] = timeStr.split(":");
+  return `${h.padStart(2,"0")}:${m}`;
+}
+
+function filterVisits() {
+  const selectedPartner = document.getElementById("partnerSelect").value;
+  const selectedStatus = document.getElementById("statusFilter").value;
+  const allVisits = JSON.parse(localStorage.getItem("visits")) || [];
+
+  // очищаємо календар
+  calendar.getEvents().forEach(e => e.remove());
+
+  // фільтруємо
+  const filtered = allVisits.filter(v => {
+    const partnerMatch = (selectedPartner === "all" || v.partnerName === selectedPartner);
+    const statusMatch = (selectedStatus === "all" || v.status === selectedStatus);
+    return partnerMatch && statusMatch;
+  });
+
+  // додаємо у календар
+  filtered.forEach(v => {
+    const startDateTime = new Date(`${v.date}T${padTime(v.time)}`);
+    if (isNaN(startDateTime.getTime())) {
+      console.warn("Некоректна дата/час:", v);
+      return;
+    }
+
+    const endDateTime = new Date(startDateTime);
+    endDateTime.setMinutes(endDateTime.getMinutes() + 30);
+
+    calendar.addEvent({
+      id: v.visitId,
+      title: `${v.status}: ${v.partnerName}`,
+      start: startDateTime,
+      end: endDateTime,
+      extendedProps: v
+    });
+  });
+}
+
+async function updateDateInBackend(event, newDate, newTime) {
+  const today = new Date();
+  today.setHours(0,0,0,0);
+  const chosenDate = new Date(newDate);
+  chosenDate.setHours(0,0,0,0);
+
+  // 2. Не можна перенести у минуле
+  if (chosenDate < today) {
+    alert("Не можна перенести візит у минуле");
+    return;
+  }
+
+  // 5. Перевірка часу на слот
+  if (!isValidSlot(newTime)) {
+    alert("Час має бути між 08:00 і 18:30 з кроком 30 хв");
+    return;
+  }
+
+  const newStart = `${newDate}T${newTime}`;
+  const newEnd = new Date(newStart);
+  newEnd.setMinutes(newEnd.getMinutes() + 30);
+
+  // локально
+  event.setStart(newStart);
+  event.setEnd(newEnd.toISOString());
+  event.setExtendedProp('status', 'Перенесено');
+  event.setProp('title', `Перенесено: ${event.extendedProps.partnerName}`);
+
+  const el = event.extendedProps.elRef;
+  if (el) styleEvent({ event: event, el: el });
+
+  // бекенд
+  await fetch("https://script.google.com/macros/s/AKfycbz_uLWhj_ww5YLdnrdgGWu9l2AGraznsiGjVSV8dnMuPygaK8vJRKlv-7O9Ou0krKzIAA/exec", {
+    method: "POST",
+    mode: "no-cors",
+    body: JSON.stringify({
+      action: "reschedule",
+      visitId: event.extendedProps.visitId,
+      newDate: newDate,
+      newTime: newTime,
+      status: "Перенесено"
+    })
+  });
+}
+async function addVisit() {
+  const partnerSelect = document.getElementById("partnerSelect");
+  const partnerId = partnerSelect.value;
+  const partnerName = partnerSelect.options[partnerSelect.selectedIndex].text;
+  const date = document.getElementById("visitDate").value;
+  const time = document.getElementById("visitTime").value;
+  const comment = document.getElementById("visitComment").value;
+  const visitId = Date.now().toString(); // унікальний ID
+
+  if (!date || !time) {
+    alert("Будь ласка, виберіть дату і час");
+    return;
+  }
+
+  const today = new Date();
+  today.setHours(0,0,0,0);
+  const chosenDate = new Date(date);
+  chosenDate.setHours(0,0,0,0);
+
+  if (chosenDate < today) {
+    alert("Не можна запланувати візит у минуле");
+    return;
+  }
+
+  if (!isValidSlot(time)) {
+    alert("Час має бути між 08:00 і 18:30 з кроком 30 хв");
+    return;
+  }
+
+  const startDateTime = `${date}T${time}`;
+  const endDateTime = new Date(startDateTime);
+  endDateTime.setMinutes(endDateTime.getMinutes() + 30);
+
+  const newVisit = {
+    visitId,
+    partnerId,
+    partnerName,
+    comment,
+    status: "Заплановано",
+    date,
+    time,
+    userName: userNames[currentUserKey]
+  };
+
+  // локально у календарі
+  calendar.addEvent({
+    id: visitId,
+    title: "Заплановано: " + partnerName,
+    start: startDateTime,
+    end: endDateTime.toISOString(),
+    extendedProps: newVisit
+  });
+
+  // локальне сховище
+  let visits = JSON.parse(localStorage.getItem("visits")) || [];
+  visits.push(newVisit);
+  localStorage.setItem("visits", JSON.stringify(visits));
+
+ // бекенд
+await fetch("https://script.google.com/macros/s/AKfycbz_uLWhj_ww5YLdnrdgGWu9l2AGraznsiGjVSV8dnMuPygaK8vJRKlv-7O9Ou0krKzIAA/exec", {
+  method: "POST",
+  mode: "no-cors",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    action: "saveCalendarEvent",   // 🔑 обов’язково
+    userName: userNames[currentUserKey],
+    partnerId,
+    partnerName,
+    date,
+    time,
+    status: "Заплановано",
+    comment,
+    visitId
+  })
+});
+}
+
+
+async function loadVisits() {
+  try {
+    const currentUserKey = localStorage.getItem("currentUser");
+    const currentUserName = userNames[currentUserKey];
+
+    let localVisits = JSON.parse(localStorage.getItem("visits")) || [];
+    renderVisits(localVisits);
+
+    // тягнемо бекенд
+    const res = await fetch("https://script.google.com/macros/s/AKfycbz_uLWhj_ww5YLdnrdgGWu9l2AGraznsiGjVSV8dnMuPygaK8vJRKlv-7O9Ou0krKzIAA/exec?type=calendar");
+     if (!res.ok) throw new Error("Backend error: " + res.status);
+
+    const backendVisits = await res.json();
+    const myVisits = backendVisits.filter(v => v.userName === currentUserName);
+
+    if (JSON.stringify(localVisits) !== JSON.stringify(myVisits)) {
+      localStorage.setItem("visits", JSON.stringify(myVisits));
+      renderVisits(myVisits);
+    }
+  } catch (err) {
+    console.error("Помилка завантаження:", err);
+  }
+
+}
+
+function renderVisits(visits) {
+  calendar.getEvents().forEach(e => e.remove());
+
+  visits.forEach(v => {
+    const startDateTime = normalizeDate(v.date, v.time);
+    if (isNaN(startDateTime.getTime())) {
+      console.warn("Некоректна дата/час у візиті:", v);
+      return;
+    }
+
+    const endDateTime = new Date(startDateTime);
+    endDateTime.setMinutes(endDateTime.getMinutes() + 30);
+
+    calendar.addEvent({
+      id: v.visitId,
+      title: `${v.status}: ${v.partnerName}`,
+      start: startDateTime,
+      end: endDateTime,
+      extendedProps: v
+    });
+  });
+}
+
+
+
+
+function getPartnerIdByName(name) {
+  const partners = JSON.parse(localStorage.getItem("partners")) || [];
+  const partner = partners.find(p => p.name === name);
+  return partner ? partner.id : 0;
+}
+
+function normalizeDate(dateStr, timeStr) {
+  // якщо час у форматі "8:00" → перетворюємо на "08:00"
+  if (timeStr) {
+    const [h, m] = timeStr.split(":");
+    const hh = h.padStart(2, "0");
+    timeStr = `${hh}:${m}`;
+  } else {
+    timeStr = "00:00";
+  }
+
+  return new Date(`${dateStr}T${timeStr}`);
+}
+// Календарик: тільки сьогодні і майбутнє, без суботи й неділі
+flatpickr("#visitDate", {
+  dateFormat: "Y-m-d",
+  minDate: "today",
+  disable: [
+    function(date) {
+      // 0 = неділя, 6 = субота
+      return (date.getDay() === 0 || date.getDay() === 6);
+    }
+  ],
+  locale: flatpickr.l10ns.uk // ось так правильно
+});
+
+// Календарик для перенесення: тільки сьогодні і майбутнє, без суботи й неділі
+flatpickr("#newDate", {
+  dateFormat: "Y-m-d",
+  minDate: "today",
+  disable: [
+    function(date) {
+      return (date.getDay() === 0 || date.getDay() === 6); // неділя і субота
+    }
+  ],
+  locale: flatpickr.l10ns.uk
+});
+</script>
+</body>
+</html>  

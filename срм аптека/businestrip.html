@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>Форма відрядження</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #009400, #004d00);
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+    h2 { margin-bottom: 20px; }
+    form {
+      background: #008000;
+      padding: 20px;
+      border-radius: 8px;
+      width: 90%;
+      max-width: 600px;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      box-sizing: border-box;
+    }
+    button {
+      margin-top: 15px;
+      padding: 12px;
+      background-color: #004d00;
+      color: #fff;
+      border: solid 1px #c2ffc2;
+      border-radius: 6px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    button:hover { background-color: #003300; }
+  </style>
+</head>
+<body>
+  <h2>Форма відрядження</h2>
+  <img src="./logo.svg" alt="logo" width="260">
+  <form id="tripForm">
+    <p><strong>Співробітник:</strong> <span id="employeeName"></span></p>
+
+    <label>Мета відрядження
+      <input type="text" id="purpose" required>
+    </label>
+    <label>Місто виїзду
+      <input type="text" id="departureCity" required>
+    </label>
+    <label>Місто(а) відрядження
+      <input type="text" id="tripCities" required>
+    </label>
+    <label>Дата виїзду
+      <input type="date" id="departureDate" required>
+    </label>
+    <label>Дата повернення
+      <input type="date" id="returnDate" required>
+    </label>
+    <label>Скільки ночей потрібен готель
+      <input type="number" id="hotelNights" min="0">
+    </label>
+    <label>Примітки
+      <textarea id="notes"></textarea>
+    </label>
+
+    <button type="button" onclick="submitTrip()">📤 Відправити</button>
+    <button type="reset">❌ Очистити</button>
+    <button type="button" onclick="window.location.href='menu.html'">Повернутись у меню</button>
+  </form>
+<img src="./ph.png" alt="logo" width="260">
+<script>
+// ===== Користувачі =====
+const userMap = {
+  "fedir": "Олександр Красніков",
+  "olena": "Тетяна Романовська",
+  "office": "Офіс",
+  "andriy": "Тетяна Кліменко",
+  "maria": "Тетяна Демус",
+  "serhiy": "Ілона Бабенко",
+  "admin": "Адміністратор"
+};
+
+// ===== Ініціалізація =====
+document.addEventListener("DOMContentLoaded", () => {
+  const currentUser = localStorage.getItem("currentUser") || "admin";
+  const employeeName = userMap[currentUser] || currentUser;
+  document.getElementById("employeeName").textContent = employeeName;
+});
+
+// ===== Відправка відрядження =====
+function submitTrip() {
+  const currentUser = localStorage.getItem("currentUser") || "admin";
+  const employeeName = userMap[currentUser] || currentUser;
+
+  const trip = {
+    type: "trip",
+    employee: employeeName,
+    purpose: document.getElementById("purpose").value,
+    departureCity: document.getElementById("departureCity").value,
+    tripCities: document.getElementById("tripCities").value,
+    departureDate: document.getElementById("departureDate").value,
+    returnDate: document.getElementById("returnDate").value,
+    hotelNights: document.getElementById("hotelNights").value,
+    notes: document.getElementById("notes").value
+  };
+
+  // --- запис у Google Sheets ---
+  fetch("https://script.google.com/macros/s/AKfycbwzFGLbD6cI3jc4HUB6FSLUJoeSohziQIWtRZUS0sAUwLdxFTkb2hV84Ne4mqDUYN8VrQ/exec", {
+    method: "POST",
+    mode: "no-cors",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify([trip])
+  })
+  .then(() => console.log("Відрядження відправлено у Google Sheets"))
+  .catch(err => console.error("Помилка запису:", err));
+
+  alert("Ваше відрядження прийнято!");
+  document.getElementById("tripForm").reset();
+}
+</script>
+</body>
+</html>

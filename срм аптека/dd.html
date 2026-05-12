@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+    <link rel="icon" type="image/jpg" href="bol.jpg"> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Дашборд візитів</title>
+
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <!-- Select2 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+  <!-- Select2 JS -->
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+  <!-- JustGage + Raphael -->
+  <script src="https://cdn.jsdelivr.net/npm/raphael"></script>
+  <script src="https://cdn.jsdelivr.net/npm/justgage"></script>
+  
+
+  <style>
+/* ===== Базові стилі ===== */
+ @font-face {
+      font-family: "Digital-7_Mono-";
+      src: url("./digital-7__mono-.ttf")  format("truetype");
+      font-weight: normal;
+      font-style: normal;
+    }
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(135deg, #01b401, #004d00);
+  color: #ffffff;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.container{
+  width: 100%;
+  max-width: 1200px;
+  padding: 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.dashboard {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 40px;
+  margin-top: 40px;
+}
+
+.block {
+  background: #20d620;
+  padding: 20px;
+  border-radius: 12px;
+  width: 250px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  text-align: center;
+}
+
+#filters {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  margin: 10px;
+  font-weight: bold;
+  text-align: left;
+  max-width: 100%;
+}
+
+input, select {
+  width: 100%;
+  max-width: 500px;
+  padding: 10px;
+  margin-top: 5px;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+/* ===== Адаптація для планшетів ===== */
+@media (max-width: 1024px) {
+  .dashboard {
+    gap: 20px;
+  }
+  .block {
+    width: 200px;
+    padding: 15px;
+  }
+  input, select {
+    max-width: 300px;
+    font-size: 0.95rem;
+  }
+}
+
+/* ===== Адаптація для мобільних ===== */
+@media (max-width: 600px) {
+  body {
+    align-items: stretch;
+  }
+  .dashboard {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    margin-top: 20px;
+  }
+  .block {
+    width: 90%;
+    max-width: 350px;
+    padding: 15px;
+  }
+  #filters {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 15px;
+  }
+  input, select {
+    width: 90%;
+    max-width: 90%;
+    font-size: 1rem;
+  }
+  label {
+    margin: 5px 0;
+    text-align: center;
+  }
+}
+
+/* ===== Select2 кастомізація ===== */
+.select2-container .select2-selection--multiple {
+  background-color: #ffffff;
+  border: 1px solid #25a525;
+  border-radius: 8px;
+  min-height: 45px;
+  padding: 6px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.select2-container .select2-dropdown {
+  background-color: #009400;
+  color: #fff;
+  border: 1px solid #25a525;
+  font-size: small;
+}
+
+.select2-container .select2-search__field {
+  background-color: #fff;
+  color: #000;
+  border: none;
+  padding: 6px;
+  font-size: 1rem;
+}
+
+.custom-select2.select2-container--default 
+.select2-selection--multiple 
+.select2-selection__choice {
+  position: relative !important;
+  background-color: #009400 !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 20px !important;
+  margin: 4px !important;
+  font-size: 0.95rem !important;
+  display: inline-block !important;
+  white-space: normal !important;
+  overflow-wrap: break-word !important;
+  word-break: break-word !important;
+  max-width: 50ch !important;
+  box-sizing: border-box !important;
+  padding: 6px 6px 6px 20px !important;
+}
+
+.custom-select2.select2-container--default 
+.select2-selection--multiple 
+.select2-selection__choice__display {
+  display: block !important;
+  color: #fff !important;
+  line-height: 1.3 !important;
+  padding-right: 24px !important;
+}
+
+.custom-select2.select2-container--default 
+.select2-selection--multiple 
+.select2-selection__choice__remove {
+  position: absolute !important;
+  color: #03ff03 !important;
+  font-weight: bold !important;
+  cursor: pointer !important;
+  font-size: 30px !important;
+  border: none !important;
+  border-radius: 50%;
+  line-height: 0.5 !important;
+  width: 10px !important;
+}
+
+.custom-select2.select2-container--default 
+.select2-selection--multiple 
+.select2-selection__choice__remove:hover {
+  color: #ff7070 !important;
+  background-color: transparent !important;
+}
+
+/* ===== Спідометри ===== */
+.gauges-container {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+.gauge-block {
+  text-align: center;
+  width: 200px;
+}
+
+.gauge-info {
+  margin-top: 8px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #ffffff;
+}
+.seven-seg {
+      font-family: 'Digital-7_Mono-', monospace;
+      font-size: 2rem;
+      color: #00ff00;
+      background: #000;
+      padding: 5px 10px;
+      border-radius: 8px;
+      display: inline-block;
+      margin-top: 0px;
+      text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00;
+      box-sizing: border-box;
+    }
+    .seven-seg.blue {
+      color: #00bfff;
+      text-shadow: 0 0 10px #00bfff, 0 0 20px #00bfff;
+    }
+    .seven-seg.red {
+      color: #ff4444;
+      text-shadow: 0 0 10px #ff4444, 0 0 20px #ff4444;
+    }
+    #userInfoTop {
+  position: absolute;
+  top: 10px;
+  left: 15px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #ffffff;
+}
+
+    </style>
+
+</head>
+<body>
+  <div id="userInfoTop"></div>
+
+<br><br>
+ <h3>Загальний план продажів</h3>
+
+  <div class="filters" id="partnerFilter">
+  <label for="partnerSelect">Партнер:
+    <select id="partnerSelect" multiple="multiple" style="width:300px;"></select>
+  </label>
+  <label for="productSelect">Продукт:
+    <select id="productSelect" multiple="multiple" style="width:300px;"></select>
+  </label>
+</div>
+
+ <div class="dashboard">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <div class="block">
+      <h3>Загальний</h3>
+      <h4>План</h4>
+      <div class="seven-seg" id="moneyGreen">00 000 000</div>
+      <h4>Факт</h4>
+      <div class="seven-seg" id="moneyGreen1">00 000 000</div>
+      <h4>Відсоток</h4>
+      <div class="seven-seg" id="moneyGreen2">000%</div>
+    </div>
+    <div class="block">
+      <h3>По партнерах</h3>
+        <h4>План</h4>
+      <div class="seven-seg blue" id="moneyBlue">00 000 000</div>
+      <h4>Факт</h4>
+    <div class="seven-seg blue" id="moneyBlue1">00 000 000</div>
+      <h4>Відсоток</h4>
+    <div class="seven-seg blue" id="moneyBlue2">000%</div>
+    </div>
+    <div class="block">
+      <h3>По продуктах</h3>
+        <h4>План</h4>
+      <div class="seven-seg red" id="moneyRed">00 000 000</div>
+      <h4>Факт</h4>
+    <div class="seven-seg red" id="moneyRed1">00 000 000</div>
+      <h4>Відсоток</h4>
+    <div class="seven-seg red" id="moneyRed2">000%</div>
+    </div>
+  </div>
+    <script>
+
+
+// ===== Глобальні змінні =====
+let plans = [];
+let allPartners = [];
+let quarter = "Q2";
+
+$(document).ready(function() {
+  $("#partnerSelect").select2({
+    placeholder: "Оберіть партнера",
+    allowClear: true,
+    width: '300px'
+  }).next(".select2-container").addClass("custom-select2");
+
+  $("#productSelect").select2({
+    placeholder: "Оберіть продукт",
+    allowClear: true,
+    width: '300px'
+  }).next(".select2-container").addClass("custom-select2");
+
+  // Обробники зміни селекторів
+  $("#partnerSelect").on("change", function(){
+    distributePlanForPartners(plans, allPartners, quarter);
+    updateAllSevenSeg(plans, allPartners, quarter);
+  });
+
+  $("#productSelect").on("change", function(){
+    distributePlanForPartners(plans, allPartners, quarter);
+    updateAllSevenSeg(plans, allPartners, quarter);
+  });
+});
+
+const userNames = {
+  fedir: "Олександр Красніков",
+  olena: "Тетяна Романовська",
+  office: "Офіс",
+  andriy: "Тетяна Кліменко",
+  maria: "Тетяна Демус",
+  serhiy: "Ілона Бабенко",
+  admin: "admin"
+};
+
+const userMap = {
+  fedir: [9,798,31,15,41,26,32,66,47,17,121,61,52,76,29,22,94,23,16,55],
+  olena: [11,53,45,146,181,27,601,108,10,51],
+  office: [1,2,3,4,5],
+  andriy: [18,19],
+  maria: [49,46,36,7,28,30,37,14,56,38,60],
+  serhiy: [12,75,13,8,21,67,48]
+};
+
+const productNames = [
+  "CLK№50","CLK№5","CLK№25","CL2GK№50","HPAg","Ultra","Solomini№5","Secret№2",
+  "Secret","Duet","Syphilis","Rota","CLpH№25","CLpH№1","ActimPROM","HIV","HCV",
+  "HBsAg","StrA","Influenza","CovidAg","CovidAg+Influenza","TnI","CardioCombo",
+  "multy5","multy10"
+];
+
+const currentUser = localStorage.getItem("currentUser");
+
+
+// селект користувача показуємо лише адміну
+if (currentUser === "admin") {
+  document.getElementById("userFilter").style.display = "block";
+}
+
+let selectedPartnerName = "";
+let selectedProductName = "";
+let visits = [];        // глобально зберігаємо дані
+let currentType = "";   // глобально зберігаємо тип звіту
+
+// ініціалізація партнерів
+function initPartners(userKey) {
+  const partners = JSON.parse(localStorage.getItem("partners")) || [];
+  const ids = userMap[userKey] || [];
+  const filtered = (userKey === "admin") ? partners : partners.filter(p => ids.includes(Number(p.id)));
+
+  const partnerSelect = $("#partnerSelect");
+  partnerSelect.empty();
+  filtered.forEach(p => {
+    partnerSelect.append(new Option(p.name, p.name));
+  });
+
+  // ініціалізація Select2
+  partnerSelect.select2({
+    placeholder: "Оберіть партнера",
+    allowClear: true
+  });
+
+  partnerSelect.on("change", function() {
+    selectedPartnerName = $(this).val() || [];
+  });
+}
+// ініціалізація продуктів
+function initProducts() {
+  const productSelect = $("#productSelect");
+  productSelect.empty();
+  productNames.forEach(name => {
+    productSelect.append(new Option(name, name));
+  });
+
+  productSelect.select2({
+    placeholder: "Оберіть продукт",
+    allowClear: true
+  });
+
+  productSelect.on("change", function() {
+    selectedProductName = $(this).val() || [];
+  });
+}
+
+// ===== Форматування чисел =====
+function formatThousands(num) {
+  return Number(num || 0).toLocaleString("uk-UA");
+}
+
+// ===== Анімація семисегментника =====
+function animateSevenSeg(targetValue, elementId, suffix="") {
+  const el = document.getElementById(elementId);
+  if (!el) return;
+  let current = 0;
+  const step = Math.max(1, Math.ceil(targetValue / 100)); // швидкість приросту
+  const interval = setInterval(() => {
+    current += step;
+    if (current >= targetValue) {
+      current = targetValue;
+      clearInterval(interval);
+    }
+    el.textContent = suffix
+      ? current.toFixed(1) + suffix
+      : formatThousands(current);
+  }, 20);
+}
+
+// ===== Оновлення одного блоку =====
+function updateSevenSegBlock(planRows, partners, quarter, mode, prefix) {
+  const planKey = `2026_${quarter.replace("Q","")}`;
+  const selectedPartnerIds = $("#partnerSelect").val() || [];
+  const selectedProducts   = $("#productSelect").val() || [];
+
+  let plan = 0, fact = 0;
+
+  if (mode === "green") {
+    // Загальний дисплей — ігнорує селектори
+    planRows.forEach(row => { plan += row.planMoney?.[planKey] || 0; });
+    partners.forEach(p => {
+      p.products.forEach(prod => { fact += prod.historyMoney?.[planKey] || 0; });
+    });
+  }
+
+if (mode === "blue") {
+  partners.forEach(p => {
+    // фільтр по партнерах
+    if (selectedPartnerIds.length > 0 && !selectedPartnerIds.includes(String(p.id))) return;
+
+    if (selectedProducts.length > 0) {
+      // якщо вибрано продукт → беремо його
+      p.products.forEach(prod => {
+        if (selectedProducts.includes(prod.product)) {
+          plan += prod.planMoney || 0;
+          fact += prod.execMoney || 0;
+        }
+      });
+    } else {
+      // якщо продукт не вибрано → беремо "Всього"
+      const totalRow = p.products.find(pr => pr.product === "Всього");
+      if (totalRow) {
+        plan += totalRow.planMoney || 0;
+        fact += totalRow.execMoney || 0;
+      }
+    }
+  });
+}
+
+
+  if (mode === "red") {
+    // По продуктах — беремо план напряму з таблиці
+    planRows.forEach(row => {
+      if (selectedProducts.length > 0 && !selectedProducts.includes(row.product)) return;
+      plan += row.planMoney?.[planKey] || 0;
+    });
+    partners.forEach(p => {
+      if (selectedPartnerIds.length > 0 && !selectedPartnerIds.includes(String(p.id))) return;
+      p.products.forEach(prod => {
+        if (selectedProducts.length > 0 && !selectedProducts.includes(prod.product)) return;
+        fact += prod.historyMoney?.[planKey] || 0;
+      });
+    });
+  }
+
+  const percent = plan > 0 ? (fact / plan) * 100 : 0;
+
+  animateSevenSeg(plan, prefix);
+  animateSevenSeg(fact, prefix+"1");
+  animateSevenSeg(percent, prefix+"2", "%");
+}
+// 1. Виклик при завантаженні сторінки
+document.addEventListener("DOMContentLoaded", () => {
+  distributePlanForPartners(plans, allPartners, quarter);
+  updateAllSevenSeg(plans, allPartners, quarter);
+});
+
+
+// 3. Обробники зміни селекторів
+document.getElementById("partnerSelect").addEventListener("change", () => {
+    allPartners.forEach(p => {
+  p.products = []; // очищаємо перед новим розподілом
+});
+allPartners.forEach(p => {
+  p.products = []; // очищаємо перед новим розподілом
+});
+  distributePlanForPartners(plans, allPartners, quarter);
+  updateAllSevenSeg(plans, allPartners, quarter);
+});
+
+document.getElementById("productSelect").addEventListener("change", () => {
+    allPartners.forEach(p => {
+  p.products = []; // очищаємо перед новим розподілом
+});
+  distributePlanForPartners(plans, allPartners, quarter);
+  updateAllSevenSeg(plans, allPartners, quarter);
+});
+
+// ===== Виклик при завантаженні сторінки =====
+document.addEventListener("DOMContentLoaded", async () => {
+  const userKey = localStorage.getItem("currentUser") || "office";
+  quarter = "Q2";
+
+  // Отримати плани
+  plans = await getPlans(userKey);
+
+  // Отримати партнерів + історію
+  const historyUrl = getHistoryUrl(userKey);
+  const ids = userMap[userKey] || [];
+  allPartners = [];
+  for (let id of ids) {
+    const products = await fetchHistory(id, historyUrl, JSON.parse(localStorage.getItem("partners")) || []);
+    const d = (JSON.parse(localStorage.getItem("partners")) || []).find(p => p.id === id);
+    if (!d) continue;
+    allPartners.push({ ...d, products });
+  }
+
+  // перший розподіл і оновлення
+  allPartners.forEach(p => {
+  p.products = []; // очищаємо перед новим розподілом
+});
+  distributePlanForPartners(plans, allPartners, quarter);
+  updateAllSevenSeg(plans, allPartners, quarter);
+
+  // слухачі на селектори
+  $("#partnerSelect").on("change", function(){
+    allPartners.forEach(p => {
+  p.products = []; // очищаємо перед новим розподілом
+});
+    distributePlanForPartners(plans, allPartners, quarter);
+    updateAllSevenSeg(plans, allPartners, quarter);
+  });
+
+  $("#productSelect").on("change", function(){
+    allPartners.forEach(p => {
+  p.products = []; // очищаємо перед новим розподілом
+});
+    distributePlanForPartners(plans, allPartners, quarter);
+    updateAllSevenSeg(plans, allPartners, quarter);
+  });
+});
+
+// ===== Оновлення всіх дисплеїв =====
+function updateAllSevenSeg(plans, partners, quarter) {
+  updateSevenSegBlock(plans, partners, quarter, "blue", "moneyBlue");
+  updateSevenSegBlock(plans, partners, quarter, "red", "moneyRed");
+  updateSevenSegBlock(plans, partners, quarter, "green", "moneyGreen");
+}
+
+// ===== Ініціалізація селектора партнерів =====
+async function initPartners(userKey) {
+  const morionUrl = "https://docs.google.com/spreadsheets/d/1CUEcXgBAUIKvg0k2JePbhSH-_S01HcEi";
+  const partners = await fetchPartners(morionUrl);
+
+  localStorage.setItem("partners", JSON.stringify(partners));
+
+  const ids = userMap[userKey] || [];
+  const filtered = partners.filter(p => ids.includes(p.id));
+
+  const partnerSelect = $("#partnerSelect");
+  partnerSelect.empty().append(`<option value="">Всі партнери</option>`);
+  filtered.forEach(p => {
+    // value = id, текст = name
+    partnerSelect.append(`<option value="${p.id}">${p.name}</option>`);
+  });
+
+  partnerSelect.select2({ placeholder: "Оберіть партнера", allowClear: true, width: "300px" });
+}
+
+// ===== Ініціалізація селектора продуктів =====
+async function initProducts(planRows) {
+  const productSelect = $("#productSelect");
+  productSelect.empty().append(`<option value="">Всі продукти</option>`);
+
+  planRows.forEach(row => {
+    productSelect.append(`<option value="${row.product}">${row.product}</option>`);
+  });
+
+  productSelect.select2({ placeholder: "Оберіть продукт", allowClear: true, width: "300px" });
+}
+
+// ===== Отримання партнерів із Google Sheets =====
+async function fetchPartners(morionUrl) {
+  const url = `${morionUrl}/gviz/tq?tqx=out:json&sheet=sheet1`;
+  const res = await fetch(url);
+  const text = await res.text();
+  const json = JSON.parse(text.substr(47).slice(0, -2));
+
+  return json.table.rows.map(r => {
+    const corpRaw = r.c[0]?.v || "";
+    const idMatch = corpRaw.match(/^(\d+)/);
+    const id = idMatch ? parseInt(idMatch[1], 10) : 0;
+    const name = corpRaw.replace(/^(\d+)\.\s*/, "");
+
+    return {
+      id,
+      name,
+      turnover: parseFloat(String(r.c[1]?.v || 0).replace(/\s|,/g, "")) || 0,
+      msr: parsePercent(r.c[2]?.v),
+      grossRate: parsePercent(r.c[3]?.v),
+      ei: parseFloat(String(r.c[4]?.v || 0).replace(/\s|,/g, "")) || 0,
+      tt: parseIntClean(r.c[5]?.v || 0)
+    };
+  }).filter(p => p.id && p.name && !p.name.includes("Rating"));
+}
+
+// ===== Отримання історії по партнеру =====
+async function fetchHistory(partnerId, historyUrl, partnerData) {
+  const partnerName = partnerData.find(p => p.id === partnerId)?.name || `Партнер ${partnerId}`;
+  const url = `${historyUrl}/gviz/tq?tqx=out:json&range='${partnerId}'!A1:Z1000`;
+  const res = await fetch(url);
+  const text = await res.text();
+  const json = JSON.parse(text.substr(47).slice(0, -2));
+
+  const cols = json.table.cols.map(c => c.label);
+  const rows = json.table.rows.map(r => r.c.map(c => c?.v || ""));
+
+  let products = [];
+  let mode = "money";
+  let firstProduct = null;
+  let seenFirstAgain = false;
+
+  rows.forEach(r => {
+    const product = r[2];
+    if (!product || product === "ТовардляПлана" || product === "Всього") return;
+
+    if (!firstProduct) {
+      firstProduct = product;
+    } else if (product === firstProduct && !seenFirstAgain) {
+      mode = "packs";
+      seenFirstAgain = true;
+    }
+
+    let prod = products.find(p => p.product === product);
+    if (!prod) {
+      prod = { partnerId, partnerName, product, historyMoney: {}, historyPacks: {} };
+      products.push(prod);
+    }
+
+    cols.forEach((col, idx) => {
+      if (/^202[56]_\d$/.test(col)) {
+        const val = Math.round(parseNum(r[idx]));
+        if (mode === "money") prod.historyMoney[col] = val;
+        else prod.historyPacks[col] = val;
+      }
+    });
+  });
+  return products;
+}
+
+
+
+// ===== URL для історії кожного користувача =====
+const historyUrlOleksandr = "https://docs.google.com/spreadsheets/d/1OhWc6BKpVML_dnxDVTvLsr6GyRfM27BZ";
+const historyUrlTetiana   = "https://docs.google.com/spreadsheets/d/1EeL08aCAa5PCwIYAtN49hQQibp5otMEm";
+const historyUrlOffice    = "https://docs.google.com/spreadsheets/d/1ju1NDfqXREsb56FuYlVTv8kei4eL5rhW";
+const historyUrlAndriy    = "https://docs.google.com/spreadsheets/d/1AAAAAAAAAAAAAAAAAAAA"; 
+const historyUrlMaria     = "https://docs.google.com/spreadsheets/d/1BBBBBBBBBBBBBBBBBBBB"; 
+const historyUrlSerhiy    = "https://docs.google.com/spreadsheets/d/1CCCCCCCCCCCCCCCCCCCC"; 
+
+// ===== Отримання планів =====
+async function fetchPlan(planUrl) {
+  const url = `${planUrl}/gviz/tq?tqx=out:json&sheet=sheet1`;
+  const res = await fetch(url);
+  const text = await res.text();
+  const json = JSON.parse(text.substr(47).slice(0, -2));
+
+  const rows = json.table.rows.map(r => r.c.map(c => c?.v || ""));
+
+  return rows.map(r => {
+    const product = r[0];
+    if (!product) return null;
+    return {
+      product,
+      planMoney: {
+        "2026_1": parseFloat(r[1]) || 0,
+        "2026_2": parseFloat(r[2]) || 0,
+        "2026_3": parseFloat(r[3]) || 0,
+        "2026_4": parseFloat(r[4]) || 0
+      },
+      planPacks: {
+        "2026_1": parseFloat(r[5]) || 0,
+        "2026_2": parseFloat(r[6]) || 0,
+        "2026_3": parseFloat(r[7]) || 0,
+        "2026_4": parseFloat(r[8]) || 0
+      }
+    };
+  }).filter(Boolean);
+}
+// ===== 2. Константи з URL‑ами =====
+const planUrlOleksandr = "https://docs.google.com/spreadsheets/d/1TtDl9d1rxAl7mCwlW7N6plVhxZYAVEk8";
+const planUrlTetiana   = "https://docs.google.com/spreadsheets/d/1IKqln_4KSXwcTiikO48E6j3XywHoebhI";
+const planUrlOffice    = "https://docs.google.com/spreadsheets/d/1URsMjWRwYmyy7aHtQ5EqmvD6Yct-rNmf";
+const planUrlAndriy    = "https://docs.google.com/spreadsheets/d/1AAAAAAAAAAAAAAAAAAAA";
+const planUrlMaria     = "https://docs.google.com/spreadsheets/d/1BBBBBBBBBBBBBBBBBBBB";
+const planUrlSerhiy    = "https://docs.google.com/spreadsheets/d/1CCCCCCCCCCCCCCCCCCCC";
+// ===== Допоміжні парсери =====
+function parseNum(v) {
+  if (v === null || v === "" || v === undefined) return 0;
+  const num = parseFloat(String(v).replace(/\s/g, ""));
+  return isNaN(num) ? 0 : num;
+}
+
+function parsePercent(raw) {
+  if (!raw) return 0;
+  let s = String(raw).trim().replace(/[\s\u00A0,]/g, "").replace("%", "");
+  let v = parseFloat(s);
+  if (isNaN(v)) return 0;
+  return v;
+}
+
+function parseIntClean(raw) {
+  if (!raw) return 0;
+  const s = String(raw).replace(/[^\d-]/g, "");
+  const v = parseInt(s, 10);
+  return isNaN(v) ? 0 : v;
+}
+
+// ===== Вибір URL за користувачем =====
+async function getPlans(userKey) {
+  switch (userKey) {
+    case "fedir":  return await fetchPlan(planUrlOleksandr);
+    case "olena":  return await fetchPlan(planUrlTetiana);
+    case "office": return await fetchPlan(planUrlOffice);
+    case "andriy": return await fetchPlan(planUrlAndriy);
+    case "maria":  return await fetchPlan(planUrlMaria);
+    case "serhiy": return await fetchPlan(planUrlSerhiy);
+    default:
+      console.warn("Невідомий користувач, використовую загальний план");
+      return await fetchPlan(planUrlOffice);
+  }
+}
+function getHistoryUrl(userKey) {
+  switch (userKey) {
+    case "fedir":  return historyUrlOleksandr;
+    case "olena":  return historyUrlTetiana;
+    case "office": return historyUrlOffice;
+    case "andriy": return historyUrlAndriy;
+    case "maria":  return historyUrlMaria;
+    case "serhiy": return historyUrlSerhiy;
+    default:
+      console.warn("Невідомий користувач, використовую загальний URL історії");
+      return historyUrlOffice;
+  }
+}
+// ===== Розподіл планів між партнерами =====
+function distributePlanForPartners(plans, partners, quarter) {
+  const keyPrev = `2025_${quarter.replace("Q","")}`;
+  const keyCurr = `2026_${quarter.replace("Q","")}`;
+
+  plans.forEach(plan => {
+    const totalMoney = plan.planMoney[keyCurr] || 0;
+    const totalPacks = plan.planPacks[keyCurr] || 0;
+
+    // гарантуємо, що у кожного партнера є продукт
+    partners.forEach(p => {
+      if (!p.products.find(pr => pr.product === plan.product)) {
+        p.products.push({ product: plan.product });
+      }
+    });
+
+    // 1. базові дольові плани
+    let shares = partners.map(p => {
+      const prod = p.products.find(pr => pr.product === plan.product);
+      const historyPacks = prod ? (prod.historyPacks?.[keyPrev] || 0) : 0;
+      const baseShare = totalPacks * (p.msr / 100);
+
+      let share;
+      const allHistoryZero = partners.every(x => {
+        const h = x.products.find(pr => pr.product === plan.product)?.historyPacks?.[keyPrev] || 0;
+        return h === 0;
+      });
+
+      if (allHistoryZero) {
+        share = baseShare;
+      } else if (historyPacks > baseShare) {
+        share = historyPacks;
+      } else {
+        share = (historyPacks * p.ei) / 100;
+      }
+
+      return { partner: p, share, historyPacks };
+    });
+
+    // 2. нормалізація
+    let sumShares = shares.reduce((s, x) => s + x.share, 0);
+    if (sumShares > 0) {
+      shares.forEach(x => {
+        x.share = x.share * (totalPacks / sumShares);
+      });
+    }
+
+    // 3. алгоритм залишку для упаковок
+    let fractionalShares = shares.map(x => ({ partner: x.partner, share: x.share }));
+    let allocated = fractionalShares.map(x => ({
+      partner: x.partner,
+      packs: Math.floor(x.share)
+    }));
+
+    let allocatedSum = allocated.reduce((s, x) => s + x.packs, 0);
+    let remainder = totalPacks - allocatedSum;
+
+    fractionalShares
+      .map((x, i) => ({ idx: i, frac: x.share - allocated[i].packs }))
+      .sort((a, b) => b.frac - a.frac)
+      .slice(0, remainder)
+      .forEach(x => { allocated[x.idx].packs += 1; });
+
+    // 4. запис у продукти
+    allocated.forEach(x => {
+      const prod = x.partner.products.find(pr => pr.product === plan.product);
+      if (prod) {
+        const planPacks = x.packs;
+        const execPacks = prod.historyPacks?.[keyCurr] || 0;
+        const toSellPacks = Math.max(planPacks - execPacks, 0);
+
+        prod.planPacks   = planPacks;
+        prod.execPacks   = execPacks;
+        prod.toSellPacks = toSellPacks;
+
+        const execMoney    = prod.historyMoney?.[keyCurr] || 0;
+        const pricePerPack = totalPacks > 0 ? (totalMoney / totalPacks) : 0;
+        const planMoney    = planPacks * pricePerPack;
+        const toSellMoney  = Math.max(planMoney - execMoney, 0);
+
+        prod.planMoney   = Math.round(planMoney);
+        prod.execMoney   = execMoney;
+        prod.toSellMoney = Math.round(toSellMoney);
+
+        prod.percentExecPacks = planPacks > 0 ? ((execPacks / planPacks) * 100).toFixed(2) + "%" : "0.00%";
+        prod.percentExecMoney = planMoney > 0 ? ((execMoney / planMoney) * 100).toFixed(2) + "%" : "0.00%";
+      }
+    });
+
+    // 5. контрольний рядок
+    const sumPlanPacks = allocated.reduce((s, x) => s + x.packs, 0);
+    const sumPlanMoney = allocated.reduce((s, x) => {
+      const pricePerPack = totalPacks > 0 ? (totalMoney / totalPacks) : 0;
+      return s + x.packs * pricePerPack;
+    }, 0);
+
+    console.log(`▶ Контроль по продукту ${plan.product}:`);
+    console.log(`   План з таблиці: ${totalPacks.toLocaleString("uk-UA")} упак. / ${totalMoney.toLocaleString("uk-UA")} грн`);
+    console.log(`   Сума розподілу: ${sumPlanPacks.toLocaleString("uk-UA")} упак. / ${Math.round(sumPlanMoney).toLocaleString("uk-UA")} грн`);
+  });
+
+  // 6. додаємо рядок "Всього" для кожного партнера
+  partners.forEach(p => {
+    let totalPlan = 0, totalExec = 0;
+    p.products.forEach(prod => {
+      totalPlan += prod.planMoney || 0;
+      totalExec += prod.execMoney || 0;
+    });
+    let totalRow = p.products.find(pr => pr.product === "Всього");
+    if (!totalRow) {
+      totalRow = { product: "Всього" };
+      p.products.push(totalRow);
+    }
+    totalRow.planMoney = totalPlan;
+    totalRow.execMoney = totalExec;
+  });
+
+  return partners;
+}
+
+
+
+function renderHistoryPlans(partners, quarter, historyType, selectedProducts = []) {
+  let html = "<h3>Історія та плани</h3>";
+
+  const allProducts = [...new Set(partners.flatMap(p => p.products.map(pr => pr.product)))];
+
+html += `
+  <table>
+    <tr>
+      <th>Партнер</th>
+      <th id="productHeader" class="product-header">▶ Продукт
+        <div id="productFilterContainer" class="product-filter">
+          ${allProducts.map(prod => {
+            const checked = selectedProducts.includes(prod) ? "checked" : "";
+            return `
+              <label class="filter-option">
+                <input type="checkbox" value="${prod}" ${checked}>
+                <span>${prod}</span>
+              </label>
+            `;
+          }).join("")}
+        </div>
+      </th>
+      <th>Історія</th>
+      <th>План</th>
+      <th>Виконано</th>
+      <th>Допродати</th>
+      <th>Дольовий</th>
+      <th>Супер</th>
+      <th>Подобається</th>
+      <th>Задовільнить</th>
+      <th>Замислитися</th>
+      <th>Піти</th>
+    </tr>
+`;
+
+  const keyPrev = `2025_${quarter.replace("Q","")}`;
+
+  let totalHistory = 0, totalPlan = 0, totalExec = 0, totalToSell = 0;
+
+  partners.forEach(p => {
+    p.products
+      .filter(prod => selectedProducts.length === 0 || selectedProducts.includes(prod.product))
+      .forEach(prod => {
+        const history = historyType === "money"
+          ? Math.round(prod.historyMoney?.[keyPrev] || 0)
+          : Math.round(prod.historyPacks?.[keyPrev] || 0);
+
+        const plan = historyType === "money"
+          ? Math.round(prod.planMoney || 0)
+          : Math.round(prod.planPacks || 0);
+
+        const exec = historyType === "money"
+          ? Math.round(prod.execMoney || 0)
+          : Math.round(prod.execPacks || 0);
+
+        const toSell = historyType === "money"
+          ? Math.round(prod.toSellMoney || 0)
+          : Math.round(prod.toSellPacks || 0);
+
+        const base = historyType === "money" ? Math.round(prod.baseMoney || 0) : Math.round(prod.basePacks || 0);
+        const superV = historyType === "money" ? Math.round(prod.superMoney || 0) : Math.round(prod.superPacks || 0);
+        const optimal = historyType === "money" ? Math.round(prod.optimalMoney || 0) : Math.round(prod.optimalPacks || 0);
+        const satisfy = historyType === "money" ? Math.round(prod.satisfyMoney || 0) : Math.round(prod.satisfyPacks || 0);
+        const think = historyType === "money" ? Math.round(prod.thinkMoney || 0) : Math.round(prod.thinkPacks || 0);
+        const go = historyType === "money" ? Math.round(prod.goMoney || 0) : Math.round(prod.goPacks || 0);
+
+        const growth = (val) => {
+          if (!history || history === 0) return "";
+          const perc = ((val - history) / history * 100).toFixed(0);
+          return ` / ${perc > 0 ? "+" : ""}${perc}%`;
+        };
+
+        const ratio = plan > 0 ? Math.min(toSell / plan, 1) : 1;
+        const hue = (1 - ratio) * 120;
+        const bgColor = `hsl(${hue}, 70%, 45%)`;
+
+        html += `<tr>
+          <td>${p.name}</td>
+          <td>${prod.product}</td>
+          <td>${formatNumber(history)}</td>
+          <td>${plan ? formatNumber(plan) : "-"}</td>
+          <td>${exec ? formatNumber(exec) : "-"}</td>
+          <td style="background-color:${bgColor};color:white;font-weight:bold;">${toSell ? formatNumber(toSell) : "-"}</td>
+          <td>${base ? formatNumber(base) + growth(base) : "-"}</td>
+          <td>${superV ? formatNumber(superV) + growth(superV) : "-"}</td>
+          <td>${optimal ? formatNumber(optimal) + growth(optimal) : "-"}</td>
+          <td>${satisfy ? formatNumber(satisfy) + growth(satisfy) : "-"}</td>
+          <td>${think ? formatNumber(think) + growth(think) : "-"}</td>
+          <td>${go ? formatNumber(go) + growth(go) : "-"}</td>
+        </tr>`;
+
+        totalHistory += history;
+        totalPlan += plan;
+        totalExec += exec;
+        totalToSell += toSell;
+      });
+  });
+
+  html += `<tr class="total-row" style="font-weight:bold;background:#000;">
+    <td colspan="2">Сума</td>
+    <td>${formatNumber(totalHistory)}</td>
+    <td>${formatNumber(totalPlan)}</td>
+    <td>${formatNumber(totalExec)}</td>
+    <td>${formatNumber(totalToSell)}</td>
+    <td colspan="6"></td>
+  </tr>`;
+
+  html += "</table>";
+  document.getElementById("historyPlans").innerHTML = html;
+
+  // відкриття/закриття випадаючого списку
+  const header = document.getElementById("productHeader");
+  const filterContainer = document.getElementById("productFilterContainer");
+
+  header.addEventListener("click", (e) => {
+    e.stopPropagation();
+    filterContainer.style.display = filterContainer.style.display === "none" ? "block" : "none";
+  });
+
+  // закриття при кліку поза списком
+  document.addEventListener("click", () => {
+    if (filterContainer.style.display === "block") {
+      const selected = Array.from(document.querySelectorAll("#productFilterContainer input[type=checkbox]:checked"))
+                            .map(o => o.value);
+      filterContainer.style.display = "none";
+      renderHistoryPlans(partners, quarter, historyType, selected);
+    }
+  });
+
+  // щоб клік всередині списку не закривав його
+  filterContainer.addEventListener("click", (e) => {
+    e.stopPropagation();
+  });
+}
+
+///__===== Головна ініціалізація =====
+document.addEventListener("DOMContentLoaded", async () => {
+  const userKey = localStorage.getItem("currentUser");
+  const quarter = "Q2";
+
+  // отримуємо плани
+  const plans = await getPlans(userKey);
+
+  // ініціалізація селекторів
+  await initPartners(userKey);
+  await initProducts(plans);
+
+  // підтягування історії
+  const historyUrl = getHistoryUrl(userKey);
+  const ids = userMap[userKey] || [];
+  let allPartners = [];
+  for (let id of ids) {
+    const products = await fetchHistory(id, historyUrl, JSON.parse(localStorage.getItem("partners")) || []);
+    const d = (JSON.parse(localStorage.getItem("partners")) || []).find(p => p.id === id);
+    if (!d) continue;
+    allPartners.push({ ...d, products });
+  }
+
+  // розподіл планів
+  allPartners.forEach(p => {
+  p.products = []; // очищаємо перед новим розподілом
+});
+  distributePlanForPartners(plans, allPartners, quarter);
+
+  // оновлення семисегментників
+  updateAllSevenSeg(plans, allPartners, quarter);
+});
+
+
+
+// ===== Парсинг дати =====
+function parseDate(str) {
+  if (!str) return null;
+  if (str.includes(".")) {
+    const [day, month, year] = str.split(".");
+    return new Date(parseInt(year), parseInt(month)-1, parseInt(day));
+  }
+  return new Date(str); // ISO формат
+}
+document.addEventListener("DOMContentLoaded", () => {
+  const today = new Date();
+  const options = { year: 'numeric', month: 'long', day: 'numeric' };
+  const formattedDate = today.toLocaleDateString('uk-UA', options);
+
+  const userName = userNames[currentUser] || currentUser;
+
+  document.getElementById("userInfoTop").textContent =
+    `${formattedDate} | ${userName}`;
+});
+</script>
+</body>
+</html>
+ 
+

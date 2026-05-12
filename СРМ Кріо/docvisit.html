@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/jpg" href="bol.jpg">
+  <title>Візит до лікаря</title>
+  <style>
+body {
+  font-family: Arial, sans-serif;
+  margin: 0; padding: 0;
+  background: linear-gradient(135deg, #009400, #004d00);
+  color: #ffffff;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Таблиця */
+table {
+  border-collapse: collapse;
+  width: 95%;
+  margin-top: 20px;
+  overflow-x: auto; /* 👈 горизонтальний скрол на мобільному */
+  display: block;
+}
+
+th, td {
+  border: 1px solid #ffffff;
+  padding: 8px;
+  text-align: center;
+  word-wrap: break-word;
+}
+
+th {
+  background: #adadad;
+  color: #000;
+}
+
+td.name { text-align: left; }
+tbody tr:hover { background-color: #26a12b; }
+
+/* Інпути та селекти */
+input, select {
+  border: 1px solid #ffffff;
+  padding: 10px;
+  border-radius: 4px;
+  font-size: 13px;
+  width: 100%;
+  margin: 0;
+  box-sizing: border-box;
+  background-color: #effff0;
+  color: #000;
+}
+
+label {
+  display: block;
+  margin: 10px auto 5px auto;
+  font-weight: bold;
+  width: 100%;
+  max-width: 500px;
+  text-align: center;
+}
+
+/* Кнопки */
+button {
+  width: 220px;
+  padding: 12px;
+  margin-top: 10px;
+  background-color: #004d00;
+  color: #ffffff;
+  border: solid 1px #c2ffc2;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+button:hover { background-color: #003300; }
+
+input[type="checkbox"] {
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  border: 2px solid #333;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: #fff;
+  transition: background-color 0.5s ease;
+}
+input[type="checkbox"]:checked { background-color: #4caf50; }
+
+h3 {
+  margin-top: 30px;
+  text-align: center;
+  color: #fff;
+}
+
+td.to-sell { text-align: center; font-weight: bold; color: white; }
+
+.available { width: 24px; height: 24px; }
+.quantity { width: 60px; }
+.competitors { width: 150px; }
+
+/* Сітки */
+.date-time-partner {
+  padding-left: 20px;
+  max-width: 90%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.date-knowledge {
+  padding-left: 20px;
+  max-width: 90%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+
+/* 📱 Телефони */
+@media (max-width: 480px) {
+  h1 { font-size: 1.4rem; }
+  h3 { font-size: 1.2rem; }
+  input, select { font-size: 0.9rem; }
+  button { width: 100%; font-size: 0.9rem; }
+  table { font-size: 0.75rem; }
+  th, td { padding: 4px; }
+  .date-time-partner, .date-knowledge {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+}
+
+/* 📲 Планшети */
+@media (min-width: 481px) and (max-width: 768px) {
+  h1 { font-size: 1.6rem; }
+  h3 { font-size: 1.3rem; }
+  input, select { font-size: 1rem; }
+  button { width: 80%; }
+  table { font-size: 0.85rem; }
+  th, td { padding: 6px; }
+  .date-time-partner, .date-knowledge {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+  }
+}
+
+/* 💻 Десктопи */
+@media (min-width: 769px) {
+  h1 { font-size: 1.8rem; }
+  h3 { font-size: 1.4rem; }
+  input, select { max-width: 500px; }
+  button { width: 220px; }
+  table { font-size: 1rem; }
+  .date-time-partner, .date-knowledge {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+}
+.modal {
+  display: none; /* прихована за замовчуванням */
+  position: fixed;
+  z-index: 999;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0,0,0,0.6);
+}
+.modal-content {
+  margin: 0 auto;
+  width: 90%;
+  max-width: 900px;
+  max-height: 90%;
+}
+#pdfCanvas {
+  width: 100%;
+  border: 2px solid #fff;
+  border-radius: 8px;
+  justify-self: center;
+}
+.close {
+  float: right;
+  font-size: 28px;
+  cursor: pointer;
+}
+select.error {
+  border: 2px solid red;
+  background-color: #ffe6e6;
+}
+/* Загальний стиль для кнопок */
+button.arrow, button.page, .slide-controls button {
+  background-color: #419d2a; /* зелено-бірюзовий */
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 12px;
+  margin: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+/* Ховер-ефект */
+button.arrow:hover, button.page:hover, .slide-controls button:hover {
+  background-color: #21867a;
+  transform: scale(1.1);
+}
+
+/* Активна сторінка */
+button.page.active {
+  background-color: #e76f51; /* помаранчевий */
+  font-weight: bold;
+}
+
+/* Стрілки */
+button.arrow {
+  font-size: 18px;
+  padding: 8px 14px;
+}
+
+/* Кнопки зуму */
+.slide-controls {
+  margin-top: 10px;
+  text-align: center;
+}
+
+.slide-controls button {
+  background-color: #264653; /* темно-синій */
+  font-size: 16px;
+  padding: 10px 14px;
+}
+
+.slide-controls button:hover {
+  background-color: #1b333f;
+}
+#pagePanel {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  overflow-x: auto;
+  padding: 8px;
+}
+
+canvas.thumbnail {
+  border: 2px solid #fff;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.2s, border-color 0.3s;
+}
+
+canvas.thumbnail:hover {
+  transform: scale(1.1);
+  border-color: #2a9d8f;
+}
+
+canvas.thumbnail.active {
+  border-color: #e76f51; /* помаранчевий для активного */
+}
+  </style>
+</head>
+<body>
+  <h1>Візит до лікаря</h1>
+  <img src="./logo.svg" alt="logo" width="260">
+    <p id="userInfo"></p>
+  <div class="date-time-partner">
+    <label>Область:<select id="regionSelect"></select></label>
+    <label>Місто:<select id="citySelect"></select></label>
+    <label for="lpzFilter">Пошук ЛПЗ:
+      <input type="text" id="lpzFilter" placeholder="Введіть назву ЛПЗ...">
+      <select style="margin-top: 20px;" id="lpzSelect"><option value="">Оберіть ЛПЗ</option></select>
+    </label>
+    <label>Спеціальність:<select id="specialtySelect"></select>    </label>
+    <label>Лікар:<select id="doctorSelect"></select></label>
+     <button class="btn" onclick="goTo('newdoc.html')">Додати лікаря</button>
+  </div>
+
+  <h3>Попередній візит</h3>
+  <table>
+    <thead><tr><th>Дата</th><th>Продукт</th><th>Потенціал</th><th>Розкриття %</th><th>Продано</th><th>Домовленості</th><th>Конкуренти</th><th>Коментар</th></tr></thead>
+    <tbody id="previousVisitBody"></tbody>
+  </table>
+
+  <h3>Поточний візит</h3>
+  <table>
+    <thead><tr><th>Продукт</th><th>Потенціал</th><th>Розкриття %</th><th>Продано</th><th>Домовленості</th><th>Конкуренти</th><th>Коментар</th></tr></thead>
+    <tbody id="currentVisitBody"></tbody>
+  </table>
+
+  
+  
+<div class="buttons">  
+
+  
+  <button style="background-color: #4caf50;" onclick="saveDoctorVisit()" onclick="window.location.href='calendar.html'">Зберегти візит</button>
+  <button onclick="window.location.href='calendar.html'">Перейти в календар</button>
+  <button onclick="window.location.href='menu.html'">Перейти в меню</button>
+</div>
+<img src="./ph.png" alt="logo" width="260">
+
+<div style="display: none;">Презентація: <span id="presentationFile"></span></div>
+
+<!-- Модалка для PDF -->
+<div id="presentationModal" class="modal">
+  <div class="modal-content">
+    <span id="closeModal">&times;</span>
+    <canvas id="pdfCanvas"></canvas>
+    <div id="pagePanel"></div>
+    <div class="slide-controls">
+      
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js"></script>
+  <script src="https://mozilla.github.io/pdf.js/build/pdf.js"></script>
+<script>
+pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js";
+function goTo(page) {
+  window.location.href = page;
+}
+// Користувачі
+const userNames = {
+  "demian": "Дем'ян Загородній",
+  "vitaliy": "Віталій Гаптенко",
+  "olga": "Ольга Леонова",
+  "katya": "Катерина Скрябіна",
+  "stavka": "Ставка",
+  "admink": "admin"
+};
+
+const currentUser = localStorage.getItem("currentUser");
+if (!currentUser) {
+  alert("Будь ласка, увійдіть спочатку!");
+  window.location.href = "login.html";
+} else {
+  document.getElementById("userInfo").textContent =
+    "Ви увійшли як: " + (userNames[currentUser] || currentUser);
+}
+
+let doctorsData = [];
+
+// 1. Отримання даних з Google Sheets
+async function fetchDoctors() {
+  const url = "https://docs.google.com/spreadsheets/d/1kgoYGolqlj9Wf5MuMNriTjiKqbLnEooa9S5gSXLlYYM/gviz/tq?tqx=out:json&sheet=Sheet1";
+  const res = await fetch(url);
+  const text = await res.text();
+  const json = JSON.parse(text.substr(47).slice(0, -2));
+
+  doctorsData = json.table.rows.map(r => ({
+    region: r.c[0]?.v || "",
+    city: r.c[1]?.v || "",
+    lpz: r.c[2]?.v || "",
+    specialty: r.c[3]?.v || "",
+    doctor: r.c[4]?.v || ""
+  }));
+
+  populateRegions();
+}
+
+// 2. Заповнення селектів з фільтром по користувачу
+function populateRegions() {
+  const regionSelect = document.getElementById("regionSelect");
+  let regions = [...new Set(doctorsData.map(d => d.region))];
+
+  if (currentUser === "demian") {
+    const allowed = ["Львівська","Волинська","Рівненська","Хмельницька","Тернопільська","Івано-Франківська","Чернівецька"];
+    regions = regions.filter(r => allowed.some(a => r.includes(a)));
+  } else if (currentUser === "vitaliy") {
+    const allowed = ["Вінницька","Черкаська","Одеська"];
+    regions = regions.filter(r => allowed.some(a => r.includes(a)));
+  } else if (currentUser === "olga") {
+    const allowed = ["Миколаївська","Херсонська","Дніпропетровська","Кіровоградська"];
+    regions = regions.filter(r => allowed.some(a => r.includes(a)));
+  } else if (currentUser === "katya") {
+    const allowed = ["Дніпропетровська","Запорізька","Харківська","Полтавська"];
+    regions = regions.filter(r => allowed.some(a => r.includes(a)));
+  } else if (currentUser === "stavka") {
+    const allowed = ["Київська","Сумська","Чернігівська","Житомирська"];
+    regions = regions.filter(r => allowed.some(a => r.includes(a)));
+  } else {
+    regions = [];
+  }
+
+  fillSelect(regionSelect, regions);
+
+  // автозаповнення після рендеру
+  const doctorData = JSON.parse(localStorage.getItem("selectedDoctor"));
+  if (doctorData) setSelectValue("regionSelect", doctorData.region);
+}
+
+function populateCities(region) {
+  const cities = [...new Set(doctorsData.filter(d => d.region === region).map(d => d.city))];
+  fillSelect(document.getElementById("citySelect"), cities);
+
+  const doctorData = JSON.parse(localStorage.getItem("selectedDoctor"));
+  if (doctorData) setSelectValue("citySelect", doctorData.city);
+}
+
+function populateLpz(region, city) {
+  const lpzList = [...new Set(
+    doctorsData.filter(d => d.region === region && d.city === city).map(d => d.lpz)
+  )];
+  fillSelect(document.getElementById("lpzSelect"), lpzList);
+
+  const doctorData = JSON.parse(localStorage.getItem("selectedDoctor"));
+  if (doctorData) setSelectValue("lpzSelect", doctorData.lpz);
+
+  // фільтр по ЛПЗ
+  const filterInput = document.getElementById("lpzFilter");
+  filterInput.oninput = () => {
+    const query = filterInput.value.toLowerCase();
+    const filtered = lpzList.filter(lpz => lpz.toLowerCase().includes(query));
+    fillSelect(document.getElementById("lpzSelect"), filtered);
+  };
+}
+
+function populateSpecialties(region, city, lpz) {
+  const specialties = [...new Set(doctorsData.filter(d => d.region === region && d.city === city && d.lpz === lpz).map(d => d.specialty))];
+  fillSelect(document.getElementById("specialtySelect"), specialties);
+
+  const doctorData = JSON.parse(localStorage.getItem("selectedDoctor"));
+  if (doctorData) setSelectValue("specialtySelect", doctorData.specialty);
+}
+
+function populateDoctors(region, city, lpz, specialty) {
+  const doctors = [...new Set(doctorsData.filter(d => d.region === region && d.city === city && d.lpz === lpz && d.specialty === specialty).map(d => d.doctor))];
+  fillSelect(document.getElementById("doctorSelect"), doctors);
+
+  const doctorData = JSON.parse(localStorage.getItem("selectedDoctor"));
+  if (doctorData) setSelectValue("doctorSelect", doctorData.doctor);
+}
+
+// Допоміжна функція для заповнення селекта
+function fillSelect(select, values) {
+  select.innerHTML = "<option value=''>Оберіть...</option>";
+  values.forEach(val => {
+    if (val) {
+      const opt = document.createElement("option");
+      opt.value = val;
+      opt.textContent = val;
+      select.appendChild(opt);
+    }
+  });
+}
+
+// Вибір значення у селекті
+function setSelectValue(selectId, value) {
+  const select = document.getElementById(selectId);
+  if (!select) return;
+
+  if (![...select.options].some(opt => opt.value === value)) {
+    const opt = document.createElement("option");
+    opt.value = value;
+    opt.textContent = value;
+    select.appendChild(opt);
+  }
+  select.value = value;
+}
+
+// Автозаповнення з localStorage після завантаження даних
+document.addEventListener("DOMContentLoaded", async () => {
+  await fetchDoctors();
+
+  const doctorData = JSON.parse(localStorage.getItem("selectedDoctor"));
+  if (!doctorData) return;
+
+  setSelectValue("regionSelect", doctorData.region);
+  setSelectValue("citySelect", doctorData.city);
+  setSelectValue("lpzSelect", doctorData.lpz);
+  setSelectValue("specialtySelect", doctorData.specialty);
+  setSelectValue("doctorSelect", doctorData.doctor);
+
+  // продукти + презентація
+  renderProductsAndPresentation(doctorData.specialty);
+});
+
+// 3. Продукти залежно від спеціальності
+const productsMap = {
+  "Травматологія": ["Kiomedine"],
+  "Ревматологія": ["Kiomedine"],
+  "Анестезіологія": ["Crio", "Crio zond"]
+};
+
+const presentationsMap = {
+  "Травматологія": "Травмач.pdf",
+  "Ревматологія": "Травмач.pdf",
+  "Анестезіологія": "Анест.pdf"
+};
+
+function renderProductsAndPresentation(specialty) {
+  const tbody = document.getElementById("currentVisitBody");
+  tbody.innerHTML = "";
+
+  const products = productsMap[specialty] || [];
+  products.forEach(prod => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td class="product">${prod}</td>
+      <td><input type="number" class="potential" placeholder="Потенціал"></td>
+      <td><input type="number" class="opening" placeholder="Розкриття %"></td>
+      <td><input type="number" class="to-sell" placeholder="Продано"></td>
+      <td><input type="number" class="agreement" placeholder="Домовленість"></td>
+      <td><input type="text" class="competitors" placeholder="Конкуренти"></td>
+      <td><input type="text" class="comment" placeholder="Коментар"></td>
+     `;
+    tbody.appendChild(tr);
+  });
+
+  // презентація
+  const pres = presentationsMap[specialty] || "";
+  const presEl = document.getElementById("presentationFile");
+  if (presEl) {
+    presEl.textContent = pres;
+  }
+
+  // кнопка для презентації
+  const btnContainer = document.querySelector(".buttons");
+  let presentationBtn = document.getElementById("presentationBtn");
+
+  if (!presentationBtn) {
+    presentationBtn = document.createElement("button");
+    presentationBtn.id = "presentationBtn";
+    btnContainer.insertBefore(presentationBtn, btnContainer.firstChild);
+  }
+
+  if (pres) {
+    presentationBtn.textContent = "Показати презентацію";
+    presentationBtn.onclick = () => openPresentation(pres);
+    presentationBtn.style.display = "inline-block";
+  } else {
+    presentationBtn.style.display = "none";
+  }
+}
+
+document.addEventListener("DOMContentLoaded", async () => {
+  // 1. Завантажуємо довідники лікарів
+  await fetchDoctors();
+
+  // 2. Автозаповнення з localStorage
+  const doctorData = JSON.parse(localStorage.getItem("selectedDoctor"));
+  if (doctorData) {
+    setSelectValue("regionSelect", doctorData.region);
+    setSelectValue("citySelect", doctorData.city);
+    setSelectValue("lpzSelect", doctorData.lpz);
+    setSelectValue("specialtySelect", doctorData.specialty);
+    setSelectValue("doctorSelect", doctorData.doctor);
+
+    // продукти + презентація
+    renderProductsAndPresentation(doctorData.specialty);
+
+    // 👉 виклик loadPreviousVisit тільки після того, як селект лікаря заповнений
+    if (doctorData.doctor) {
+      console.log("Автозапуск loadPreviousVisit для:", doctorData.doctor);
+      loadPreviousVisit(doctorData.doctor);
+    }
+  }
+
+  // 3. Навішуємо слухачі на селекти
+  document.getElementById("regionSelect").addEventListener("change", e => {
+    populateCities(e.target.value);
+  });
+
+  document.getElementById("citySelect").addEventListener("change", e => {
+    const region = document.getElementById("regionSelect").value;
+    populateLpz(region, e.target.value);
+  });
+
+  document.getElementById("lpzSelect").addEventListener("change", e => {
+    const region = document.getElementById("regionSelect").value;
+    const city = document.getElementById("citySelect").value;
+    populateSpecialties(region, city, e.target.value);
+  });
+
+  document.getElementById("specialtySelect").addEventListener("change", e => {
+    const region = document.getElementById("regionSelect").value;
+    const city = document.getElementById("citySelect").value;
+    const lpz = document.getElementById("lpzSelect").value;
+    populateDoctors(region, city, lpz, e.target.value);
+
+    const specialty = normalizeSpecialty(e.target.value);
+    renderProductsAndPresentation(specialty);
+  });
+
+  document.getElementById("doctorSelect").addEventListener("change", e => {
+    const doctorName = e.target.value;
+    if (doctorName) {
+      console.log("Вибрано лікаря:", doctorName);
+      loadPreviousVisit(doctorName);
+    }
+  });
+});
+
+
+pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js";
+
+let pdfDoc = null;
+let currentPage = 1;
+let shownSlides = [];
+let scale = 1; // глобально для збереження масштабу при навігації
+async function openPresentation(url) {
+  const modal = document.getElementById("presentationModal");
+  modal.style.display = "block";
+  shownSlides = [];
+  currentPage = 1;
+
+  pdfDoc = await pdfjsLib.getDocument(url).promise;
+  renderPage(currentPage);
+  generatePagePanel();
+}
+
+function renderPage(num) {
+  pdfDoc.getPage(num).then(page => {
+    const canvas = document.getElementById("pdfCanvas");
+    const ctx = canvas.getContext("2d");
+
+    const containerWidth = document.querySelector(".modal-content").clientWidth;
+    const viewport = page.getViewport({ scale: 1 });
+    const scaledViewport = page.getViewport({ scale });
+
+    canvas.height = scaledViewport.height;
+    canvas.width = scaledViewport.width;
+
+    page.render({ canvasContext: ctx, viewport: scaledViewport });
+
+    if (!shownSlides.includes(num)) {
+      shownSlides.push(num);
+    }
+  });
+}
+
+function generatePagePanel() {
+  const panel = document.getElementById("pagePanel");
+  panel.innerHTML = "";
+
+  const prevBtn = document.createElement("button");
+  prevBtn.textContent = "←";
+  prevBtn.classList.add("arrow");
+  prevBtn.onclick = prevSlide;
+  panel.appendChild(prevBtn);
+const nextBtn = document.createElement("button");
+  nextBtn.textContent = "→";
+  nextBtn.classList.add("arrow");
+  nextBtn.onclick = nextSlide;
+  panel.appendChild(nextBtn);
+  for (let i = 1; i <= pdfDoc.numPages; i++) {
+    const canvas = document.createElement("canvas");
+    canvas.classList.add("thumbnail");
+
+    pdfDoc.getPage(i).then(page => {
+      const viewport = page.getViewport({ scale: 0.2 }); // маленький масштаб
+      const ctx = canvas.getContext("2d");
+      canvas.height = viewport.height;
+      canvas.width = viewport.width;
+      page.render({ canvasContext: ctx, viewport });
+
+      canvas.onclick = () => {
+        currentPage = i;
+        renderPage(currentPage);
+        generatePagePanel();
+      };
+    });
+
+    if (i === currentPage) {
+      canvas.classList.add("active");
+    }
+
+    panel.appendChild(canvas);
+  }
+
+  
+}
+
+function prevSlide() {
+  if (currentPage > 1) {
+    currentPage--;
+    renderPage(currentPage);
+    generatePagePanel();
+  }
+}
+
+function nextSlide() {
+  if (currentPage < pdfDoc.numPages) {
+    currentPage++;
+    renderPage(currentPage);
+    generatePagePanel();
+  }
+}
+
+document.getElementById("closeModal").onclick = () => {
+  document.getElementById("presentationModal").style.display = "none";
+};
+
+// свайпи
+const canvas = document.getElementById("pdfCanvas");
+let startX = 0, startY = 0;
+
+canvas.addEventListener("touchstart", e => {
+  startX = e.touches[0].clientX;
+  startY = e.touches[0].clientY;
+});
+
+canvas.addEventListener("touchend", e => {
+  const endX = e.changedTouches[0].clientX;
+  const endY = e.changedTouches[0].clientY;
+
+  if (endX - startX > 50) {
+    prevSlide();
+  } else if (startX - endX > 50) {
+    nextSlide();
+  } else if (endY - startY > 50) {
+    document.querySelector(".slide-controls").classList.add("show");
+  }
+});
+
+function zoomIn() {
+  scale += 0.25;
+  renderPage(currentPage);
+}
+
+function zoomOut() {
+  if (scale > 0.5) {
+    scale -= 0.25;
+    renderPage(currentPage);
+  }
+}
+
+// Закриття модалки
+document.getElementById("closeModal").onclick = () => {
+  document.getElementById("presentationModal").style.display = "none";
+};
+window.onclick = (event) => {
+  const modal = document.getElementById("presentationModal");
+  if (event.target === modal) modal.style.display = "none";
+};
+
+async function saveDoctorVisit() {
+  if (!validateVisitForm()) return;
+
+  const currentUser = localStorage.getItem("currentUser");
+  const userName = userNames[currentUser] || currentUser || "Невідомий користувач";
+
+  const now = new Date();
+  const date = now.toLocaleDateString("uk-UA");
+  const time = now.toLocaleTimeString("uk-UA");
+
+  const region = document.getElementById("regionSelect").value;
+  const city = document.getElementById("citySelect").value;
+  const lpz = document.getElementById("lpzSelect").value;
+  const specialty = document.getElementById("specialtySelect").value;
+  const doctor = document.getElementById("doctorSelect").value;
+
+  const rows = document.querySelectorAll("#currentVisitBody tr");
+  const visitsData = [];
+
+  rows.forEach(row => {
+    const product = row.querySelector("td.product").innerText;
+    const potential = row.querySelector("input.potential")?.value || "";
+    const opening = row.querySelector("input.opening")?.value || ""; // 👈 узгоджено з HTML
+    const toSell = row.querySelector("input.to-sell")?.value || "";
+    const agreement = row.querySelector("input.agreement")?.value || "";
+    const competitors = row.querySelector("input.competitors")?.value || "";
+    const comment = row.querySelector("input.comment")?.value || "";
+    visitsData.push({
+      product,
+      potential,
+      opening,
+      toSell,
+      agreement,
+      competitors,
+      comment,
+      presentationShown: shownSlides.length > 0 ? "Так" : "Ні",
+      slides: shownSlides.join(",")
+    });
+  });
+
+  // 🆕 Генеруємо VisitID один раз
+  const urlParams = new URLSearchParams(window.location.search);
+  const doctorData = JSON.parse(localStorage.getItem("selectedDoctor"));
+  let visitId = doctorData?.visitId || urlParams.get("visitId") || Date.now();
+
+  // 🔎 Отримуємо координати перед відправкою
+  navigator.geolocation.getCurrentPosition(async pos => {
+    const lat = pos.coords.latitude;
+    const lon = pos.coords.longitude;
+
+    try {
+      await fetch("https://script.google.com/macros/s/AKfycbxMDNAS6nal0EJvDk1U33cXA8l3n0CVOuiEjdozUcpFZTWMliDRAJZmPp5COUW6LRIt/exec", {
+        method: "POST",
+        mode: "no-cors",
+        body: JSON.stringify({
+          action: "saveDoctorVisit",
+          userName,
+          date,
+          time,
+          region,
+          city,
+          lpz,
+          specialty,
+          doctor,
+          lat,
+          lon,
+          visitId,
+          data: visitsData
+        }),
+        headers: { "Content-Type": "application/json" }
+      });
+     alert("Візит відправлено на збереження!");
+
+  // 🆕 перевіряємо, чи був лікар із localStorage
+  const doctorData = JSON.parse(localStorage.getItem("selectedDoctor"));
+  if (doctorData?.doctor) {
+    // якщо був вибраний із localStorage → очищаємо і переходимо на календар
+    localStorage.removeItem("selectedDoctor");
+    window.location.href = "calendar.html";
+  } else {
+    // якщо селектори заповнювались вручну → просто перезавантажуємо сторінку
+    location.reload();
+  }
+
+} catch (error) {
+  console.error("Помилка при збереженні:", error);
+  alert("Сталася помилка при збереженні візиту.");
+}
+  }, async err => {
+    console.error("❌ Помилка GPS:", err);
+    alert("Не вдалося отримати координати, але візит буде збережено без них.");
+    // fallback: відправка без координат
+    await fetch("https://script.google.com/macros/s/AKfycbxMDNAS6nal0EJvDk1U33cXA8l3n0CVOuiEjdozUcpFZTWMliDRAJZmPp5COUW6LRIt/exec", {
+      method: "POST",
+      mode: "no-cors",
+      body: JSON.stringify({
+        action: "saveDoctorVisit",
+        userName,
+        date,
+        time,
+        region,
+        city,
+        lpz,
+        specialty,
+        doctor,
+        visitId,
+        data: visitsData
+      }),
+      headers: { "Content-Type": "application/json" }
+    });
+  });
+}
+
+function validateVisitForm() {
+  const region = document.getElementById("regionSelect").value;
+  const city = document.getElementById("citySelect").value;
+  const lpz = document.getElementById("lpzSelect").value;
+  const specialty = document.getElementById("specialtySelect").value;
+  const doctor = document.getElementById("doctorSelect").value;
+
+  let valid = true;
+
+  [region, city, lpz, specialty, doctor].forEach((val, idx) => {
+    const select = [document.getElementById("regionSelect"), document.getElementById("citySelect"), document.getElementById("lpzSelect"), document.getElementById("specialtySelect"), document.getElementById("doctorSelect")][idx];
+    if (!val) {
+      select.classList.add("error");
+      valid = false;
+    } else {
+      select.classList.remove("error");
+    }
+  });
+
+  if (!valid) alert("Будь ласка, заповніть всі поля перед збереженням.");
+  return valid;
+}
+
+async function loadPreviousVisit(doctorName) {
+  try {
+    const res = await fetch(
+      "https://script.google.com/macros/s/AKfycbxMDNAS6nal0EJvDk1U33cXA8l3n0CVOuiEjdozUcpFZTWMliDRAJZmPp5COUW6LRIt/exec?type=doctor&doctor=" 
+      + encodeURIComponent(doctorName)
+    );
+
+    const text = await res.text();
+    console.log("Сирий текст від бекенду:", text);
+
+    let visits;
+    try {
+      visits = JSON.parse(text);
+      console.log("Розпарсений JSON:", visits);
+    } catch (e) {
+      console.error("❌ JSON parse error:", e);
+      const tbody = document.getElementById("previousVisitBody");
+      if (tbody) tbody.innerHTML = `<tr><td colspan="7">Не вдалося розпарсити JSON</td></tr>`;
+      return;
+    }
+
+    const tbody = document.getElementById("previousVisitBody");
+    if (!tbody) {
+      console.error("❌ Елемент previousVisitBody не знайдено у DOM");
+      return;
+    }
+
+    tbody.innerHTML = "";
+
+    if (!visits || visits.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="7">Попередніх візитів не знайдено</td></tr>`;
+      return;
+    }
+
+    const doctorVisits = visits.filter(v => v.doctor?.trim().toLowerCase() === doctorName.trim().toLowerCase());
+    console.log("Фільтровані візити:", doctorVisits);
+
+    if (doctorVisits.length > 0) {
+      const lastVisit = doctorVisits.reduce((latest, v) => {
+        const d = parseDate(v.date);
+        return (!latest || d > parseDate(latest.date)) ? v : latest;
+      }, null);
+
+      const lastVisits = doctorVisits.filter(v => v.date === lastVisit.date);
+
+      lastVisits.forEach(v => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${v.date}</td>
+          <td>${v.product}</td>
+          <td>${v.potential || ""}</td>
+          <td>${v.opening || ""}</td>
+          <td>${v.toSell || ""}</td>
+          <td>${v.agreement || ""}</td>
+          <td>${v.competitors || ""}</td>
+          <td>${v.comment || ""}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    } else {
+      tbody.innerHTML = `<tr><td colspan="7">Попередніх візитів до цього лікаря не знайдено</td></tr>`;
+    }
+  } catch (err) {
+    console.error("❌ Помилка завантаження попереднього візиту:", err);
+    const tbody = document.getElementById("previousVisitBody");
+    if (tbody) tbody.innerHTML = `<tr><td colspan="7">Не вдалося підтягнути попередній візит</td></tr>`;
+  }
+}
+
+function parseDate(dateStr) {
+  if (!dateStr) return new Date(0);
+  const [d, m, y] = dateStr.split(".");
+  return new Date(`${y}-${m}-${d}`);
+}
+
+function normalizeSpecialty(specialty) {
+  const map = {
+    "Травматологія": "Травматологія",
+    "Ревматологія": "Ревматологія",
+    "Анестезіологія": "Анестезіологія",
+    "Травмач": "Травматологія",
+    "Анест": "Анестезіологія"
+  };
+  return map[specialty] || specialty;
+}
+</script>
+</body>
+</html>

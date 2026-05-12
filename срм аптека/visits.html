@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Візити</title>
+  <link rel="icon" type="image/jpg" href="bol.jpg">
+  <style>
+ body {
+  font-family: Arial, sans-serif;
+  margin: 0; padding: 0;
+  background: linear-gradient(135deg, #009400, #004d00);
+  color: #ffffff;
+  min-height: 100vh;
+  max-width: 1200px; /* краще max-width, щоб не обрізати */
+  margin: 0 auto;    /* центрування */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  max-width: 800px;
+  margin-top: 20px;
+  table-layout: fixed; /* однакова ширина колонок */
+}
+
+th, td {
+  border: 1px solid #ffffff;
+  padding: 8px;
+  text-align: center;
+  word-wrap: break-word;
+  vertical-align: middle;
+}
+
+.styled-checkbox {
+  width: 20px;
+  height: 20px;
+  margin: 0;                 /* прибираємо відступи */
+  cursor: pointer;         /* курсор при наведенні */
+  background-color: #26a12b;
+  border: 1px solid #ffffff;
+  border-radius: 4px;       /* закруглені краї */
+}
+
+th {
+  background: #adadad;
+  color: #000; /* контрастний текст */
+}
+
+td.name {
+  text-align: left;
+}
+
+tbody tr:hover {
+  background-color: #26a12b;
+}
+input[type="date"] {
+  border: 1px solid #ffffff;
+  padding: 4px;
+  border-radius: 4px;
+  font-size: 13px;
+  width: 100%; 
+  margin: 0px;
+  box-sizing: border-box;
+  background-color: #26a12b;
+  color: #fff;
+}
+.vital { background-color: #26a12b; }
+.valuable { background-color: #286ca3; }
+.acceptable { background-color: #e0d037; }
+.interfering { background-color: #c78a90; }
+
+label {
+  display: block;
+  margin: 10px auto 5px auto;
+  font-weight: bold;
+  width: 500px;
+  text-align: center;
+}
+
+input, select {
+  width: 100%;
+  max-width: 500px;
+  padding: 10px;
+  margin: 5px auto 15px auto;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+button {
+  width: 220px;
+  padding: 12px;
+  margin-top: 10px;
+  background-color: #004d00;
+  color: #ffffff;
+  border: solid 1px #c2ffc2;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+button:hover {
+  background-color: #003300;
+}
+
+h3 {
+  margin-top: 30px;
+  text-align: center;
+  color: #fff;
+}
+
+td.to-sell {
+  text-align: center;
+  font-weight: bold;
+  color: white;
+}
+#nextVisitDate, #nextVisitTime {
+  border-radius: 6px;
+  font-size: 1rem;
+  width: 150px;
+  margin: 0 10px;
+  padding: 12px;
+  background-color: #26a12b;
+  color: #fff;
+  border: 1px solid #ffffff;}
+  #nextVisitDate:hover, #nextVisitTime:hover {
+    background-color: #1e7a1e;
+  }
+  #nextVisitDate{
+   width: 176px; 
+  }
+  .table-container {
+  width: 100%;
+  overflow-x: auto;
+}
+@media (max-width: 480px) {
+  h1 { font-size: 1.4rem; }
+  h3 { font-size: 1.2rem; }
+  input, select { max-width: 95%; font-size: 0.9rem; }
+  button { width: 100%; font-size: 0.9rem; }
+  table { font-size: 0.75rem; }
+  th, td { padding: 4px; }
+}
+.modal {
+  position: fixed;
+  z-index: 9999;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0,0,0,0.5);
+  display: flex; align-items: center; justify-content: center;
+}
+.modal-content {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+}
+.spinner {
+  border: 6px solid #f3f3f3;
+  border-top: 6px solid #3498db;
+  border-radius: 50%;
+  width: 40px; height: 40px;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 10px;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+</style>
+<body>
+  <h1>Візити</h1>
+  <img src="./logo.svg" alt="logo" width="260">
+  <p id="userInfo"></p>
+
+  <label for="partnerSelect">Оберіть партнера:</label>
+  <select id="partnerSelect"></select>
+  <label>Контактна особа (ПІБ):</label>
+    <input type="text" id="contactName">
+  <label>Телефон:</label>
+    <input type="text" id="contactPhone">
+  <div id="visitMeta">
+  <h3>Історія візитів</h3>
+  <table>
+    <thead>
+      <tr><th>Дата</th><th>Статус</th><th>Коментар</th></tr>
+    </thead>
+    <tbody id="visitMetaBody"></tbody>
+  </table>
+</div>
+  <div id="lastVisit">
+  <h3>Дані по продуктах</h3>
+ <div class="table-container">
+  <table>
+    <thead>
+      <tr>
+        <th>Назва</th>
+        <th>%</th>
+        <th>Кількість</th>
+        <th>Пенетрація</th>
+        <th>Залишки</th>
+        <th>Термін придатності</th>
+        <th>Дата звіту</th>
+        <th>Конкуренти</th>
+        <th>ВТМ</th>
+        <th>Ексклюзив</th>
+        <th>Умови%</th>
+         <!-- нова колонка -->
+      </tr>
+    </thead>
+    <tbody id="lastVisitBody"></tbody>
+  </table>
+  </div>
+</div>
+<form id="partnerVisitForm">
+  <div id="currentVisit">
+    <h3>Поточний візит</h3>
+    <div style="margin-bottom: 20px; text-align: left; width: 500px;">
+    <label for="visitStatus">Статус візиту:</label>
+    <select id="visitStatus">
+      <option value="Первинний">Первинний</option>
+      <option value="Заключення договору">Заключення договору</option>
+      <option value="Контроль домовленостей">Контроль домовленостей</option>
+      <option value="Перемовини">Перемовини</option>
+      <option value="Інше">Інше</option>
+    </select>
+    <label for="visitComment">Коментар:</label>
+    <input type="text" id="visitComment" placeholder="Введіть коментар">
+    </div>
+  <div class="table-container">  
+    <table>
+      <thead>
+        <tr>
+          <th>Назва</th><th>%</th><th>Кількість</th>
+          <th>Пенетрація%</th><th>Залишки</th><th>Термін придатності</th>
+          <th>Конкуренти</th><th>ВТМ</th><th>Ексклюзив</th><th>Умови%</th>
+        </tr>
+      </thead>
+      <tbody id="currentVisitBody"></tbody>
+    </table>
+</div>
+  </div>
+  </form>
+  <div style="margin: 40px 0; display: flex; gap: 20px;">
+  <button id="sendReport">Відправити дані</button>
+  <a href="calendar.html"><button>Перейти в календар</button></a>
+  <a href="menu.html"><button>Перейти в меню</button></a>
+</div>
+<img src="./ph.png" alt="logo" width="260">
+<div id="loadingModal" class="modal" style="display:none;">
+  <div class="modal-content">
+    <div class="spinner"></div>
+    <p>Збереження даних... будь ласка, зачекайте</p>
+  </div>
+</div>
+<script type="module">
+// ===== Користувачі та партнери =====
+const userNames = {
+  fedir: "Олександр Красніков",
+  olena: "Тетяна Романовська",
+  office: "Офіс",
+  andriy: "Тетяна Кліменко",
+  maria: "Тетяна Демус",
+  serhiy: "Ілона Бабенко"
+};
+const userMap = {
+    fedir: [9,798,31,15,41,26,32,66,47,17,121,61,52,76,29,22,94,23,16,55],
+  olena: [11,53,45,146,181,27,601,108,10,51,49],
+  office: [1,2,3,4,5],
+  andriy: [18,19],
+  maria: [49,46,36,7,28,30,37,14,56,38,60],
+  serhiy: [12,75,13,8,21,67,48]
+};
+const currentUser = localStorage.getItem("currentUser");
+let selectedPartnerName = "";
+
+if (!currentUser) {
+  alert("Будь ласка, увійдіть спочатку!");
+  window.location.href = "login.html";
+} else {
+  document.getElementById("userInfo").textContent =
+    "Ви увійшли як: " + (userNames[currentUser] || currentUser);
+}
+
+// ===== Партнери =====
+function initPartners(userKey) {
+  const partners = JSON.parse(localStorage.getItem("partners")) || [];
+  const ids = userMap[userKey] || [];
+  const filtered = partners.filter(p => ids.includes(Number(p.id)));
+
+  const partnerSelect = document.getElementById("partnerSelect");
+  partnerSelect.innerHTML = `<option value="">Оберіть партнера</option>`;
+  filtered.forEach(p => {
+    const option = document.createElement("option");
+    option.value = p.id;
+    option.textContent = p.name;
+    partnerSelect.appendChild(option);
+  });
+
+  partnerSelect.addEventListener("change", e => {
+    const partnerId = parseInt(e.target.value, 10);
+    selectedPartnerName = filtered.find(p => p.id === partnerId)?.name || "";
+    initVisits(userKey, partnerId);
+  });
+}
+
+// ===== Перехід з календаря =====
+const urlParams = new URLSearchParams(window.location.search);
+const partnerIdFromUrl = urlParams.get("partnerId");
+document.addEventListener("DOMContentLoaded", () => {
+  initPartners(currentUser);
+  if (partnerIdFromUrl) {
+    const partners = JSON.parse(localStorage.getItem("partners")) || [];
+    const selectedPartner = partners.find(p => p.id == partnerIdFromUrl);
+    if (selectedPartner) {
+      selectedPartnerName = selectedPartner.name;
+      document.getElementById("partnerSelect").value = partnerIdFromUrl;
+      initVisits(currentUser, Number(partnerIdFromUrl));
+    }
+  }
+});
+
+// ===== Візити =====
+function formatDate(value) {
+  if (!value) return "-";
+  if (typeof value === "string" && value.startsWith("Date(")) {
+    const parts = value.match(/\d+/g);
+    if (parts) {
+      const year = parts[0];
+      const month = String(Number(parts[1]) + 1).padStart(2, "0");
+      const day = String(parts[2]).padStart(2, "0");
+      return `${day}.${month}.${year}`;
+    }
+  }
+  return value;
+}
+function formatExpiry(value) {
+  return formatDate(value);
+}
+
+async function fetchVisits(visitsUrl, partnerId) {
+  const res = await fetch(`${visitsUrl}/gviz/tq?tqx=out:json&range=A1:Z1000`);
+  const text = await res.text();
+  const json = JSON.parse(text.substr(47).slice(0, -2));
+  const rows = json.table.rows.map(r => r.c.map(c => c?.v || ""));
+  const filtered = rows.filter(r => (r[1] || "").trim() === selectedPartnerName.trim());
+
+  // Історія візитів: тільки якщо є статус або коментар
+  const visitMap = new Map();
+  filtered.forEach(r => {
+    const date = formatDate(r[2]);
+    if (!date) return;
+    const status = r[3];
+    const comment = r[4];
+    if (status || comment) {
+      if (!visitMap.has(date)) {
+        visitMap.set(date, { date, status, comment });
+      }
+    }
+  });
+  const metaHistory = Array.from(visitMap.values());
+
+  // Продукти: беремо лише останній заповнений рядок
+  const productMap = new Map();
+  filtered.forEach(r => {
+    const name = r[5];
+    if (!name) return;
+    const rowDate = parseDate(r[2]);
+
+    const candidate = {
+      name,
+      percent: r[6],
+      qty: r[7],
+      penetration: r[8],
+      stock: r[9],
+      expiry: r[10],
+      competitors: r[11],
+      vtm: r[12] === "Ні",
+      exclusive: r[13] === "Ні",
+      conditions: r[14],
+      reportDate: formatDate(r[2]),
+      _date: rowDate
+    };
+
+    const existing = productMap.get(name);
+    const hasData = candidate.percent || candidate.qty || candidate.penetration || candidate.stock || candidate.expiry;
+
+    if (hasData) {
+      if (!existing) {
+        productMap.set(name, candidate);
+      } else if (rowDate && (!existing._date || rowDate > existing._date)) {
+        productMap.set(name, candidate);
+      }
+    }
+  });
+
+  const products = Array.from(productMap.values());
+  return { metaHistory, products };
+}
+function parseDate(value) {
+  if (typeof value === "string" && value.startsWith("Date(")) {
+    const parts = value.match(/\d+/g);
+    if (parts) {
+      return new Date(Number(parts[0]), Number(parts[1]), Number(parts[2]));
+    }
+  }
+  return null;
+}
+
+async function initVisits(user, partnerId) {
+  const visitsUrl = "https://docs.google.com/spreadsheets/d/1JLC4owgnuT9MYXOc-kGYXLtU3ym_fhvjIHtnlbpn3Gc";
+  const { metaHistory, products } = await fetchVisits(visitsUrl, partnerId);
+
+  if (!metaHistory.length) {
+    document.getElementById("visitMetaBody").innerHTML =
+      `<tr><td colspan="3">Історії візитів немає</td></tr>`;
+  } else {
+    renderVisitMeta(metaHistory);
+  }
+
+  if (!products.length) {
+    document.getElementById("lastVisitBody").innerHTML =
+      `<tr><td colspan="7">Дані по продуктах відсутні</td></tr>`;
+  } else {
+    renderLastVisit(products);
+  }
+
+  renderCurrentVisit();
+}
+
+function renderVisitMeta(metaHistory = []) {
+  const body = document.getElementById("visitMetaBody");
+  body.innerHTML = "";
+  metaHistory.forEach(m => {
+    body.innerHTML += `<tr>
+      <td>${m.date}</td>
+      <td>${m.status || "-"}</td>
+      <td>${m.comment || "-"}</td>
+    </tr>`;
+  });
+}
+
+const productNames = [
+  "CLK№50","CLK№5","CLK№25","CL2GK№50","HPAg","Ultra","Solomini№5","Secret№2",
+  "Secret","Duet","Syphilis","Rota","CLpH№25","CLpH№1","ActimPROM","HIV","HCV",
+  "HBsAg","StrA","Influenza","CovidAg","CovidAg+Influenza","TnI","CardioCombo",
+  "multy5","multy10"
+];
+
+function renderLastVisit(products = []) {
+  const body = document.getElementById("lastVisitBody");
+  body.innerHTML = "";
+  products.forEach(p => {
+    const hasData = p.percent || p.qty || p.penetration || p.stock || p.expiry;
+    if (!hasData) return; // пропускаємо порожні рядки
+
+    body.innerHTML += `<tr>
+      <td>${p.name}</td>
+      <td>${p.percent || ""}</td>
+      <td>${p.qty || ""}</td>
+      <td>${p.penetration || ""}</td>
+      <td>${p.stock || ""}</td>
+      <td>${formatExpiry(p.expiry) || ""}</td>
+      <td>${p.reportDate || ""}</td>
+      <td>${p.competitors || ""}</td>
+      <td>${p.vtm ? "Так" : "Ні"}</td>
+      <td>${p.exclusive ? "Так" : "Ні"}</td>
+      <td>${p.conditions || ""}</td>
+    </tr>`;
+  });
+
+  if (!body.innerHTML) {
+    body.innerHTML = `<tr><td colspan="7">Дані по продуктах відсутні</td></tr>`;
+  }
+}
+
+
+
+function renderCurrentVisit() {
+  const body = document.getElementById("currentVisitBody");
+  body.innerHTML = "";
+  productNames.forEach(name => {
+    body.innerHTML += `<tr>
+      <td>${name}</td>
+      <td contenteditable="true"></td>
+      <td contenteditable="true"></td>
+      <td contenteditable="true"></td>
+      <td contenteditable="true"></td>
+      <td><input type="date"></td>
+      <td contenteditable="true"></td>
+      <td><input type="checkbox" class="styled-checkbox"></td>
+      <td><input type="checkbox" class="styled-checkbox"></td>
+      <td contenteditable="true"></td>
+    </tr>`;
+  });
+}
+
+
+// ===== Збереження даних візиту до партнера =====
+document.getElementById("sendReport").addEventListener("click", async () => {
+  document.getElementById('loadingModal').style.display = 'flex';
+  const contactName = document.getElementById("contactName").value;
+  const contactPhone = document.getElementById("contactPhone").value;
+  const status = document.getElementById("visitStatus").value;
+  const comment = document.getElementById("visitComment").value;
+
+  const currentUserKey = localStorage.getItem("currentUser");
+  const currentUserName = localStorage.getItem("currentUserName") || userNames[currentUserKey];
+
+  const date = new Date().toLocaleDateString("uk-UA");
+  const time = new Date().toLocaleTimeString("uk-UA", {hour: "2-digit", minute: "2-digit"});
+
+  // Генеруємо VisitID один раз
+const urlParams = new URLSearchParams(window.location.search);
+let visitId = urlParams.get("visitId");
+if (!visitId) {
+  visitId = Date.now(); // якщо не з календаря
+}
+
+
+  // 1. Коротка інформація на partnerVisits
+  const shortData = {
+    action: "savePartnerVisit",
+    userName: currentUserName,
+    partnerName: selectedPartnerName,
+    date,
+    time,
+    contactName,
+    contactPhone,
+    status,
+    comment,
+    visitId
+  };
+
+  // 2. Детальна інформація на Візити
+  const rows = document.querySelectorAll("#currentVisitBody tr");
+  const detailedData = Array.from(rows).map(tr => {
+    const cells = tr.querySelectorAll("td");
+    return {
+      name: cells[0].textContent.trim(),
+      percent: cells[1].textContent.trim(),
+      qty: cells[2].textContent.trim(),
+      penetration: cells[3].textContent.trim(),
+      stock: cells[4].textContent.trim(),
+      expiry: cells[5].querySelector("input").value,
+      competitors: cells[6].textContent.trim(),
+      vtm: cells[7].querySelector("input[type='checkbox']").checked,
+      exclusive: cells[8].querySelector("input[type='checkbox']").checked,
+      conditions: cells[9].textContent.trim()
+    };
+  }).filter(r =>
+    r.percent || r.qty || r.penetration || r.stock || r.expiry || r.competitors || r.vtm || r.exclusive || r.conditions
+  );
+
+  // 🔎 Отримуємо координати перед відправкою
+  navigator.geolocation.getCurrentPosition(async pos => {
+    const lat = pos.coords.latitude;
+    const lon = pos.coords.longitude;
+
+    shortData.lat = lat;
+    shortData.lon = lon;
+
+    try {
+      // Відправка короткої інформації
+      await fetch("https://script.google.com/macros/s/AKfycbz_uLWhj_ww5YLdnrdgGWu9l2AGraznsiGjVSV8dnMuPygaK8vJRKlv-7O9Ou0krKzIAA/exec", {
+        method: "POST",
+        mode: "no-cors",
+        body: JSON.stringify(shortData),
+        headers: { "Content-Type": "application/json" }
+      });
+
+      // Відправка детальної інформації
+      await fetch("https://script.google.com/macros/s/AKfycbz_uLWhj_ww5YLdnrdgGWu9l2AGraznsiGjVSV8dnMuPygaK8vJRKlv-7O9Ou0krKzIAA/exec", {
+        method: "POST",
+        mode: "no-cors",
+        body: JSON.stringify({
+          action: "savePartnerProducts",
+          userName: currentUserName,
+          partnerName: selectedPartnerName,
+          date,
+          time,
+          status,
+          comment,
+          visitId,       // ← той самий VisitID
+          data: detailedData
+        }),
+        headers: { "Content-Type": "application/json" }
+      });
+
+      alert("Візит збережено!");
+      location.reload();
+    } catch (err) {
+      console.error("Помилка збереження:", err);
+      alert("Не вдалося зберегти візит");
+    }
+  }, async err => {
+    console.error("❌ Помилка GPS:", err);
+    alert("Не вдалося отримати координати, візит буде збережено без них.");
+
+    try {
+      await fetch("https://script.google.com/macros/s/AKfycbz_uLWhj_ww5YLdnrdgGWu9l2AGraznsiGjVSV8dnMuPygaK8vJRKlv-7O9Ou0krKzIAA/exec", {
+        method: "POST",
+        mode: "no-cors",
+        body: JSON.stringify(shortData),
+        headers: { "Content-Type": "application/json" }
+      });
+
+      await fetch("https://script.google.com/macros/s/AKfycbz_uLWhj_ww5YLdnrdgGWu9l2AGraznsiGjVSV8dnMuPygaK8vJRKlv-7O9Ou0krKzIAA/exec", {
+        method: "POST",
+        mode: "no-cors",
+        body: JSON.stringify({
+          action: "savePartnerProducts",
+          userName: currentUserName,
+          partnerName: selectedPartnerName,
+          date,
+          time,
+          status,
+          comment,
+          visitId,       // ← той самий VisitID
+          data: detailedData
+        }),
+        headers: { "Content-Type": "application/json" }
+      });
+
+      alert("Візит збережено (без координат)!");
+ setTimeout(() => {
+      location.reload();
+    }, 8000);
+    } catch (err2) {
+      console.error("Помилка збереження:", err2);
+      alert("Не вдалося зберегти візит");
+      document.getElementById('loadingModal').style.display = 'none';
+    }
+  });
+});
+
+</script>
+</body>
+<html>

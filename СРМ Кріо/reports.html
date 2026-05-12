@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/jpg" href="bol.jpg">
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+  <title>Звіт</title>
+  <style>
+body {
+  font-family: Arial, sans-serif;
+  margin: 0; padding: 0;
+  background: linear-gradient(135deg, #009400, #004d00);
+  color: #ffffff;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* базові стилі таблиці */
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-top: 20px;
+  overflow-x: auto;
+  display: block;
+}
+
+th, td {
+  border: 1px solid #7a7a7a;
+  padding: 6px;
+  text-align: center;
+  font-size: 0.95rem;
+}
+
+th {
+  background: #adadad;
+  color: #000;
+}
+
+td.name { text-align: left; font-weight: bold; }
+td { background-color: rgba(255,255,255,0.05); }
+td.to-sell { text-align: center; font-weight: bold; color: white; }
+
+.filters {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  margin: 10px;
+  font-weight: bold;
+  text-align: left;
+  max-width: 100%;
+}
+
+input, select {
+  width: 100%;
+  max-width: 500px;
+  padding: 10px;
+  margin-top: 5px;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+button {
+  width: 200px;
+  padding: 12px;
+  margin-top: 10px;
+  background-color: #004d00;
+  color: #ffffff;
+  border: solid 1px #c2ffc2;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+button:hover { background-color: #25a525; }
+
+.buttons {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-top: 20px;
+}
+
+/* 📱 Телефони (до 480px) */
+@media (max-width: 480px) {
+  h3 { font-size: 1.2rem; }
+  p { font-size: 0.9rem; }
+  table { font-size: 0.75rem; }
+  th, td { padding: 4px; }
+  input, select { max-width: 95%; }
+  button {
+    width: 100%;
+    font-size: 0.9rem;
+  }
+  .buttons { grid-template-columns: 1fr; }
+}
+
+/* 📲 Планшети (481px–768px) */
+@media (min-width: 481px) and (max-width: 768px) {
+  h3 { font-size: 1.4rem; }
+  p { font-size: 1rem; }
+  table { font-size: 0.85rem; }
+  th, td { padding: 5px; }
+  input, select { max-width: 90%; }
+  button { width: 70%; font-size: 1rem; }
+  .buttons { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* 💻 Десктопи (769px і більше) */
+@media (min-width: 769px) {
+  h3 { font-size: 1.6rem; }
+  p { font-size: 1rem; }
+  table { font-size: 0.95rem; }
+  th, td { padding: 6px; }
+  input { max-width: 120px; }
+  select { max-width: 300px; }
+  button { width: 200px; }
+  .buttons { grid-template-columns: repeat(3, 1fr); }
+}
+/* Контейнер селекта */
+.select2-container .select2-selection--multiple {
+  background-color: #ffffff;   /* темно-зелений фон */
+  border: 1px solid #25a525;  /* світло-зелена рамка */
+  border-radius: 8px;
+  min-height: 45px;           /* більший розмір */
+  padding: 6px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+/* Випадаючий список */
+.select2-container .select2-dropdown {
+  background-color: #009400;
+  color: #fff;
+  border: 1px solid #25a525;
+  font-size: small;
+}
+
+/* Пошукове поле */
+.select2-container .select2-search__field {
+  background-color: #fff;
+  color: #000;
+  border: none;
+  padding: 6px;
+  font-size: 1rem;
+}
+.custom-select2.select2-container--default 
+.select2-selection--multiple 
+.select2-selection__choice {
+  position: relative !important;        /* базовий контейнер для абсолютного позиціонування */
+  background-color: #009400 !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 20px !important;
+  margin: 4px !important;
+  font-size: 0.95rem !important;
+  display: inline-block !important;
+  white-space: normal !important;       /* дозволяє перенос рядків */
+  overflow-wrap: break-word !important; /* переносить довгі слова */
+  word-break: break-word !important;
+  max-width: 50ch !important;           /* обмеження ~50 символів */
+  box-sizing: border-box !important;
+  padding: 6px 6px 6px 20px !important; /* відступи для тексту */
+}
+
+/* Текст всередині тегу */
+.custom-select2.select2-container--default 
+.select2-selection--multiple 
+.select2-selection__choice__display {
+  display: block !important;
+  color: #fff !important;
+  line-height: 1.3 !important;
+  padding-right: 24px !important;       /* резервуємо місце під хрестик */
+}
+
+/* Хрестик справа вгорі */
+.custom-select2.select2-container--default 
+.select2-selection--multiple 
+.select2-selection__choice__remove {
+  position: absolute !important;             /* відстань справа */
+  color: #03ff03 !important;
+  font-weight: bold !important;
+  cursor: pointer !important;
+  font-size: 30px !important;
+  border: none !important;
+  border-radius: 50%;
+  line-height: 0.5 !important;
+  width: 10px !important;
+
+}
+.custom-select2.select2-container--default 
+.select2-selection--multiple 
+.select2-selection__choice__remove:hover {
+  color: #ff7070 !important;
+  background-color: #25a52500 !important;
+}
+</style>
+</head>
+<body>
+  <h1>Звіти</h1>
+  <p id="userInfo"></p>
+  <img src="./logo.svg" alt="logo" width="260">
+
+  <div class="filters">
+    <label>Дата від: <input type="date" id="startDate"></label>
+    <label>Дата до: <input type="date" id="endDate"></label>
+  </div>
+
+  <!-- селект користувача показуємо лише адміну -->
+  <div class="filters" id="userFilter" style="display:none;">
+    <label>Користувач:
+      <select id="userName">
+        <option value="">Всі</option>
+        <option value="demian">Дем'ян Загородній</option>
+        <option value="vitaliy">Віталій Гаптенко</option>
+        <option value="olga">Ольга Леонова</option>
+        <option value="katya">Катерина Скрябіна</option>
+        <option value="stavka">Ставка</option>
+      </select>
+    </label>
+  </div>
+
+  <div class="filters" id="partnerFilter">
+<label for="productSelect">Продукт:
+    <select id="productSelect" multiple="multiple" style="width:300px;"></select>
+</label>
+  </div>
+
+  <div class="buttons">
+    
+    <button onclick="loadReport('doctor')">Візити до лікарів</button>
+    <button onclick="loadReport('calendar')">Календар</button>
+  </div><br><br><br>
+    <div class="buttons">  
+    <button onclick="resetFilters()">Скинути фільтри</button>
+    <a href="menu.html"><button class="button">Перейти в меню</button></a>
+  </div>
+<div id="filters" style="display:none;">
+  <label>Місто:
+    <select id="cityFilter"><option value="">Всі</option></select>
+  </label>
+  <label>ЛПЗ:
+    <select id="lpzFilter"><option value="">Всі</option></select>
+  </label>
+  <label>Спеціальність:
+    <select id="specialtyFilter"><option value="">Всі</option></select>
+  </label>
+</div>
+  <div style="margin-top: 20px; padding-left: 20px" id="report"></div>
+
+  <div class="buttons">
+    <button onclick="exportToExcel()">Експортувати в Excel</button>
+  </div>
+
+  <img src="./ph.png" alt="logo" width="260">
+<button id="scrollTopBtn" style="display:none; position:fixed; bottom:20px; right:20px; z-index:99;">
+  ↑ Вгору
+</button>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+  <script>
+    // показуємо кнопку при прокрутці вниз
+// Кнопка "Вгору"
+window.onscroll = () => {
+  const btn = document.getElementById("scrollTopBtn");
+  btn.style.display = (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) ? "block" : "none";
+};
+document.getElementById("scrollTopBtn").addEventListener("click", () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+// Select2 ініціалізація
+$(document).ready(() => {
+  $("#productSelect").select2({ placeholder: "Оберіть продукт", allowClear: true, width: '300px' })
+    .next(".select2-container").addClass("custom-select2");
+});
+
+// Користувачі та продукти
+const userNames = {
+  demian: "Дем'ян Загородній",
+  vitaliy: "Віталій Гаптенко",
+  olga: "Ольга Леонова",
+  katya: "Катерина Скрябіна",
+  stavka: "Ставка",
+  admink: "admin"
+};
+const productNames = ["Crio","Crio zond","Kiomedine"];
+
+const currentUser = localStorage.getItem("currentUser");
+document.getElementById("userInfo").textContent =
+  "Користувач: " + (userNames[currentUser] || "невідомий");
+if (currentUser === "admink") document.getElementById("userFilter").style.display = "block";
+
+let selectedProductName = [];
+let currentType = "";
+window.lastReportData = [];
+
+// Ініціалізація продуктів
+function initProducts() {
+  const productSelect = $("#productSelect").empty();
+  productNames.forEach(name => productSelect.append(new Option(name, name)));
+  productSelect.on("change", () => selectedProductName = $(productSelect).val() || []);
+}
+
+// Нормалізація дат
+const normalizeDate = d => /^\d{4}-\d{2}-\d{2}$/.test(d) ? d :
+  (/^\d{2}\.\d{2}\.\d{4}$/.test(d) ? d.split(".").reverse().join("-") : d);
+
+// Завантаження звіту
+async function loadReport(type) {
+  currentType = type;
+  const startDate = document.getElementById("startDate").value;
+  const endDate = document.getElementById("endDate").value;
+  const selectedUserKey = currentUser === "admink" ? document.getElementById("userName").value : null;
+  let data = JSON.parse(localStorage.getItem(type + "Cache")) || [];
+
+  if (type !== "contacts") {
+    data = data.filter(row => {
+      // 👉 якщо адмін і селектор порожній → не фільтруємо по користувачу
+      const matchUser = currentUser === "admink"
+        ? (!selectedUserKey || row.userName === userNames[selectedUserKey])
+        : row.userName === userNames[currentUser];
+
+      const d = normalizeDate(row.date);
+      const matchDate = (!startDate || d >= startDate) && (!endDate || d <= endDate);
+      const matchProduct = selectedProductName.length ? selectedProductName.includes(row.product) : true;
+
+      return matchUser && matchDate && matchProduct;
+    });
+  }
+
+  document.getElementById("filters").style.display = "none";
+  document.getElementById("partnerFilter").style.display = "none";
+
+  if (type === "calendar") {
+    renderCalendarReport(JSON.parse(localStorage.getItem("calendarCache")) || []);
+  } else if (type === "doctor") {
+    renderDoctorVisitsReport(data);
+    populateFilters(data);
+    document.getElementById("filters").style.display = "block";
+  } else {
+    renderDefaultTable(data);
+  }
+
+  window.lastReportData = data;
+}
+
+
+// Скидання фільтрів
+function resetFilters() {
+  ["startDate","endDate","userName","partnerSelect","productSelect"].forEach(id => document.getElementById(id).value = "");
+  selectedProductName = [];
+  initProducts();
+  ["cityFilter","lpzFilter","specialtyFilter"].forEach(id => document.getElementById(id).innerHTML = "<option value=''>Всі</option>");
+  document.getElementById("filters").style.display = "none";
+  document.getElementById("report").innerHTML = "<p>Фільтри скинуто. Оберіть нові параметри.</p>";
+}
+
+// Рендер звітів
+function renderDoctorVisitsReport(data) {
+  const grouped = {};
+  data.forEach(r => {
+    const key = `${r.userName}_${r.date}_${r.time}_${r.doctor}`;
+    if (!grouped[key]) grouped[key] = {...r, products: []};
+    grouped[key].products.push({ product:r.product, potential:r.potential, opening:r.opening, toSell:r.toSell, agreement:r.agreement, competitors:r.competitors, comments:r.comments });
+  });
+  document.getElementById("report").innerHTML = Object.values(grouped).map(v => `
+    <h3>${v.userName} — ${v.date} ${v.time}</h3>
+    <p>Лікар: ${v.doctor} (${v.specialty})</p>
+    <p>ЛПЗ: ${v.lpz}, ${v.city}, ${v.region}</p>
+    <table><tr><th>Продукт</th><th>Потенціал</th><th>Розкриття</th><th>Продано</th><th>Домовленість</th><th>Конкуренти</th><th>Коментар</th></tr>
+    ${v.products.map(p=>`<tr><td>${p.product||"-"}</td><td>${p.potential||"-"}</td><td>${p.opening||"-"}</td><td>${p.toSell||"-"}</td><td>${p.agreement||"-"}</td><td>${p.competitors||"-"}</td><td>${p.comments||"-"}</td></tr>`).join("")}
+    </table><hr/>`).join("");
+}
+
+function populateFilters(data) {
+  const citySelect = document.getElementById("cityFilter");
+  const lpzSelect = document.getElementById("lpzFilter");
+  const specialtySelect = document.getElementById("specialtyFilter");
+
+  // базові опції
+  citySelect.innerHTML = "<option value=''>Всі</option>";
+  lpzSelect.innerHTML = "<option value=''>Всі</option>";
+  specialtySelect.innerHTML = "<option value=''>Всі</option>";
+
+  // наповнюємо незалежно
+  [...new Set(data.map(r => r.city).filter(Boolean))]
+    .forEach(c => citySelect.innerHTML += `<option value="${c}">${c}</option>`);
+
+  [...new Set(data.map(r => r.lpz).filter(Boolean))]
+    .forEach(l => lpzSelect.innerHTML += `<option value="${l}">${l}</option>`);
+
+  [...new Set(data.map(r => r.specialty).filter(Boolean))]
+    .forEach(s => specialtySelect.innerHTML += `<option value="${s}">${s}</option>`);
+}
+
+// незалежна фільтрація
+const applyFilters = data => data.filter(r =>
+  (!document.getElementById("cityFilter").value || r.city === document.getElementById("cityFilter").value) &&
+  (!document.getElementById("lpzFilter").value || r.lpz === document.getElementById("lpzFilter").value) &&
+  (!document.getElementById("specialtyFilter").value || r.specialty === document.getElementById("specialtyFilter").value)
+);
+
+function renderDefaultTable(data) {
+  if (!data.length) return;
+  let html = "<table><tr>"+Object.keys(data[0]).map(k=>"<th>"+k+"</th>").join("")+"</tr>";
+  data.forEach(r => { html += "<tr>"+Object.values(r).map(v=>"<td>"+v+"</td>").join("")+"</tr>"; });
+  document.getElementById("report").innerHTML = html+"</table>";
+}
+
+async function preloadCalendarVisits() {
+  try {
+    const res = await fetch("https://script.google.com/macros/s/AKfycbxMDNAS6nal0EJvDk1U33cXA8l3n0CVOuiEjdozUcpFZTWMliDRAJZmPp5COUW6LRIt/exec?type=calendar");
+    const data = await res.json();
+    localStorage.setItem("calendarCache", JSON.stringify(data));
+  } catch (err) { console.error("❌ Помилка при завантаженні календарних візитів:", err); }
+}
+
+function renderCalendarReport(data) {
+  if (!data || !data.length) {
+    document.getElementById("report").innerHTML = "<p>Немає даних календаря</p>";
+    return;
+  }
+
+  let html = "<table><tr><th>Користувач</th><th>Дата</th><th>Час</th><th>Партнер/ЛПЗ</th><th>Місто</th><th>Адреса</th><th>Коментар</th></tr>";
+  html += data.map(v => `
+    <tr>
+      <td>${v.userName || "-"}</td>
+      <td>${v.date || "-"}</td>
+      <td>${v.time || "-"}</td>
+      <td>${v.partnerName || v.lpz || "-"}</td>
+      <td>${v.city || "-"}</td>
+      <td>${v.address || "-"}</td>
+      <td>${v.comment || "-"}</td>
+    </tr>`).join("");
+  html += "</table>";
+
+  document.getElementById("report").innerHTML = html;
+  window.lastReportData = data;
+}
+
+function exportToExcel() {
+  const data = window.lastReportData || [];
+  if (!data.length) {
+    alert("Немає даних для експорту");
+    return;
+  }
+  const wb = XLSX.utils.book_new();
+  const ws = XLSX.utils.json_to_sheet(data);
+  XLSX.utils.book_append_sheet(wb, ws, "Report");
+  XLSX.writeFile(wb, "report.xlsx");
+}
+
+// Ініціалізація після завантаження сторінки
+document.addEventListener("DOMContentLoaded", () => {
+  initProducts();
+  preloadCalendarVisits();
+
+  // слухачі для фільтрів лікарських візитів
+  ["cityFilter","lpzFilter","specialtyFilter"].forEach(id => {
+    document.getElementById(id).addEventListener("change", () => {
+      if (currentType === "doctor") {
+        const filtered = applyFilters(window.lastReportData || []);
+        renderDoctorVisitsReport(filtered);
+      }
+    });
+  });
+
+  // слухач для селектора користувача (адмін)
+  document.getElementById("userName").addEventListener("change", () => {
+    if (currentType) loadReport(currentType);
+  });
+
+  // слухач для селектора продуктів
+  document.getElementById("productSelect").addEventListener("change", () => {
+    if (currentType) loadReport(currentType);
+  });
+});
+
+</script>
+</body>
+</html>
+

@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Календар планувальник</title>
+  <link rel="icon" type="image/jpg" href="bol.jpg">
+    <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0; padding: 0;
+      background: linear-gradient(135deg, #009400, #004d00);
+      color: #ffffff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    h2 { margin-top: 20px; }
+
+    .main-content {
+      display: flex;
+      justify-content: space-evenly;
+      width: 95%;
+      max-width: 1200px;
+      margin-top: 20px;
+    }
+    #calendar {
+      max-width: 1200px;
+      width: 95%;
+      margin: 0 auto;
+      padding: 15px;
+      background: #2bac1f;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      height: 650px;
+    }
+     /* Панель лікарів */
+    .doctor-panel {
+      width: 280px;
+      background: #2bac1f;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #ffffff;
+      color: #fff;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    }
+    .doctor-panel h3 {
+      margin-top: 0;
+      text-align: center;
+    }
+    #searchInput {
+      width: 100%;
+      padding: 8px;
+      border-radius: 4px;
+      border: 1px solid #ffffff;
+      background-color: #26a12b;
+      color: #fff;
+      margin-bottom: 10px;
+    }
+    #doctorCards {
+      max-height: 500px;
+      overflow-y: auto;
+    }
+    .doctor-card {
+      background: #e6ffe6;
+      border: 1px solid #25a525;
+      padding: 8px;
+      margin-bottom: 6px;
+      cursor: grab;
+      border-radius: 4px;
+      color: #000;
+      font-size: 0.9rem;
+    }
+    #addVisitForm {
+      width: 100%;
+      max-width: 500px;
+      padding: 15px;
+      border: 1px solid #ffffff;
+      border-radius: 8px;
+      background: #2bac1f;
+    }
+    #addVisitForm input, #addVisitForm select, #addVisitForm button {
+      margin: 5px 0;
+      padding: 8px;
+      width: 100%;
+      border-radius: 4px;
+      border: 1px solid #ffffff;
+    }
+    #addVisitForm button {
+      background: #127415;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+    }
+    #addVisitForm button:hover {
+      background: #388E3C;
+    }
+    input, select {
+      box-sizing: border-box;
+      border: 1px solid #ffffff;
+      padding: 4px;
+      border-radius: 4px;
+      font-size: 13px;
+      width: 100%; 
+      margin: 0px;
+      box-sizing: border-box;
+      background-color: #26a12b;
+      color: #fff;
+    }
+    :placeholder-shown {
+      background-color: #f5fdf6;
+      color: #fff;
+    }
+    /* фон модалки */
+.modal {
+  display: none; /* приховано за замовчуванням */
+  position: fixed; /* поверх усіх елементів */
+  z-index: 1000; /* високий пріоритет */
+  left: 0;
+  top: 0;
+  width: 100%; /* на всю ширину */
+  height: 100%; /* на всю висоту */
+  overflow: auto; /* прокрутка якщо контент великий */
+  background-color: rgba(0,0,0,0.5); /* напівпрозорий чорний фон */
+}
+
+/* контейнер контенту */
+.modal-content {
+  background-color: #009700;
+  margin: 10% auto; /* відступ зверху і по центру */
+  padding: 20px;
+  border-radius: 8px;
+  width: 400px; /* ширина модалки */
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  text-align: center;
+  color: white;
+}
+
+/* кнопки */
+.modal-content button, .modal-buttons button {
+  margin: 8px;
+  padding: 10px 16px;
+  border: solid 1px #c2ffc2;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#startBtn { background-color: #32CD32; color: #fff; }
+#rescheduleBtn { background-color: #1E90FF; color: #fff; }
+#confirmReschedule { background-color: #FFD700; color: #000; }
+#cancelBtn { background-color: #DC143C; color: #fff; }
+#confirmYes { background-color: #32CD32; color: #fff; }
+#confirmNo { background-color: #DC143C; color: #fff; }
+.button {
+      width: 200px; padding: 12px; margin-top: 10px;
+      background-color: #004d00; color: #ffffff;
+      border: solid 1px #c2ffc2; border-radius: 6px; font-size: 1rem;
+      cursor: pointer; transition: background 0.3s ease;
+    }
+     h3 { margin-top: 30px; text-align: center; }
+     ::placeholder {
+      color: white; 
+    }
+@media (max-width: 480px) {
+  #calendar {
+    height: 400px;
+    padding: 10px;
+  }
+}
+@media (max-width: 480px) {
+  .modal-content {
+    width: 90%;
+    margin: 30% auto;
+  }
+}
+@media (max-width: 480px) {
+  body { font-size: 0.9rem; }
+  h3 { font-size: 1.2rem; }
+  .main-content { flex-direction: column; }
+  #addVisitForm { padding: 10px; }
+  #addVisitForm input, #addVisitForm select, #addVisitForm button {
+    font-size: 0.9rem;
+  }
+}
+/* збільшення висоти слотів у timeGrid */
+.fc-timegrid-slot {
+  min-height: 30px;   /* стандарт ~30px, тепер удвічі більше */
+  line-height: 40px;  /* щоб текст вирівнювався по центру */
+}
+
+/* якщо треба, щоб текст переносився */
+.fc-event-title {
+  white-space: normal;   /* дозволяє перенос рядків */
+  word-break: break-word;
+  font-size: x-small;
+
+}
+
+
+  </style>
+</head>
+<body>
+  <h2>Календар планувальник</h2>
+   <img src="./logo.svg" alt="logo" width="260">
+   <div id="userInfo" style="margin-bottom: 15px; font-weight: bold;"></div>
+  <div class="main-content">
+   <div class="doctor-panel">
+      <h3>Лікарі</h3>
+      <input id="searchInput" type="text" placeholder="Пошук лікаря, міста, спеціальності...">
+      <div id="doctorCards"></div>
+    </div>
+ <!-- Календар -->
+  <div id="calendar"></div>
+  </div >
+  <a href="menu.html"><button class="button">Перейти в меню</button></a>
+ <img src="./ph.png" alt="logo" width="260">
+<!-- Модальне вікно -->
+<div id="visitModal" class="modal" style="display:none;">
+  <div class="modal-content">
+    <h3 id="modalTitle"></h3>
+    <div class="doctor-info" style="margin-bottom: 15px; text-align: center;"></div>
+    <button id="startBtn" >Почати</button>
+    <button id="rescheduleBtn">Перенести</button>
+    <input type="text" id="newDate" style="display:none;">
+    <select id="newTime" style="display:none;">
+  <option value="08:00">08:00</option>
+  <option value="08:30">08:30</option>
+  <option value="09:00">09:00</option>
+  <option value="09:30">09:30</option>
+  <option value="10:00">10:00</option>
+  <option value="10:30">10:30</option>
+  <option value="11:00">11:00</option>
+  <option value="11:30">11:30</option>
+  <option value="12:00">12:00</option>
+  <option value="12:30">12:30</option>
+  <option value="13:00">13:00</option>
+  <option value="13:30">13:30</option>
+  <option value="14:00">14:00</option>
+  <option value="14:30">14:30</option>
+  <option value="15:00">15:00</option>
+  <option value="15:30">15:30</option>
+  <option value="16:00">16:00</option>
+  <option value="16:30">16:30</option>
+  <option value="17:00">17:00</option>
+  <option value="17:30">17:30</option>
+  <option value="18:00">18:00</option>
+  <option value="18:30">18:30</option>
+</select>
+    <button id="confirmReschedule">Підтвердити перенесення</button>
+    <button id="cancelBtn">Відмінити</button>
+  </div>
+</div>
+<!-- Модалка підтвердження -->
+<div id="confirmModal" style="display:none; position:fixed; top:30%; left:50%; transform:translate(-50%,-30%);
+     background:#18ce00; border:1px solid #ccc; padding:20px; z-index:1000; border-radius: 4px;">
+  <h3 id="confirmTitle"></h3>
+  <div class="modal-buttons" style="margin-top:15px; text-align:center; justify-content: center;">
+    <button id="confirmYes">Підтвердити</button>
+    <button id="confirmNo">Скасувати</button>
+  </div>
+</div>
+<!-- FullCalendar CSS -->
+<link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
+
+<!-- Flatpickr CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+<!-- FullCalendar JS (глобальна збірка, включає interaction) -->
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+
+<!-- Flatpickr JS -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+<!-- Локалізація українська -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/uk.js"></script>
+
+  <script>
+// Користувачі
+const userNames = {
+  demian: "Дем'ян Загородній",
+  vitaliy: "Віталій Гаптенко",
+  olga: "Ольга Леонова",
+  katya: "Катерина Скрябіна",
+  stavka: "Ставка",
+};
+
+const currentUser = localStorage.getItem("currentUser");
+if (!currentUser) {
+  alert("Будь ласка, увійдіть спочатку!");
+  window.location.href = "index.html";
+} else {
+  document.getElementById("userInfo").textContent =
+    "Ви увійшли як: " + (userNames[currentUser] || currentUser);
+}
+
+let doctors = [];
+
+// Завантаження лікарів з бекенду
+async function loadDoctors() {
+  const url = "https://docs.google.com/spreadsheets/d/1kgoYGolqlj9Wf5MuMNriTjiKqbLnEooa9S5gSXLlYYM/gviz/tq?tqx=out:json&sheet=Sheet1";
+  const res = await fetch(url);
+  const text = await res.text();
+  const json = JSON.parse(text.substr(47).slice(0, -2));
+  const rows = json.table.rows.map(r => r.c.map(c => c ? c.v : ""));
+
+  doctors = rows.map(r => ({
+    region: r[0],
+    city: r[1],
+    lpz: r[2],
+    specialty: r[3],
+    doctor: r[4],
+    userName: r[5]
+  }));
+
+  // показуємо тільки лікарів поточного користувача
+  const filteredDoctors = doctors.filter(d => d.userName === userNames[currentUser]);
+  renderDoctorCards(filteredDoctors);
+  initUniversalSearch(filteredDoctors);
+  loadVisits();
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  loadDoctors();
+});
+
+let calendar;
+
+// Рендер карток лікарів
+function renderDoctorCards(filtered = doctors) {
+  const container = document.getElementById("doctorCards");
+  container.innerHTML = "";
+
+  if (!filtered.length) {
+    container.innerHTML = "<p>Лікарів не знайдено.</p>";
+    return;
+  }
+
+  filtered.forEach(d => {
+    const card = document.createElement("div");
+    card.className = "doctor-card fc-event";
+    card.textContent = `${d.doctor} — ${d.specialty}, ${d.city}`;
+    card.dataset.doctor = JSON.stringify(d);
+    container.appendChild(card);
+  });
+
+  new FullCalendar.Draggable(container, {
+    itemSelector: ".doctor-card",
+    eventData: function(el) {
+      const doctor = JSON.parse(el.dataset.doctor);
+      return {
+        title: doctor.doctor,
+        extendedProps: doctor
+      };
+    }
+  });
+}
+
+// Універсальний пошук
+function initUniversalSearch(doctors) {
+  const input = document.getElementById("searchInput");
+  input.addEventListener("input", () => {
+    const q = input.value.toLowerCase();
+    const filtered = doctors.filter(d =>
+      d.doctor.toLowerCase().includes(q) ||
+      d.specialty.toLowerCase().includes(q) ||
+      d.city.toLowerCase().includes(q) ||
+      (d.userName && d.userName.toLowerCase().includes(q))
+    );
+    renderDoctorCards(filtered.filter(d => d.userName === userNames[currentUser]));
+  });
+  renderDoctorCards(doctors.filter(d => d.userName === userNames[currentUser]));
+}
+
+// Допоміжні функції
+function isValidSlot(timeStr) {
+  if (!timeStr) return false;
+  timeStr = timeStr.trim().slice(0,5); // HH:MM
+  const allowed = [];
+  for (let h = 8; h <= 18; h++) {
+    allowed.push(`${String(h).padStart(2,"0")}:00`);
+    if (h !== 18) allowed.push(`${String(h).padStart(2,"0")}:30`);
+  }
+  return allowed.includes(timeStr);
+}
+
+function isPastDay(dateStr) {
+  const today = new Date();
+  today.setHours(0,0,0,0);
+  const chosen = new Date(dateStr.split("T")[0]);
+  chosen.setHours(0,0,0,0);
+  return chosen < today;
+}
+
+function normalizeDate(dateStr, timeStr) {
+  dateStr = String(dateStr || "").trim();
+  timeStr = String(timeStr || "").trim();
+
+  // формат YYYY-MM-DD
+  if (/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
+    return new Date(`${dateStr}T${timeStr || "00:00"}`);
+  }
+
+  // формат DD.MM.YYYY
+  if (/^\d{2}\.\d{2}\.\d{4}$/.test(dateStr)) {
+    const [day, month, year] = dateStr.split(".");
+    return new Date(`${year}-${month}-${day}T${timeStr || "00:00"}`);
+  }
+
+  // формат "YYYY-MM-DD HH:MM"
+  if (/^\d{4}-\d{2}-\d{2}\s\d{2}:\d{2}$/.test(dateStr + " " + timeStr)) {
+    const [d, t] = (dateStr + " " + timeStr).split(" ");
+    return new Date(`${d}T${t}`);
+  }
+
+  // fallback
+  return new Date(`${dateStr}T${timeStr || "00:00"}`);
+}
+function isSlotFree(date, time, excludeEventId = null) {
+  const start = normalizeDate(date, time);
+  const end = new Date(start.getTime() + 30*60000);
+
+  const events = calendar.getEvents();
+  console.log("isSlotFree check:", date, time, "events:", events.map(e => e.id));
+
+  return !events.some(ev => {
+    if (!ev.id) return false; // 👈 ігноруємо тимчасові події без id
+    if (excludeEventId && ev.id === excludeEventId) return false;
+    const evStart = ev.start;
+    const evEnd = ev.end || new Date(evStart.getTime() + 30*60000);
+    return evStart < end && evEnd > start;
+  });
+}
+// Стилізація події
+function styleEvent(info) {
+  const status = info.event.extendedProps.status || "";
+
+  if (status === "Заплановано") {
+    info.el.style.backgroundColor = "#1E90FF";
+  } else if (status === "Перенесено") {
+    info.el.style.backgroundColor = "#FFD700";
+  } else if (status === "Відмінено") {
+    info.el.style.backgroundColor = "#DC143C";
+  } else if (status === "Виконано") {
+    info.el.style.backgroundColor = "#32CD32";
+  }
+
+  const doctor = info.event.extendedProps.doctor || "(лікар не вказаний)";
+  const comment = info.event.extendedProps.comment || "";
+  info.el.setAttribute("title", `${doctor}\n${comment}`);
+
+  info.event.setExtendedProp('elRef', info.el);
+}
+
+// Конфігурація календаря
+const calendarEl = document.getElementById("calendar");
+calendar = new FullCalendar.Calendar(calendarEl, {
+  initialView: 'timeGridWeek',
+  locale: 'uk',
+  headerToolbar: {
+    left: 'prev,next today',
+    center: 'title',
+    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+  },
+  slotMinTime: "08:00:00",
+  slotMaxTime: "19:00:00",
+  allDaySlot: false,
+  hiddenDays: [0, 6],
+  firstDay: 1,
+  editable: true,
+  droppable: true,
+  eventClick: handleEventClick,
+  eventDidMount: styleEvent,
+
+// Створення нового візиту
+eventReceive: function(info) {
+  if (info.event.extendedProps._received) {
+    console.log("eventReceive skipped (already handled)");
+    return;
+  }
+  info.event.setExtendedProp("_received", true);
+
+  const doctor = JSON.parse(info.draggedEl.dataset.doctor);
+  const start = info.event.start;
+  const end = new Date(start.getTime() + 30*60000);
+
+  const dateStr = start.toLocaleDateString("sv-SE");
+  const timeStr = start.toLocaleTimeString("uk-UA", { hour: "2-digit", minute: "2-digit", hour12: false });
+
+  console.log("eventReceive triggered:", dateStr, timeStr);
+
+  if (isPastDay(dateStr)) {
+    alert("Не можна запланувати візит у минулі дні");
+    info.event.remove();
+    return;
+  }
+
+  const visitId = `${dateStr}_${timeStr}`;
+  info.event.setProp("id", visitId);
+
+  const existing = calendar.getEvents().filter(ev => ev.id === visitId);
+  if (existing.length > 1) {
+    console.warn("Duplicate event detected, removing extra");
+    info.event.remove();
+    return;
+  }
+
+  if (!isSlotFree(dateStr, timeStr, visitId)) {
+    alert("Цей час вже зайнятий іншим візитом");
+    info.event.remove();
+    return;
+  }
+
+  info.event.setEnd(end);
+  info.event.setExtendedProp("status", "Заплановано");
+  info.event.setExtendedProp("doctorName", doctor.doctor);
+  info.event.setExtendedProp("specialty", doctor.specialty);
+  info.event.setExtendedProp("city", doctor.city);
+  info.event.setExtendedProp("region", doctor.region);
+  info.event.setExtendedProp("lpz", doctor.lpz);
+  info.event.setExtendedProp("userName", doctor.userName);
+  info.event.setExtendedProp("visitId", visitId);
+  info.event.setProp("title", `Заплановано: ${doctor.doctor}`);
+
+  let visits = JSON.parse(localStorage.getItem("visits")) || [];
+  if (!visits.some(v => v.visitId === visitId)) {
+    visits.push({
+      visitId,
+      doctorName: doctor.doctor,
+      specialty: doctor.specialty,
+      city: doctor.city,
+      region: doctor.region,
+      lpz: doctor.lpz,
+      status: "Заплановано",
+      date: dateStr,
+      time: timeStr,
+      userName: doctor.userName
+    });
+    localStorage.setItem("visits", JSON.stringify(visits));
+  }
+
+  // ✅ виклик бекенду
+  saveVisitInBackend(info.event);
+},
+
+// Перенесення існуючого візиту
+eventDrop: function(info) {
+  const event = info.event;
+  const newDate = event.start.toLocaleDateString("sv-SE");
+  const newTime = event.start.toLocaleTimeString("uk-UA", { hour: "2-digit", minute: "2-digit", hour12: false });
+
+  console.log("eventDrop triggered:", newDate, newTime, "eventId:", event.id);
+
+  if (isPastDay(newDate)) {
+    console.warn("eventDrop: минулий день", newDate);
+    alert("Не можна перенести візит у минуле");
+    info.revert();
+    return;
+  }
+
+  if (!isSlotFree(newDate, newTime, event.id)) {
+    console.warn("eventDrop: слот зайнятий", event.id);
+    alert("Цей час вже зайнятий іншим візитом");
+    info.revert();
+    return;
+  }
+
+  event.setExtendedProp('status', 'Перенесено');
+  event.setProp('title', `Перенесено: ${event.extendedProps.doctor}`);
+
+  const el = event.extendedProps.elRef;
+  if (el) styleEvent({ event: event, el: el });
+
+  updateDateInBackend(event, newDate, newTime);
+}
+
+});
+calendar.render();  
+loadVisits();
+
+async function saveVisitInBackend(event) {
+  try {
+    const doctor = event.extendedProps;
+    const res = await fetch("https://script.google.com/macros/s/AKfycbxMDNAS6nal0EJvDk1U33cXA8l3n0CVOuiEjdozUcpFZTWMliDRAJZmPp5COUW6LRIt/exec", {
+method: "POST",
+  mode: "no-cors",
+  body: JSON.stringify({
+    action: "saveCalendarEvent",
+    userName: doctor.userName,
+    doctor: doctor.doctor,
+    date: event.start.toLocaleDateString("sv-SE"),
+    time: event.start.toLocaleTimeString("uk-UA", { hour: "2-digit", minute: "2-digit", hour12: false }),
+    status: doctor.status || "Заплановано",
+    comment: doctor.comment || "",
+    visitId: doctor.visitId,
+    region: doctor.region,
+    city: doctor.city,
+    lpz: doctor.lpz,
+    specialty: doctor.specialty
+  })
+});
+console.log("Запит на бекенд відправлено (no-cors).");
+  } catch (err) {
+    console.error("Помилка при збереженні візиту в бекенді:", err);
+  }
+}
+
+// Перенесення візиту
+async function updateDateInBackend(event, newDate, newTime) {
+  try {
+    const doctor = event.extendedProps;
+
+    await fetch("https://script.google.com/macros/s/AKfycbxMDNAS6nal0EJvDk1U33cXA8l3n0CVOuiEjdozUcpFZTWMliDRAJZmPp5COUW6LRIt/exec", {
+      method: "POST",
+      mode: "no-cors", // 👈 залишаємо no-cors
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        action: "updateCalendarEvent",
+        userName: doctor.userName,
+        doctor: doctor.doctor,
+        date: newDate,   // нова або поточна дата
+        time: newTime,   // новий або поточний час
+        status: event.extendedProps.status || "Заплановано", // актуальний статус
+        comment: doctor.comment || "",
+        visitId: event.extendedProps.visitId, // 👈 завжди беремо з фронтенду
+        region: doctor.region,
+        city: doctor.city,
+        lpz: doctor.lpz,
+        specialty: doctor.specialty
+      })
+    });
+
+    console.log("Запит updateCalendarEvent відправлено (no-cors).");
+  } catch (err) {
+    console.error("Помилка відправки updateCalendarEvent:", err);
+  }
+}
+
+// Функція показу модалки підтвердження
+function showConfirmModal(event, message, onYes, onNo) {
+  const modal = document.getElementById("visitModal");
+
+  // Дані лікаря над кнопками
+  const doctorName = event.extendedProps.doctorName || "(лікар не вказаний)";
+  const specialty = event.extendedProps.specialty || "";
+  const region = event.extendedProps.region || "";
+  const city = event.extendedProps.city || "";
+  const lpz = event.extendedProps.lpz || "";
+  const userName = event.extendedProps.userName || "";
+
+  modal.querySelector(".doctor-info").innerHTML = `
+    <strong>${doctorName}</strong><br>
+    ${specialty}, ${city}<br>
+    ${region}<br>
+    ЛПЗ: ${lpz}<br>
+    Запланував: ${currentUserKey ? userNames[currentUserKey] : "невідомий користувач"}
+  `;
+
+    document.getElementById("confirmTitle").innerText = message;
+    modal.style.display = "block";
+
+  const yesBtn = document.getElementById("confirmYes");
+  const noBtn = document.getElementById("confirmNo");
+
+  yesBtn.onclick = () => {
+    modal.style.display = "none";
+    if (onYes) onYes();
+  };
+  noBtn.onclick = () => {
+    modal.style.display = "none";
+    if (onNo) onNo();
+  };
+}
+
+// Закриття модалки при кліку поза нею
+window.onclick = function(event) {
+  const modal = document.getElementById("visitModal");
+  if (event.target === modal) {
+    modal.style.display = "none";
+  }
+};
+
+// Клік по події → модалка з даними лікаря
+function handleEventClick(info) {
+  const event = info.event;
+  const doctor = event.extendedProps.doctor || "(лікар не вказаний)";
+  const specialty = event.extendedProps.specialty || "";
+  const region = event.extendedProps.region || "";
+  const city = event.extendedProps.city || "";
+  const lpz = event.extendedProps.lpz || "";
+  const userName = event.extendedProps.userName || "";
+  const status = event.extendedProps.status;
+
+  // ❌ Відмінені та виконані візити не редагуються
+  if (status === "Відмінено" || status === "Виконано") {
+    return;
+  }
+
+  const modal = document.getElementById("visitModal");
+  modal.querySelector(".doctor-info").innerHTML = `
+    <strong>${doctor}</strong><br>
+    ${specialty}, ${city}<br>
+    Запланував: ${userName}
+  `;
+  document.getElementById("modalTitle").innerText = event.title;
+  modal.style.display = "block";
+
+  // Кнопка "Почати"
+document.getElementById("startBtn").onclick = async () => {
+  const today = new Date(); today.setHours(0,0,0,0);
+  const visitDay = new Date(event.start); visitDay.setHours(0,0,0,0);
+
+  if (visitDay < today) {
+    alert("Неможливо почати візит у минулому дні");
+    return;
+  }
+
+  // ✅ міняємо статус локально
+  event.setExtendedProp("status", "Виконано");
+  event.setProp("title", `Виконано: ${doctor}`);
+
+  const el = event.extendedProps.elRef;
+  if (el) styleEvent({ event, el });
+
+  // ✅ формуємо поточну дату/час
+  const newDate = new Date().toLocaleDateString("sv-SE"); // формат YYYY-MM-DD
+  const newTime = new Date().toLocaleTimeString("uk-UA", { hour: "2-digit", minute: "2-digit", hour12: false });
+
+  // ✅ відправляємо у бекенд (оновлює і статус, і дату/час)
+  await updateDateInBackend(event, newDate, newTime);
+
+  modal.style.display = "none";
+
+  // передаємо дані лікаря на сторінку docvisit.html
+  const doctorData = { doctor, specialty, lpz, city, region, visitId: event.extendedProps.visitId };
+  localStorage.setItem("selectedDoctor", JSON.stringify(doctorData));
+  window.location.href = "docvisit.html";
+};
+
+
+  // Кнопка "Перенести"
+  const rescheduleBtn = document.getElementById("rescheduleBtn");
+  const newDateInput = document.getElementById("newDate");
+  const newTimeInput = document.getElementById("newTime");
+  const confirmRescheduleBtn = document.getElementById("confirmReschedule");
+
+  if (status !== "Заплановано") {
+    rescheduleBtn.style.display = "none";
+    newDateInput.style.display = "none";
+    newTimeInput.style.display = "none";
+    confirmRescheduleBtn.style.display = "none";
+  } else {
+    rescheduleBtn.style.display = "inline-block";
+    rescheduleBtn.onclick = () => {
+      newDateInput.style.display = "inline";
+      newTimeInput.style.display = "inline";
+      confirmRescheduleBtn.style.display = "inline-block";
+    };
+
+    confirmRescheduleBtn.onclick = () => {
+      const newDate = newDateInput.value;
+      const newTime = newTimeInput.value;
+      if (!newDate || !newTime) return;
+
+      const newStart = normalizeDate(newDate, newTime);
+      if (new Date(newStart) < new Date()) {
+        alert("Не можна перенести візит у минуле");
+        return;
+      }
+      if (!isSlotFree(newDate, newTime, event.id)) {
+        alert("Цей час вже зайнятий іншим візитом");
+        return;
+      }
+
+      // ✅ оновлюємо статус локально
+      event.setExtendedProp("status", "Перенесено");
+      event.setProp("title", `Перенесено: ${doctor}`);
+
+      // ✅ відправляємо у бекенд
+      updateDateInBackend(event, newDate, newTime);
+
+      modal.style.display = "none";
+    };
+  }
+
+  // Кнопка "Відмінити"
+  document.getElementById("cancelBtn").onclick = () => {
+    showConfirmModal(event, "Ви справді хочете відмінити цей візит?", () => {
+      event.setExtendedProp("status", "Відмінено");
+      event.setProp("title", `Відмінено: ${doctor}`);
+
+      const newDate = event.start.toLocaleDateString("sv-SE");
+      const newTime = event.start.toLocaleTimeString("uk-UA", { hour: "2-digit", minute: "2-digit", hour12: false });
+      updateDateInBackend(event, newDate, newTime);
+
+      modal.style.display = "none";
+    });
+  };
+}
+
+
+// Завантаження візитів з бекенду
+async function loadVisits() {
+  try {
+    const currentUserKey = localStorage.getItem("currentUser");
+    const currentUserName = userNames[currentUserKey];
+
+    let localVisits = JSON.parse(localStorage.getItem("visits")) || [];
+    renderVisits(localVisits);
+
+    const res = await fetch("https://script.google.com/macros/s/AKfycbxMDNAS6nal0EJvDk1U33cXA8l3n0CVOuiEjdozUcpFZTWMliDRAJZmPp5COUW6LRIt/exec?type=calendar");
+    if (!res.ok) throw new Error("Backend error: " + res.status);
+
+    const backendVisits = await res.json();
+    const myVisits = backendVisits.filter(v => v.userName === currentUserName);
+
+    if (JSON.stringify(localVisits) !== JSON.stringify(myVisits)) {
+      localStorage.setItem("visits", JSON.stringify(myVisits));
+      renderVisits(myVisits);
+    }
+  } catch (err) {
+    console.error("Помилка завантаження:", err);
+  }
+}
+
+function renderVisits(visits) {
+  calendar.getEvents().forEach(e => e.remove());
+
+  visits.forEach(v => {
+    const startDateTime = normalizeDate(v.date, v.time);
+    if (isNaN(startDateTime.getTime())) {
+      console.warn("Некоректна дата/час у візиті:", v);
+      return; // пропускаємо цей запис
+    }
+
+    const endDateTime = new Date(startDateTime);
+    endDateTime.setMinutes(endDateTime.getMinutes() + 30);
+
+    calendar.addEvent({
+      id: v.visitId,
+      title: `${v.status}: ${v.doctor}`, // 👈 краще використовувати doctor, а не partnerName
+      start: startDateTime,
+      end: endDateTime, // можна передати Date напряму
+      extendedProps: v
+    });
+  });
+}
+
+
+  function startVisit(event) {
+  const now = new Date();
+  const currentDate = now.toISOString().slice(0,10); // yyyy-MM-dd
+  const currentTime = now.toTimeString().slice(0,5); // HH:mm
+
+  // локально змінюємо статус і заголовок
+  event.setExtendedProp('status', 'Виконано');
+  event.setProp('title', `Виконано: ${event.extendedProps.doctor}`);
+
+  const el = event.extendedProps.elRef;
+  if (el) styleEvent({ event: event, el: el });
+
+  // головне — викликати бекенд‑оновлення
+  updateDateInBackend(event, currentDate, currentTime);
+}
+
+// Календарик: тільки сьогодні і майбутнє, без суботи й неділі
+flatpickr("#visitDate", {
+  dateFormat: "Y-m-d",
+  minDate: "today",
+  disable: [
+    function(date) {
+      // 0 = неділя, 6 = субота
+      return (date.getDay() === 0 || date.getDay() === 6);
+    }
+  ],
+  locale: flatpickr.l10ns.uk // ось так правильно
+});
+
+// Календарик для перенесення: тільки сьогодні і майбутнє, без суботи й неділі
+flatpickr("#newDate", {
+  dateFormat: "Y-m-d",
+  minDate: "today",
+  disable: [
+    function(date) {
+      return (date.getDay() === 0 || date.getDay() === 6); // неділя і субота
+    }
+  ],
+  locale: flatpickr.l10ns.uk
+});
+</script>
+</body>
+</html>  

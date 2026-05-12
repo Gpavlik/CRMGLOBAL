@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Вхід</title>
+  <style>
+   body {
+  font-family: Arial, sans-serif;
+  margin: 0; padding: 0;
+  background: linear-gradient(135deg, #009400, #004d00);
+  color: #ffffff;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+div {
+  padding: 20px;
+  border-radius: 10px;
+}
+
+a {
+  text-decoration: none;
+  color: #ffffff;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 10px;
+}
+
+a:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* 📱 Mobile (до 767px) */
+@media screen and (max-width: 767px) {
+  body {
+    padding: 20px;
+  }
+  div {
+    width: 100%;
+    max-width: 400px;
+  }
+  .units {
+    flex-direction: column;
+    gap: 20px;
+  }
+  a {
+    display: block;
+    width: 100%;
+    text-align: center;
+  }
+  img {
+    width: 100%;
+    height: auto;
+    max-width: 300px;
+  }
+}
+
+/* 📲 Tablet (768px–1023px) */
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+  .units {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    align-items: center;
+    gap: 30px;
+  }
+  img {
+
+    transition: transform 0.3s ease;
+  }
+}
+
+/* 💻 Desktop (≥1024px) */
+@media screen and (min-width: 1024px) {
+  .units {
+    display: flex;
+    gap: 40px;
+    justify-content: space-evenly;
+    align-items: center;
+  }
+  img {
+    
+    transition: transform 0.3s ease;
+  }
+}
+
+    </style>
+</head>
+<body>
+  <h1>Вхід</h1>
+  <img src="./logo.svg" alt="logo" width="260">
+  <div style="margin: 20px 0; font-size: 18px;">Оберіть свій юніт</div>
+  <div class="units">
+  <a href="./СРМ Кріо/index.html"><img src="./ph.png" alt="logo" width="250" height="235"></a>
+  <a href="./срм аптека/index.html"><img src="./ph1.png" alt="logo" width="250" height="260"></a>
+  <a href="./IVD/index.html"><img src="./ivd.png" alt="logo" width="240" height="250"></a>
+</div>
+  <script>
+
+  </script>
+</body>
+</html>
