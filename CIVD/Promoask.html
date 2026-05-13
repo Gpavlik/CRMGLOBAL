@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>Замовлення промо матеріалів</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #009400, #004d00);
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+    h2 { margin-bottom: 20px; }
+    .promo-content {
+      background: #008000;
+      padding:20px;
+      border-radius:8px;
+      width:90%;
+      max-width:1000px;
+    }
+    .promo-grid {
+      display:flex;
+      flex-wrap:wrap;
+      gap:20px;
+    }
+    .promo-item {
+      flex:1 1 250px;
+      border:1px solid #ccc;
+      padding:10px;
+      border-radius:6px;
+      background:#004d00;
+    }
+    .promo-item h4 { margin-bottom:10px; }
+    .promo-material {
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin:4px 0;
+    }
+    .promo-material input[type="number"] { width:60px; }
+    .promo-material textarea { width:100%; margin-top:5px; resize:none; }
+    .promo-item img {
+      width: 100px; height: 100px;
+      object-fit: contain;
+      margin-bottom: 8px;
+      border-radius: 10px;
+      background:#fff;
+    }
+    button {
+      margin-top: 15px;
+      padding: 12px;
+      background-color: #004d00;
+      color: #fff;
+      border: solid 1px #c2ffc2;
+      border-radius: 6px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    button:hover { background-color: #003300; }
+    input, textarea {
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      box-sizing: border-box;
+      padding: 8px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Замовлення промо матеріалів</h2>
+  <img src="./logo.svg" alt="logo" width="260">
+<p id="userInfo"></p>
+  <div class="promo-content">
+    <h3>📑 Промо</h3>
+    <div id="promoGrid" class="promo-grid"></div>
+
+    <h3>Канцелярія</h3>
+    <div id="giftGrid" class="promo-grid"></div>
+<br><br><br>
+    <label>Місто / відділення НП   
+      <input type="text" id="cityBranch" placeholder="Напр. Київ, №5">
+    </label>
+</div>
+<div>
+    <button onclick="submitPromoOrder()">📤 Замовити</button>
+    <button onclick="window.location.href='menu.html'">Повернутись у меню</button>
+  </div>
+<img src="./ph.png" alt="logo" width="260">
+<script>
+// ===== Користувачі =====
+
+const currentUser = localStorage.getItem("currentUser");
+const userNames = {
+  "fedir": "Олександр Красніков",
+  "olena": "Тетяна Романовська",
+  "office": "Офіс",
+  "andriy": "Тетяна Кліменко",
+  "maria": "Тетяна Демус",
+  "serhiy": "Ілона Бабенко",
+  "admin": "Адміністратор"
+};
+if (!currentUser) {
+  alert("Будь ласка, увійдіть спочатку!");
+  window.location.href = "login.html";
+} else {
+  document.getElementById("userInfo").textContent =
+    "Ви увійшли як: " + (userNames[currentUser] || currentUser);
+}
+// ===== Ініціалізація =====
+document.addEventListener("DOMContentLoaded", () => {
+  buildPromoPage();
+});
+
+// ===== Побудова сторінки =====
+function buildPromoPage() {
+  const devices = [
+    {code:"140", fullName:"Буклет Cito Test Strep A"},
+    {code:"204", fullName:"Буклет CITOLAB"},
+    {code:"212", fullName:"Буклет загальний для аптек"},
+    {code:"215", fullName:"Буклет Швидкі тести для СЛ"},
+    {code:"141", fullName:"Діагностика вірусних гепатитів"},
+    {code:"403", fullName:"Ліфлет CITOLAB"},
+    {code:"404", fullName:"Ліфлет CITOLAB pH"},
+    {code:"603", fullName:"Пам'ятка SNIPER для батькiв"},
+    {code:"947", fullName:"Плакат аптечний РЕСПІ, кешбек"},
+    {code:"605", fullName:"Пам'ятка для жінок (укр)"},
+    {code:"316", fullName:"Промлист РЕСПІ нац.кешбек"}, 
+    {code:"317", fullName:"Промлист Хелікобактер A5"},
+    {code:"318", fullName:"Промлист РЕСПІ проф, А5"},
+    {code:"139", fullName:"Репринт О.А. Голубовська_100 років Іспанки"},
+    {code:"146", fullName:"Репринт Т.Ф. Татарчук. Клінічний етап діагностики"},
+    {code:"214", fullName:"Репринт_Бекетова_Гнатенко_Діагностика кетонурії."},
+    {code:"149", fullName:"Репринт_Голубовська_Безродна_Особливості діагностики та тактики ведення Cl.difficile-асоційованої інфекції. Випадок із практики."},
+    {code:"120", fullName:"Репринт_Колесник_Скринінг пацієнтів з гастроентерологічною симптоматикою на наявність H.pylori: що, кому і коли?"},
+    {code:"121", fullName:"Репринт_Крамарєв_Палатна_ Вірусна діарея у дітей: діагностика та лікування на прикладі ротавірусної інфекції"},
+    {code:"145", fullName:"Репринт_Бекетова_Сучасна діагностика РВІ у дітей: роль швидких тестів  та експрес-методів"},
+    {code:"119", fullName:"Репринт_А.П.Міроненко_Швидка діагностика грипу."},
+    {code:"135", fullName:"Репринт_Шипулін_Проблема вірусних гепатитів В і С в практиці сімейного лікаря"},       
+
+  ];
+  const gifts = [
+    {code:"901", fullName:"Лист відряджень"},
+    {code:"903", fullName:"Пакет ФАРМАСКО 30х40"},
+    {code:"904", fullName:"Пакет ФАРМАСКО 40х50"},
+    {code:"908", fullName:"Скотч ФАРМАСКО"},
+    {code:"909", fullName:"Файлы 100 шт."},
+    {code:"910", fullName:"Ручка брендована"}
+  ];
+
+  const imageMap = {
+    "140": "str.webp",
+    "204": "citolab.webp",
+    "212": "Co.png",
+    "215": "Co.png",
+    "141": "GB.webp",
+    "403": "citolab.webp",
+    "404": "ph.webp",
+    "603": "sniper.webp",
+    "947": "Cop.png",
+    "605": "Copi.png",
+    "316": "Copil.png",
+    "317": "hb.webp",
+    "318": "Copil.png",
+    "139": "Copilo.png",
+    "146": "duet.webp",
+    "214": "citolab.webp",
+    "149": "Copilot.png",
+    "120": "hb.webp",
+    "121": "rota.webp",
+    "145": "Copil.png",
+    "119": "grip.webp",
+    "135": "GB.webp",
+    "901": "oip.webp",
+    "903": "pilot.png",
+    "904": "pilot.png",
+    "908": "lot.png",
+    "909": "7f.webp",
+    "910": "pil.png",
+  };
+
+  const grid = document.getElementById("promoGrid");
+  grid.innerHTML = "";
+  devices.forEach(dev => {
+    const div = document.createElement("div");
+    div.className = "promo-item";
+    const imgFile = imageMap[dev.code] || "default.png";
+    div.innerHTML = `
+      <img src="images/${imgFile}" alt="${dev.fullName}">
+      <h4>${dev.fullName}</h4>
+      <div class="promo-material">
+        <span>Кількість</span>
+        <input type="number" id="qty_${dev.code}" min="0" placeholder="0">
+      </div>
+      <textarea id="comment_${dev.code}" placeholder="Примітка"></textarea>
+    `;
+    grid.appendChild(div);
+  });
+
+  const giftGrid = document.getElementById("giftGrid");
+  giftGrid.innerHTML = "";
+  gifts.forEach(gift => {
+    const div = document.createElement("div");
+    div.className = "promo-item";
+    const imgFile = imageMap[gift.code] || "default.png";
+    div.innerHTML = `
+      <img src="images/${imgFile}" alt="${gift.fullName}">
+      <h4>${gift.fullName}</h4>
+      <div class="promo-material">
+        <span>Кількість</span>
+        <input type="number" id="qty_${gift.code}" min="0" placeholder="0">
+      </div>
+      <textarea id="comment_${gift.code}" placeholder="Примітка"></textarea>
+    `;
+    giftGrid.appendChild(div);
+  });
+}
+
+// ===== Відправка замовлення =====
+function submitPromoOrder() {
+  const currentUser = localStorage.getItem("currentUser") || "admin";
+  const employeeName = userNames[currentUser] || currentUser;
+  const cityBranch = document.getElementById("cityBranch").value;
+
+  const rows = [];
+
+  // прилади
+  document.querySelectorAll("#promoGrid .promo-item").forEach(div => {
+    const fullName = div.querySelector("h4").textContent;
+    const code = div.querySelector("input[type='number']").id.split("_")[1];
+    const qty = div.querySelector("input[type='number']").value;
+    const comment = div.querySelector("textarea").value;
+    if (qty > 0) {
+      rows.push({
+        type: "promo",
+        user: employeeName,
+        materialType: "Буклети та ліфлети",
+        code: code,
+        fullName: fullName,
+        quantity: qty,
+        cityBranch: cityBranch,
+        comment: comment
+      });
+    }
+  });
+
+  // подарунки
+  document.querySelectorAll("#giftGrid .promo-item").forEach(div => {
+    const fullName = div.querySelector("h4").textContent;
+    const code = div.querySelector("input[type='number']").id.split("_")[1];
+    const qty = div.querySelector("input[type='number']").value;
+    const comment = div.querySelector("textarea").value;
+    if (qty > 0) {
+      rows.push({
+        type: "promo",
+        user: employeeName,
+        materialType: "Канцелярія",
+        code: code,
+        fullName: fullName,
+        quantity: qty,
+        cityBranch: cityBranch,
+        comment: comment
+      });
+    }
+  });
+
+    // --- запис у Google Sheets ---
+  fetch("https://script.google.com/macros/s/AKfycbwzFGLbD6cI3jc4HUB6FSLUJoeSohziQIWtRZUS0sAUwLdxFTkb2hV84Ne4mqDUYN8VrQ/exec", {
+    method: "POST",
+    mode: "no-cors", // ⚠️ у цьому режимі відповідь не читається, але дані відправляються
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(rows)
+  })
+  .then(() => console.log("Замовлення промо відправлено у Google Sheets"))
+  .catch(err => console.error("Помилка запису:", err));
+
+  alert("Ваше замовлення прийнято!");
+  // Очищуємо форму після відправки
+  document.querySelectorAll("input[type='number']").forEach(input => input.value = "");
+  document.querySelectorAll("textarea").forEach(textarea => textarea.value = "");
+  document.getElementById("cityBranch").value = "";
+}
+</script>
+</body>
+</html>

@@ -37,13 +37,16 @@ th, td {
   text-align: center;
   font-size: 0.95rem;
 }
+
 th {
   background: #adadad;
   color: #000;
 }
+
 td.name { text-align: left; font-weight: bold; }
 td { background-color: rgba(255,255,255,0.05); }
 td.to-sell { text-align: center; font-weight: bold; color: white; }
+
 .filters {
   display: flex;
   gap: 10px;
@@ -51,6 +54,7 @@ td.to-sell { text-align: center; font-weight: bold; color: white; }
   flex-wrap: wrap;
   justify-content: center;
 }
+
 label {
   display: flex;
   flex-direction: column;
@@ -59,6 +63,7 @@ label {
   text-align: left;
   max-width: 100%;
 }
+
 input, select {
   width: 100%;
   max-width: 500px;
@@ -81,13 +86,16 @@ button {
   cursor: pointer;
   transition: background 0.3s ease;
 }
+
 button:hover { background-color: #25a525; }
+
 .buttons {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 10px;
   margin-top: 20px;
 }
+
 /* 📱 Телефони (до 480px) */
 @media (max-width: 480px) {
   h3 { font-size: 1.2rem; }
@@ -101,6 +109,7 @@ button:hover { background-color: #25a525; }
   }
   .buttons { grid-template-columns: 1fr; }
 }
+
 /* 📲 Планшети (481px–768px) */
 @media (min-width: 481px) and (max-width: 768px) {
   h3 { font-size: 1.4rem; }
@@ -111,6 +120,7 @@ button:hover { background-color: #25a525; }
   button { width: 70%; font-size: 1rem; }
   .buttons { grid-template-columns: repeat(2, 1fr); }
 }
+
 /* 💻 Десктопи (769px і більше) */
 @media (min-width: 769px) {
   h3 { font-size: 1.6rem; }
@@ -133,6 +143,7 @@ button:hover { background-color: #25a525; }
   flex-wrap: wrap;
   align-items: center;
 }
+
 /* Випадаючий список */
 .select2-container .select2-dropdown {
   background-color: #009400;
@@ -140,6 +151,7 @@ button:hover { background-color: #25a525; }
   border: 1px solid #25a525;
   font-size: small;
 }
+
 /* Пошукове поле */
 .select2-container .select2-search__field {
   background-color: #fff;
@@ -166,6 +178,7 @@ button:hover { background-color: #25a525; }
   box-sizing: border-box !important;
   padding: 6px 6px 6px 20px !important; /* відступи для тексту */
 }
+
 /* Текст всередині тегу */
 .custom-select2.select2-container--default 
 .select2-selection--multiple 
@@ -175,11 +188,12 @@ button:hover { background-color: #25a525; }
   line-height: 1.3 !important;
   padding-right: 24px !important;       /* резервуємо місце під хрестик */
 }
+
 /* Хрестик справа вгорі */
 .custom-select2.select2-container--default 
 .select2-selection--multiple 
 .select2-selection__choice__remove {
-  position: absolute !important; 
+  position: absolute !important;             /* відстань справа */
   color: #03ff03 !important;
   font-weight: bold !important;
   cursor: pointer !important;
@@ -188,6 +202,7 @@ button:hover { background-color: #25a525; }
   border-radius: 50%;
   line-height: 0.5 !important;
   width: 10px !important;
+
 }
 .custom-select2.select2-container--default 
 .select2-selection--multiple 
@@ -195,6 +210,7 @@ button:hover { background-color: #25a525; }
   color: #ff7070 !important;
   background-color: #25a52500 !important;
 }
+
 </style>
 </head>
 <body>

@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/jpg" href="bol.jpg">
+  <title>Візит до лікаря</title>
+  <style>
+    body {
+  font-family: Arial, sans-serif;
+  margin: 0; padding: 0;
+  background: linear-gradient(135deg, #009400, #004d00);
+  color: #ffffff;
+  min-height: 100vh;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+input, select {
+  border: 1px solid #ffffff;
+  padding: 10px;
+  border-radius: 4px;
+  font-size: 13px;
+  width: 100%;
+  margin: 0;
+  box-sizing: border-box;
+  background-color: #effff0;
+  color: #000;
+}
+
+label {
+  display: block;
+  margin: 10px auto 5px auto;
+  font-weight: bold;
+  width: 100%;
+  max-width: 500px;
+  text-align: center;
+}
+
+button {
+  width: 220px;
+  padding: 12px;
+  margin-top: 10px;
+  background-color: #004d00;
+  color: #ffffff;
+  border: solid 1px #c2ffc2;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+button:hover { background-color: #003300; }
+
+h3 {
+  margin-top: 30px;
+  text-align: center;
+  color: #fff;
+}
+/* Контейнер Select2 */
+.select2-container .select2-selection {
+  background-color: #004d00;   /* темно-зелений фон */
+  color: #fff;                 /* білий текст */
+  border: 1px solid #c2ffc2;
+  border-radius: 4px;
+  min-height: 38px;
+  display: flex;
+  align-items: center;
+}
+
+/* Текст у вибраному селекторі */
+.select2-container .select2-selection__rendered {
+  color: #000000 !important;      /* білий текст */
+  font-size: 14px;
+  padding-left: 8px;
+  overflow: visible !important;
+}
+
+/* Плейсхолдер */
+.select2-container .select2-selection__placeholder {
+  color: #c2ffc2 !important;   /* світло-зелений */
+}
+
+/* Стрілочка */
+.select2-container .select2-selection__arrow {
+  height: 100%;
+  right: 8px;
+}
+
+/* Випадаючий список */
+.select2-container .select2-results__option {
+  background-color: #004d00;
+  color: #fff;
+  padding: 6px;
+}
+.select2-container .select2-results__option--highlighted {
+  background-color: #26a12b !important; /* яскраво-зелений при наведенні */
+  color: #000000 !important;
+}
+
+/* Вибрані теги (для tags:true) */
+.select2-container .select2-selection__choice {
+  background-color: #26a12b !important;
+  color: #000000 !important;
+  border: none !important;
+  border-radius: 3px;
+  padding: 2px 6px;
+  margin-top: 4px;
+}
+/* 📱 Телефони */
+@media (max-width: 480px) {
+  h1 { font-size: 1.4rem; }
+  h3 { font-size: 1.2rem; }
+  input, select { font-size: 0.9rem; }
+  button { width: 100%; font-size: 0.9rem; }
+  table { font-size: 0.75rem; }
+  th, td { padding: 4px; }
+  .date-time-partner, .date-knowledge {
+    grid-template-columns: 1fr; /* одна колонка */
+  }
+}
+
+/* 📲 Планшети */
+@media (min-width: 481px) and (max-width: 768px) {
+  h1 { font-size: 1.6rem; }
+  h3 { font-size: 1.3rem; }
+  input, select { font-size: 1rem; }
+  button { width: 80%; }
+  table { font-size: 0.85rem; }
+  th, td { padding: 6px; }
+  .date-time-partner, .date-knowledge {
+    grid-template-columns: repeat(2, 1fr); /* дві колонки */
+  }
+}
+
+/* 💻 Десктопи */
+@media (min-width: 769px) {
+  h1 { font-size: 1.8rem; }
+  h3 { font-size: 1.4rem; }
+  input, select { max-width: 500px; }
+  button { width: 220px; }
+  table { font-size: 1rem; }
+  .date-time-partner, .date-knowledge {
+    grid-template-columns: repeat(2, 1fr); /* дві колонки */
+  }
+}
+  </style>
+</head>
+<body>
+  <h1>Додати лікаря</h1>
+  <img src="./logo.svg" alt="logo" width="260">
+  <p id="userInfo"></p>
+
+  <div>
+    <label>Регіон:<select id="regionSelect"></select></label>
+    <label>Місто:<select id="citySelect"></select></label>
+    <label>ЛПЗ:<select id="lpzSelect"></select></label>
+    <label>Спеціальність:<select id="specialtySelect"></select></label>
+    <label>Лікар:<select id="doctorSelect"></select></label>
+    <button onclick="saveDoctor()">➕ Додати лікаря</button>
+    <button class="btn" onclick="goTo('docvisit.html')">До візиту</button>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0/js/select2.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0/css/select2.min.css" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<script>
+    // Користувачі
+   const userNames = {
+      fedir: "Олександр Красніков",
+      olena: "Тетяна Романовська",
+      office: "Офіс",
+      andriy: "Тетяна Кліменко",
+      maria: "Тетяна Демус",
+      serhiy: "Ілона Бабенко"
+    };
+
+    const currentUser = localStorage.getItem("currentUser");
+    if (!currentUser) {
+      alert("Будь ласка, увійдіть спочатку!");
+      window.location.href = "login.html";
+    } else {
+      document.getElementById("userInfo").textContent =
+        "Ви увійшли як: " + (userNames[currentUser] || currentUser);
+    }
+
+    let doctors = [];
+
+async function loadDoctors() {
+  const url = "https://docs.google.com/spreadsheets/d/1qDgXP8HJgP7R90u33me9ENAKcAQwdpu_b6YJvL9E48Y/gviz/tq?tqx=out:json&sheet=Sheet1";
+  const res = await fetch(url);
+  const text = await res.text();
+  const json = JSON.parse(text.substr(47).slice(0,-2));
+  const rows = json.table.rows.map(r => r.c.map(c => c ? c.v : ""));
+  
+  doctors = rows.map(r => ({
+    region: r[0], city: r[1], lpz: r[2], specialty: r[3], doctor: r[4]
+  }));
+
+  initCascade();
+}
+
+function initCascade() {
+  fillSelect("#regionSelect", [...new Set(doctors.map(d => d.region))]);
+
+  $("#regionSelect").on("change", function() {
+    const region = $(this).val();
+    fillSelect("#citySelect", [...new Set(doctors.filter(d => d.region===region).map(d => d.city))]);
+    $("#lpzSelect").empty(); $("#specialtySelect").empty(); $("#doctorSelect").empty();
+  });
+
+  $("#citySelect").on("change", function() {
+    const region = $("#regionSelect").val();
+    const city = $(this).val();
+    fillSelect("#lpzSelect", [...new Set(doctors.filter(d => d.region===region && d.city===city).map(d => d.lpz))]);
+    $("#specialtySelect").empty(); $("#doctorSelect").empty();
+  });
+
+  $("#lpzSelect").on("change", function() {
+    const region = $("#regionSelect").val();
+    const city = $("#citySelect").val();
+    const lpz = $(this).val();
+    fillSelect("#specialtySelect", [...new Set(doctors.filter(d => d.region===region && d.city===city && d.lpz===lpz).map(d => d.specialty))]);
+    $("#doctorSelect").empty();
+  });
+
+  $("#specialtySelect").on("change", function() {
+    const region = $("#regionSelect").val();
+    const city = $("#citySelect").val();
+    const lpz = $("#lpzSelect").val();
+    const spec = $(this).val();
+
+    const docs = [...new Set(
+      doctors.filter(d =>
+        d.region === region &&
+        d.city === city &&
+        d.lpz === lpz &&
+        d.specialty === spec
+      ).map(d => d.doctor)
+    )];
+
+    fillSelect("#doctorSelect", docs);
+  });
+}
+
+function fillSelect(selector, values) {
+  const sel = $(selector);
+
+  // Якщо Select2 вже був — знищуємо
+  if (sel.hasClass("select2-hidden-accessible")) {
+    sel.select2('destroy');
+  }
+
+  sel.empty();
+  sel.append(new Option("", "")); // пустий варіант
+  values.forEach(v => { if(v) sel.append(new Option(v, v)); });
+
+  // Підключаємо Select2 з можливістю додавати нові значення
+  sel.select2({ tags:true, allowClear:true, width:'300px' });
+}
+
+
+async function saveDoctor() {
+  const payload = [{
+    type: "doctor",
+    region: $("#regionSelect").val(),
+    city: $("#citySelect").val(),
+    lpz: $("#lpzSelect").val(),
+    specialty: $("#specialtySelect").val(),
+    doctor: $("#doctorSelect").val()
+  }];
+
+  try {
+    const res = await fetch("https://script.google.com/macros/s/AKfycbzaO199dhwdum50myQ7sQW7RbgRpwa_IdE4WTbpNnO8sELoLy7ebM7wQGjdS2EdOjvi/exec", {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+
+    const text = await res.text();
+    console.log("Відповідь від сервера:", text);
+
+    const json = JSON.parse(text);
+    if (json.success) {
+      alert("Запис додано!");
+      // 👉 нова ітерація: оновлюємо список
+      loadDoctors();
+    } else {
+      alert("Помилка: " + json.error);
+    }
+  } catch (err) {
+    console.error("Помилка:", err);
+  }
+}
+  function goTo(page) {
+  window.location.href = page;
+}
+
+loadDoctors();
+</script>
+</body>
+</html>
