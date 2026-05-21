@@ -10,4 +10,7 @@
   "olga": "z8h3wn", Ольга
   "katya": "q5v1ds", Катерина
   "stavka": "t6j8lf", Ставка
-  "admink": "b9y4um", Адмін
+  "admink": "k4p7um", Адмін
+
+
+

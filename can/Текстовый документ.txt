@@ -1,0 +1,9 @@
+"gala":    "r7k2xp",
+  "olenka":  "m4t9qe",
+  "dima":    "z8h3wn",
+  "serega":  "q5v1ds",
+  "sasha":   "t6j8lf",
+  "pasha":   "b9y4um",
+  "anya":    "x9t4qz",
+  "tetiana": "m7r2kp",
+  "adminp":  "k4p7um"

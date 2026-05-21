@@ -342,39 +342,78 @@ function getCurrentUserRole() {
 
   return "executor"; // дефолт
 }
+function normalizeUser(userKeyOrName) {
+  // якщо це ключ → повертаємо ім’я
+  if (usersMap[userKeyOrName]) return usersMap[userKeyOrName];
+  // якщо це вже ім’я → повертаємо як є
+  return userKeyOrName;
+}
 
-function canEditTask(currentUserRole, taskRole, taskUsername) {
-  if (currentUserRole === "manager") {
-    return true; // керівник може все
+function extractName(participant) {
+  if (participant.includes("(")) {
+    return participant.split(" (")[0].trim();
   }
-  if (currentUserRole === "owner") {
-    return taskRole === "executor" || taskRole === "owner";
+  if (participant.includes("—")) {
+    return participant.split("—")[0].trim();
   }
-  if (currentUserRole === "executor") {
-    return taskUsername === (usersMap[currentUser] || currentUser);
+  return participant.trim();
+}
+
+function canEditTask(task, proc, currentUser) {
+  const currentName = normalizeUser(currentUser);
+  const ownerName = normalizeUser(proc.owner);
+
+  // Керівник має повний контроль
+  if (Array.isArray(proc.participants)) {
+    const isManager = proc.participants.some(p =>
+      extractName(p) === currentName && p.includes("Керівник")
+    );
+    if (isManager) return true;
   }
+
+  // Оунер може свої та задачі виконавців
+  if (ownerName === currentName) {
+    if (task.username === currentName || task.role === "executor") {
+      return true;
+    }
+  }
+
+  // Виконавець може тільки свої
+  if (task.username === currentName && task.role === "executor") {
+    return true;
+  }
+
   return false;
 }
 
+
 // --- Створення картки задачі ---
 function createTaskCard(ev, dragged) {
-  const roleClass = dragged.innerText.includes("Оунер") ? "owner" :
-                    dragged.innerText.includes("Керівник") ? "manager" : "executor";
+  // визначаємо роль по тексту
+  let roleClass = "executor";
+  if (dragged.innerText.includes("Оунер")) roleClass = "owner";
+  else if (dragged.innerText.includes("Керівник")) roleClass = "manager";
 
-  // визначаємо роль поточного користувача
-  const currentUserRole = getCurrentUserRole();
+  // ім’я та роль окремо
+  const [userName, roleRaw] = dragged.innerText.split(" (");
+  const cleanRole = roleRaw ? roleRaw.replace(")", "") : roleClass;
 
-  // перевірка прав
-  if (!canEditTask(currentUserRole, roleClass, dragged.innerText)) {
+  // перевірка прав один раз
+  const editable = canEditTask({ username: userName, role: roleClass }, processData, currentUser);
+  if (!editable) {
     alert("У вас немає прав створювати або редагувати цю задачу");
     return;
   }
 
   const card = document.createElement("div");
   card.className = `card ${roleClass}`;
-  card.setAttribute("draggable","true");
-  card.ondragstart = drag;
-  card.dataset.username = dragged.innerText;
+  if (editable) {
+    card.setAttribute("draggable","true");
+    card.ondragstart = drag;
+  }
+
+  card.dataset.username = userName;
+  card.dataset.role = roleClass;
 
   const taskId = Date.now().toString();
   card.dataset.taskId = taskId;
@@ -382,7 +421,7 @@ function createTaskCard(ev, dragged) {
 
   card.innerHTML = `
     <details class="spoiler">
-      <summary><span class="taskTitle">${dragged.innerText} — нова задача</span></summary>
+      <summary><span class="taskTitle">${userName} — нова задача</span></summary>
       <div>
         <label>Назва: <input type="text" class="titleInput"></label><br>
         <label>Початок: <input type="date" class="startInput"></label><br>
@@ -405,16 +444,14 @@ function createTaskCard(ev, dragged) {
   attachChat(card);
   applyStatusClass(card, "todo");
 
+  // інпути
   card.querySelectorAll("input,select").forEach(inp => {
-    if (!canEditTask(currentUserRole, roleClass, dragged.innerText)) {
-      inp.disabled = true; // блокуємо редагування
-    } else {
-      inp.addEventListener("change", syncTasks);
-    }
+    inp.disabled = !editable;
+    if (editable) inp.addEventListener("change", syncTasks);
   });
 
   card.querySelector(".titleInput").addEventListener("input", e => {
-    card.querySelector(".taskTitle").innerText = e.target.value || `${card.dataset.username} — нова задача`;
+    card.querySelector(".taskTitle").innerText = e.target.value || `${userName} — нова задача`;
     syncTasks();
   });
 
@@ -424,8 +461,8 @@ function createTaskCard(ev, dragged) {
     title: card.querySelector(".taskTitle").innerText,
     start: "",
     deadline: "",
-    role: roleClass,
-    username: card.dataset.username,
+    role: roleClass,   // тепер "executor"/"manager"/"owner"
+    username: userName,
     multiRole: false,
     dependencyTitle: null,
     priority: "high",
@@ -437,7 +474,6 @@ function createTaskCard(ev, dragged) {
   localStorage.setItem("currentProcess", JSON.stringify(processData));
   syncTasks();
 }
-
 
 // --- Класи за статусом ---
 function applyStatusClass(card, status) {
@@ -682,8 +718,6 @@ function renderKanban(tasks) {
   document.querySelector("#inProgressList .cards").innerHTML = "";
   document.querySelector("#doneList .cards").innerHTML = "";
 
-  const currentUserRole = getCurrentUserRole();
-
   tasks.forEach(t => {
     const card = document.createElement("div");
     card.className = `card ${t.role}`;
@@ -691,12 +725,15 @@ function renderKanban(tasks) {
     card.dataset.username = t.username;
     card.dataset.status = t.status;
 
-    // Перетягування дозволене лише якщо є права
-    if (canEditTask(currentUserRole, t.role, t.username)) {
+    // Перевірка прав
+    const editable = canEditTask(t, processData, currentUser);
+
+    // Перетягування
+    if (editable) {
       card.setAttribute("draggable","true");
       card.ondragstart = drag;
     } else {
-      card.setAttribute("draggable","false");
+      card.removeAttribute("draggable");
     }
 
     card.innerHTML = `
@@ -711,6 +748,7 @@ function renderKanban(tasks) {
           <label>Пріоритет:
             <select class="priorityInput">
               <option value="high" ${t.priority==="high"?"selected":""}>Високий</option>
+              <option value="medium" ${t.priority==="medium"?"selected":""}>Середній</option>
               <option value="low" ${t.priority==="low"?"selected":""}>Низький</option>
             </select>
           </label><br>
@@ -734,8 +772,8 @@ function renderKanban(tasks) {
 
     const sendBtn = card.querySelector(".sendBtn");
     const chatInput = card.querySelector(".chatInput");
-    sendBtn.disabled = false; // завжди активний
-    chatInput.disabled = false; // завжди активний
+    sendBtn.disabled = false;
+    chatInput.disabled = false;
     sendBtn.onclick = () => {
       if (chatInput.value.trim() !== "") {
         const msgObj = { user: usersMap[currentUser] || currentUser, text: chatInput.value.trim() };
@@ -754,10 +792,10 @@ function renderKanban(tasks) {
 
     applyStatusClass(card, t.status);
 
-    // --- Блокування редагування решти інпутів ---
+    // --- Інпути ---
     card.querySelectorAll("input,select").forEach(inp => {
-      if (inp.classList.contains("chatInput") || inp.classList.contains("sendBtn")) return; // чат не блокуємо
-      if (!canEditTask(currentUserRole, t.role, t.username)) {
+      if (inp.classList.contains("chatInput")) return;
+      if (!editable) {
         inp.disabled = true;
       } else {
         inp.addEventListener("change", syncTasks);
@@ -765,7 +803,7 @@ function renderKanban(tasks) {
     });
 
     card.querySelector(".titleInput").addEventListener("input", e => {
-      if (canEditTask(currentUserRole, t.role, t.username)) {
+      if (editable) {
         card.querySelector(".taskTitle").innerText = e.target.value || `${card.dataset.username} — нова задача`;
         syncTasks();
       } else {
@@ -783,7 +821,6 @@ function renderKanban(tasks) {
     }
   });
 }
-
 
 function renderGantt(tasks) {
   const gantt = document.getElementById("ganttChart");
