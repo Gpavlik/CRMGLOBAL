@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>Процес</title>
+  <link rel="icon" type="image/jpg" href="11.webp">
+  <style>
+       body {
+  font-family: Arial, sans-serif;
+  margin: 0; 
+  padding: 0;
+  background: linear-gradient(135deg, #009400, #004d00);
+  color: #000000;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Хедер */
+header { 
+  background:#2c3e50; 
+  color:white; 
+  padding:10px 20px; 
+  display:flex; 
+  justify-content:space-around; 
+  align-items:center; 
+  width:100%;
+  box-sizing:border-box;
+}
+header h1 { margin:0; font-size:22px; }
+header .user-info { font-size:14px; font-weight:bold; }
+header button { 
+  background:#3498db; 
+  color:white; 
+  border:none; 
+  padding:8px 12px; 
+  border-radius:4px; 
+  cursor:pointer; 
+  transition:background 0.3s;
+}
+header button:hover { background:#2980b9; }
+
+    .container { display:flex; gap:20px; padding:20px; width:100%; box-sizing:border-box; }
+    .participants { width:200px; background:#e0e0e0; padding:10px; }
+    .participant { background:#3498db; color:white; padding:8px; margin:5px 0; border-radius:6px; cursor:grab; }
+
+    .board { flex:1; display:flex; gap:20px; padding:20px; }
+    .list { background:#ecf0f1; flex:1; padding:10px; border-radius:8px; min-height:300px; color: #000000; }
+    .list h2 { text-align:center; }
+
+    .card { margin:10px 0; border-radius:6px; box-shadow:0 2px 4px rgba(0,0,0,0.1); }
+    .spoiler summary { font-weight:bold; cursor:pointer; padding:10px; }
+    .spoiler div { padding:10px; }
+
+.card.owner {
+  background:#3498db;
+  color:white;
+}
+
+.card.manager {
+  background:#2ecc71;
+  color:white;
+}
+
+.card.executor {
+  background:#8e44ad;
+  color:white;
+}
+
+
+    /* Бордери за статусами */
+    @keyframes pulseGreen { 0%{box-shadow:0 0 5px green;} 50%{box-shadow:0 0 20px green;} 100%{box-shadow:0 0 5px green;} }
+    @keyframes pulseOrange { 0%{box-shadow:0 0 5px orange;} 50%{box-shadow:0 0 20px orange;} 100%{box-shadow:0 0 5px orange;} }
+    @keyframes pulseYellow { 0%{box-shadow:0 0 5px yellow;} 50%{box-shadow:0 0 20px yellow;} 100%{box-shadow:0 0 5px yellow;} }
+    @keyframes pulseRed { 0%{box-shadow:0 0 5px red;} 50%{box-shadow:0 0 20px red;} 100%{box-shadow:0 0 5px red;} }
+    @keyframes pulseRainbow {
+      0%{box-shadow:0 0 10px red;} 25%{box-shadow:0 0 10px orange;}
+      50%{box-shadow:0 0 10px green;} 75%{box-shadow:0 0 10px blue;}
+      100%{box-shadow:0 0 10px violet;}
+    }
+
+    .urgent { animation:pulseGreen 2s infinite; }
+    .deadline { animation:pulseOrange 2s infinite; }
+    .newTasks { animation:pulseYellow 2s infinite; }
+    .overdue { animation:pulseRed 2s infinite; }
+    .completed { animation:pulseRainbow 3s infinite; }
+
+    /* Гант */
+    .gantt {
+    position: relative;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    margin: 20px;
+    overflow-x: auto;
+  }
+  #ganttChart {
+  overflow: visible;
+  min-width: 100%;
+  min-height: 100%;
+}
+
+  .gantt-grid {
+    display: grid;
+    grid-template-rows: auto;
+    grid-auto-rows: 40px; /* висота рядка для задачі */
+    position: relative;
+  }
+  .gantt-day {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  text-align: left;
+  font-size: 9px;
+  height: 60px;
+  width: 20px;
+  border-right: 1px solid #eee;
+}
+.gantt-day-line {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 1px;
+  background: rgba(0, 128, 0, 0.2);
+}
+
+.gantt-row-line {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: rgba(0, 0, 0, 0.1);
+}
+
+  .task {
+    position: absolute;
+    height: 30px;
+    border-radius: 4px;
+    color: white;
+    padding: 5px;
+    font-size: 12px;
+  }
+  .arrow {
+    position: absolute;
+    width: 20px;
+    height: 2px;
+    background: black;
+  }
+  .gboard{
+    position: relative;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    margin: 20px;
+    overflow-x: auto;
+    }
+  </style>
+</head>
+<body>
+<header>
+  <h1 id="processTitle"></h1>
+  <p id="userInfoTop"></p>
+  <button id="toggleViewBtn" onclick="toggleView()">Вигляд діаграми</button>
+<button id="saveAndBackBtn" onclick="saveAndBack()">Зберегти і повернутися</button>
+</header>
+ <img src="./logo.svg" alt="logo" width="260">
+<div class="container">
+  <div class="participants" id="participants"></div>
+  <div id="kanbanView" class="board">
+ <div class="list" id="todoList" ondragover="allowDrop(event)" ondrop="drop(event)">
+  <h2>Що його там робити</h2>
+  <div class="cards"></div>
+</div>
+<div class="list" id="inProgressList" ondragover="allowDrop(event)" ondrop="drop(event)">
+  <h2>Та роблю я</h2>
+  <div class="cards"></div>
+</div>
+<div class="list" id="doneList" ondragover="allowDrop(event)" ondrop="drop(event)">
+  <h2>Та зроблено вже</h2>
+  <div class="cards"></div>
+</div>
+
+</div>
+
+  <div id="ganttView" class="gboard" style="display:none;">
+  <h2>Діаграма Ганта</h2>
+  <div class="gantt" id="ganttChart"></div>
+</div>
+</div>
+<svg style="position:absolute;width:0;height:0;">
+  <defs>
+    <marker id="arrowhead" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+      <polygon points="0 0, 6 3, 0 6" fill="#333" />
+    </marker>
+  </defs>
+</svg>
+<img src="./ivd.png" alt="logo" width="300">
+
+<script>
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwh5TrmNwDcMY51ToSGblbbzw2xF6sZPTuS677x3BHctpMinn4FCQsQmKkKwBus5kfq/exec";
+const Processes_SHEET_URL = "https://docs.google.com/spreadsheets/d/1vjxURM8HlNTxdk-XGEh-99sYuHhtEgNKLf-39jRm8-Q/gviz/tq?tqx=out:json&sheet=Processes";
+const currentUser = localStorage.getItem("currentUser") || "невідомий";
+let processData = JSON.parse(localStorage.getItem("currentProcess")) || {
+  processID: Date.now().toString(),
+  title: "Без назви",
+  owner: currentUser,
+  participants: [],
+  tasks: []
+};
+let allTasks = [];
+let dragged;
+
+const usersMap = {
+  gala: "Галина Кузнєцова",
+  olenka: "Олена Поліщук",
+  dima: "Дмитро Приходько",
+  serega: "Сергій Комашко",
+  sasha: "Олександр Волянюк",
+  pasha: "Павло Гриценко",
+  anya: "Ганна Мойсеєнко",
+  tetiana: "Тетяна Яковець",
+  adminp: "Адмін"
+};
+
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+// --- Ініціалізація ---
+window.addEventListener("DOMContentLoaded", initProcess);
+
+async function initProcess() {
+  document.getElementById("processTitle").innerText = processData.title;
+
+  const userInfo = document.getElementById("userInfoTop");
+  if (userInfo) {
+    const displayName = usersMap[currentUser] || currentUser;
+    userInfo.innerText = `👤 Користувач: ${displayName}`;
+  }
+
+  const participantsDiv = document.getElementById("participants");
+  participantsDiv.innerHTML = "";
+  (processData.participants || []).forEach(p => {
+    const div = document.createElement("div");
+    div.className = "participant";
+    div.innerText = p;
+    div.draggable = true;
+    div.ondragstart = drag;
+    participantsDiv.appendChild(div);
+  });
+
+  // показуємо локальні задачі
+  if (processData.tasks && processData.tasks.length) {
+    renderKanban(processData.tasks);
+  }
+
+  try {
+    const data = await fetchDashboardData();
+    if (data.status === "ok" && data.currentProcess?.tasks?.length) {
+      processData = data.currentProcess;
+      localStorage.setItem("currentProcess", JSON.stringify(processData));
+      renderKanban(processData.tasks || []);
+      console.log("✅ Дані підтягнуті з бекенду і відрендерені");
+    } else {
+      console.log("ℹ️ Бекенд не повернув задач — залишаємо локальні");
+    }
+  } catch(err) {
+    console.error("Помилка при підтягуванні з бекенду:", err);
+  }
+}
+
+// toggle між Kanban і Гантом
+function toggleView() {
+  const kanban = document.getElementById("kanbanView");
+  const gantt = document.getElementById("ganttView");
+  const btn = document.getElementById("toggleViewBtn");
+  const participants = document.getElementById("participants");
+
+  if (kanban.style.display === "none") {
+    kanban.style.display = "flex";
+    gantt.style.display = "none";
+    btn.innerText = "Вигляд діаграми";
+    participants.style.display = "block";
+  } else {
+    kanban.style.display = "none";
+    gantt.style.display = "block";
+    participants.style.display = "none";
+    btn.innerText = "Вигляд канбану";
+    renderGantt(processData.tasks || []);
+  }
+}
+
+// --- Drag & Drop ---
+function drag(ev) { dragged = ev.target; }
+function allowDrop(ev) { ev.preventDefault(); }
+
+// --- Drop ---
+function drop(ev) {
+  ev.preventDefault();
+  if (!dragged) return;
+
+  const targetList = ev.target.closest(".list");
+  if (!targetList) return;
+
+  if (dragged.classList.contains("participant")) {
+    createTaskCard(ev, dragged);
+    dragged = null;
+    return;
+  }
+
+  if (dragged.classList.contains("card")) {
+    targetList.appendChild(dragged);
+
+    let newStatus = "todo";
+    if (targetList.id === "inProgressList") newStatus = "inprogress";
+    else if (targetList.id === "doneList") newStatus = "done";
+
+    dragged.dataset.status = newStatus;
+    applyStatusClass(dragged, newStatus);
+
+    const taskId = dragged.dataset.taskId;
+    const idx = processData.tasks.findIndex(t => t.id === taskId);
+    if (idx >= 0) {
+      processData.tasks[idx].status = newStatus;
+    }
+
+    localStorage.setItem("currentProcess", JSON.stringify(processData));
+    syncTasks();
+    dragged = null;
+  }
+}
+function getCurrentUserRole() {
+  const userName = usersMap[currentUser] || currentUser;
+
+  if (processData.owner === currentUser) {
+    return "owner";
+  }
+
+  const participant = processData.participants.find(p => p.includes(userName));
+  if (participant) {
+    if (participant.includes("Керівник")) return "manager";
+    if (participant.includes("Виконавець")) return "executor";
+  }
+
+  return "executor"; // дефолт
+}
+
+function canEditTask(currentUserRole, taskRole, taskUsername) {
+  if (currentUserRole === "manager") {
+    return true; // керівник може все
+  }
+  if (currentUserRole === "owner") {
+    return taskRole === "executor" || taskRole === "owner";
+  }
+  if (currentUserRole === "executor") {
+    return taskUsername === (usersMap[currentUser] || currentUser);
+  }
+  return false;
+}
+
+// --- Створення картки задачі ---
+function createTaskCard(ev, dragged) {
+  const roleClass = dragged.innerText.includes("Оунер") ? "owner" :
+                    dragged.innerText.includes("Керівник") ? "manager" : "executor";
+
+  // визначаємо роль поточного користувача
+  const currentUserRole = getCurrentUserRole();
+
+  // перевірка прав
+  if (!canEditTask(currentUserRole, roleClass, dragged.innerText)) {
+    alert("У вас немає прав створювати або редагувати цю задачу");
+    return;
+  }
+
+  const card = document.createElement("div");
+  card.className = `card ${roleClass}`;
+  card.setAttribute("draggable","true");
+  card.ondragstart = drag;
+  card.dataset.username = dragged.innerText;
+
+  const taskId = Date.now().toString();
+  card.dataset.taskId = taskId;
+  card.dataset.status = "todo";
+
+  card.innerHTML = `
+    <details class="spoiler">
+      <summary><span class="taskTitle">${dragged.innerText} — нова задача</span></summary>
+      <div>
+        <label>Назва: <input type="text" class="titleInput"></label><br>
+        <label>Початок: <input type="date" class="startInput"></label><br>
+        <label>Дедлайн: <input type="date" class="deadlineInput"></label><br>
+        <label>Залежність: <select class="depSelect"><option value="">—</option></select></label><br>
+        <label><input type="checkbox" class="approveInput"> Потребує затвердження</label><br>
+        <label>Пріоритет:
+          <select class="priorityInput">
+            <option value="high">Високий</option>
+            <option value="medium">Середній</option>
+            <option value="low">Низький</option>
+          </select>
+        </label><br>
+        <label>Файл: <input type="file" multiple></label>
+      </div>
+    </details>
+  `;
+  document.querySelector("#todoList .cards").appendChild(card);
+
+  attachChat(card);
+  applyStatusClass(card, "todo");
+
+  card.querySelectorAll("input,select").forEach(inp => {
+    if (!canEditTask(currentUserRole, roleClass, dragged.innerText)) {
+      inp.disabled = true; // блокуємо редагування
+    } else {
+      inp.addEventListener("change", syncTasks);
+    }
+  });
+
+  card.querySelector(".titleInput").addEventListener("input", e => {
+    card.querySelector(".taskTitle").innerText = e.target.value || `${card.dataset.username} — нова задача`;
+    syncTasks();
+  });
+
+  if (!processData.tasks) processData.tasks = [];
+  processData.tasks.push({
+    id: taskId,
+    title: card.querySelector(".taskTitle").innerText,
+    start: "",
+    deadline: "",
+    role: roleClass,
+    username: card.dataset.username,
+    multiRole: false,
+    dependencyTitle: null,
+    priority: "high",
+    files: [],
+    chat: [],
+    status: "todo"
+  });
+
+  localStorage.setItem("currentProcess", JSON.stringify(processData));
+  syncTasks();
+}
+
+
+// --- Класи за статусом ---
+function applyStatusClass(card, status) {
+  card.classList.remove("urgent","deadline","newTasks","overdue","completed");
+
+  switch (status) {
+    case "inprogress":
+      card.classList.add("urgent");
+      break;
+    case "done":
+      card.classList.add("completed");
+      break;
+    case "todo":
+    default:
+      card.classList.add("newTasks");
+      break;
+  }
+}
+
+// --- Чат у картці ---
+function attachChat(card) {
+  const chatBox = document.createElement("div");
+  chatBox.className = "chatBox";
+  chatBox.style.marginTop = "5px";
+  chatBox.style.background = "rgba(255,255,255,0.1)";
+  chatBox.style.padding = "5px";
+  chatBox.style.borderRadius = "4px";
+
+  const messages = document.createElement("div");
+  messages.className = "messages";
+  messages.style.maxHeight = "80px";
+  messages.style.overflowY = "auto";
+  messages.style.fontSize = "11px";
+
+  const input = document.createElement("input");
+  input.type = "text";
+  input.placeholder = "Ваш коментар...";
+  input.style.width = "70%";
+
+  const sendBtn = document.createElement("button");
+  sendBtn.innerText = "Надіслати";
+  sendBtn.style.marginLeft = "5px";
+
+  sendBtn.onclick = () => {
+    if (input.value.trim() !== "") {
+      const msgObj = { user: usersMap[currentUser] || currentUser, text: input.value.trim() };
+      const msgDiv = document.createElement("div");
+      msgDiv.innerText = `${msgObj.user}: ${msgObj.text}`;
+      messages.appendChild(msgDiv);
+
+      if (!card.chat) card.chat = [];
+      card.chat.push(msgObj);
+
+      const idx = processData.tasks.findIndex(x => x.id === card.dataset.taskId);
+      if (idx >= 0) processData.tasks[idx].chat = card.chat;
+
+      localStorage.setItem("currentProcess", JSON.stringify(processData));
+      input.value = "";
+    }
+  };
+
+  chatBox.appendChild(messages);
+  chatBox.appendChild(input);
+  chatBox.appendChild(sendBtn);
+  card.appendChild(chatBox);
+}
+
+// --- Синхронізація задач (канбан + локалка) ---
+function syncTasks() {
+  allTasks = [];
+  const titles = [];
+
+  document.querySelectorAll(".card").forEach(card => {
+    const title = card.querySelector(".titleInput")?.value || card.querySelector(".taskTitle").innerText;
+    titles.push(title);
+
+    const start = card.querySelector(".startInput")?.value || "";
+    const deadline = card.querySelector(".deadlineInput")?.value || "";
+    const role = card.classList.contains("owner") ? "owner" :
+                 card.classList.contains("manager") ? "manager" : "executor";
+    const username = card.dataset.username || "";
+    const multiRole = card.querySelector(".approveInput")?.checked || false;
+    const depTitle = card.querySelector(".depSelect")?.value || null;
+    const priority = card.querySelector(".priorityInput")?.value || "medium";
+    const status = card.dataset.status || "todo";
+
+    const fileInput = card.querySelector("input[type=file]");
+    const files = fileInput && fileInput.files.length > 0
+      ? Array.from(fileInput.files).map(f => ({ name: f.name, url: "" }))
+      : (card.files || []);
+
+    const chat = card.chat || [];
+
+    allTasks.push({
+      id: card.dataset.taskId || Date.now().toString(),
+      title,
+      start,
+      deadline,
+      role,
+      username,
+      multiRole,
+      dependencyTitle: depTitle,
+      priority,
+      files,
+      chat,
+      status
+    });
+  });
+
+  document.querySelectorAll(".depSelect").forEach(sel => {
+    const current = sel.value;
+    sel.innerHTML = `<option value="">—</option>`;
+    titles.forEach(t => {
+      const opt = document.createElement("option");
+      opt.value = t;
+      opt.textContent = t;
+      if (t === current) opt.selected = true;
+      sel.appendChild(opt);
+    });
+  });
+
+  processData.tasks = allTasks;
+  localStorage.setItem("currentProcess", JSON.stringify(processData));
+}
+
+
+// --- Збереження у бекенд ---
+document.getElementById("saveAndBackBtn").onclick = async () => {
+  try {
+    const safeTasks = (processData.tasks || []).map(t => ({
+      id: t.id,
+      title: t.title || "",
+      start: t.start || "",
+      deadline: t.deadline || "",
+      role: t.role || "executor",
+      username: t.username || "",
+      multiRole: !!t.multiRole,
+      dependencyTitle: t.dependencyTitle || null,
+      priority: t.priority || "medium",
+      files: (t.files || []).map(f => ({
+        name: f.name,
+        url: f.url || "",
+        deleteUrl: f.deleteUrl || ""
+      })),
+      chat: (t.chat || []).map(c => ({ user: c.user || "", text: c.text || "" })),
+      status: t.status || "todo"
+    }));
+
+    const safeProcess = {
+      processID: processData.processID,
+      title: processData.title,
+      owner: usersMap[currentUser] || currentUser,
+      participants: processData.participants || [],
+      status: processData.status || "new",
+      tasks: safeTasks
+    };
+
+    await fetch(SCRIPT_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type":"application/json" },
+      body: JSON.stringify({ action:"updateProcess", process: safeProcess })
+    });
+
+    console.log("✅ Збережено у бекенд");
+    window.location.href = "Dashboard.html";
+  } catch(err) {
+    console.error("Помилка при збереженні у бекенд:", err);
+  }
+};
+
+
+// --- Підтягування з Google Sheets ---
+async function fetchDashboardData() {
+  try {
+    const res = await fetch(Processes_SHEET_URL);
+    const text = await res.text();
+    const json = JSON.parse(text.substr(47).slice(0, -2)); // парсимо gviz JSON
+
+    const rows = json.table.rows;
+    const processes = {};
+
+    rows.forEach(r => {
+      const [
+        processID, title, owner, participants, status, taskID,
+        taskTitle, start, deadline, role, username,
+        multiRole, dependency, priority, files, chat, taskStatus
+      ] = r.c.map(c => c ? c.v : "");
+
+      if (!processes[processID]) {
+        processes[processID] = {
+          processID,
+          title,
+          owner,
+          participants: participants ? participants.split(", ") : [],
+          status,
+          tasks:[]
+        };
+      }      
+
+      const parsedTask = {
+        id: taskID,
+        title: taskTitle || "",
+        start: start || "",
+        deadline: deadline || "",
+        role: role || "executor",
+        username: username || "",
+        multiRole: multiRole === "TRUE" || multiRole === true,
+        dependencyTitle: dependency || null,
+        priority: priority || "medium",
+
+        files: files ? files.split(", ").map(f => {
+          const [name, url, deleteUrl] = f.split("::");
+          return { name: name || "", url: url || "", deleteUrl: deleteUrl || "" };
+        }) : [],
+
+        chat: chat ? chat.split(" || ").map(c => {
+          const [user, text] = c.split(": ");
+          return { user: user || "?", text: text || "" };
+        }) : [],
+
+        status: taskStatus || "todo"
+      };
+
+      const existingIdx = processes[processID].tasks.findIndex(t => t.id === taskID);
+      if (existingIdx >= 0) {
+        processes[processID].tasks[existingIdx] = parsedTask;
+      } else {
+        processes[processID].tasks.push(parsedTask);
+      }
+    });
+
+    const current = processes[processData.processID];
+    return { status:"ok", currentProcess: current, processes:Object.values(processes) };
+  } catch(err) {
+    console.error("Помилка при підтягуванні з аркуша:", err);
+    return { status:"error", processes:[] };
+  }
+}
+function renderKanban(tasks) {
+  document.querySelector("#todoList .cards").innerHTML = "";
+  document.querySelector("#inProgressList .cards").innerHTML = "";
+  document.querySelector("#doneList .cards").innerHTML = "";
+
+  const currentUserRole = getCurrentUserRole();
+
+  tasks.forEach(t => {
+    const card = document.createElement("div");
+    card.className = `card ${t.role}`;
+    card.dataset.taskId = t.id;
+    card.dataset.username = t.username;
+    card.dataset.status = t.status;
+
+    // Перетягування дозволене лише якщо є права
+    if (canEditTask(currentUserRole, t.role, t.username)) {
+      card.setAttribute("draggable","true");
+      card.ondragstart = drag;
+    } else {
+      card.setAttribute("draggable","false");
+    }
+
+    card.innerHTML = `
+      <details class="spoiler" open>
+        <summary><span class="taskTitle">${t.title}</span></summary>
+        <div>
+          <label>Назва: <input type="text" class="titleInput" value="${t.title}"></label><br>
+          <label>Початок: <input type="date" class="startInput" value="${t.start || ""}"></label><br>
+          <label>Дедлайн: <input type="date" class="deadlineInput" value="${t.deadline || ""}"></label><br>
+          <label>Залежність: <select class="depSelect"><option value="">—</option></select></label><br>
+          <label><input type="checkbox" class="approveInput" ${t.multiRole ? "checked":""}> Потребує затвердження</label><br>
+          <label>Пріоритет:
+            <select class="priorityInput">
+              <option value="high" ${t.priority==="high"?"selected":""}>Високий</option>
+              <option value="low" ${t.priority==="low"?"selected":""}>Низький</option>
+            </select>
+          </label><br>
+          <div class="chatBox">
+            <div class="messages"></div>
+            <input type="text" class="chatInput" placeholder="Написати повідомлення...">
+            <button class="sendBtn">Надіслати</button>
+          </div>
+        </div>
+      </details>
+    `;
+
+    // --- Чат (завжди доступний) ---
+    card.chat = t.chat || [];
+    const messagesDiv = card.querySelector(".messages");
+    card.chat.forEach(c => {
+      const m = document.createElement("div");
+      m.innerText = `${c.user}: ${c.text}`;
+      messagesDiv.appendChild(m);
+    });
+
+    const sendBtn = card.querySelector(".sendBtn");
+    const chatInput = card.querySelector(".chatInput");
+    sendBtn.disabled = false; // завжди активний
+    chatInput.disabled = false; // завжди активний
+    sendBtn.onclick = () => {
+      if (chatInput.value.trim() !== "") {
+        const msgObj = { user: usersMap[currentUser] || currentUser, text: chatInput.value.trim() };
+        card.chat.push(msgObj);
+        const m = document.createElement("div");
+        m.innerText = `${msgObj.user}: ${msgObj.text}`;
+        messagesDiv.appendChild(m);
+        chatInput.value = "";
+
+        const idx = processData.tasks.findIndex(x => x.id === card.dataset.taskId);
+        if (idx >= 0) processData.tasks[idx].chat = card.chat;
+        localStorage.setItem("currentProcess", JSON.stringify(processData));
+        syncTasks();
+      }
+    };
+
+    applyStatusClass(card, t.status);
+
+    // --- Блокування редагування решти інпутів ---
+    card.querySelectorAll("input,select").forEach(inp => {
+      if (inp.classList.contains("chatInput") || inp.classList.contains("sendBtn")) return; // чат не блокуємо
+      if (!canEditTask(currentUserRole, t.role, t.username)) {
+        inp.disabled = true;
+      } else {
+        inp.addEventListener("change", syncTasks);
+      }
+    });
+
+    card.querySelector(".titleInput").addEventListener("input", e => {
+      if (canEditTask(currentUserRole, t.role, t.username)) {
+        card.querySelector(".taskTitle").innerText = e.target.value || `${card.dataset.username} — нова задача`;
+        syncTasks();
+      } else {
+        e.preventDefault();
+      }
+    });
+
+    // --- Розміщення картки ---
+    if (t.status === "inprogress") {
+      document.querySelector("#inProgressList .cards").appendChild(card);
+    } else if (t.status === "done") {
+      document.querySelector("#doneList .cards").appendChild(card);
+    } else {
+      document.querySelector("#todoList .cards").appendChild(card);
+    }
+  });
+}
+
+
+function renderGantt(tasks) {
+  const gantt = document.getElementById("ganttChart");
+  gantt.innerHTML = "";
+  if (!tasks.length) return;
+
+  // сортуємо задачі за стартом
+  tasks.sort((a,b) => new Date(a.start) - new Date(b.start));
+
+  const starts = tasks.map(t => new Date(t.start)).filter(d => !isNaN(d));
+  const ends = tasks.map(t => new Date(t.deadline)).filter(d => !isNaN(d));
+  const minDate = new Date(Math.min(...starts));
+  const maxDate = new Date(Math.max(...ends));
+  const diffDays = Math.ceil((maxDate - minDate)/(1000*60*60*24)) + 1;
+  const now = new Date();
+
+  gantt.style.position = "relative";
+  gantt.style.overflow = "visible";
+  gantt.style.width = `${diffDays*40 + 150}px`;
+  gantt.style.height = `${tasks.length*60 + 120}px`;
+
+  // сьогоднішня лінія
+  const todayOffset = Math.floor((now - minDate)/(1000*60*60*24));
+  const todayLine = document.createElement("div");
+  todayLine.style.position = "absolute";
+  todayLine.style.left = `${todayOffset*40 + 120}px`;
+  todayLine.style.top = "0";
+  todayLine.style.width = "40px";
+  todayLine.style.height = `${tasks.length*60 + 120}px`;
+  todayLine.style.background = "rgba(255,200,0,0.2)";
+  todayLine.style.pointerEvents = "none";
+  gantt.appendChild(todayLine);
+
+  // Горизонтальна сітка + імена виконавців
+  tasks.forEach((t, idx) => {
+    const rowLine = document.createElement("div");
+    rowLine.className = "gantt-row-line";
+    rowLine.style.position = "absolute";
+    rowLine.style.left = "0";
+    rowLine.style.top = `${(idx+1)*60}px`;
+    rowLine.style.width = "100%";
+    rowLine.style.height = "1px";
+    rowLine.style.background = "rgba(0,0,0,0.1)";
+    gantt.appendChild(rowLine);
+
+    const label = document.createElement("div");
+    label.innerText = t.username || "—";
+    label.style.position = "absolute";
+    label.style.left = "0";
+    label.style.top = `${(idx+1)*60}px`;
+    label.style.width = "120px";
+    label.style.textAlign = "right";
+    label.style.fontSize = "12px";
+    label.style.fontWeight = "bold";
+    gantt.appendChild(label);
+  });
+
+  // Малюємо задачі
+  tasks.forEach((t, idx) => {
+    const startOffset = Math.floor((new Date(t.start)-minDate)/(1000*60*60*24));
+    const duration = Math.max(1, Math.ceil((new Date(t.deadline)-new Date(t.start))/(1000*60*60*24))+1);
+
+    const task = document.createElement("div");
+    task.className = "task";
+    task.style.position = "absolute";
+    task.style.top = `${(idx+1)*60}px`;
+    task.style.left = `${startOffset*40 + 120}px`;
+    task.style.width = `${duration*40}px`;
+    task.style.height = "30px";
+    task.style.borderRadius = "4px";
+    task.style.color = "white";
+    task.style.padding = "5px";
+    task.style.fontSize = "12px";
+
+    // Колір за роллю
+    if (t.role === "owner") task.style.background = "#3498db";
+    else if (t.role === "manager") task.style.background = "#2ecc71";
+    else if (t.role === "executor") task.style.background = "#8e44ad";
+    
+    if (t.multiRole) {
+      task.style.background = "linear-gradient(90deg, #8e44ad 50%, #f39c12 50%)";
+    }
+
+    // Контур за статусом
+    let statusText = "";
+    if (now < new Date(t.start)) {
+      task.style.opacity = "0.6";
+      task.style.border = "2px dashed gray";
+      statusText = "Ще не почато";
+    } else if (now > new Date(t.deadline) && t.status !== "done") {
+      task.style.border = "2px solid red";
+      statusText = "Протерміновано";
+    } else if (t.status === "done") {
+      task.style.border = "2px solid green";
+      statusText = "Виконано";
+    } else {
+      task.style.border = "2px solid orange";
+      statusText = "У процесі";
+    }
+
+    // Текст усередині
+    task.innerText = t.title;
+
+    // Формуємо тултіп з деталями
+    let tooltip = `${t.title}
+Початок: ${t.start}
+Дедлайн: ${t.deadline}
+Виконавець: ${t.username || "—"}
+Пріоритет: ${t.priority}
+Залежність: ${t.dependencyTitle || "—"}
+Статус: ${statusText}`;
+
+    if (t.chat && t.chat.length) {
+      tooltip += `\nКоментарі:\n` + t.chat.map(c => `${c.user}: ${c.text}`).join("\n");
+    }
+    if (t.files && t.files.length) {
+      tooltip += `\nФайли:\n` + t.files.map(f => `${f.name} (${f.url || "-"})`).join("\n");
+    }
+
+    task.title = tooltip;
+    gantt.appendChild(task);
+  });
+}
+
+</script>
+</body>
+</html>

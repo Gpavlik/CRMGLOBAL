@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/jpg" href="11.webp">
+  <title>Вхід</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0; padding: 0;
+      background: linear-gradient(135deg, #009400, #004d00);
+      color: #ffffff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    label {
+      display: block; 
+      margin: 10px auto 5px auto; 
+      font-weight: bold;
+      width: 500px; 
+      text-align: left;
+    }
+    input, select {
+      width: 500px; 
+      padding: 10px; 
+      margin: 5px auto 15px auto;
+      border: none; 
+      border-radius: 6px; 
+      font-size: 1rem;
+      box-sizing: border-box;
+    }
+    button {
+      width: 200px; 
+      padding: 12px; 
+      margin: 10px 15px;
+      background-color: #004d00; 
+      color: #ffffff;
+      border: solid 1px #c2ffc2; 
+      border-radius: 6px; 
+      font-size: 1rem;
+      cursor: pointer; 
+      transition: background 0.3s ease;
+    }
+    h1 { margin-top: 30px; }
+    button:hover { background-color: #003300; }
+    @media screen and (max-width: 480px) {
+      label, input, select { width: 90%; font-size: 0.9rem; }
+      button { width: 80%; font-size: 0.9rem; }
+    }
+    @media screen and (min-width: 481px) and (max-width: 768px) {
+      label, input, select { width: 80%; font-size: 1rem; }
+      button { width: 60%; font-size: 1rem; }
+    }
+    @media screen and (min-width: 769px) {
+      label, input, select { width: 500px; }
+      button { width: 200px; }
+    }
+    #marquee {
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+  font-size: 18px;
+  padding: 10px;
+}
+
+#marquee span {
+  display: inline-block;
+  padding-left: 100%;
+  animation: marquee 50s linear infinite;
+}
+
+@keyframes marquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
+}
+  </style>
+</head>
+<body>
+  <h1>Вхід</h1>
+  <img src="./logo.svg" alt="logo" width="260">
+  <div id="loginForm">
+    <label>Ім’я користувача:
+      <select id="username">
+        <option value="">Виберіть користувача</option>
+        <option value="gala">Галина Кузнєцова</option>
+        <option value="olenka">Олена Поліщук</option>
+        <option value="dima">Дмитро Приходько</option>
+        <option value="serega">Сергій Комашко</option>
+        <option value="sasha">Олександр Волянюк</option>
+        <option value="pasha">Павло Гриценко</option>
+        <option value="anya">Ганна Мойсеєнко</option>
+        <option value="tetiana">Тетяна Яковець</option>
+        <option value="adminp">admin</option>
+      </select>
+    </label>
+    <label>Пароль:
+      <input type="password" id="password">
+    </label>
+    <button id="loginBtn">Увійти</button>
+  </div>
+  <img src="./ivd.png" alt="logo" width="300">
+<div id="marquee" style="display: none;">
+  <span>
+    Вантажимо для вас найкращих партнерів... 
+    Формуємо позитивний настрій... 
+    Налаштовуємо бажання креативити... 
+    Прогнозуємо виконання плану...
+    Підвищуємо ваші продажі...
+    Створюємо гарну атмосферу для роботи...
+    Усуваємо всі перешкоди на шляху до успіху...
+    Знищуємо конкурентів...
+    Ваша команда вже чекає на вас!
+  </span>
+</div>
+  <script>
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyw4XPYemQbvxJ3IG1DIIbVOQhDjKlM3PR_dKwRWyO24hM_MdhcntM3bmcpk6gko7ff/exec";
+const LOGINS_SHEET_URL = "https://docs.google.com/spreadsheets/d/1YSFD-Ll5mVjC0HI0H5Mc4cYBSOavPtA6eVLdAKB9qS4/gviz/tq?tqx=out:json&sheet=Logins";
+
+// читаємо таблицю Logins
+async function fetchLogins() {
+  const res = await fetch(LOGINS_SHEET_URL);
+  const text = await res.text();
+  const json = JSON.parse(text.substr(47).slice(0, -2));
+  return json.table.rows.map(r => ({
+    date: r.c[0]?.v || "",
+    user: r.c[1]?.v || "",
+    result: r.c[2]?.v || ""
+  }));
+}
+
+// перевіряємо останній запис
+async function checkLastLogin(userKey) {
+  const logins = await fetchLogins();
+  const userLogs = logins.filter(l => l.user === userKey);
+  if (userLogs.length === 0) return false;
+  const lastLog = userLogs[userLogs.length - 1];
+  return lastLog.result === "OK";
+}
+
+document.getElementById("loginBtn").addEventListener("click", async function() {
+  const u = document.getElementById("username").value;
+  const p = document.getElementById("password").value;
+document.getElementById("marquee").style.display = "block";
+  if (!u || !p) {
+    alert("Будь ласка, введіть ім’я та пароль!");
+    return;
+  }
+
+  try {
+    // відправляємо запит на бекенд (він запише OK/FAIL у таблицю)
+    await fetch(SCRIPT_URL, {
+      method: "POST",
+      mode: "no-cors",  
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ action: "login", userName: u, password: p })
+    });
+
+    // тепер перевіряємо таблицю
+    const ok = await checkLastLogin(u);
+    if (ok) {
+      localStorage.setItem("currentUser", u);
+      window.location.href = "Dashboard.html";
+    } else {
+      alert("Невірний пароль!");
+    }
+  } catch (err) {
+    alert("Помилка з’єднання з сервером!");
+    console.error(err);
+  }
+});
+</script>
+</body>
+</html>

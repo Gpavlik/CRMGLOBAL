@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>Мої процеси</title>
+  <link rel="icon" type="image/jpg" href="11.webp">
+  <style>
+      body {
+  font-family: Arial, sans-serif;
+  margin: 0; 
+  padding: 0;
+  background: linear-gradient(135deg, #009400, #004d00);
+  color: #fff;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Хедер */
+header { 
+  background:#2c3e50; 
+  color:white; 
+  padding:10px 20px; 
+  display:flex; 
+  justify-content:space-around; 
+  align-items:center; 
+  width:100%;
+  box-sizing:border-box;
+}
+header h1 { margin:0; font-size:22px; }
+header .user-info { font-size:14px; font-weight:bold; }
+header button { 
+  background:#3498db; 
+  color:white; 
+  border:none; 
+  padding:8px 12px; 
+  border-radius:4px; 
+  cursor:pointer; 
+  transition:background 0.3s;
+}
+header button:hover { background:#2980b9; }
+
+/* Процеси */
+.processes { 
+  display:flex; 
+  flex-wrap:wrap; 
+  gap:20px; 
+  padding:20px; 
+  justify-content:center;
+}
+.process { 
+  width:260px; 
+  height:180px; 
+  border:4px solid transparent; 
+  border-radius:12px; 
+  display:flex; 
+  flex-direction:column; 
+  align-items:center; 
+  justify-content:center; 
+  cursor:pointer; 
+  transition:all 0.3s; 
+  text-align:center; 
+}
+.process:hover { transform:scale(1.05); }
+.process h2 { margin:0; font-size:20px; font-weight:bold; }
+.process p { margin:5px 0; font-size:14px; }
+
+/* Ролі */
+.owner { background:#3498db; color:white; }
+.executor { background:#8e44ad; color:white; }
+.manager { background:#2ecc71; color:white; }
+
+/* Пульсація */
+@keyframes pulseGreen { 0%{box-shadow:0 0 5px #fff;} 50%{box-shadow:0 0 20px #fff;} 100%{box-shadow:0 0 5px #fff;} }
+@keyframes pulseOrange { 0%{box-shadow:0 0 5px orange;} 50%{box-shadow:0 0 20px orange;} 100%{box-shadow:0 0 5px orange;} }
+@keyframes pulseYellow { 0%{box-shadow:0 0 5px yellow;} 50%{box-shadow:0 0 20px yellow;} 100%{box-shadow:0 0 5px yellow;} }
+@keyframes pulseRed { 0%{box-shadow:0 0 5px red;} 50%{box-shadow:0 0 20px red;} 100%{box-shadow:0 0 5px red;} }
+@keyframes pulseRainbow {
+  0%{box-shadow:0 0 10px red;} 25%{box-shadow:0 0 10px orange;}
+  50%{box-shadow:0 0 10px green;} 75%{box-shadow:0 0 10px blue;}
+  100%{box-shadow:0 0 10px violet;}
+}
+
+.urgent { animation:pulseGreen 2s infinite; }
+.deadline { animation:pulseOrange 2s infinite; }
+.newTasks { animation:pulseYellow 2s infinite; }
+.overdue { animation:pulseRed 2s infinite; }
+.completed { animation:pulseRainbow 3s infinite; }
+
+/* Форма */
+#newBoardForm { 
+  display:none; 
+  flex-direction:column; 
+  gap:10px; 
+  padding:20px; 
+  background:#fff; 
+  border-bottom:1px solid #ccc; 
+  border-radius: 20px;
+  color:#000;
+}
+.form-row { display:flex; gap:10px; }
+select, input { padding:5px; }
+
+/* Легенда */
+.legend { 
+  margin-left: 20px; 
+  border-top:1px solid #ccc; 
+  width: 320px; 
+  padding-top:20px;
+  
+}
+.legend-item { margin:5px 0; display:flex; align-items:center; }
+.legend span { 
+  display:inline-block; 
+  width:20px; 
+  height:20px; 
+  margin-right:10px; 
+  border-radius:50%; 
+}
+.lg-urgent { background:#fff; }
+.lg-deadline { background:orange; }
+.lg-new { background:yellow; }
+.lg-overdue { background:red; }
+.lg-completed { background:linear-gradient(90deg, red, orange, green, blue, violet); }
+
+input, select { 
+  background:#eee; 
+  border:1px solid #ccc; 
+  border-radius:4px;   
+}  
+.modal {
+  position: fixed;
+  top:0; left:0; right:0; bottom:0;
+  background: rgba(0,0,0,0.5);
+  display:flex; justify-content:center; align-items:center;
+  flex-direction: column;
+}
+.modal-content {
+  background:#00d100; color:#000; padding:20px; border-radius:20px;
+  min-width:300px; text-align:center; margin: 6px; align-items: inherit;
+}
+.modal-buttons { display:flex; gap:10px; justify-content:center; margin-top:15px; }
+.modal-buttons button { padding:8px 12px; border:none; border-radius:4px; cursor:pointer; }
+#deleteBtn { background:#e74c3c; color:#fff; }
+#editBtn { background:#f39c12; color:#fff; }
+#goBtn { background:#2ecc71; color:#fff; }
+
+
+/* Адаптивність */
+@media screen and (max-width: 480px) {
+  .process { width: 100%; } 
+  header { flex-direction: column; gap: 10px; }
+  .legend { margin-left:0; }
+}
+@media screen and (min-width: 481px) and (max-width:768px) {
+  .process { width: 45%; }
+} 
+@media screen and (min-width: 769px) {
+  .process { width: 260px; }
+}
+
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Мої процеси</h1>
+    <p id="userInfoTop"></p>
+    <button onclick="toggleForm()">Створити нову дошку</button>
+   <button id="saveBtn">Зберегти зміни</button>
+   <button onclick="window.location.href='calendar.html'">Перейти до календаря</button>
+  </header>
+   <img src="./logo.svg" alt="logo" width="260">
+<!-- Легенда кольорів -->
+ <div style="display:flex; gap:20px; padding:20px; width: 100%; justify-content: flex-start;" width="98%" >
+  <div class="legend">
+    <h3>Карта бордерів</h3>
+    <div class="legend-item"><span class="lg-urgent"></span> Потрібне затвердження</div>
+    <div class="legend-item"><span class="lg-deadline"></span> Наближається дедлайн</div>
+    <div class="legend-item"><span class="lg-new"></span> Додані нові задачі</div>
+    <div class="legend-item"><span class="lg-overdue"></span> Протерміноване завдання</div>
+    <div class="legend-item"><span class="lg-completed"></span> Процес завершено</div>
+    
+    <h4>Карта Кольорів</h4>
+  <div class="legend-item"><span class="owner"></span> Власник процесу</div>
+  <div class="legend-item"><span class="executor"></span> Виконавець</div>
+  <div class="legend-item"><span class="manager"></span> Керівник</div>
+  </div>
+  <div  style="display:flex; gap:20px; padding:20px; width: 100%; justify-content: flex-start;" width="100%" flex-wrap="wrap" flex-direction="row">
+  
+  <!-- Список процесів -->
+  <div class="processes" id="processList"></div>
+    <!-- Форма створення дошки -->
+  <div id="newBoardForm">
+    <input type="text" id="boardTitle" placeholder="Назва дошки">
+    <div class="form-row">
+      <label>Власник:
+        <input type="text" id="boardOwner" readonly>
+      </label>
+    </div>
+    <div id="participants"></div>
+    <button onclick="addParticipant()">Додати учасника</button>
+    <button id="saveBtn" onclick="createBoard()">Створити</button>
+  </div>
+ </div>
+</div>  
+<div id="processModal" class="modal" style="display:none;">
+  <div class="modal-content">
+    <h3 id="modalTitle"></h3>
+    <div class="modal-buttons">
+      <button id="deleteBtn">Видалити</button>
+      <button id="editBtn">Редагувати</button>
+      <button id="goBtn">Перейти</button>
+    </div>
+  </div>
+</div>
+<div id="editProcessModal" class="modal" style="display:none;">
+  <div class="modal-content">
+  <h2>Редагування процесу</h2>
+  <label>Назва:</label>
+  <input type="text" id="editTitle">
+
+  <div id="editParticipants"></div>
+  <button onclick="addEditParticipant()">Додати учасника</button>
+
+  <button id="saveEditBtn">Зберегти</button>
+  </div>
+</div>
+
+<img src="./ivd.png" alt="logo" width="300">
+<script>
+let allProcesses = [];
+
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwh5TrmNwDcMY51ToSGblbbzw2xF6sZPTuS677x3BHctpMinn4FCQsQmKkKwBus5kfq/exec";
+const DASHBOARD_SHEET_URL = "https://docs.google.com/spreadsheets/d/1vjxURM8HlNTxdk-XGEh-99sYuHhtEgNKLf-39jRm8-Q/gviz/tq?tqx=out:json&sheet=Dashboard";
+
+const currentUser = localStorage.getItem("currentUser") || "невідомий";
+document.getElementById("boardOwner").value = currentUser;
+
+const usersMap = {
+  gala: "Галина Кузнєцова",
+  olenka: "Олена Поліщук",
+  dima: "Дмитро Приходько",
+  serega: "Сергій Комашко",
+  sasha: "Олександр Волянюк",
+  pasha: "Павло Гриценко",
+  anya: "Ганна Мойсеєнко",
+  tetiana: "Тетяна Яковець",
+  adminp: "Адмін"
+};
+
+window.addEventListener("DOMContentLoaded", initDashboard);
+
+document.getElementById("boardOwner").value = usersMap[currentUser] || currentUser;
+// --- gviz fetch ---
+async function fetchDashboardData() {
+  try {
+    const res = await fetch(DASHBOARD_SHEET_URL);
+    const text = await res.text();
+    const json = JSON.parse(text.substr(47).slice(0, -2));
+
+    // пропускаємо перший рядок (заголовки)
+    const processes = json.table.rows.slice(2).map(r => ({
+      processID: r.c[0]?.v || "",
+      title: r.c[1]?.v || "",
+      owner: r.c[2]?.v || "",
+      participants: (r.c[3]?.v || "").split(", "),
+      status: r.c[4]?.v || "new"
+    }));
+
+    return {status:"ok", processes};
+  } catch(err) {
+    console.error("Помилка при читанні Dashboard через gviz:", err);
+    return {status:"error", processes:[]};
+  }
+}
+
+
+async function initDashboard() {
+  // 1. показуємо дані з localStorage
+  const localData = localStorage.getItem("dashboardData");
+  if (localData) {
+    const parsed = JSON.parse(localData);
+    allProcesses = parsed.processes || [];
+    renderDashboard(parsed);
+  }
+
+  // 2. показуємо юзера
+  const userInfo = document.getElementById("userInfoTop");
+  if (userInfo) {
+    const displayName = usersMap[currentUser] || currentUser;
+    userInfo.innerText = `👤 Користувач: ${displayName}`;
+  }
+
+  // 3. підтягування актуальних даних з таблиці через gviz
+  const data = await fetchDashboardData();
+  if (data.status === "ok") {
+    allProcesses = data.processes;
+    localStorage.setItem("dashboardData", JSON.stringify(data));
+    renderDashboard(data);
+  }
+}
+
+function renderDashboard(dashboardData) {
+  const list = document.getElementById("processList");
+  list.innerHTML = "";
+
+  dashboardData.processes.forEach(proc => {
+    const div = document.createElement("div");
+    div.className = "process owner newTasks";
+    div.dataset.status = proc.status || "new";
+    div.dataset.processId = proc.processID || "";
+    div.dataset.procData = JSON.stringify(proc);
+
+    const ownerName = usersMap[proc.owner] || proc.owner;
+    const participantsNames = proc.participants.map(p => usersMap[p] || p);
+
+    div.innerHTML = `
+      <h2>${proc.title}</h2>
+      <p>Власник: ${ownerName}</p>
+      <p>Учасники:<br>${participantsNames.join("<br>")}</p>
+      <p>Статус: ${proc.status}</p>
+    `;
+
+    div.onclick = () => showProcessModal(proc);
+    list.appendChild(div);
+  });
+}
+
+// --- пушимо на бекенд з no-cors ---
+document.getElementById("saveBtn").addEventListener("click", () => {
+  const processes = [];
+  document.querySelectorAll(".process").forEach(proc => {
+    processes.push({
+      processID: proc.dataset.processId || Date.now().toString(),
+      title: proc.querySelector("h2").innerText,
+      owner: proc.querySelector("p").innerText.replace("Власник: ",""),
+      participants: proc.querySelector("p:nth-of-type(2)").innerText.replace("Учасники:\n","").split("\n"),
+      status: proc.dataset.status || "new"
+    });
+  });
+
+  const dashboardData = { processes };
+  localStorage.setItem("dashboardData", JSON.stringify(dashboardData));
+
+  fetch(SCRIPT_URL, {
+    method: "POST",
+    mode: "no-cors",
+    headers: { "Content-Type":"application/json" },
+    body: JSON.stringify({ action:"saveDashboard", data:dashboardData })
+  });
+});
+
+function toggleForm() {
+  const form = document.getElementById("newBoardForm");
+  if (!form) return;
+  form.style.display = form.style.display === "none" ? "flex" : "none";
+}
+function addParticipant() {
+  const div = document.createElement("div");
+  div.className = "form-row";
+
+  // селект користувачів
+  const userSelect = document.createElement("select");
+  Object.entries(usersMap).forEach(([key, name]) => {
+    const opt = document.createElement("option");
+    opt.value = key;
+    opt.textContent = name;
+    userSelect.appendChild(opt);
+  });
+
+  // селект ролей
+  const roleSelect = document.createElement("select");
+  ["executor","manager"].forEach(r => {
+    const opt = document.createElement("option");
+    opt.value = r;
+    opt.textContent = r==="executor" ? "Виконавець" : "Керівник";
+    roleSelect.appendChild(opt);
+  });
+
+  div.appendChild(userSelect);
+  div.appendChild(roleSelect);
+  document.getElementById("participants").appendChild(div);
+}
+
+function createBoard() {
+  const title = document.getElementById("boardTitle").value.trim();
+  if (!title) { alert("Введіть назву дошки"); return; }
+
+  const owner = currentUser;
+  let participants = [];
+
+  // додаємо власника як Оунер
+  const ownerName = usersMap[owner] || owner;
+  participants.push(`${ownerName} (Оунер)`);
+
+  // додаємо інших учасників
+  document.querySelectorAll("#participants .form-row").forEach(row => {
+    const selects = row.querySelectorAll("select");
+    const userKey = selects[0].value;
+    const roleKey = selects[1].value;
+    const userName = usersMap[userKey] || userKey;
+    const roleName = roleKey === "executor" ? "Виконавець" : "Керівник";
+    participants.push(`${userName} (${roleName})`);
+  });
+
+  const processData = {
+    processID: Date.now().toString(),
+    title,
+    owner,              // тут зберігається єдиний власник
+    participants,       // тут він теж є, але з роллю "Оунер"
+    status: "new"
+  };
+
+  allProcesses.push(processData);
+  localStorage.setItem("dashboardData", JSON.stringify({ processes: allProcesses }));
+
+  // одразу показуємо оновлені дані
+  renderDashboard({ processes: allProcesses });
+
+  // пушимо на бекенд у фоні
+  fetch(SCRIPT_URL, {
+    method: "POST",
+    mode: "no-cors",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ action: "saveDashboard", data: { processes: allProcesses } })
+  })
+  .then(async () => {
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    const data = await fetchDashboardData();
+    if (data.status === "ok") {
+      allProcesses = data.processes;
+      localStorage.setItem("dashboardData", JSON.stringify(data));
+      renderDashboard(data);
+    }
+  });
+
+  // очищаємо форму
+  document.getElementById("boardTitle").value = "";
+  document.getElementById("participants").innerHTML = "";
+  document.getElementById("newBoardForm").style.display = "none";
+}
+
+
+function showProcessModal(proc) {
+  const modal = document.getElementById("processModal");
+  document.getElementById("modalTitle").innerText = proc.title;
+  modal.style.display = "flex";
+
+  function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  // --- Видалити ---
+  document.getElementById("deleteBtn").onclick = async () => {
+  // 1. Прибираємо процес із масиву
+  allProcesses = allProcesses.filter(p => p.processID !== proc.processID);
+
+  // 2. Оновлюємо локалку
+  localStorage.setItem("dashboardData", JSON.stringify({processes: allProcesses}));
+
+  // 3. Одразу показуємо оновлені дані з локалки
+  renderDashboard({processes: allProcesses});
+
+  // 4. Пушимо на бекенд у фоні
+  fetch(SCRIPT_URL, {
+    method: "POST",
+    mode: "no-cors",
+    headers: {"Content-Type":"application/json"},
+    body: JSON.stringify({ action:"saveDashboard", data:{processes: allProcesses} })
+  })
+  .then(async () => {
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    const data = await fetchDashboardData();
+    if (data.status === "ok") {
+      allProcesses = data.processes;
+      localStorage.setItem("dashboardData", JSON.stringify(data));
+      renderDashboard(data);
+    }
+  });
+
+  // 5. Закриваємо модалку одразу
+  modal.style.display = "none";
+};
+
+
+  // --- Редагувати ---
+  document.getElementById("editBtn").onclick = () => {
+    modal.style.display = "none"; // закриваємо перегляд
+    showEditModal(proc);          // відкриваємо редагування
+  };
+
+  // --- Перейти ---
+document.getElementById("goBtn").onclick = async () => {
+  // зберігаємо процес у localStorage
+  localStorage.setItem("currentProcess", JSON.stringify(proc));
+
+  // нормалізуємо ім’я власника через usersMap
+  const ownerName = usersMap[currentUser] || currentUser;
+
+  // формуємо payload для openProcess
+  const payload = {
+    action: "openProcess",
+    data: {
+      title: proc.title,
+      owner: ownerName
+    }
+  };
+
+  try {
+    // чекаємо завершення fetch перед переходом
+    await fetch(SCRIPT_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+  } catch (e) {
+    console.error("Помилка при записі в OpenLog:", e);
+  }
+
+  // після відправки запиту переходимо на сторінку процесу
+  window.location.href = "proc.html";
+};
+
+  // --- Закриття по кліку поза модалкою ---
+  modal.onclick = (e) => {
+    if (e.target === modal) {
+      modal.style.display = "none";
+    }
+  };
+}
+
+function showEditModal(proc) {
+  const modal = document.getElementById("editProcessModal");
+  modal.style.display = "flex";
+
+  // заповнюємо назву
+  document.getElementById("editTitle").value = proc.title;
+
+  // заповнюємо учасників
+  const container = document.getElementById("editParticipants");
+  container.innerHTML = "";
+  proc.participants.forEach(p => {
+    const div = document.createElement("div");
+    div.className = "form-row";
+
+    // селект користувачів
+    const userSelect = document.createElement("select");
+    Object.entries(usersMap).forEach(([key, name]) => {
+      const opt = document.createElement("option");
+      opt.value = key;
+      opt.textContent = name;
+      if (p.includes(name)) opt.selected = true;
+      userSelect.appendChild(opt);
+    });
+
+    // селект ролей
+    const roleSelect = document.createElement("select");
+    ["executor","manager"].forEach(r => {
+      const opt = document.createElement("option");
+      opt.value = r;
+      opt.textContent = r==="executor" ? "Виконавець" : "Керівник";
+      if (p.includes(opt.textContent)) opt.selected = true;
+      roleSelect.appendChild(opt);
+    });
+
+    div.appendChild(userSelect);
+    div.appendChild(roleSelect);
+
+    // кнопка видалення учасника
+    const removeBtn = document.createElement("button");
+    removeBtn.textContent = "❌";
+    removeBtn.onclick = () => div.remove();
+    div.appendChild(removeBtn);
+
+    container.appendChild(div);
+  });
+
+  // кнопка збереження
+  document.getElementById("saveEditBtn").onclick = async () => {
+    proc.title = document.getElementById("editTitle").value;
+
+    // нові учасники
+    let newParticipants = [];
+    container.querySelectorAll(".form-row").forEach(row => {
+      const selects = row.querySelectorAll("select");
+      const userKey = selects[0].value;
+      const roleKey = selects[1].value;
+      const userName = usersMap[userKey] || userKey;
+      const roleName = roleKey==="executor" ? "Виконавець" : "Керівник";
+      newParticipants.push(`${userName} (${roleName})`);
+    });
+    proc.participants = newParticipants;
+
+    // оновлюємо масив і локалку
+    allProcesses = allProcesses.map(p => p.processID === proc.processID ? proc : p);
+    localStorage.setItem("dashboardData", JSON.stringify({processes: allProcesses}));
+
+    // одразу показуємо оновлені дані з локалки
+    renderDashboard({processes: allProcesses});
+
+    // пушимо на бекенд у фоні
+    fetch(SCRIPT_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: {"Content-Type":"application/json"},
+      body: JSON.stringify({ action:"saveDashboard", data:{processes: allProcesses} })
+    })
+    .then(async () => {
+      // невелика пауза і підтягнемо gviz
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      const data = await fetchDashboardData();
+      if (data.status === "ok") {
+        allProcesses = data.processes;
+        localStorage.setItem("dashboardData", JSON.stringify(data));
+        renderDashboard(data);
+      }
+    });
+
+    // закриваємо модалку одразу після збереження
+    modal.style.display = "none";
+  };
+}
+
+function addEditParticipant() {
+  const div = document.createElement("div");
+  div.className = "form-row";
+
+  // селект користувачів
+  const userSelect = document.createElement("select");
+  Object.entries(usersMap).forEach(([key, name]) => {
+    const opt = document.createElement("option");
+    opt.value = key;
+    opt.textContent = name;
+    userSelect.appendChild(opt);
+  });
+
+  // селект ролей
+  const roleSelect = document.createElement("select");
+  ["executor","manager"].forEach(r => {
+    const opt = document.createElement("option");
+    opt.value = r;
+    opt.textContent = r==="executor" ? "Виконавець" : "Керівник";
+    roleSelect.appendChild(opt);
+  });
+
+  // кнопка видалення
+  const removeBtn = document.createElement("button");
+  removeBtn.textContent = "❌";
+  removeBtn.onclick = () => div.remove();
+
+  div.appendChild(userSelect);
+  div.appendChild(roleSelect);
+  div.appendChild(removeBtn);
+
+  document.getElementById("editParticipants").appendChild(div);
+}
+
+</script>
+</body>
+</html>

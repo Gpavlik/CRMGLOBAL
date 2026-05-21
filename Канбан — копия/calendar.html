@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>Календар задач</title>
+  <link rel="icon" type="image/jpg" href="11.webp">
+
+<!-- Core -->
+<link href="https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.8/main.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.8/index.global.min.js"></script>
+
+<!-- Плагіни для потрібних view -->
+<link href="https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@6.1.8/main.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@6.1.8/index.global.min.js"></script>
+
+<link href="https://cdn.jsdelivr.net/npm/@fullcalendar/timegrid@6.1.8/main.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@fullcalendar/timegrid@6.1.8/index.global.min.js"></script>
+
+<link href="https://cdn.jsdelivr.net/npm/@fullcalendar/multimonth@6.1.8/main.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@fullcalendar/multimonth@6.1.8/index.global.min.js"></script>
+
+<!-- interaction для drag&drop -->
+<script src="https://cdn.jsdelivr.net/npm/@fullcalendar/interaction@6.1.8/index.global.min.js"></script>
+
+  <style> 
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0; 
+      padding: 0;
+      background: linear-gradient(135deg, #009400, #004d00);
+      color: #000000;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+select {
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      padding: 6px 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      background-color: #fff;
+      color: #333;
+      transition: border-color 0.3s;
+width: 200px;
+    }
+    header { 
+      background:#2c3e50; 
+      color:white; 
+      padding:10px 20px; 
+      display:flex; 
+      justify-content:space-around; 
+      align-items:center; 
+      width:100%;
+      box-sizing:border-box;
+    }
+    header h1 { margin:0; font-size:22px; }
+    header .user-info { font-size:14px; font-weight:bold; }
+    header button { 
+      background:#3498db; 
+      color:white; 
+      border:none; 
+      padding:8px 12px; 
+      border-radius:4px; 
+      cursor:pointer; 
+      transition:background 0.3s;
+    }
+    header button:hover { background:#2980b9; }
+
+    #calendar {
+      width: 90%;
+      margin: 40px auto;
+      height: min-content;
+      padding:10px; 
+      border-radius:8px; 
+      background:#edffed;
+    }
+
+    .fc-timegrid-slot {
+      height: 30px !important;
+      min-height: 30px !important;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Календар задач</h1>
+    <div id="userInfoTop"></div>
+    <select id="processSelector"></select>
+    <button id="saveBtn">Зберегти зміни</button>
+    <button id="dashboardBtn" onclick="window.location.href='Dashboard.html'">Перейти на Dashboard</button>
+  </header>
+
+  <img src="./logo.svg" alt="logo" width="260">
+  <div id="calendar"></div>
+  <img src="./ivd.png" alt="logo" width="300">
+
+<script>
+  
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwh5TrmNwDcMY51ToSGblbbzw2xF6sZPTuS677x3BHctpMinn4FCQsQmKkKwBus5kfq/exec";
+const PROCESSES_SHEET_URL = "https://docs.google.com/spreadsheets/d/1vjxURM8HlNTxdk-XGEh-99sYuHhtEgNKLf-39jRm8-Q/gviz/tq?tqx=out:json&sheet=Processes";
+
+const currentUser = localStorage.getItem("currentUser") || "невідомий";
+const usersMap = {
+  gala: "Галина Кузнєцова",
+  olenka: "Олена Поліщук",
+  dima: "Дмитро Приходько",
+  serega: "Сергій Комашко",
+  sasha: "Олександр Волянюк",
+  pasha: "Павло Гриценко",
+  anya: "Ганна Мойсеєнко",
+  tetiana: "Тетяна Яковець",
+  admin: "Адмін"
+};
+document.getElementById("userInfoTop").innerText = `👤 Користувач: ${usersMap[currentUser] || currentUser}`;
+
+// --- Завантаження процесів ---
+async function loadProcesses() {
+  const res = await fetch(PROCESSES_SHEET_URL);
+  const text = await res.text();
+  const match = text.match(/google.visualization.Query.setResponse\(([\s\S]*)\);/);
+  if (!match) throw new Error("GViz формат змінився");
+  const json = JSON.parse(match[1]);
+  const rows = json.table.rows;
+  const tasksMap = {};
+  rows.forEach(r => {
+    const taskID = r.c[5]?.v;
+    if (!taskID) return;
+    tasksMap[taskID] = {
+      processID: r.c[0]?.v,
+      title: r.c[1]?.v,
+      owner: r.c[2]?.v,
+      participants: r.c[3]?.v ? r.c[3].v.split(", ") : [],
+      statusProc: r.c[4]?.v,
+      taskID: r.c[5]?.v,
+      taskTitle: r.c[6]?.v,
+      start: r.c[7]?.v,
+      deadline: r.c[8]?.v,
+      role: r.c[9]?.v,
+      username: r.c[10]?.v,
+      multiRole: r.c[11]?.v === "TRUE",
+      dependency: r.c[12]?.v,
+      priority: r.c[13]?.v,
+      files: r.c[14]?.v,
+      chat: r.c[15]?.v,
+      statusTask: r.c[16]?.v
+    };
+  });
+  return Object.values(tasksMap);
+}
+
+// --- Фільтрація ---
+function filterProcesses(tasks, currentUserName) {
+  if (currentUserName === "Адмін") return tasks;
+  if (["Галина Кузнєцова", "Павло Гриценко"].includes(currentUserName)) {
+    return tasks.filter(t =>
+      t.owner === currentUserName ||
+      (t.participants || []).some(part => part.includes(currentUserName))
+    );
+  }
+  return tasks.filter(t => t.username?.includes(currentUserName));
+}
+
+// --- Розгортання багатоденних задач ---
+function expandMultiDayTasks(tasks) {
+  const events = [];
+  tasks.forEach(t => {
+    if (t.start && t.deadline) {
+      const startDate = new Date(t.start);
+      const endDate = new Date(t.deadline);
+      for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
+        events.push({
+          id: `${t.taskID || t.id}-${d.toISOString().split("T")[0]}`,
+          taskTitle: t.taskTitle || t.title,
+          day: d.toISOString().split("T")[0],
+          role: t.role,
+          status: t.statusTask || t.status,
+          deadline: t.deadline,
+          processTitle: t.title,
+          username: t.username
+        });
+      }
+    }
+  });
+  return events;
+}
+
+
+// --- Автоматичне розміщення задач + кольори ---
+function autoPlaceTasks(tasks) {
+  const placed = [];
+  const daySlots = {};
+
+  // сьогоднішня дата без часу
+  const now = new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+  tasks.forEach(ev => {
+    const day = ev.day;
+    if (!daySlots[day]) daySlots[day] = [];
+    let hour = 8, minute = 0;
+
+    // дедлайн без часу
+    const deadlineRaw = new Date(ev.deadline);
+    const deadline = new Date(deadlineRaw.getFullYear(), deadlineRaw.getMonth(), deadlineRaw.getDate());
+
+    // 🔹 визначаємо колір один раз для всієї задачі
+    let color;
+    if (ev.status === "done") {
+      color = "#2ecc71"; // зелений
+    } else if (today > deadline) {
+      color = "#e74c3c"; // червоний (прострочена)
+    } else if (ev.status === "inprogress") {
+      color = "#f1c40f"; // жовтий
+    } else if (ev.status === "todo") {
+      color = "#3498db"; // синій
+    } else {
+      color = "#8e44ad"; // інші
+    }
+
+    while (hour < 18) {
+      const slot = `${String(hour).padStart(2,"0")}:${String(minute).padStart(2,"0")}`;
+      if (!daySlots[day].includes(slot)) {
+        ev.start = `${day}T${slot}:00`;
+        const endMinute = minute + 30;
+        const endHour = hour + (endMinute === 60 ? 1 : 0);
+        const endSlot = `${String(endHour).padStart(2,"0")}:${String(endMinute===60?0:endMinute).padStart(2,"0")}`;
+        ev.end = `${day}T${endSlot}:00`;
+
+        ev.title = `${ev.username || "невідомий"} — ${ev.taskTitle || ev.title}`;
+        ev.backgroundColor = color;
+
+        daySlots[day].push(slot);
+        placed.push(ev);
+        break;
+      }
+      minute += 30;
+      if (minute === 60) { minute = 0; hour++; }
+    }
+  });
+  return placed;
+}
+
+
+// --- Кастомізація відображення подій ---
+function eventContent(arg) {
+  // Формуємо діапазон часу
+  const start = arg.event.start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  const end = arg.event.end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  const timeRange = `${start} - ${end}`;
+
+  // HTML для двох рядків
+  return {
+    html: `
+      <div style="font-size:11px; font-weight:bold;">
+        ${timeRange} — ${arg.event.extendedProps.taskTitle || ""}
+      </div>
+      <div style="font-size:10px; opacity:0.9;">
+        ${arg.event.extendedProps.username || "невідомий"} (${arg.event.extendedProps.role || ""})
+      </div>
+    `
+  };
+}
+
+
+function setupProcessSelector(tasks, calendar) {
+  const selector = document.getElementById("processSelector");
+  const uniqueProcesses = [...new Set(tasks.map(t => t.title))];
+
+  selector.innerHTML = `<option value="all">Всі процеси</option>` +
+    uniqueProcesses.map(p => `<option value="${p}">${p}</option>`).join("");
+
+  selector.addEventListener("change", e => {
+    const selectedProcess = e.target.value;
+    let filtered = tasks;
+    if (selectedProcess !== "all") {
+      filtered = tasks.filter(t => t.title === selectedProcess);
+    }
+    const expanded = expandMultiDayTasks(filtered);
+    const events = autoPlaceTasks(expanded);
+    calendar.removeAllEvents();
+    calendar.addEventSource(events);
+    checkDayLoad(calendar);
+  });
+}
+function checkDayLoad(calendar) {
+  const days = {};
+  calendar.getEvents().forEach(ev => {
+    const day = ev.startStr.split("T")[0];
+    if (!days[day]) days[day] = 0;
+    days[day] += 0.5; // кожна подія = 30 хв
+  });
+
+  Object.entries(days).forEach(([day, hours]) => {
+    if (hours > 5) {
+      const allDayCell = document.querySelector(
+        `.fc-timegrid-col[data-date="${day}"] .fc-timegrid-day-frame`
+      );
+      if (allDayCell) {
+        const oldLabel = allDayCell.querySelector(".critical-load-label");
+        if (oldLabel) oldLabel.remove();
+
+        const label = document.createElement("div");
+        label.className = "critical-load-label";
+        label.innerText = "Критичне навантаження";
+        label.style.color = "red";
+        label.style.fontWeight = "bold";
+        label.style.fontSize = "12px";
+        label.style.marginTop = "4px";
+        allDayCell.appendChild(label);
+      }
+    }
+  });
+}
+function updateTask(event, tasks) {
+  const taskID = event.id.split("-")[0];
+  const task = tasks.find(t => t.taskID === taskID);
+  if (task) {
+    task.start = event.start.toISOString();
+    task.deadline = event.end.toISOString();
+  }
+}
+// --- Ініціалізація календаря ---
+document.addEventListener("DOMContentLoaded", async function() {
+  try {
+    let tasks = await loadProcesses();
+    tasks = filterProcesses(tasks, usersMap[currentUser] || currentUser);
+
+    localStorage.setItem("dashboardData", JSON.stringify({processes: tasks}));
+
+    const expandedTasks = expandMultiDayTasks(tasks);
+    const allEvents = autoPlaceTasks(expandedTasks);
+
+    const calendarEl = document.getElementById("calendar");
+    const calendar = new FullCalendar.Calendar(calendarEl, {
+      locale: "uk",
+      initialView: "timeGridWeek",
+      slotMinTime: "08:00:00",
+      slotMaxTime: "18:00:00",
+      hiddenDays: [0,6],
+      editable: true,
+      eventDurationEditable: true,
+      expandRows: true,
+      height: "auto",
+      slotDuration: "00:30:00",
+      slotLabelFormat: { hour: "2-digit", minute: "2-digit", hour12: false },
+      headerToolbar: {
+        left: "prev,next today",
+        center: "title",
+        right: "timeGridDay,timeGridWeek,dayGridMonth,multiMonthYear"
+      },
+      eventContent: eventContent,
+      events: allEvents,
+      eventDrop: function(info) {
+        updateTask(info.event, tasks);
+        checkDayLoad(calendar);
+      },
+      eventResize: function(info) {
+        updateTask(info.event, tasks);
+        checkDayLoad(calendar);
+      }
+    });
+
+    calendar.render();
+    checkDayLoad(calendar);
+
+    // селектор процесів бачать усі
+    setupProcessSelector(tasks, calendar);
+
+    document.getElementById("saveBtn").addEventListener("click", () => {
+      fetch(SCRIPT_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: {"Content-Type":"application/json"},
+        body: JSON.stringify({
+          action: "updateCalendar",
+          processes: tasks
+        })
+      });
+    });
+
+  } catch (err) {
+    console.error("Помилка при ініціалізації календаря:", err);
+  }
+});
+</SCRIPT>
+</body>
+</html>
