@@ -142,7 +142,7 @@ async function checkLastLogin(userKey) {
 document.getElementById("loginBtn").addEventListener("click", async function() {
   const u = document.getElementById("username").value;
   const p = document.getElementById("password").value;
-
+document.getElementById("marquee").style.display = "block";
   if (!u || !p) {
     alert("Будь ласка, введіть ім’я та пароль!");
     return;
@@ -152,7 +152,7 @@ document.getElementById("loginBtn").addEventListener("click", async function() {
     // відправляємо запит на бекенд (він запише OK/FAIL у таблицю)
     await fetch(SCRIPT_URL, {
       method: "POST",
-      mode: "no-cors",
+      mode: "no-cors",  
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ action: "login", userName: u, password: p })
     });
