@@ -1,0 +1,21 @@
+name: Deploy to MiroHost
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Sync files to server
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: pharmvisit.net.ua
+          username: pharmvisit
+          password: ${{ secrets.MIROHOST_PASS }}
+          source: "./"
+          target: "/home/pharmvisit/www/pharmvisit.net.ua"
