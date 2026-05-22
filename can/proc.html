@@ -622,11 +622,21 @@ document.getElementById("saveAndBackBtn").onclick = async () => {
       status: t.status || "todo"
     }));
 
+    // нормалізація учасників у формат "Ім’я (Роль)"
+    const safeParticipants = (processData.participants || []).map(p => {
+      if (p.includes("—")) {
+        // якщо формат "Ім’я — Роль", перетворюємо у "Ім’я (Роль)"
+        const [name, role] = p.split("—").map(s => s.trim());
+        return `${name} (${role})`;
+      }
+      return p; // якщо вже у дужках, залишаємо як є
+    });
+
     const safeProcess = {
       processID: processData.processID,
       title: processData.title,
       owner: usersMap[currentUser] || currentUser,
-      participants: processData.participants || [],
+      participants: safeParticipants,
       status: processData.status || "new",
       tasks: safeTasks
     };
@@ -644,7 +654,6 @@ document.getElementById("saveAndBackBtn").onclick = async () => {
     console.error("Помилка при збереженні у бекенд:", err);
   }
 };
-
 
 // --- Підтягування з Google Sheets ---
 async function fetchDashboardData() {
