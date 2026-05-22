@@ -15,8 +15,8 @@ jobs:
         uses: SamKirkland/FTP-Deploy-Action@v4.3.0
         with:
           server: vs2877.mirohost.net
-          username: pharmasco12
-          password: IdU7z9ILcInh
+          username: pharmvisit
+          password: ${{ secrets.MIROHOST_PASS }}
           port: 21
           local-dir: ./
           server-dir: /var/www/pharmvisit/pharmvisit.net.ua/
