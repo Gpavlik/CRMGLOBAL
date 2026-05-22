@@ -58,6 +58,26 @@
       label, input, select { width: 500px; }
       button { width: 200px; }
     }
+      #marquee {
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+  font-size: 18px;
+  padding: 10px;
+}
+
+#marquee span {
+  display: inline-block;
+  padding-left: 100%;
+  animation: marquee 30s linear infinite;
+}
+
+@keyframes marquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
+}
   </style>
 </head>
 <body>
@@ -81,7 +101,19 @@
     <button id="loginBtn">Увійти</button>
   </div>
   <img src="./ph.png" alt="logo" width="260">
-
+<div id="marquee" style="display: none;">
+  <span>
+    Вантажимо для вас найкращих партнерів... 
+    Формуємо позитивний настрій... 
+    Налаштовуємо бажання укладати угоди... 
+    Прогнозуємо виконання плану...
+    Підвищуємо ваші продажі...
+    Створюємо гарну атмосферу для роботи...
+    Усуваємо всі перешкоди на шляху до успіху...
+    Знищуємо конкурентів...
+    Ваша команда вже чекає на вас!
+  </span>
+</div>
   <script>
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyw4XPYemQbvxJ3IG1DIIbVOQhDjKlM3PR_dKwRWyO24hM_MdhcntM3bmcpk6gko7ff/exec";
 const LOGINS_SHEET_URL = "https://docs.google.com/spreadsheets/d/1YSFD-Ll5mVjC0HI0H5Mc4cYBSOavPtA6eVLdAKB9qS4/gviz/tq?tqx=out:json&sheet=Logins";
@@ -120,6 +152,7 @@ document.getElementById("loginBtn").addEventListener("click", async function() {
     // відправляємо запит на бекенд (він запише OK/FAIL у таблицю)
     await fetch(SCRIPT_URL, {
       method: "POST",
+      mode: "no-cors",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ action: "login", userName: u, password: p })
     });
