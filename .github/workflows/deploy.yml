@@ -28,5 +28,6 @@ jobs:
           server: vs2877.mirohost.net
           username: pharmvisit
           password: ${{ secrets.MIROHOST_PASS }}
+          port: 21
           local-dir: build
           server-dir: /var/www/pharmvisit
