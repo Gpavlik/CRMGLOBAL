@@ -5,17 +5,28 @@ on:
     branches: [ "main" ]
 
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Sync files to server
-        uses: appleboy/scp-action@v0.1.7
+      - name: Install Node.js
+        uses: actions/setup-node@v3
         with:
-          host: pharmvisit.net.ua
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build project
+        run: npm run build
+
+      - name: Upload via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.0
+        with:
+          server: vs2877.mirohost.net
           username: pharmvisit
           password: ${{ secrets.MIROHOST_PASS }}
-          source: "./"
-          target: "/home/pharmvisit/www/pharmvisit.net.ua"
+          local-dir: build
+          server-dir: /var/www/pharmvisit
