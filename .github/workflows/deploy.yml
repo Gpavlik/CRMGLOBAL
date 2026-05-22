@@ -21,3 +21,8 @@ jobs:
           local-dir: ./
           server-dir: pharmvisit.net.ua/
           dangerous-clean-slate: true
+          exclude: |
+            **/.git*
+            **/.github*
+            **/node_modules*
+          log-level: verbose
