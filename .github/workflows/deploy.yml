@@ -19,5 +19,5 @@ jobs:
           password: ${{ secrets.MIROHOST_PASS }}
           port: 21
           local-dir: ./
-          server-dir: /var/www/pharmvisit/pharmvisit.net.ua/
+          server-dir: pharmvisit.net.ua/
           dangerous-clean-slate: true
