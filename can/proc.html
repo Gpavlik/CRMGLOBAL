@@ -86,42 +86,36 @@ header button:hover { background:#2980b9; }
     .overdue { animation:pulseRed 2s infinite; }
     .completed { animation:pulseRainbow 3s infinite; }
 
-    /* Гант */
-    .gantt {
-    position: relative;
-    background: #fff;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    margin: 20px;
-    overflow-x: auto;
-  }
-  #ganttChart {
-  overflow: visible;
-  min-width: 100%;
-  min-height: 100%;
+    #ganttChart {
+  font-family: Arial, sans-serif;
+  position: relative;
+  background: #fafafa;
+  border: 1px solid #ddd;
+  width: 100%;
 }
 
-  .gantt-grid {
-    display: grid;
-    grid-template-rows: auto;
-    grid-auto-rows: 40px; /* висота рядка для задачі */
-    position: relative;
-  }
-  .gantt-day {
-  writing-mode: vertical-rl;
-  transform: rotate(180deg);
-  text-align: left;
-  font-size: 9px;
-  height: 60px;
-  width: 20px;
-  border-right: 1px solid #eee;
-}
-.gantt-day-line {
+.gantt-date {
   position: absolute;
   top: 0;
-  height: 100%;
-  width: 1px;
-  background: rgba(0, 128, 0, 0.2);
+  width: 40px;
+  height: 20px;
+  text-align: center;
+  font-size: 10px;
+  border-bottom: 1px solid #ccc;
+  background: #f0f0f0;
+  z-index: 5;
+}
+
+.gantt-weekday {
+  position: absolute;
+  top: 20px;
+  width: 40px;
+  height: 20px;
+  text-align: center;
+  font-size: 10px;
+  color: #555;
+  background: #f9f9f9;
+  z-index: 5;
 }
 
 .gantt-row-line {
@@ -129,8 +123,31 @@ header button:hover { background:#2980b9; }
   left: 0;
   width: 100%;
   height: 1px;
-  background: rgba(0, 0, 0, 0.1);
+  background: rgba(0,0,0,0.1);
 }
+
+.gantt-vertical-line {
+  position: absolute;
+  top: 40px; /* зсув після шкали */
+  width: 1px;
+  height: calc(100% - 40px);
+  background: rgba(0,0,0,0.05);
+}
+
+.task {
+  border-radius: 4px;
+  color: white;
+  padding: 5px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.task:hover {
+  transform: scale(1.05);
+  opacity: 0.9;
+}
+
 
   .task {
     position: absolute;
@@ -152,8 +169,8 @@ header button:hover { background:#2980b9; }
     border: 1px solid #ccc;
     border-radius: 6px;
     margin: 20px;
-    overflow-x: auto;
-    }
+    width: 100%;  
+  }
   </style>
 </head>
 <body>
@@ -194,7 +211,7 @@ header button:hover { background:#2980b9; }
     </marker>
   </defs>
 </svg>
-<img src="./ho.png" alt="logo" width="300">
+<img src="./ivd.png" alt="logo" width="300">
 
 <script>
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwh5TrmNwDcMY51ToSGblbbzw2xF6sZPTuS677x3BHctpMinn4FCQsQmKkKwBus5kfq/exec";
@@ -747,7 +764,10 @@ function renderKanban(tasks) {
 
     card.innerHTML = `
       <details class="spoiler" open>
-        <summary><span class="taskTitle">${t.title}</span></summary>
+        <summary>
+          <span class="taskTitle">${t.title}</span>
+          <div class="taskUser">${t.username || "—"}</div>
+        </summary>
         <div>
           <label>Назва: <input type="text" class="titleInput" value="${t.title}"></label><br>
           <label>Початок: <input type="date" class="startInput" value="${t.start || ""}"></label><br>
@@ -770,15 +790,26 @@ function renderKanban(tasks) {
       </details>
     `;
 
-    // --- Чат (завжди доступний) ---
+    // --- Чат ---
     card.chat = t.chat || [];
     const messagesDiv = card.querySelector(".messages");
+
+    // відновлюємо повідомлення у чаті
     card.chat.forEach(c => {
       const m = document.createElement("div");
       m.innerText = `${c.user}: ${c.text}`;
       messagesDiv.appendChild(m);
     });
 
+    // прев’ю чату під карткою (видно завжди)
+    const chatPreview = document.createElement("div");
+    chatPreview.className = "chatPreview";
+    chatPreview.innerHTML = (card.chat || [])
+      .map(c => `<div>${c.user}: ${c.text}</div>`)
+      .join("");
+    card.appendChild(chatPreview);
+
+    // --- Надсилання повідомлення ---
     const sendBtn = card.querySelector(".sendBtn");
     const chatInput = card.querySelector(".chatInput");
     sendBtn.disabled = false;
@@ -787,9 +818,13 @@ function renderKanban(tasks) {
       if (chatInput.value.trim() !== "") {
         const msgObj = { user: usersMap[currentUser] || currentUser, text: chatInput.value.trim() };
         card.chat.push(msgObj);
+
         const m = document.createElement("div");
         m.innerText = `${msgObj.user}: ${msgObj.text}`;
         messagesDiv.appendChild(m);
+
+        chatPreview.innerHTML += `<div>${msgObj.user}: ${msgObj.text}</div>`; // оновлюємо прев’ю
+
         chatInput.value = "";
 
         const idx = processData.tasks.findIndex(x => x.id === card.dataset.taskId);
@@ -831,12 +866,12 @@ function renderKanban(tasks) {
   });
 }
 
+
 function renderGantt(tasks) {
   const gantt = document.getElementById("ganttChart");
   gantt.innerHTML = "";
   if (!tasks.length) return;
 
-  // сортуємо задачі за стартом
   tasks.sort((a,b) => new Date(a.start) - new Date(b.start));
 
   const starts = tasks.map(t => new Date(t.start)).filter(d => !isNaN(d));
@@ -846,74 +881,94 @@ function renderGantt(tasks) {
   const diffDays = Math.ceil((maxDate - minDate)/(1000*60*60*24)) + 1;
   const now = new Date();
 
+  // адаптивна ширина дня
+  const containerWidth = gantt.clientWidth || 1000;
+  const dayWidth = Math.max(40, Math.floor((containerWidth - 160) / diffDays));
+
   gantt.style.position = "relative";
   gantt.style.overflow = "visible";
-  gantt.style.width = `${diffDays*40 + 150}px`;
+  gantt.style.width = `${diffDays * dayWidth + 160}px`;
   gantt.style.height = `${tasks.length*60 + 120}px`;
 
-  // сьогоднішня лінія
+  // --- Верхня шкала дат і днів ---
+  for (let i = 0; i < diffDays; i++) {
+    const date = new Date(minDate);
+    date.setDate(minDate.getDate() + i);
+
+    const dayBox = document.createElement("div");
+    dayBox.className = "gantt-date";
+    dayBox.style.left = `${i*dayWidth + 160}px`;
+    dayBox.style.width = `${dayWidth}px`;
+    dayBox.innerText = date.toLocaleDateString("uk-UA", { day:"2-digit", month:"2-digit" });
+    gantt.appendChild(dayBox);
+
+    const weekdayBox = document.createElement("div");
+    weekdayBox.className = "gantt-weekday";
+    weekdayBox.style.left = `${i*dayWidth + 160}px`;
+    weekdayBox.style.width = `${dayWidth}px`;
+    weekdayBox.innerText = date.toLocaleDateString("uk-UA", { weekday:"short" });
+    gantt.appendChild(weekdayBox);
+
+    const vLine = document.createElement("div");
+    vLine.className = "gantt-vertical-line";
+    vLine.style.left = `${i*dayWidth + 160}px`;
+    gantt.appendChild(vLine);
+  }
+
+  // --- Лінія сьогодні ---
   const todayOffset = Math.floor((now - minDate)/(1000*60*60*24));
   const todayLine = document.createElement("div");
   todayLine.style.position = "absolute";
-  todayLine.style.left = `${todayOffset*40 + 120}px`;
+  todayLine.style.left = `${todayOffset*dayWidth + 160}px`;
   todayLine.style.top = "0";
-  todayLine.style.width = "40px";
+  todayLine.style.width = `${dayWidth}px`;
   todayLine.style.height = `${tasks.length*60 + 120}px`;
   todayLine.style.background = "rgba(255,200,0,0.2)";
   todayLine.style.pointerEvents = "none";
+  todayLine.style.zIndex = "2";
   gantt.appendChild(todayLine);
 
-  // Горизонтальна сітка + імена виконавців
+  // --- Горизонтальна сітка + імена виконавців ---
   tasks.forEach((t, idx) => {
+    const rowTop = (idx+1)*60 + 40;
+
     const rowLine = document.createElement("div");
     rowLine.className = "gantt-row-line";
-    rowLine.style.position = "absolute";
-    rowLine.style.left = "0";
-    rowLine.style.top = `${(idx+1)*60}px`;
-    rowLine.style.width = "100%";
-    rowLine.style.height = "1px";
-    rowLine.style.background = "rgba(0,0,0,0.1)";
+    rowLine.style.top = `${rowTop}px`;
     gantt.appendChild(rowLine);
 
     const label = document.createElement("div");
     label.innerText = t.username || "—";
     label.style.position = "absolute";
-    label.style.left = "0";
-    label.style.top = `${(idx+1)*60}px`;
-    label.style.width = "120px";
-    label.style.textAlign = "right";
+    label.style.left = "10px";
+    label.style.top = `${rowTop}px`;
+    label.style.width = "160px"; // збільшена ширина
+    label.style.textAlign = "left";
     label.style.fontSize = "12px";
     label.style.fontWeight = "bold";
     gantt.appendChild(label);
   });
 
-  // Малюємо задачі
+  // --- Малюємо задачі ---
   tasks.forEach((t, idx) => {
     const startOffset = Math.floor((new Date(t.start)-minDate)/(1000*60*60*24));
     const duration = Math.max(1, Math.ceil((new Date(t.deadline)-new Date(t.start))/(1000*60*60*24))+1);
+    const rowTop = (idx+1)*60 + 40;
 
     const task = document.createElement("div");
     task.className = "task";
-    task.style.position = "absolute";
-    task.style.top = `${(idx+1)*60}px`;
-    task.style.left = `${startOffset*40 + 120}px`;
-    task.style.width = `${duration*40}px`;
+    task.style.top = `${rowTop}px`;
+    task.style.left = `${startOffset*dayWidth + 160}px`;
+    task.style.width = `${duration*dayWidth}px`;
     task.style.height = "30px";
-    task.style.borderRadius = "4px";
-    task.style.color = "white";
-    task.style.padding = "5px";
-    task.style.fontSize = "12px";
+    task.style.whiteSpace = "normal";   // перенос рядків
+    task.style.wordWrap = "break-word"; // розбиття слів
 
-    // Колір за роллю
     if (t.role === "owner") task.style.background = "#3498db";
     else if (t.role === "manager") task.style.background = "#2ecc71";
     else if (t.role === "executor") task.style.background = "#8e44ad";
-    
-    if (t.multiRole) {
-      task.style.background = "linear-gradient(90deg, #8e44ad 50%, #f39c12 50%)";
-    }
+    if (t.multiRole) task.style.background = "linear-gradient(90deg, #8e44ad 50%, #f39c12 50%)";
 
-    // Контур за статусом
     let statusText = "";
     if (now < new Date(t.start)) {
       task.style.opacity = "0.6";
@@ -930,10 +985,8 @@ function renderGantt(tasks) {
       statusText = "У процесі";
     }
 
-    // Текст усередині
     task.innerText = t.title;
 
-    // Формуємо тултіп з деталями
     let tooltip = `${t.title}
 Початок: ${t.start}
 Дедлайн: ${t.deadline}
@@ -941,13 +994,8 @@ function renderGantt(tasks) {
 Пріоритет: ${t.priority}
 Залежність: ${t.dependencyTitle || "—"}
 Статус: ${statusText}`;
-
-    if (t.chat && t.chat.length) {
-      tooltip += `\nКоментарі:\n` + t.chat.map(c => `${c.user}: ${c.text}`).join("\n");
-    }
-    if (t.files && t.files.length) {
-      tooltip += `\nФайли:\n` + t.files.map(f => `${f.name} (${f.url || "-"})`).join("\n");
-    }
+    if (t.chat && t.chat.length) tooltip += `\nКоментарі:\n` + t.chat.map(c => `${c.user}: ${c.text}`).join("\n");
+    if (t.files && t.files.length) tooltip += `\nФайли:\n` + t.files.map(f => `${f.name} (${f.url || "-"})`).join("\n");
 
     task.title = tooltip;
     gantt.appendChild(task);
