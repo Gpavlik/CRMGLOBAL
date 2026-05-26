@@ -337,26 +337,7 @@ input, select {
 </style>
 </head>
 <body>
-  <!-- Оверлей для очікування -->
-<div id="loadingOverlay" style="
-  position: fixed;
-  top:0; left:0; right:0; bottom:0;
-  background: rgba(0,0,0,0.7);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  color: white;
-  font-size: 20px;
-  z-index: 9999;
-  visibility: hidden;
-">
-  <div class="spinner"></div>
-  <p>Завантаження даних...</p>
-  <audio id="loadingMusic" loop>
-    <source src="loading.mp3" type="audio/mpeg">
-  </audio>
-</div>
+ <div id="content" style="display:none;">
     <h1>Меню</h1>
     <div id="userInfoTop"></div>
 <br>
@@ -460,7 +441,47 @@ input, select {
     <div class="seven-seg red" id="moneyRed2">000%</div>
     </div>
   </div>
+  
  <img src="./ap.png" alt="logo" width="260">
+</div>
+<div id="error" style="display:none; color:red;">
+    <p>Доступ заборонено. Будь ласка, увійдіть знову.</p>
+    <a href="index.html">Повернутись на сторінку входу</a>
+  </div>
+<script>
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzRHgNIxYyEfuqEit-hVM7UPOkRXjkKic1CvjGSmPnA5dVbmzk8-x_qp8fiU5DuMDlw/exec";
+
+async function verifyUser(userName) {
+  try {
+    const response = await fetch(SCRIPT_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ action: "verifyUser", userName })
+    });
+    const result = await response.json();
+    return result.success === true;
+  } catch (err) {
+    console.error("Помилка перевірки:", err);
+    return false;
+  }
+}
+
+(async function init() {
+  const currentUser = localStorage.getItem("currentUser");
+  if (!currentUser) {
+    document.getElementById("error").style.display = "block";
+    return;
+  }
+
+  const ok = await verifyUser(currentUser);
+  if (ok) {
+    document.getElementById("content").style.display = "block";
+  } else {
+    document.getElementById("error").style.display = "block";
+    localStorage.removeItem("currentUser");
+  }
+})();
+</script>
  <script>
 document.addEventListener("DOMContentLoaded", () => {
   const restrictedUsers = ["andriy", "maria", "serhiy"];

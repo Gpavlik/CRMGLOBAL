@@ -116,59 +116,44 @@
   </span>
 </div>
   <script>
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyw4XPYemQbvxJ3IG1DIIbVOQhDjKlM3PR_dKwRWyO24hM_MdhcntM3bmcpk6gko7ff/exec";
-const LOGINS_SHEET_URL = "https://docs.google.com/spreadsheets/d/1YSFD-Ll5mVjC0HI0H5Mc4cYBSOavPtA6eVLdAKB9qS4/gviz/tq?tqx=out:json&sheet=Logins";
-
-// читаємо таблицю Logins
-async function fetchLogins() {
-  const res = await fetch(LOGINS_SHEET_URL);
-  const text = await res.text();
-  const json = JSON.parse(text.substr(47).slice(0, -2));
-  return json.table.rows.map(r => ({
-    date: r.c[0]?.v || "",
-    user: r.c[1]?.v || "",
-    result: r.c[2]?.v || ""
-  }));
-}
-
-// перевіряємо останній запис
-async function checkLastLogin(userKey) {
-  const logins = await fetchLogins();
-  const userLogs = logins.filter(l => l.user === userKey);
-  if (userLogs.length === 0) return false;
-  const lastLog = userLogs[userLogs.length - 1];
-  return lastLog.result === "OK";
-}
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzRHgNIxYyEfuqEit-hVM7UPOkRXjkKic1CvjGSmPnA5dVbmzk8-x_qp8fiU5DuMDlw/exec";
 
 document.getElementById("loginBtn").addEventListener("click", async function() {
   const u = document.getElementById("username").value;
   const p = document.getElementById("password").value;
-document.getElementById("marquee").style.display = "block";
+
+  // показуємо анімацію/маркі
+  document.getElementById("marquee").style.display = "block";
+
   if (!u || !p) {
     alert("Будь ласка, введіть ім’я та пароль!");
+    document.getElementById("marquee").style.display = "none";
     return;
   }
 
   try {
-    // відправляємо запит на бекенд (він запише OK/FAIL у таблицю)
-    await fetch(SCRIPT_URL, {
+    // відправляємо запит на бекенд
+    const response = await fetch(SCRIPT_URL, {
       method: "POST",
-      mode: "no-cors",  
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ action: "login", userName: u, password: p })
     });
 
-    // тепер перевіряємо таблицю
-    const ok = await checkLastLogin(u);
-    if (ok) {
+    // читаємо відповідь
+    const result = await response.json();
+
+    if (result.success) {
+      // тільки якщо бекенд підтвердив пароль
       localStorage.setItem("currentUser", u);
       window.location.href = "menu.html";
     } else {
       alert("Невірний пароль!");
+      document.getElementById("marquee").style.display = "none";
     }
   } catch (err) {
     alert("Помилка з’єднання з сервером!");
     console.error(err);
+    document.getElementById("marquee").style.display = "none";
   }
 });
 </script>
