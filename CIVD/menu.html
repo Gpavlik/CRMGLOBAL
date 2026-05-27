@@ -337,26 +337,7 @@ input, select {
 </style>
 </head>
 <body>
-  <!-- Оверлей для очікування -->
-<div id="loadingOverlay" style="
-  position: fixed;
-  top:0; left:0; right:0; bottom:0;
-  background: rgba(0,0,0,0.7);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  color: white;
-  font-size: 20px;
-  z-index: 9999;
-  visibility: hidden;
-">
-  <div class="spinner"></div>
-  <p>Завантаження даних...</p>
-  <audio id="loadingMusic" loop>
-    <source src="loading.mp3" type="audio/mpeg">
-  </audio>
-</div>
+ <div id="content" style="display:none; flex-direction: column; align-items: center;">
     <h1>Меню</h1>
     <div id="userInfoTop"></div>
 <br>
@@ -461,6 +442,34 @@ input, select {
     </div>
   </div>
  <img src="./ph.png" alt="logo" width="260">
+ </div>
+ <script>
+const u = localStorage.getItem("currentUser");
+const token = localStorage.getItem("sessionToken");
+
+if (!u || !token) {
+  window.location.href = "index.html";
+} else {
+  fetch("https://script.google.com/macros/s/AKfycbwEh_ljxkRYKH2kDav_LfFX6zey1brKG0TyHm0H0g_WdBjg7VlGTSlAGJy1zfkdSuWS/exec?action=menu&user=" 
+        + encodeURIComponent(u) 
+        + "&token=" + encodeURIComponent(token))
+    .then(r => r.text())
+    .then(text => {
+      if (text.includes("MENU_OK")) {
+        document.getElementById("content").style.display = "flex";
+      } else {
+        alert("Сесія недійсна або час вийшов. Перелогінься!");
+        localStorage.clear();
+        window.location.href = "index.html";
+      }
+    })
+    .catch(err => {
+      console.error(err);
+      localStorage.clear();
+      window.location.href = "index.html";
+    });
+}
+</script>
  <script>
 document.addEventListener("DOMContentLoaded", () => {
   const restrictedUsers = ["andriy", "maria", "serhiy"];

@@ -337,7 +337,7 @@ input, select {
 </style>
 </head>
 <body>
- <div id="content" style="display:none;">
+ <div id="content" style="display:none; flex-direction: column; align-items: center;">
     <h1>Меню</h1>
     <div id="userInfoTop"></div>
 <br>
@@ -441,7 +441,7 @@ input, select {
     <div class="seven-seg red" id="moneyRed2">000%</div>
     </div>
   </div>
-  
+  <br><br>
  <img src="./ap.png" alt="logo" width="260">
 </div>
 <div id="error" style="display:none; color:red;">
@@ -449,38 +449,31 @@ input, select {
     <a href="index.html">Повернутись на сторінку входу</a>
   </div>
 <script>
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzRHgNIxYyEfuqEit-hVM7UPOkRXjkKic1CvjGSmPnA5dVbmzk8-x_qp8fiU5DuMDlw/exec";
+const u = localStorage.getItem("currentUser");
+const token = localStorage.getItem("sessionToken");
 
-async function verifyUser(userName) {
-  try {
-    const response = await fetch(SCRIPT_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ action: "verifyUser", userName })
+if (!u || !token) {
+  window.location.href = "index.html";
+} else {
+  fetch("https://script.google.com/macros/s/AKfycbwEh_ljxkRYKH2kDav_LfFX6zey1brKG0TyHm0H0g_WdBjg7VlGTSlAGJy1zfkdSuWS/exec?action=menu&user=" 
+        + encodeURIComponent(u) 
+        + "&token=" + encodeURIComponent(token))
+    .then(r => r.text())
+    .then(text => {
+      if (text.includes("MENU_OK")) {
+        document.getElementById("content").style.display = "flex";
+      } else {
+        alert("Сесія недійсна або час вийшов. Перелогінься!");
+        localStorage.clear();
+        window.location.href = "index.html";
+      }
+    })
+    .catch(err => {
+      console.error(err);
+      localStorage.clear();
+      window.location.href = "index.html";
     });
-    const result = await response.json();
-    return result.success === true;
-  } catch (err) {
-    console.error("Помилка перевірки:", err);
-    return false;
-  }
 }
-
-(async function init() {
-  const currentUser = localStorage.getItem("currentUser");
-  if (!currentUser) {
-    document.getElementById("error").style.display = "block";
-    return;
-  }
-
-  const ok = await verifyUser(currentUser);
-  if (ok) {
-    document.getElementById("content").style.display = "block";
-  } else {
-    document.getElementById("error").style.display = "block";
-    localStorage.removeItem("currentUser");
-  }
-})();
 </script>
  <script>
 document.addEventListener("DOMContentLoaded", () => {

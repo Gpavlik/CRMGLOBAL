@@ -66,6 +66,7 @@
   color: #fff;
   font-size: 18px;
   padding: 10px;
+  margin-top: 5%;
 }
 
 #marquee span {
@@ -117,62 +118,80 @@
     Ваша команда вже чекає на вас!
   </span>
 </div>
-  <script>
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyw4XPYemQbvxJ3IG1DIIbVOQhDjKlM3PR_dKwRWyO24hM_MdhcntM3bmcpk6gko7ff/exec";
-const LOGINS_SHEET_URL = "https://docs.google.com/spreadsheets/d/1YSFD-Ll5mVjC0HI0H5Mc4cYBSOavPtA6eVLdAKB9qS4/gviz/tq?tqx=out:json&sheet=Logins";
+ <script>
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwEh_ljxkRYKH2kDav_LfFX6zey1brKG0TyHm0H0g_WdBjg7VlGTSlAGJy1zfkdSuWS/exec";
 
-// читаємо таблицю Logins
-async function fetchLogins() {
-  const res = await fetch(LOGINS_SHEET_URL);
-  const text = await res.text();
-  const json = JSON.parse(text.substr(47).slice(0, -2));
-  return json.table.rows.map(r => ({
-    date: r.c[0]?.v || "",
-    user: r.c[1]?.v || "",
-    result: r.c[2]?.v || ""
-  }));
-}
-
-// перевіряємо останній запис
-async function checkLastLogin(userKey) {
-  const logins = await fetchLogins();
-  const userLogs = logins.filter(l => l.user === userKey);
-  if (userLogs.length === 0) return false;
-  const lastLog = userLogs[userLogs.length - 1];
-  return lastLog.result === "OK";
+// утиліта для паузи
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 document.getElementById("loginBtn").addEventListener("click", async function() {
+  // ❌ очистити старі дані перед новим логіном
+  localStorage.clear();
+
   const u = document.getElementById("username").value;
   const p = document.getElementById("password").value;
-document.getElementById("marquee").style.display = "block";
+
   if (!u || !p) {
     alert("Будь ласка, введіть ім’я та пароль!");
     return;
   }
 
+  document.getElementById("marquee").style.display = "block";
+
   try {
-    // відправляємо запит на бекенд (він запише OK/FAIL у таблицю)
+    // 1️⃣ Відправляємо логін на бекенд
     await fetch(SCRIPT_URL, {
       method: "POST",
-      mode: "no-cors",  
+      mode: "no-cors",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ action: "login", userName: u, password: p })
     });
 
-    // тепер перевіряємо таблицю
-    const ok = await checkLastLogin(u);
-    if (ok) {
-      localStorage.setItem("currentUser", u);
+    // 2️⃣ Чекаємо, щоб токен записався
+    await sleep(2000);
+
+    // 3️⃣ Отримуємо токен
+    const respToken = await fetch(SCRIPT_URL + "?action=getToken&user=" + encodeURIComponent(u));
+    const tokenData = await respToken.json();
+
+    if (!tokenData.token) {
+      alert("Не вдалося отримати токен. Спробуйте ще раз.");
+      document.getElementById("marquee").style.display = "none";
+      return;
+    }
+
+    // ✅ Записуємо нові дані у localStorage
+    localStorage.setItem("currentUser", u);
+    localStorage.setItem("sessionToken", tokenData.token);
+
+    // 4️⃣ Перевіряємо токен
+    const respMenu = await fetch(
+      SCRIPT_URL + "?action=menu&user=" + encodeURIComponent(u) + "&token=" + encodeURIComponent(tokenData.token)
+    );
+    const text = await respMenu.text();
+
+    if (text.includes("MENU_OK")) {
       window.location.href = "Dashboard.html";
     } else {
-      alert("Невірний пароль!");
+      alert("Сесія недійсна або час вийшов. Залогінься знову!");
+      localStorage.clear();
+      document.getElementById("password").value = "";
+      document.getElementById("marquee").style.display = "none";
     }
+
   } catch (err) {
     alert("Помилка з’єднання з сервером!");
     console.error(err);
+    document.getElementById("marquee").style.display = "none";
   }
 });
+
+</script>
+</body>
+</html>
+
 </script>
 </body>
 </html>

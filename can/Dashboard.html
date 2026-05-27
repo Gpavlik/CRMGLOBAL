@@ -176,6 +176,7 @@ input, select {
    <button id="calendarBtn" onclick="window.location.href='calendar.html'">Перейти до календаря</button>
    <button style="background:#e74c3c; color:#fff;" onclick="window.location.href='index.html'">Вийти</button>
   </header>
+  <div id="content" style="display:none; flex-direction: column; align-items: center;"></div>
    <img src="./logo.svg" alt="logo" width="260">
 <!-- Легенда кольорів -->
  <div style="display:flex; gap:20px; padding:20px; width: 100%; justify-content: flex-start;" width="98%" >
@@ -234,6 +235,34 @@ input, select {
 </div>
 
 <img src="./ho.png" alt="logo" width="300">
+</div>
+<script>
+const u = localStorage.getItem("currentUser");
+const token = localStorage.getItem("sessionToken");
+
+if (!u || !token) {
+  window.location.href = "index.html";
+} else {
+  fetch("https://script.google.com/macros/s/AKfycbwEh_ljxkRYKH2kDav_LfFX6zey1brKG0TyHm0H0g_WdBjg7VlGTSlAGJy1zfkdSuWS/exec?action=menu&user=" 
+        + encodeURIComponent(u) 
+        + "&token=" + encodeURIComponent(token))
+    .then(r => r.text())
+    .then(text => {
+      if (text.includes("MENU_OK")) {
+        document.getElementById("content").style.display = "flex";
+      } else {
+        alert("Сесія недійсна або час вийшов. Перелогінься!");
+        localStorage.clear();
+        window.location.href = "index.html";
+      }
+    })
+    .catch(err => {
+      console.error(err);
+      localStorage.clear();
+      window.location.href = "index.html";
+    });
+}
+</script>
 <script>
 let allProcesses = [];
 

@@ -58,26 +58,26 @@
       label, input, select { width: 500px; }
       button { width: 200px; }
     }
-     #marquee {
-  width: 100%;
-  overflow: hidden;
-  white-space: nowrap;
-  background: rgba(255,255,255,0.1);
-  color: #fff;
-  font-size: 18px;
-  padding: 10px;
-}
-
-#marquee span {
-  display: inline-block;
-  padding-left: 100%;
-  animation: marquee 30s linear infinite;
-}
-
-@keyframes marquee {
-  0%   { transform: translateX(0); }
-  100% { transform: translateX(-100%); }
-}
+    #marquee {
+      width: 100%;
+      overflow: hidden;
+      white-space: nowrap;
+      background: rgba(255,255,255,0.1);
+      color: #fff;
+      font-size: 18px;
+      padding: 10px;
+      display: none;
+      margin-top: 5%
+    }
+    #marquee span {
+      display: inline-block;
+      padding-left: 100%;
+      animation: marquee 30s linear infinite;
+    }
+    @keyframes marquee {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-100%); }
+    }
   </style>
 </head>
 <body>
@@ -85,7 +85,7 @@
   <img src="./logo.svg" alt="logo" width="260">
   <div id="loginForm">
     <label>Ім’я користувача:
-      <select id="username">
+      <select id="username" name="username" autocomplete="username">
         <option value="">Виберіть користувача</option>
         <option value="fedir">Олександр Красніков</option>
         <option value="olena">Тетяна Романовська</option>
@@ -97,65 +97,95 @@
       </select>
     </label>
     <label>Пароль:
-      <input type="password" id="password">
+      <input type="password" id="password" name="password" autocomplete="current-password">
     </label>
     <button id="loginBtn">Увійти</button>
   </div>
   <img src="./ap.png" alt="logo" width="260">
-<div id="marquee" style="display: none;">
-  <span>
-    Вантажимо для вас найкращих партнерів... 
-    Формуємо позитивний настрій... 
-    Налаштовуємо бажання укладати угоди... 
-    Прогнозуємо виконання плану...
-    Підвищуємо ваші продажі...
-    Створюємо гарну атмосферу для роботи...
-    Усуваємо всі перешкоди на шляху до успіху...
-    Знищуємо конкурентів...
-    Ваша команда вже чекає на вас!
-  </span>
-</div>
-  <script>
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzRHgNIxYyEfuqEit-hVM7UPOkRXjkKic1CvjGSmPnA5dVbmzk8-x_qp8fiU5DuMDlw/exec";
+  <div id="marquee">
+    <span>
+      Вантажимо для вас найкращих партнерів... 
+      Формуємо позитивний настрій... 
+      Налаштовуємо бажання укладати угоди... 
+      Прогнозуємо виконання плану...
+      Підвищуємо ваші продажі...
+      Створюємо гарну атмосферу для роботи...
+      Усуваємо всі перешкоди на шляху до успіху...
+      Знищуємо конкурентів...
+      Ваша команда вже чекає на вас!
+    </span>
+  </div>
+
+<script>
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwEh_ljxkRYKH2kDav_LfFX6zey1brKG0TyHm0H0g_WdBjg7VlGTSlAGJy1zfkdSuWS/exec";
+
+// утиліта для паузи
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 document.getElementById("loginBtn").addEventListener("click", async function() {
+  // ❌ очистити старі дані перед новим логіном
+  localStorage.clear();
+
   const u = document.getElementById("username").value;
   const p = document.getElementById("password").value;
 
-  // показуємо анімацію/маркі
-  document.getElementById("marquee").style.display = "block";
-
   if (!u || !p) {
     alert("Будь ласка, введіть ім’я та пароль!");
-    document.getElementById("marquee").style.display = "none";
     return;
   }
 
+  document.getElementById("marquee").style.display = "block";
+
   try {
-    // відправляємо запит на бекенд
-    const response = await fetch(SCRIPT_URL, {
+    // 1️⃣ Відправляємо логін на бекенд
+    await fetch(SCRIPT_URL, {
       method: "POST",
+      mode: "no-cors",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ action: "login", userName: u, password: p })
     });
 
-    // читаємо відповідь
-    const result = await response.json();
+    // 2️⃣ Чекаємо, щоб токен записався
+    await sleep(2000);
 
-    if (result.success) {
-      // тільки якщо бекенд підтвердив пароль
-      localStorage.setItem("currentUser", u);
+    // 3️⃣ Отримуємо токен
+    const respToken = await fetch(SCRIPT_URL + "?action=getToken&user=" + encodeURIComponent(u));
+    const tokenData = await respToken.json();
+
+    if (!tokenData.token) {
+      alert("Не вдалося отримати токен. Спробуйте ще раз.");
+      document.getElementById("marquee").style.display = "none";
+      return;
+    }
+
+    // ✅ Записуємо нові дані у localStorage
+    localStorage.setItem("currentUser", u);
+    localStorage.setItem("sessionToken", tokenData.token);
+
+    // 4️⃣ Перевіряємо токен
+    const respMenu = await fetch(
+      SCRIPT_URL + "?action=menu&user=" + encodeURIComponent(u) + "&token=" + encodeURIComponent(tokenData.token)
+    );
+    const text = await respMenu.text();
+
+    if (text.includes("MENU_OK")) {
       window.location.href = "menu.html";
     } else {
-      alert("Невірний пароль!");
+      alert("Сесія недійсна або час вийшов. Залогінься знову!");
+      localStorage.clear();
+      document.getElementById("password").value = "";
       document.getElementById("marquee").style.display = "none";
     }
+
   } catch (err) {
     alert("Помилка з’єднання з сервером!");
     console.error(err);
     document.getElementById("marquee").style.display = "none";
   }
 });
+
 </script>
 </body>
 </html>
