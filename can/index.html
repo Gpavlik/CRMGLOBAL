@@ -119,7 +119,7 @@
   </span>
 </div>
  <script>
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwEh_ljxkRYKH2kDav_LfFX6zey1brKG0TyHm0H0g_WdBjg7VlGTSlAGJy1zfkdSuWS/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzcbU5z-Yw_R7TAfJqMDaQNJqzBXGSsp9FsEE2ZcI4JBZJ88FOwazU7zqS2oJxc5Mua/exec";
 
 // утиліта для паузи
 function sleep(ms) {
@@ -173,8 +173,10 @@ document.getElementById("loginBtn").addEventListener("click", async function() {
     const text = await respMenu.text();
 
     if (text.includes("MENU_OK")) {
-      window.location.href = "Dashboard.html";
-    } else {
+        window.location.href = SCRIPT_URL + "?action=menu&user=" + encodeURIComponent(u) +
+                         "&token=" + encodeURIComponent(tokenData.token) +
+                         "&branch=can";
+} else {
       alert("Сесія недійсна або час вийшов. Залогінься знову!");
       localStorage.clear();
       document.getElementById("password").value = "";

@@ -455,7 +455,7 @@ const token = localStorage.getItem("sessionToken");
 if (!u || !token) {
   window.location.href = "index.html";
 } else {
-  fetch("https://script.google.com/macros/s/AKfycbwEh_ljxkRYKH2kDav_LfFX6zey1brKG0TyHm0H0g_WdBjg7VlGTSlAGJy1zfkdSuWS/exec?action=menu&user=" 
+  fetch("https://script.google.com/macros/s/AKfycbzcbU5z-Yw_R7TAfJqMDaQNJqzBXGSsp9FsEE2ZcI4JBZJ88FOwazU7zqS2oJxc5Mua/exec?action=menu&user=" 
         + encodeURIComponent(u) 
         + "&token=" + encodeURIComponent(token))
     .then(r => r.text())
