@@ -337,7 +337,6 @@ input, select {
 </style>
 </head>
 <body>
- <div id="content" style="display:none; flex-direction: column; align-items: center;">
     <h1>Меню</h1>
     <div id="userInfoTop"></div>
 <br>
@@ -442,34 +441,7 @@ input, select {
     </div>
   </div>
  <img src="./ph.png" alt="logo" width="260">
- </div>
- <script>
-const u = localStorage.getItem("currentUser");
-const token = localStorage.getItem("sessionToken");
-
-if (!u || !token) {
-  window.location.href = "index.html";
-} else {
-  fetch("https://script.google.com/macros/s/AKfycbzcbU5z-Yw_R7TAfJqMDaQNJqzBXGSsp9FsEE2ZcI4JBZJ88FOwazU7zqS2oJxc5Mua/exec?action=menu&user=" 
-        + encodeURIComponent(u) 
-        + "&token=" + encodeURIComponent(token))
-    .then(r => r.text())
-    .then(text => {
-      if (text.includes("MENU_OK")) {
-        document.getElementById("content").style.display = "flex";
-      } else {
-        alert("Сесія недійсна або час вийшов. Перелогінься!");
-        localStorage.clear();
-        window.location.href = "index.html";
-      }
-    })
-    .catch(err => {
-      console.error(err);
-      localStorage.clear();
-      window.location.href = "index.html";
-    });
-}
-</script>
+ 
  <script>
 document.addEventListener("DOMContentLoaded", () => {
   const restrictedUsers = ["andriy", "maria", "serhiy"];
