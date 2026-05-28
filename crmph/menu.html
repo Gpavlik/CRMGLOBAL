@@ -336,7 +336,8 @@ input, select {
 }
 </style>
 </head>
-<body>
+<body  style="display:none;">
+  <div id="content">
     <h1>Меню</h1>
     <div id="userInfoTop"></div>
 <br>
@@ -443,6 +444,40 @@ input, select {
   <br><br>
  <img src="./ap.png" alt="logo" width="260">
 </div>
+</div>
+<script>
+(async function(){
+  const u = localStorage.getItem("currentUser");
+  const token = localStorage.getItem("sessionToken");
+
+  // ❌ якщо немає даних → назад на логін
+  if (!u || !token) {
+    window.location.href = "index.html";
+    return;
+  }
+
+  try {
+    // ✅ перевірка токена та юзернейма
+    const resp = await fetch("https://script.google.com/macros/s/AKfycbz0LYqXlU5iXpNTUo9lV3-tqhEfRFEBS8sdC5GDOFZvqX5GgeSaox_6DLirLFM2MxVx/exec" + "?action=menu&user=" + encodeURIComponent(u) +
+                             "&token=" + encodeURIComponent(token) +
+                             "&branch=crmph");
+    const data = await resp.json();
+
+    if (data.success && data.url) {
+      // токен валідний → показуємо меню
+      document.body.style.display = "block";
+    } else {
+      // ❌ токен невалідний → чистимо localStorage і назад на логін
+      localStorage.clear();
+      window.location.href = "index.html";
+    }
+  } catch(err) {
+    console.error("Помилка перевірки токена:", err);
+    localStorage.clear();
+    window.location.href = "index.html";
+  }
+})();
+</script>
  <script>
 document.addEventListener("DOMContentLoaded", () => {
   const restrictedUsers = ["andriy", "maria", "serhiy"];

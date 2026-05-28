@@ -117,9 +117,8 @@
   </div>
 
 <script>
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzlGNrLcCJr5OOfsTNIZrO-4yU9Se8E21VRfYmQXVg7MUC-c7Cdsoqb-EFObzdGIlav/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz813x_iRXb_iGk91P56We8KcialSnVrEUGHP8PC_wRs7-9KLeEXKwB5WvXje4RVwRd/exec";
 
-// утиліта для паузи
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
@@ -138,7 +137,7 @@ document.getElementById("loginBtn").addEventListener("click", async function() {
   document.getElementById("marquee").style.display = "block";
 
   try {
-    // 1️⃣ Відправляємо логін на бекенд (без читання відповіді)
+    // 1️⃣ Відправляємо логін
     await fetch(SCRIPT_URL, {
       method: "POST",
       mode: "no-cors",
@@ -149,7 +148,7 @@ document.getElementById("loginBtn").addEventListener("click", async function() {
     // 2️⃣ Чекаємо, щоб токен записався
     await sleep(2000);
 
-    // 3️⃣ Отримуємо токен (GET)
+    // 3️⃣ Отримуємо токен
     const respToken = await fetch(SCRIPT_URL + "?action=getToken&user=" + encodeURIComponent(u));
     const tokenData = await respToken.json();
 
@@ -159,14 +158,21 @@ document.getElementById("loginBtn").addEventListener("click", async function() {
       return;
     }
 
-    // ✅ Записуємо у localStorage
     localStorage.setItem("currentUser", u);
     localStorage.setItem("sessionToken", tokenData.token);
 
-    // 4️⃣ Переходимо на бекенд‑URL для перевірки токена і редиректу
-    window.location.href = SCRIPT_URL + "?action=menu&user=" + encodeURIComponent(u) +
-                           "&token=" + encodeURIComponent(tokenData.token) +
-                           "&branch=crmph";
+    // 4️⃣ Запитуємо бекенд, куди йти
+    const respMenu = await fetch(SCRIPT_URL + "?action=menu&user=" + encodeURIComponent(u) +
+                                 "&token=" + encodeURIComponent(tokenData.token) +
+                                 "&branch=crmph");
+    const menuData = await respMenu.json();
+
+    if (menuData.success) {
+      window.location.href = menuData.url; // ✅ редирект на свій домен
+    } else {
+      alert("Сесія недійсна або час вийшов. Перелогінься!");
+      window.location.href = menuData.url; // index.html
+    }
 
   } catch (err) {
     alert("Помилка з’єднання з сервером!");
