@@ -277,7 +277,7 @@ const userMap = {
   maria: [49,46,36,7,28,30,37,14,56,38,60],
   serhiy: [12,75,13,8,21,67,48]
 };
-const currentUser = localStorage.getItem("currentUser");
+const currentUser = sessionStorage.getItem("currentUser");
 let selectedPartnerName = "";
 
 if (!currentUser) {
@@ -290,7 +290,7 @@ if (!currentUser) {
 
 // ===== Партнери =====
 function initPartners(userKey) {
-  const partners = JSON.parse(localStorage.getItem("partners")) || [];
+  const partners = JSON.parse(sessionStorage.getItem("partners")) || [];
   const ids = userMap[userKey] || [];
   const filtered = partners.filter(p => ids.includes(Number(p.id)));
 
@@ -316,7 +316,7 @@ const partnerIdFromUrl = urlParams.get("partnerId");
 document.addEventListener("DOMContentLoaded", () => {
   initPartners(currentUser);
   if (partnerIdFromUrl) {
-    const partners = JSON.parse(localStorage.getItem("partners")) || [];
+    const partners = JSON.parse(sessionStorage.getItem("partners")) || [];
     const selectedPartner = partners.find(p => p.id == partnerIdFromUrl);
     if (selectedPartner) {
       selectedPartnerName = selectedPartner.name;
@@ -510,8 +510,8 @@ document.getElementById("sendReport").addEventListener("click", async () => {
   const status = document.getElementById("visitStatus").value;
   const comment = document.getElementById("visitComment").value;
 
-  const currentUserKey = localStorage.getItem("currentUser");
-  const currentUserName = localStorage.getItem("currentUserName") || userNames[currentUserKey];
+  const currentUserKey = sessionStorage.getItem("currentUser");
+  const currentUserName = sessionStorage.getItem("currentUserName") || userNames[currentUserKey];
 
   const date = new Date().toLocaleDateString("uk-UA");
   const time = new Date().toLocaleTimeString("uk-UA", {hour: "2-digit", minute: "2-digit"});
@@ -639,10 +639,7 @@ if (!visitId) {
     }
   });
 });
-// 🟢 Автоматичне очищення при закритті вкладки/браузера
-window.addEventListener("beforeunload", () => {
-  localStorage.clear();
-});
+
 </script>
 </body>
 <html>

@@ -104,7 +104,7 @@ const userMap = {
 
 
 function loadCache(type) {
-  const raw = localStorage.getItem(type + "Cache");
+  const raw = sessionStorage.getItem(type + "Cache");
   return raw ? JSON.parse(raw) : [];
 }
 
@@ -211,10 +211,7 @@ function showVisits() {
     map.fitBounds(routeCoords);
   }
 }
-// 🟢 Автоматичне очищення при закритті вкладки/браузера
-window.addEventListener("beforeunload", () => {
-  localStorage.clear();
-});
+
 </script>
 </body>
 </html>

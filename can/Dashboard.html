@@ -247,8 +247,8 @@ input, select {
 </div>
 <script>
 (async function(){
-  const u = localStorage.getItem("currentUser");
-  const token = localStorage.getItem("sessionToken");
+  const u = sessionStorage.getItem("currentUser");
+  const token = sessionStorage.getItem("sessionToken");
 
   // ❌ якщо немає даних → назад на логін
   if (!u || !token) {
@@ -268,21 +268,21 @@ input, select {
       // токен валідний → показуємо меню
       document.body.style.display = "flex";
     } else {
-      // ❌ токен невалідний → чистимо localStorage і назад на логін
-      localStorage.clear();
+      // ❌ токен невалідний → чистимо sessionStorage і назад на логін
+      sessionStorage.clear();
       window.location.href = "index.html";
     }
   } catch(err) {
     console.error("Помилка перевірки токена:", err);
-    localStorage.clear();
+    sessionStorage.clear();
     window.location.href = "index.html";
   }
 })();
 
 // 🔴 Логаут
 document.getElementById("logoutBtn").addEventListener("click", async function() {
-  const u = localStorage.getItem("currentUser");
-  const token = localStorage.getItem("sessionToken");
+  const u = sessionStorage.getItem("currentUser");
+  const token = sessionStorage.getItem("sessionToken");
 
   try {
     await fetch("https://script.google.com/macros/s/AKfycbwOEqMfhRV7f-Ifm15XmW7crLuBvbPBuAl4-Sr52dXfBIWN7XBm_KmQ1nkr4T85fH29/exec", {
@@ -295,13 +295,10 @@ document.getElementById("logoutBtn").addEventListener("click", async function() 
     console.error("Помилка виходу:", err);
   }
 
-  localStorage.clear();
+  sessionStorage.clear();
   window.location.href = "index.html";
 });
-// 🟢 Автоматичне очищення при закритті вкладки/браузера
-window.addEventListener("beforeunload", () => {
-  localStorage.clear();
-});
+
 </script>
 <script>
 let allProcesses = [];
@@ -309,7 +306,7 @@ let allProcesses = [];
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwh5TrmNwDcMY51ToSGblbbzw2xF6sZPTuS677x3BHctpMinn4FCQsQmKkKwBus5kfq/exec";
 const DASHBOARD_SHEET_URL = "https://docs.google.com/spreadsheets/d/1vjxURM8HlNTxdk-XGEh-99sYuHhtEgNKLf-39jRm8-Q/gviz/tq?tqx=out:json&sheet=Dashboard";
 
-const currentUser = localStorage.getItem("currentUser") || "невідомий";
+const currentUser = sessionStorage.getItem("currentUser") || "невідомий";
 
 
 const usersMap = {
@@ -383,7 +380,7 @@ function getVisibleProcesses(currentUserKey, processes) {
 
 
 async function initDashboard() {
-  const localData = localStorage.getItem("dashboardData");
+  const localData = sessionStorage.getItem("dashboardData");
   if (localData) {
     const parsed = JSON.parse(localData);
     allProcesses = parsed.processes || [];
@@ -394,7 +391,7 @@ async function initDashboard() {
   const data = await fetchDashboardData();
   if (data.status === "ok") {
     allProcesses = data.processes;
-    localStorage.setItem("dashboardData", JSON.stringify({ processes: allProcesses }));
+    sessionStorage.setItem("dashboardData", JSON.stringify({ processes: allProcesses }));
     const visible = getVisibleProcesses(currentUser, allProcesses);
     renderDashboard({ processes: visible });
     populateProcessSelector(visible);
@@ -479,7 +476,7 @@ document.getElementById("saveBtn").addEventListener("click", () => {
   });
 
   const dashboardData = { processes };
-  localStorage.setItem("dashboardData", JSON.stringify(dashboardData));
+  sessionStorage.setItem("dashboardData", JSON.stringify(dashboardData));
 
   fetch(SCRIPT_URL, {
     method: "POST",
@@ -552,8 +549,8 @@ function createBoard() {
 
   allProcesses.push(processData);
 
-  // 🔑 у localStorage завжди зберігаємо всі процеси
-  localStorage.setItem("dashboardData", JSON.stringify({ processes: allProcesses }));
+  // 🔑 у sessionStorage завжди зберігаємо всі процеси
+  sessionStorage.setItem("dashboardData", JSON.stringify({ processes: allProcesses }));
 
   // 🔑 рендеримо тільки видимі процеси
   const visible = getVisibleProcesses(currentUser, allProcesses);
@@ -587,7 +584,7 @@ function showProcessModal(proc) {
     // --- Видалити ---
     document.getElementById("deleteBtn").onclick = async () => {
       allProcesses = allProcesses.filter(p => p.processID !== proc.processID);
-      localStorage.setItem("dashboardData", JSON.stringify({ processes: allProcesses }));
+      sessionStorage.setItem("dashboardData", JSON.stringify({ processes: allProcesses }));
       renderDashboard({ processes: allProcesses });
 
       fetch(SCRIPT_URL, {
@@ -601,7 +598,7 @@ function showProcessModal(proc) {
         const data = await fetchDashboardData();
         if (data.status === "ok") {
           allProcesses = data.processes;
-          localStorage.setItem("dashboardData", JSON.stringify(data));
+          sessionStorage.setItem("dashboardData", JSON.stringify(data));
           renderDashboard(data);
         }
       });
@@ -617,7 +614,7 @@ function showProcessModal(proc) {
 
     // --- Перейти ---
     document.getElementById("goBtn").onclick = async () => {
-      localStorage.setItem("currentProcess", JSON.stringify(proc));
+      sessionStorage.setItem("currentProcess", JSON.stringify(proc));
       const ownerName = usersMap[currentUser] || currentUser;
 
       const payload = {
@@ -648,7 +645,7 @@ function showProcessModal(proc) {
 
   } else {
     // --- Не оунер: одразу перехід ---
-    localStorage.setItem("currentProcess", JSON.stringify(proc));
+    sessionStorage.setItem("currentProcess", JSON.stringify(proc));
     const ownerName = usersMap[currentUser] || currentUser;
 
     const payload = {
@@ -732,7 +729,7 @@ function showEditModal(proc) {
 
     // оновлюємо масив і локалку
     allProcesses = allProcesses.map(p => p.processID === proc.processID ? proc : p);
-    localStorage.setItem("dashboardData", JSON.stringify({processes: allProcesses}));
+    sessionStorage.setItem("dashboardData", JSON.stringify({processes: allProcesses}));
 
     // одразу показуємо оновлені дані з локалки
     renderDashboard({processes: allProcesses});
@@ -750,7 +747,7 @@ function showEditModal(proc) {
       const data = await fetchDashboardData();
       if (data.status === "ok") {
         allProcesses = data.processes;
-        localStorage.setItem("dashboardData", JSON.stringify(data));
+        sessionStorage.setItem("dashboardData", JSON.stringify(data));
         renderDashboard(data);
       }
     });

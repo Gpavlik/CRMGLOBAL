@@ -98,14 +98,14 @@ const userMap = {
 
 // ===== Ініціалізація =====
 document.addEventListener("DOMContentLoaded", () => {
-  const currentUser = localStorage.getItem("currentUser") || "admin";
+  const currentUser = sessionStorage.getItem("currentUser") || "admin";
   const employeeName = userMap[currentUser] || currentUser;
   document.getElementById("employeeName").textContent = employeeName;
 });
 
 // ===== Відправка відрядження =====
 function submitTrip() {
-  const currentUser = localStorage.getItem("currentUser") || "admin";
+  const currentUser = sessionStorage.getItem("currentUser") || "admin";
   const employeeName = userMap[currentUser] || currentUser;
 
   const trip = {
@@ -133,10 +133,7 @@ function submitTrip() {
   alert("Ваше відрядження прийнято!");
   document.getElementById("tripForm").reset();
 }
-// 🟢 Автоматичне очищення при закритті вкладки/браузера
-window.addEventListener("beforeunload", () => {
-  localStorage.clear();
-});
+
 </script>
 </body>
 </html>

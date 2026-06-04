@@ -115,7 +115,7 @@ function sleep(ms) {
 }
 
 document.getElementById("loginBtn").addEventListener("click", async function() {
-  localStorage.clear(); // ❌ нічого не пишемо до перевірки
+  sessionStorage.clear(); // ❌ нічого не пишемо до перевірки
 
   const u = document.getElementById("username").value.trim();
   const p = document.getElementById("password").value.trim();
@@ -156,9 +156,9 @@ document.getElementById("loginBtn").addEventListener("click", async function() {
     const a345Data = await resp23114.json();
 
     if (a345Data.success) {
-      // ✅ тільки тепер пишемо у localStorage
-      localStorage.setItem("currentUser", u);
-      localStorage.setItem("sessionToken", tokenData.token);
+      // ✅ тільки тепер пишемо у sessionStorage
+      sessionStorage.setItem("currentUser", u);
+      sessionStorage.setItem("sessionToken", tokenData.token);
       window.location.href = a345Data.url;
     } else {
       alert("Сесія недійсна або час вийшов. Перелогінься!");

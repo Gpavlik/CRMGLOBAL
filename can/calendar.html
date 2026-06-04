@@ -101,7 +101,7 @@ width: 200px;
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwh5TrmNwDcMY51ToSGblbbzw2xF6sZPTuS677x3BHctpMinn4FCQsQmKkKwBus5kfq/exec";
 const PROCESSES_SHEET_URL = "https://docs.google.com/spreadsheets/d/1vjxURM8HlNTxdk-XGEh-99sYuHhtEgNKLf-39jRm8-Q/gviz/tq?tqx=out:json&sheet=Processes";
 
-const currentUser = localStorage.getItem("currentUser") || "невідомий";
+const currentUser = sessionStorage.getItem("currentUser") || "невідомий";
 const usersMap = {
   gala: "Галина Кузнєцова",
   olenka: "Олена Поліщук",
@@ -327,7 +327,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     let tasks = await loadProcesses();
     tasks = filterProcesses(tasks, usersMap[currentUser] || currentUser);
 
-    localStorage.setItem("dashboardData", JSON.stringify({processes: tasks}));
+    sessionStorage.setItem("dashboardData", JSON.stringify({processes: tasks}));
 
     const expandedTasks = expandMultiDayTasks(tasks);
     const allEvents = autoPlaceTasks(expandedTasks);
@@ -384,10 +384,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     console.error("Помилка при ініціалізації календаря:", err);
   }
 });
-// 🟢 Автоматичне очищення при закритті вкладки/браузера
-window.addEventListener("beforeunload", () => {
-  localStorage.clear();
-});
+
 </SCRIPT>
 </body>
 </html>

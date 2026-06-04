@@ -270,16 +270,16 @@ td.to-sell { text-align: center; font-weight: bold; color: white; }
   </div>
 </div>
 <script>
-// Зчитуємо userName з URL або localStorage
+// Зчитуємо userName з URL або sessionStorage
 function getQueryParam(name) {
   const urlParams = new URLSearchParams(window.location.search);
   return urlParams.get(name);
 }
 
-const currentUserName = getQueryParam("userName") || localStorage.getItem("currentUserName");
+const currentUserName = getQueryParam("userName") || sessionStorage.getItem("currentUserName");
 if (currentUserName) {
   document.getElementById("userInfo").innerText = "Користувач: " + currentUserName;
-  localStorage.setItem("currentUserName", currentUserName);
+  sessionStorage.setItem("currentUserName", currentUserName);
 }
 
 // Користувачі та карта партнерів
@@ -300,7 +300,7 @@ const userMap = {
   maria: [49,46,36,7,28,30,37,14,56,38,60,1,2,3,4,5],
   serhiy: [12,75,13,8,21,67,48,1,2,3,4,5]
 };
-const currentUser = localStorage.getItem("currentUser");
+const currentUser = sessionStorage.getItem("currentUser");
 let selectedPartnerName = "";
 
 if (!currentUser) {
@@ -336,7 +336,7 @@ async function fetchPharmacies() {
 // Ініціалізація партнерів
 async function initPartners(userKey) {
   const pharmacies = await fetchPharmacies();
-  localStorage.setItem("pharmacies", JSON.stringify(pharmacies));
+  sessionStorage.setItem("pharmacies", JSON.stringify(pharmacies));
   console.log("▶ Завантажено аптек:", pharmacies.length);
 
   const ids = userMap[userKey] || [];
@@ -353,7 +353,7 @@ async function initPartners(userKey) {
 
 // Заповнення міст для вибраного партнера
 function initCitySelect(userKey, partnerId) {
-  const pharmacies = JSON.parse(localStorage.getItem("pharmacies")) || [];
+  const pharmacies = JSON.parse(sessionStorage.getItem("pharmacies")) || [];
   const ids = userMap[userKey] || [];
   const filtered = pharmacies.filter(p => ids.includes(p.partnerId) && p.partnerId == partnerId);
 
@@ -370,7 +370,7 @@ document.getElementById("pharmacySearch").addEventListener("input", (e) => {
   const partnerId = document.getElementById("partnerSelect").value;
   const city = document.getElementById("city").value;
 
-  const pharmacies = JSON.parse(localStorage.getItem("pharmacies")) || [];
+  const pharmacies = JSON.parse(sessionStorage.getItem("pharmacies")) || [];
   const ids = userMap[currentUser] || [];
 
   // фільтруємо по партнеру, місту і введеному тексту
@@ -391,7 +391,7 @@ document.getElementById("pharmacySearch").addEventListener("input", (e) => {
 
 // Заповнення адрес для вибраного партнера і міста
 function initAddressSelect(userKey, partnerId, city) {
-  const pharmacies = JSON.parse(localStorage.getItem("pharmacies")) || [];
+  const pharmacies = JSON.parse(sessionStorage.getItem("pharmacies")) || [];
   const ids = userMap[userKey] || [];
   const filtered = pharmacies.filter(p => ids.includes(p.partnerId) && p.partnerId == partnerId && p.city === city);
 
@@ -416,7 +416,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   document.getElementById("visitTime").value = `${hh}:${min}`;
 
   // логіка з користувачем
-  const currentUser = localStorage.getItem("currentUser");
+  const currentUser = sessionStorage.getItem("currentUser");
   if (!currentUser) {
     alert("Будь ласка, увійдіть спочатку!");
     window.location.href = "index.html";
@@ -484,9 +484,9 @@ function savePharmacyVisit() {
   });
 
   const urlParams = new URLSearchParams(window.location.search);
-  let userName = urlParams.get("userName") || localStorage.getItem("currentUserName");
+  let userName = urlParams.get("userName") || sessionStorage.getItem("currentUserName");
   if (!userName) {
-    const currentUser = localStorage.getItem("currentUser");
+    const currentUser = sessionStorage.getItem("currentUser");
     userName = userNames[currentUser] || currentUser;
   }
 
@@ -627,7 +627,7 @@ async function sendPhoto(photoBase64) {
     serhiy: "Ілона Бабенко",
     admin: "admin"
   };
-  let userKey = localStorage.getItem("currentUser");
+  let userKey = sessionStorage.getItem("currentUser");
   let userName = userNames[userKey] || userKey || "невідомий";
 
   // створюємо FormData
@@ -663,10 +663,7 @@ async function sendPhoto(photoBase64) {
   }
 }*/
 
-// 🟢 Автоматичне очищення при закритті вкладки/браузера
-window.addEventListener("beforeunload", () => {
-  localStorage.clear();
-});
+
 </script>
 </body>
 </html>

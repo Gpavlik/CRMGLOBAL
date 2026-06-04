@@ -358,22 +358,22 @@ const userNames = {
   admin: "admin"
 };
 
-const currentUser = localStorage.getItem("currentUser") || "admin";
+const currentUser = sessionStorage.getItem("currentUser") || "admin";
 
 // ===== План на день =====
 const planDay = { gastro:1, oto:2, gyn:5, partner:1 };
 
 // ===== Кешування =====
 function saveCache(type, data, lastRow) {
-  localStorage.setItem(type + "Cache", JSON.stringify(data));
-  localStorage.setItem(type + "LastRow", lastRow);
+  sessionStorage.setItem(type + "Cache", JSON.stringify(data));
+  sessionStorage.setItem(type + "LastRow", lastRow);
 }
 function loadCache(type) {
-  const raw = localStorage.getItem(type + "Cache");
+  const raw = sessionStorage.getItem(type + "Cache");
   return raw ? JSON.parse(raw) : [];
 }
 function loadLastRow(type) {
-  return Number(localStorage.getItem(type + "LastRow")) || 1;
+  return Number(sessionStorage.getItem(type + "LastRow")) || 1;
 }
 
 async function fetchIncremental(type, userKey) {
@@ -677,7 +677,7 @@ let currentType = "";   // глобально зберігаємо тип зві
 
 // ініціалізація партнерів
 function initPartners(userKey) {
-  const partners = JSON.parse(localStorage.getItem("partners")) || [];
+  const partners = JSON.parse(sessionStorage.getItem("partners")) || [];
   const ids = userMap[userKey] || [];
   const filtered = (userKey === "admin") ? partners : partners.filter(p => ids.includes(Number(p.id)));
 
@@ -830,7 +830,7 @@ document.getElementById("productSelect").addEventListener("change", () => {
 
 // ===== Виклик при завантаженні сторінки =====
 document.addEventListener("DOMContentLoaded", async () => {
-  const userKey = localStorage.getItem("currentUser") || "office";
+  const userKey = sessionStorage.getItem("currentUser") || "office";
   quarter = getCurrentQuarter();
 
   // Отримати плани
@@ -841,8 +841,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   const ids = userMap[userKey] || [];
   allPartners = [];
   for (let id of ids) {
-    const products = await fetchHistory(id, historyUrl, JSON.parse(localStorage.getItem("partners")) || []);
-    const d = (JSON.parse(localStorage.getItem("partners")) || []).find(p => p.id === id);
+    const products = await fetchHistory(id, historyUrl, JSON.parse(sessionStorage.getItem("partners")) || []);
+    const d = (JSON.parse(sessionStorage.getItem("partners")) || []).find(p => p.id === id);
     if (!d) continue;
     allPartners.push({ ...d, products });
   }
@@ -884,7 +884,7 @@ async function initPartners(userKey) {
   const morionUrl = "https://docs.google.com/spreadsheets/d/1CUEcXgBAUIKvg0k2JePbhSH-_S01HcEi";
   const partners = await fetchPartners(morionUrl);
 
-  localStorage.setItem("partners", JSON.stringify(partners));
+  sessionStorage.setItem("partners", JSON.stringify(partners));
 
   const ids = userMap[userKey] || [];
   const filtered = partners.filter(p => ids.includes(p.id));
@@ -1334,7 +1334,7 @@ html += `
 
 ///__===== Головна ініціалізація =====
 document.addEventListener("DOMContentLoaded", async () => {
-  const userKey = localStorage.getItem("currentUser");
+  const userKey = sessionStorage.getItem("currentUser");
   const quarter = "Q2";
 
   // отримуємо плани
@@ -1349,8 +1349,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   const ids = userMap[userKey] || [];
   let allPartners = [];
   for (let id of ids) {
-    const products = await fetchHistory(id, historyUrl, JSON.parse(localStorage.getItem("partners")) || []);
-    const d = (JSON.parse(localStorage.getItem("partners")) || []).find(p => p.id === id);
+    const products = await fetchHistory(id, historyUrl, JSON.parse(sessionStorage.getItem("partners")) || []);
+    const d = (JSON.parse(sessionStorage.getItem("partners")) || []).find(p => p.id === id);
     if (!d) continue;
     allPartners.push({ ...d, products });
   }
@@ -1386,10 +1386,7 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("userInfoTop").textContent =
     `${formattedDate} | ${userName}`;
 });
-// 🟢 Автоматичне очищення при закритті вкладки/браузера
-window.addEventListener("beforeunload", () => {
-  localStorage.clear();
-});
+
 </script>
 </body>
 </html>

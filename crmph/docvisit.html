@@ -307,7 +307,7 @@ const userNames = {
   serhiy: "Ілона Бабенко"
 };
 
-const currentUser = localStorage.getItem("currentUser");
+const currentUser = sessionStorage.getItem("currentUser");
 if (!currentUser) {
   alert("Будь ласка, увійдіть спочатку!");
   window.location.href = "login.html";
@@ -640,7 +640,7 @@ document.getElementById('saveVisitBtn').onclick = async () => {
 async function saveDoctorVisit() {
   if (!validateVisitForm()) return;
 
-  const currentUser = localStorage.getItem("currentUser");
+  const currentUser = sessionStorage.getItem("currentUser");
   const userName = userNames[currentUser] || currentUser || "Невідомий користувач";
 
   const now = new Date();
@@ -801,11 +801,6 @@ async function loadPreviousVisit(doctorName) {
     tbody.innerHTML = `<tr><td colspan="7">Не вдалося підтягнути попередній візит (CORS)</td></tr>`;
   }
 }
-
-// 🟢 Автоматичне очищення при закритті вкладки/браузера
-window.addEventListener("beforeunload", () => {
-  localStorage.clear();
-});
 
 </script>
 </script>

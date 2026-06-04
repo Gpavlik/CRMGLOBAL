@@ -216,8 +216,8 @@ header button:hover { background:#2980b9; }
 <script>
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwh5TrmNwDcMY51ToSGblbbzw2xF6sZPTuS677x3BHctpMinn4FCQsQmKkKwBus5kfq/exec";
 const Processes_SHEET_URL = "https://docs.google.com/spreadsheets/d/1vjxURM8HlNTxdk-XGEh-99sYuHhtEgNKLf-39jRm8-Q/gviz/tq?tqx=out:json&sheet=Processes";
-const currentUser = localStorage.getItem("currentUser") || "невідомий";
-let processData = JSON.parse(localStorage.getItem("currentProcess")) || {
+const currentUser = sessionStorage.getItem("currentUser") || "невідомий";
+let processData = JSON.parse(sessionStorage.getItem("currentProcess")) || {
   processID: Date.now().toString(),
   title: "Без назви",
   owner: currentUser,
@@ -273,7 +273,7 @@ async function initProcess() {
     const data = await fetchDashboardData();
     if (data.status === "ok" && data.currentProcess?.tasks?.length) {
       processData = data.currentProcess;
-      localStorage.setItem("currentProcess", JSON.stringify(processData));
+      sessionStorage.setItem("currentProcess", JSON.stringify(processData));
       renderKanban(processData.tasks || []);
       console.log("✅ Дані підтягнуті з бекенду і відрендерені");
     } else {
@@ -339,7 +339,7 @@ function drop(ev) {
       processData.tasks[idx].status = newStatus;
     }
 
-    localStorage.setItem("currentProcess", JSON.stringify(processData));
+    sessionStorage.setItem("currentProcess", JSON.stringify(processData));
     syncTasks();
     dragged = null;
   }
@@ -488,7 +488,7 @@ function createTaskCard(ev, dragged) {
     status: "todo"
   });
 
-  localStorage.setItem("currentProcess", JSON.stringify(processData));
+  sessionStorage.setItem("currentProcess", JSON.stringify(processData));
   syncTasks();
 }
 
@@ -547,7 +547,7 @@ function attachChat(card) {
       const idx = processData.tasks.findIndex(x => x.id === card.dataset.taskId);
       if (idx >= 0) processData.tasks[idx].chat = card.chat;
 
-      localStorage.setItem("currentProcess", JSON.stringify(processData));
+      sessionStorage.setItem("currentProcess", JSON.stringify(processData));
       input.value = "";
     }
   };
@@ -613,7 +613,7 @@ function syncTasks() {
   });
 
   processData.tasks = allTasks;
-  localStorage.setItem("currentProcess", JSON.stringify(processData));
+  sessionStorage.setItem("currentProcess", JSON.stringify(processData));
 }
 
 
@@ -829,7 +829,7 @@ function renderKanban(tasks) {
 
         const idx = processData.tasks.findIndex(x => x.id === card.dataset.taskId);
         if (idx >= 0) processData.tasks[idx].chat = card.chat;
-        localStorage.setItem("currentProcess", JSON.stringify(processData));
+        sessionStorage.setItem("currentProcess", JSON.stringify(processData));
         syncTasks();
       }
     };
@@ -1001,10 +1001,7 @@ function renderGantt(tasks) {
     gantt.appendChild(task);
   });
 }
-// 🟢 Автоматичне очищення при закритті вкладки/браузера
-window.addEventListener("beforeunload", () => {
-  localStorage.clear();
-});
+
 </script>
 </body>
 </html>

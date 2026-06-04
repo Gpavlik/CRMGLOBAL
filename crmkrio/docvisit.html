@@ -331,7 +331,7 @@ const userNames = {
   "admink": "admin"
 };
 
-const currentUser = localStorage.getItem("currentUser");
+const currentUser = sessionStorage.getItem("currentUser");
 if (!currentUser) {
   alert("Будь ласка, увійдіть спочатку!");
   window.location.href = "login.html";
@@ -387,7 +387,7 @@ function populateRegions() {
   fillSelect(regionSelect, regions);
 
   // автозаповнення після рендеру
-  const doctorData = JSON.parse(localStorage.getItem("selectedDoctor"));
+  const doctorData = JSON.parse(sessionStorage.getItem("selectedDoctor"));
   if (doctorData) setSelectValue("regionSelect", doctorData.region);
 }
 
@@ -395,7 +395,7 @@ function populateCities(region) {
   const cities = [...new Set(doctorsData.filter(d => d.region === region).map(d => d.city))];
   fillSelect(document.getElementById("citySelect"), cities);
 
-  const doctorData = JSON.parse(localStorage.getItem("selectedDoctor"));
+  const doctorData = JSON.parse(sessionStorage.getItem("selectedDoctor"));
   if (doctorData) setSelectValue("citySelect", doctorData.city);
 }
 
@@ -405,7 +405,7 @@ function populateLpz(region, city) {
   )];
   fillSelect(document.getElementById("lpzSelect"), lpzList);
 
-  const doctorData = JSON.parse(localStorage.getItem("selectedDoctor"));
+  const doctorData = JSON.parse(sessionStorage.getItem("selectedDoctor"));
   if (doctorData) setSelectValue("lpzSelect", doctorData.lpz);
 
   // фільтр по ЛПЗ
@@ -421,7 +421,7 @@ function populateSpecialties(region, city, lpz) {
   const specialties = [...new Set(doctorsData.filter(d => d.region === region && d.city === city && d.lpz === lpz).map(d => d.specialty))];
   fillSelect(document.getElementById("specialtySelect"), specialties);
 
-  const doctorData = JSON.parse(localStorage.getItem("selectedDoctor"));
+  const doctorData = JSON.parse(sessionStorage.getItem("selectedDoctor"));
   if (doctorData) setSelectValue("specialtySelect", doctorData.specialty);
 }
 
@@ -429,7 +429,7 @@ function populateDoctors(region, city, lpz, specialty) {
   const doctors = [...new Set(doctorsData.filter(d => d.region === region && d.city === city && d.lpz === lpz && d.specialty === specialty).map(d => d.doctor))];
   fillSelect(document.getElementById("doctorSelect"), doctors);
 
-  const doctorData = JSON.parse(localStorage.getItem("selectedDoctor"));
+  const doctorData = JSON.parse(sessionStorage.getItem("selectedDoctor"));
   if (doctorData) setSelectValue("doctorSelect", doctorData.doctor);
 }
 
@@ -460,11 +460,11 @@ function setSelectValue(selectId, value) {
   select.value = value;
 }
 
-// Автозаповнення з localStorage після завантаження даних
+// Автозаповнення з sessionStorage після завантаження даних
 document.addEventListener("DOMContentLoaded", async () => {
   await fetchDoctors();
 
-  const doctorData = JSON.parse(localStorage.getItem("selectedDoctor"));
+  const doctorData = JSON.parse(sessionStorage.getItem("selectedDoctor"));
   if (!doctorData) return;
 
   setSelectValue("regionSelect", doctorData.region);
@@ -539,8 +539,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   // 1. Завантажуємо довідники лікарів
   await fetchDoctors();
 
-  // 2. Автозаповнення з localStorage
-  const doctorData = JSON.parse(localStorage.getItem("selectedDoctor"));
+  // 2. Автозаповнення з sessionStorage
+  const doctorData = JSON.parse(sessionStorage.getItem("selectedDoctor"));
   if (doctorData) {
     setSelectValue("regionSelect", doctorData.region);
     setSelectValue("citySelect", doctorData.city);
@@ -739,7 +739,7 @@ window.onclick = (event) => {
 async function saveDoctorVisit() {
   if (!validateVisitForm()) return;
 
-  const currentUser = localStorage.getItem("currentUser");
+  const currentUser = sessionStorage.getItem("currentUser");
   const userName = userNames[currentUser] || currentUser || "Невідомий користувач";
 
   const now = new Date();
@@ -778,7 +778,7 @@ async function saveDoctorVisit() {
 
   // 🆕 Генеруємо VisitID один раз
   const urlParams = new URLSearchParams(window.location.search);
-  const doctorData = JSON.parse(localStorage.getItem("selectedDoctor"));
+  const doctorData = JSON.parse(sessionStorage.getItem("selectedDoctor"));
   let visitId = doctorData?.visitId || urlParams.get("visitId") || Date.now();
 
   // 🔎 Отримуємо координати перед відправкою
@@ -809,11 +809,11 @@ async function saveDoctorVisit() {
       });
      alert("Візит відправлено на збереження!");
 
-  // 🆕 перевіряємо, чи був лікар із localStorage
-  const doctorData = JSON.parse(localStorage.getItem("selectedDoctor"));
+  // 🆕 перевіряємо, чи був лікар із sessionStorage
+  const doctorData = JSON.parse(sessionStorage.getItem("selectedDoctor"));
   if (doctorData?.doctor) {
-    // якщо був вибраний із localStorage → очищаємо і переходимо на календар
-    localStorage.removeItem("selectedDoctor");
+    // якщо був вибраний із sessionStorage → очищаємо і переходимо на календар
+    sessionStorage.removeItem("selectedDoctor");
     window.location.href = "calendar.html";
   } else {
     // якщо селектори заповнювались вручну → просто перезавантажуємо сторінку
@@ -957,10 +957,7 @@ function normalizeSpecialty(specialty) {
   };
   return map[specialty] || specialty;
 }
-// 🟢 Автоматичне очищення при закритті вкладки/браузера
-window.addEventListener("beforeunload", () => {
-  localStorage.clear();
-});
+
 </script>
 </body>
 </html>

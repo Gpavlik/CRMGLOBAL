@@ -95,7 +95,7 @@
 <script>
 // ===== Користувачі =====
 
-const currentUser = localStorage.getItem("currentUser");
+const currentUser = sessionStorage.getItem("currentUser");
 const userNames = {
   "fedir": "Олександр Красніков",
   "olena": "Тетяна Романовська",
@@ -223,7 +223,7 @@ function buildPromoPage() {
 
 // ===== Відправка замовлення =====
 function submitPromoOrder() {
-  const currentUser = localStorage.getItem("currentUser") || "admin";
+  const currentUser = sessionStorage.getItem("currentUser") || "admin";
   const employeeName = userNames[currentUser] || currentUser;
   const cityBranch = document.getElementById("cityBranch").value;
 
@@ -286,10 +286,6 @@ function submitPromoOrder() {
   document.getElementById("cityBranch").value = "";
 }
 
-// 🟢 Автоматичне очищення при закритті вкладки/браузера
-window.addEventListener("beforeunload", () => {
-  localStorage.clear();
-});
 </script>
 </body>
 </html>

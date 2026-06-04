@@ -246,8 +246,8 @@ input, select {
  </div>
 <script>
 (async function(){
-  const u = localStorage.getItem("currentUser");
-  const token = localStorage.getItem("sessionToken");
+  const u = sessionStorage.getItem("currentUser");
+  const token = sessionStorage.getItem("sessionToken");
 
   // ❌ якщо немає даних → назад на логін
   if (!u || !token) {
@@ -267,21 +267,21 @@ input, select {
       // токен валідний → показуємо меню
       document.body.style.display = "flex";
     } else {
-      // ❌ токен невалідний → чистимо localStorage і назад на логін
-      localStorage.clear();
+      // ❌ токен невалідний → чистимо sessionStorage і назад на логін
+      sessionStorage.clear();
       window.location.href = "index.html";
     }
   } catch(err) {
     console.error("Помилка перевірки токена:", err);
-    localStorage.clear();
+    sessionStorage.clear();
     window.location.href = "index.html";
   }
 })();
 
 // 🔴 Логаут
 document.getElementById("logoutBtn").addEventListener("click", async function() {
-  const u = localStorage.getItem("currentUser");
-  const token = localStorage.getItem("sessionToken");
+  const u = sessionStorage.getItem("currentUser");
+  const token = sessionStorage.getItem("sessionToken");
 
   try {
     await fetch("https://script.google.com/macros/s/AKfycbwOEqMfhRV7f-Ifm15XmW7crLuBvbPBuAl4-Sr52dXfBIWN7XBm_KmQ1nkr4T85fH29/exec", {
@@ -294,20 +294,17 @@ document.getElementById("logoutBtn").addEventListener("click", async function() 
     console.error("Помилка виходу:", err);
   }
 
-  localStorage.clear();
+  sessionStorage.clear();
   window.location.href = "index.html";
 });
-// 🟢 Автоматичне очищення при закритті вкладки/браузера
-window.addEventListener("beforeunload", () => {
-  localStorage.clear();
-});
+
 </script>
 <script>
   function goTo(page) {
   window.location.href = page;
 }
   document.addEventListener("DOMContentLoaded", () => {
-    const currentUser = localStorage.getItem("currentUser");
+    const currentUser = sessionStorage.getItem("currentUser");
 
     // показуємо кнопку лише адміну
     if (currentUser === "admink") {
@@ -332,31 +329,31 @@ const userNames = {
   admink: "admin"
 };
 
-const currentUser = localStorage.getItem("currentUser") || "admink";
+const currentUser = sessionStorage.getItem("currentUser") || "admink";
 
 // ===== План на день =====
 const planDay = { travma:5, revma:0, Anest:3};
 
 // ===== Кешування =====
 function saveCache(type, data, lastRow) {
-  localStorage.setItem(type + "Cache", JSON.stringify(data));
-  localStorage.setItem(type + "LastRow", lastRow);
+  sessionStorage.setItem(type + "Cache", JSON.stringify(data));
+  sessionStorage.setItem(type + "LastRow", lastRow);
 }
 
 function loadCache(type) {
-  const raw = localStorage.getItem(type + "Cache");
+  const raw = sessionStorage.getItem(type + "Cache");
   if (!raw) {
     // якщо кеш ще не створений — ініціалізуємо пустий масив
-    localStorage.setItem(type + "Cache", JSON.stringify([]));
+    sessionStorage.setItem(type + "Cache", JSON.stringify([]));
     return [];
   }
   return JSON.parse(raw);
 }
 
 function loadLastRow(type) {
-  const raw = localStorage.getItem(type + "LastRow");
+  const raw = sessionStorage.getItem(type + "LastRow");
   if (!raw) {
-    localStorage.setItem(type + "LastRow", 1); // перший рядок — шапка
+    sessionStorage.setItem(type + "LastRow", 1); // перший рядок — шапка
     return 1;
   }
   return Number(raw);

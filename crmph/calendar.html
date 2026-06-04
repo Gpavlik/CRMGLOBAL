@@ -283,7 +283,7 @@ const userMap = {
   serhiy: [12,75,13,8,21,67,48]
 };
 
-const currentUserKey = localStorage.getItem("currentUser");
+const currentUserKey = sessionStorage.getItem("currentUser");
 if (!currentUserKey) {
   alert("Будь ласка, увійдіть спочатку!");
   window.location.href = "index.html";
@@ -319,7 +319,7 @@ async function initPartners(user) {
 
   console.log("▶ Отримано партнерів:", partners);
 
-  localStorage.setItem("partners", JSON.stringify(partners));
+  sessionStorage.setItem("partners", JSON.stringify(partners));
 
   const ids = userMap[user] || [];
   let filtered = partners.filter(p => ids.includes(p.id));
@@ -626,15 +626,15 @@ document.getElementById('startBtn').onclick = () => {
     });
   };
 }
-function updateLocalStorageStatus(visitId, newStatus) {
-  const visits = JSON.parse(localStorage.getItem("visits")) || [];
+function updatesessionStorageStatus(visitId, newStatus) {
+  const visits = JSON.parse(sessionStorage.getItem("visits")) || [];
   const updated = visits.map(v => {
     if (v.visitId == visitId) {
       return { ...v, status: newStatus };
     }
     return v;
   });
-  localStorage.setItem("visits", JSON.stringify(updated));
+  sessionStorage.setItem("visits", JSON.stringify(updated));
 }
 
 
@@ -687,7 +687,7 @@ function padTime(timeStr) {
 function filterVisits() {
   const selectedPartner = document.getElementById("partnerSelect").value;
   const selectedStatus = document.getElementById("statusFilter").value;
-  const allVisits = JSON.parse(localStorage.getItem("visits")) || [];
+  const allVisits = JSON.parse(sessionStorage.getItem("visits")) || [];
 
   // очищаємо календар
   calendar.getEvents().forEach(e => e.remove());
@@ -818,9 +818,9 @@ async function addVisit() {
   });
 
   // локальне сховище
-  let visits = JSON.parse(localStorage.getItem("visits")) || [];
+  let visits = JSON.parse(sessionStorage.getItem("visits")) || [];
   visits.push(newVisit);
-  localStorage.setItem("visits", JSON.stringify(visits));
+  sessionStorage.setItem("visits", JSON.stringify(visits));
 
  // бекенд
 await fetch("https://script.google.com/macros/s/AKfycbz_uLWhj_ww5YLdnrdgGWu9l2AGraznsiGjVSV8dnMuPygaK8vJRKlv-7O9Ou0krKzIAA/exec", {
@@ -844,10 +844,10 @@ await fetch("https://script.google.com/macros/s/AKfycbz_uLWhj_ww5YLdnrdgGWu9l2AG
 
 async function loadVisits() {
   try {
-    const currentUserKey = localStorage.getItem("currentUser");
+    const currentUserKey = sessionStorage.getItem("currentUser");
     const currentUserName = userNames[currentUserKey];
 
-    let localVisits = JSON.parse(localStorage.getItem("visits")) || [];
+    let localVisits = JSON.parse(sessionStorage.getItem("visits")) || [];
     renderVisits(localVisits);
 
     // тягнемо бекенд
@@ -858,7 +858,7 @@ async function loadVisits() {
     const myVisits = backendVisits.filter(v => v.userName === currentUserName);
 
     if (JSON.stringify(localVisits) !== JSON.stringify(myVisits)) {
-      localStorage.setItem("visits", JSON.stringify(myVisits));
+      sessionStorage.setItem("visits", JSON.stringify(myVisits));
       renderVisits(myVisits);
     }
   } catch (err) {
@@ -894,7 +894,7 @@ function renderVisits(visits) {
 
 
 function getPartnerIdByName(name) {
-  const partners = JSON.parse(localStorage.getItem("partners")) || [];
+  const partners = JSON.parse(sessionStorage.getItem("partners")) || [];
   const partner = partners.find(p => p.name === name);
   return partner ? partner.id : 0;
 }
@@ -935,10 +935,7 @@ flatpickr("#newDate", {
   ],
   locale: flatpickr.l10ns.uk
 });
-// 🟢 Автоматичне очищення при закритті вкладки/браузера
-window.addEventListener("beforeunload", () => {
-  localStorage.clear();
-});
+
 </script>
 </body>
 </html>  

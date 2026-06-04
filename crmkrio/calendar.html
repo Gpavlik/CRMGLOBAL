@@ -286,7 +286,7 @@ const userNames = {
   stavka: "Ставка",
 };
 
-const currentUser = localStorage.getItem("currentUser");
+const currentUser = sessionStorage.getItem("currentUser");
 if (!currentUser) {
   alert("Будь ласка, увійдіть спочатку!");
   window.location.href = "index.html";
@@ -523,7 +523,7 @@ eventReceive: function(info) {
   info.event.setExtendedProp("visitId", visitId);
   info.event.setProp("title", `Заплановано: ${doctor.doctor}`);
 
-  let visits = JSON.parse(localStorage.getItem("visits")) || [];
+  let visits = JSON.parse(sessionStorage.getItem("visits")) || [];
   if (!visits.some(v => v.visitId === visitId)) {
     visits.push({
       visitId,
@@ -537,7 +537,7 @@ eventReceive: function(info) {
       time: timeStr,
       userName: doctor.userName
     });
-    localStorage.setItem("visits", JSON.stringify(visits));
+    sessionStorage.setItem("visits", JSON.stringify(visits));
   }
 
   // ✅ виклик бекенду
@@ -734,7 +734,7 @@ document.getElementById("startBtn").onclick = async () => {
 
   // передаємо дані лікаря на сторінку docvisit.html
   const doctorData = { doctor, specialty, lpz, city, region, visitId: event.extendedProps.visitId };
-  localStorage.setItem("selectedDoctor", JSON.stringify(doctorData));
+  sessionStorage.setItem("selectedDoctor", JSON.stringify(doctorData));
   window.location.href = "docvisit.html";
 };
 
@@ -803,10 +803,10 @@ document.getElementById("startBtn").onclick = async () => {
 // Завантаження візитів з бекенду
 async function loadVisits() {
   try {
-    const currentUserKey = localStorage.getItem("currentUser");
+    const currentUserKey = sessionStorage.getItem("currentUser");
     const currentUserName = userNames[currentUserKey];
 
-    let localVisits = JSON.parse(localStorage.getItem("visits")) || [];
+    let localVisits = JSON.parse(sessionStorage.getItem("visits")) || [];
     renderVisits(localVisits);
 
     const res = await fetch("https://script.google.com/macros/s/AKfycbxMDNAS6nal0EJvDk1U33cXA8l3n0CVOuiEjdozUcpFZTWMliDRAJZmPp5COUW6LRIt/exec?type=calendar");
@@ -816,7 +816,7 @@ async function loadVisits() {
     const myVisits = backendVisits.filter(v => v.userName === currentUserName);
 
     if (JSON.stringify(localVisits) !== JSON.stringify(myVisits)) {
-      localStorage.setItem("visits", JSON.stringify(myVisits));
+      sessionStorage.setItem("visits", JSON.stringify(myVisits));
       renderVisits(myVisits);
     }
   } catch (err) {
@@ -888,10 +888,7 @@ flatpickr("#newDate", {
   ],
   locale: flatpickr.l10ns.uk
 });
-// 🟢 Автоматичне очищення при закритті вкладки/браузера
-window.addEventListener("beforeunload", () => {
-  localStorage.clear();
-});
+
 </script>
 </body>
 </html>  

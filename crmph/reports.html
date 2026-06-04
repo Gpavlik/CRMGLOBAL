@@ -327,7 +327,7 @@ const productNames = [
   "multy5","multy10"
 ];
 
-const currentUser = localStorage.getItem("currentUser");
+const currentUser = sessionStorage.getItem("currentUser");
 const info = document.getElementById("userInfo");
 
 if (currentUser && userNames[currentUser]) {
@@ -348,7 +348,7 @@ let visits = [];        // глобально зберігаємо дані
 
 // ініціалізація партнерів
 function initPartners(userKey) {
-  const partners = JSON.parse(localStorage.getItem("partners")) || [];
+  const partners = JSON.parse(sessionStorage.getItem("partners")) || [];
   const ids = userMap[userKey] || [];
 
   // Перевіряємо типи: приводимо все до рядка
@@ -423,7 +423,7 @@ async function loadReport(type) {
   }
 
   // читаємо дані з кешу
-  let data = JSON.parse(localStorage.getItem(type + "Cache")) || [];
+  let data = JSON.parse(sessionStorage.getItem(type + "Cache")) || [];
 
   // 🔎 Фільтрація для всіх типів (крім contacts)
   if (type !== "contacts") {
@@ -461,7 +461,7 @@ async function loadReport(type) {
    if (type === "contacts") {
     renderContactsReport();
   } else if (type === "calendar") {
-  const data = JSON.parse(localStorage.getItem("calendarCache")) || [];
+  const data = JSON.parse(sessionStorage.getItem("calendarCache")) || [];
   renderCalendarReport(data);
   } else if (type === "pharmacy") {
     renderPharmacyReport(data);
@@ -731,8 +731,8 @@ function applyFilters(data) {
   );
 }
 function renderContactsReport() {
-  const pharmacies = JSON.parse(localStorage.getItem("pharmacyCache")) || [];
-  const partners = JSON.parse(localStorage.getItem("partnerCache")) || [];
+  const pharmacies = JSON.parse(sessionStorage.getItem("pharmacyCache")) || [];
+  const partners = JSON.parse(sessionStorage.getItem("partnerCache")) || [];
 
   let userKey = currentUser;
   let selectedUserKey = null;
@@ -837,7 +837,7 @@ async function preloadCalendarVisits() {
     const raw = await res.text();
     const data = JSON.parse(raw);
 
-    localStorage.setItem("calendarCache", JSON.stringify(data));
+    sessionStorage.setItem("calendarCache", JSON.stringify(data));
     console.log("✅ Календарні візити закешовано:", data.length);
   } catch (err) {
     console.error("❌ Помилка при завантаженні календарних візитів:", err);
@@ -889,10 +889,7 @@ function exportToExcel() {
   // генеруємо файл .xlsx
   XLSX.writeFile(wb, "report.xlsx");
 }
-// 🟢 Автоматичне очищення при закритті вкладки/браузера
-window.addEventListener("beforeunload", () => {
-  localStorage.clear();
-});
+
 </script>
 </body>
 </html>

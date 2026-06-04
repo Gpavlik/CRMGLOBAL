@@ -225,7 +225,7 @@ h3 {
   stavka: "Ставка",
     };
 
-    const currentUser = localStorage.getItem("currentUser");
+    const currentUser = sessionStorage.getItem("currentUser");
     if (!currentUser) {
       alert("Будь ласка, увійдіть спочатку!");
       window.location.href = "login.html";
@@ -418,10 +418,7 @@ async function saveDoctor() {
 
 loadDoctors();
 
-// 🟢 Автоматичне очищення при закритті вкладки/браузера
-window.addEventListener("beforeunload", () => {
-  localStorage.clear();
-});
+
 </script>
 </body>
 </html>

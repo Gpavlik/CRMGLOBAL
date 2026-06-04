@@ -304,7 +304,7 @@ const userNames = {
 };
 const productNames = ["Crio","Crio zond","Kiomedine"];
 
-const currentUser = localStorage.getItem("currentUser");
+const currentUser = sessionStorage.getItem("currentUser");
 document.getElementById("userInfo").textContent =
   "Користувач: " + (userNames[currentUser] || "невідомий");
 if (currentUser === "admink") document.getElementById("userFilter").style.display = "block";
@@ -330,7 +330,7 @@ async function loadReport(type) {
   const startDate = document.getElementById("startDate").value;
   const endDate = document.getElementById("endDate").value;
   const selectedUserKey = currentUser === "admink" ? document.getElementById("userName").value : null;
-  let data = JSON.parse(localStorage.getItem(type + "Cache")) || [];
+  let data = JSON.parse(sessionStorage.getItem(type + "Cache")) || [];
 
   if (type !== "contacts") {
     data = data.filter(row => {
@@ -351,7 +351,7 @@ async function loadReport(type) {
   document.getElementById("partnerFilter").style.display = "none";
 
   if (type === "calendar") {
-    renderCalendarReport(JSON.parse(localStorage.getItem("calendarCache")) || []);
+    renderCalendarReport(JSON.parse(sessionStorage.getItem("calendarCache")) || []);
   } else if (type === "doctor") {
     renderDoctorVisitsReport(data);
     populateFilters(data);
@@ -430,7 +430,7 @@ async function preloadCalendarVisits() {
   try {
     const res = await fetch("https://script.google.com/macros/s/AKfycbxMDNAS6nal0EJvDk1U33cXA8l3n0CVOuiEjdozUcpFZTWMliDRAJZmPp5COUW6LRIt/exec?type=calendar");
     const data = await res.json();
-    localStorage.setItem("calendarCache", JSON.stringify(data));
+    sessionStorage.setItem("calendarCache", JSON.stringify(data));
   } catch (err) { console.error("❌ Помилка при завантаженні календарних візитів:", err); }
 }
 
@@ -494,10 +494,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (currentType) loadReport(currentType);
   });
 });
-// 🟢 Автоматичне очищення при закритті вкладки/браузера
-window.addEventListener("beforeunload", () => {
-  localStorage.clear();
-});
+
 </script>
 </body>
 </html>
