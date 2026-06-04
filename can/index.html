@@ -108,7 +108,7 @@
   </div>
 
 <script>
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyaHZGMYmurTjwEjvDYkldJLZCm-pXTUv10e8cDyhxL67m4bkCCUvReiwXsKPnCOEVP/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwOEqMfhRV7f-Ifm15XmW7crLuBvbPBuAl4-Sr52dXfBIWN7XBm_KmQ1nkr4T85fH29/exec";
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -152,7 +152,7 @@ document.getElementById("loginBtn").addEventListener("click", async function() {
     // 4️⃣ Перевіряємо токен і отримуємо перехід
     const resp23114 = await fetch(SCRIPT_URL + "?action=menu&user=" + encodeURIComponent(u) +
                                  "&token=" + encodeURIComponent(tokenData.token) +
-                                 "&branch=crmph");
+                                 "&branch=can");
     const a345Data = await resp23114.json();
 
     if (a345Data.success) {
