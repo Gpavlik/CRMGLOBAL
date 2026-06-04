@@ -417,6 +417,11 @@ async function saveDoctor() {
 }
 
 loadDoctors();
+
+// 🟢 Автоматичне очищення при закритті вкладки/браузера
+window.addEventListener("beforeunload", () => {
+  localStorage.clear();
+});
 </script>
 </body>
 </html>

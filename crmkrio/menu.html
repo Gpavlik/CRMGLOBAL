@@ -199,7 +199,7 @@ input, select {
   <button id="materials" onclick="goTo('presentations.html')">Корисні матеріали</button>  
   <button id="reportMenuItem2" onclick="goTo('Promoask.html')">Замовлення промо</button>
   <button id="reportMenuItem3" onclick="goTo('Businestrip.html')">Відрядження</button>
-  <button class="btn" onclick="goTo('index.html')">Вийти</button>
+  <button id="logoutBtn" class="btn" onclick="goTo('index.html')">Вийти</button>
   </div>
 </div><br><br>
 <div class="container">
@@ -257,14 +257,15 @@ input, select {
 
   try {
     // ✅ перевірка токена та юзернейма
-    const resp = await fetch("https://script.google.com/macros/s/AKfycbx_RN_gpzquwL5RtuSkrnfwFfeqwxeozceMctfWkPQPcs19BQhVxaqPh52jVRn549xb/exec" + "?action=menu&user=" + encodeURIComponent(u) +
+    const resp = await fetch("https://script.google.com/macros/s/AKfycbyaHZGMYmurTjwEjvDYkldJLZCm-pXTUv10e8cDyhxL67m4bkCCUvReiwXsKPnCOEVP/exec" +
+                             "?action=menu&user=" + encodeURIComponent(u) +
                              "&token=" + encodeURIComponent(token) +
                              "&branch=crmph");
     const data = await resp.json();
 
     if (data.success && data.url) {
       // токен валідний → показуємо меню
-      document.body.style.display = "block";
+      document.body.style.display = "flex";
     } else {
       // ❌ токен невалідний → чистимо localStorage і назад на логін
       localStorage.clear();
@@ -276,6 +277,30 @@ input, select {
     window.location.href = "index.html";
   }
 })();
+
+// 🔴 Логаут
+document.getElementById("logoutBtn").addEventListener("click", async function() {
+  const u = localStorage.getItem("currentUser");
+  const token = localStorage.getItem("sessionToken");
+
+  try {
+    await fetch("https://script.google.com/macros/s/AKfycbyaHZGMYmurTjwEjvDYkldJLZCm-pXTUv10e8cDyhxL67m4bkCCUvReiwXsKPnCOEVP/exec", {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ action: "logout", userName: u, token })
+    });
+  } catch(err) {
+    console.error("Помилка виходу:", err);
+  }
+
+  localStorage.clear();
+  window.location.href = "index.html";
+});
+// 🟢 Автоматичне очищення при закритті вкладки/браузера
+window.addEventListener("beforeunload", () => {
+  localStorage.clear();
+});
 </script>
 <script>
   function goTo(page) {

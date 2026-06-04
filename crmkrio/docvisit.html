@@ -957,6 +957,10 @@ function normalizeSpecialty(specialty) {
   };
   return map[specialty] || specialty;
 }
+// 🟢 Автоматичне очищення при закритті вкладки/браузера
+window.addEventListener("beforeunload", () => {
+  localStorage.clear();
+});
 </script>
 </body>
 </html>

@@ -384,6 +384,10 @@ document.addEventListener("DOMContentLoaded", async function() {
     console.error("Помилка при ініціалізації календаря:", err);
   }
 });
+// 🟢 Автоматичне очищення при закритті вкладки/браузера
+window.addEventListener("beforeunload", () => {
+  localStorage.clear();
+});
 </SCRIPT>
 </body>
 </html>
