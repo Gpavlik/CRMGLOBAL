@@ -662,6 +662,11 @@ async function sendPhoto(photoBase64) {
     alert("Не вдалося відправити дані");
   }
 }*/
+
+// 🟢 Автоматичне очищення при закритті вкладки/браузера
+window.addEventListener("beforeunload", () => {
+  localStorage.clear();
+});
 </script>
 </body>
 </html>

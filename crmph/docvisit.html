@@ -802,7 +802,10 @@ async function loadPreviousVisit(doctorName) {
   }
 }
 
-
+// 🟢 Автоматичне очищення при закритті вкладки/браузера
+window.addEventListener("beforeunload", () => {
+  localStorage.clear();
+});
 
 </script>
 </script>

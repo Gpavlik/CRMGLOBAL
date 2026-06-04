@@ -1386,6 +1386,10 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("userInfoTop").textContent =
     `${formattedDate} | ${userName}`;
 });
+// 🟢 Автоматичне очищення при закритті вкладки/браузера
+window.addEventListener("beforeunload", () => {
+  localStorage.clear();
+});
 </script>
 </body>
 </html>

@@ -889,6 +889,10 @@ function exportToExcel() {
   // генеруємо файл .xlsx
   XLSX.writeFile(wb, "report.xlsx");
 }
+// 🟢 Автоматичне очищення при закритті вкладки/браузера
+window.addEventListener("beforeunload", () => {
+  localStorage.clear();
+});
 </script>
 </body>
 </html>

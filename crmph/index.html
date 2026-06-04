@@ -23,7 +23,7 @@
       width: 500px; 
       text-align: left;
     }
-    input, select {
+    input {
       width: 500px; 
       padding: 10px; 
       margin: 5px auto 15px auto;
@@ -47,15 +47,15 @@
     h1 { margin-top: 30px; }
     button:hover { background-color: #003300; }
     @media screen and (max-width: 480px) {
-      label, input, select { width: 90%; font-size: 0.9rem; }
+      label, input { width: 90%; font-size: 0.9rem; }
       button { width: 80%; font-size: 0.9rem; }
     }
     @media screen and (min-width: 481px) and (max-width: 768px) {
-      label, input, select { width: 80%; font-size: 1rem; }
+      label, input { width: 80%; font-size: 1rem; }
       button { width: 60%; font-size: 1rem; }
     }
     @media screen and (min-width: 769px) {
-      label, input, select { width: 500px; }
+      label, input { width: 500px; }
       button { width: 200px; }
     }
     #marquee {
@@ -84,17 +84,8 @@
   <h1>Вхід</h1>
   <img src="./logo.svg" alt="logo" width="260">
   <div id="loginForm">
-    <label>Ім’я користувача:
-      <select id="username" name="username" autocomplete="username">
-        <option value="">Виберіть користувача</option>
-        <option value="fedir">Олександр Красніков</option>
-        <option value="olena">Тетяна Романовська</option>
-        <option value="office">Офіс</option>
-        <option value="andriy">Тетяна Кліменко</option>
-        <option value="maria">Тетяна Демус</option>
-        <option value="serhiy">Ілона Бабенко</option>
-        <option value="admin">admin</option>
-      </select>
+    <label>Логін:
+      <input type="text" id="username" name="username" autocomplete="username">
     </label>
     <label>Пароль:
       <input type="password" id="password" name="password" autocomplete="current-password">
@@ -117,20 +108,20 @@
   </div>
 
 <script>
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx_RN_gpzquwL5RtuSkrnfwFfeqwxeozceMctfWkPQPcs19BQhVxaqPh52jVRn549xb/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyaHZGMYmurTjwEjvDYkldJLZCm-pXTUv10e8cDyhxL67m4bkCCUvReiwXsKPnCOEVP/exec";
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 document.getElementById("loginBtn").addEventListener("click", async function() {
-  localStorage.clear();
+  localStorage.clear(); // ❌ нічого не пишемо до перевірки
 
-  const u = document.getElementById("username").value;
-  const p = document.getElementById("password").value;
+  const u = document.getElementById("username").value.trim();
+  const p = document.getElementById("password").value.trim();
 
   if (!u || !p) {
-    alert("Будь ласка, введіть ім’я та пароль!");
+    alert("Будь ласка, введіть логін та пароль!");
     return;
   }
 
@@ -158,20 +149,20 @@ document.getElementById("loginBtn").addEventListener("click", async function() {
       return;
     }
 
-    localStorage.setItem("currentUser", u);
-    localStorage.setItem("sessionToken", tokenData.token);
-
-    // 4️⃣ Запитуємо бекенд, куди йти
+    // 4️⃣ Перевіряємо токен і отримуємо меню
     const respMenu = await fetch(SCRIPT_URL + "?action=menu&user=" + encodeURIComponent(u) +
                                  "&token=" + encodeURIComponent(tokenData.token) +
                                  "&branch=crmph");
     const menuData = await respMenu.json();
 
     if (menuData.success) {
-      window.location.href = menuData.url; // ✅ редирект на свій домен
+      // ✅ тільки тепер пишемо у localStorage
+      localStorage.setItem("currentUser", u);
+      localStorage.setItem("sessionToken", tokenData.token);
+      window.location.href = menuData.url;
     } else {
       alert("Сесія недійсна або час вийшов. Перелогінься!");
-      window.location.href = menuData.url; // index.html
+      window.location.href = menuData.url;
     }
 
   } catch (err) {
@@ -183,3 +174,8 @@ document.getElementById("loginBtn").addEventListener("click", async function() {
 </script>
 </body>
 </html>
+
+
+
+
+

@@ -1133,7 +1133,10 @@ document.getElementById("totals").innerHTML =
 
 renderPlanChart(plans, allPartners, quarter, userKey);
 });
-
+// 🟢 Автоматичне очищення при закритті вкладки/браузера
+window.addEventListener("beforeunload", () => {
+  localStorage.clear();
+});
 </script>
  
 </body> 

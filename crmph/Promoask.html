@@ -285,6 +285,11 @@ function submitPromoOrder() {
   document.querySelectorAll("textarea").forEach(textarea => textarea.value = "");
   document.getElementById("cityBranch").value = "";
 }
+
+// 🟢 Автоматичне очищення при закритті вкладки/браузера
+window.addEventListener("beforeunload", () => {
+  localStorage.clear();
+});
 </script>
 </body>
 </html>
