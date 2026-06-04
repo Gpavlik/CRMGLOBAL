@@ -149,20 +149,20 @@ document.getElementById("loginBtn").addEventListener("click", async function() {
       return;
     }
 
-    // 4️⃣ Перевіряємо токен і отримуємо меню
-    const respMenu = await fetch(SCRIPT_URL + "?action=menu&user=" + encodeURIComponent(u) +
+    // 4️⃣ Перевіряємо токен і отримуємо перехід
+    const resp23114 = await fetch(SCRIPT_URL + "?action=menu&user=" + encodeURIComponent(u) +
                                  "&token=" + encodeURIComponent(tokenData.token) +
                                  "&branch=crmph");
-    const menuData = await respMenu.json();
+    const a345Data = await resp23114.json();
 
-    if (menuData.success) {
+    if (a345Data.success) {
       // ✅ тільки тепер пишемо у localStorage
       localStorage.setItem("currentUser", u);
       localStorage.setItem("sessionToken", tokenData.token);
-      window.location.href = menuData.url;
+      window.location.href = a345Data.url;
     } else {
       alert("Сесія недійсна або час вийшов. Перелогінься!");
-      window.location.href = menuData.url;
+      window.location.href = a345Data.url;
     }
 
   } catch (err) {
