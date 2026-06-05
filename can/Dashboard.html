@@ -229,50 +229,48 @@ header button:hover { background: #2563eb; transform: translateY(-1px); }
 .badge-done { background: #d1fae5; color: #047857; }
 
 /* ==========================================================================
-   5. СУВОРІ СТАТУСИ (Рамки замість зафарбовування)
+   5. СУВОРІ СТАТУСИ (Робимо рамку монолітною)
    ========================================================================== */
-
-/* 🚨 ПРОТЕРМІНОВАНІ: Зберігають скло, але отримують чітку червону рамку з підсвічуванням */
 .overdue, .process-card.overdue { 
-  border: 2px solid #ef4444 !important; 
-  border-radius: 12px !important; /* 🔥 Фікс скруглення */
-  background: rgba(254, 242, 242, 0.45) !important; /* Тонкий рожевий відтінок, але скло лишається прозорим */
+  border: 2px solid #ef4444 !important; /* 🔥 Завжди монолітна сувора рамка */
+  border-radius: 12px !important; 
+  background: rgba(254, 242, 242, 0.45) !important; 
   box-shadow: 0 0 12px rgba(239, 68, 68, 0.35), inset 3px 3px 6px rgba(255, 255, 255, 0.85) !important;
 }
 
-/* Особливий стан (Палаючий менеджер) */
+/* Особливий стан (Палаючий менеджер) — теж робимо монолітною лінією */
 .process-card.manager-fire {
-  border: 2px dashed #ef4444 !important;
+  border: 2px solid #ef4444 !important; /* 🔥 Змінили dashed на solid */
   border-radius: 12px !important;
   background: rgba(254, 242, 242, 0.45) !important;
 }
 
 /* ==========================================================================
-   6. РОЛІ ТА ЕЛЕМЕНТИ ФОРМИ (Оновлені компактні баджі)
+   6. РОЛІ ТА ЕЛЕМЕНТИ ФОРМИ (Текст в учасниках — білий!)
    ========================================================================== */
-.owner { background: #f8fafc; color: #0f172a; font-weight: bold; padding: 2px 6px; border-radius: 4px; }
-.ownerd { background: #3b82f6; color: #fff; font-weight: bold; padding: 2px 6px; border-radius: 4px; display: inline-block; }
-.executor { background: #8b5cf6; color: white; padding: 2px 6px; border-radius: 4px; display: inline-block; width: max-content; }
-.manager { background: #10b981; color: white; padding: 2px 6px; border-radius: 4px; display: inline-block; width: max-content; }
-#newBoardForm { 
-  display: none; 
-  flex-direction: column; 
-  gap: 12px; 
-  padding: 20px; 
-  background: #fff; 
-  border-radius: 16px;
-  color: #1e293b;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-  width: 90%;
-  max-width: 500px;
+.ownerd { 
+  background: #3b82f6; 
+  color: #fff !important; /* 🔥 Текст тепер чітко білий */
+  font-weight: bold; 
+  padding: 2px 8px; 
+  border-radius: 4px; 
+  display: inline-block; 
 }
-.form-row { display: flex; gap: 10px; }
-input, select { 
-  padding: 8px 12px; 
-  background: #f1f5f9; 
-  border: 1px solid #cbd5e1; 
-  border-radius: 6px;   
-  color: #1e293b;
+.executor { 
+  background: #8b5cf6; 
+  color: #fff !important; /* 🔥 Текст тепер чітко білий */
+  padding: 2px 8px; 
+  border-radius: 4px; 
+  display: inline-block; 
+  width: max-content; 
+}
+.manager { 
+  background: #10b981; 
+  color: #fff !important; /* 🔥 Текст тепер чітко білий */
+  padding: 2px 8px; 
+  border-radius: 4px; 
+  display: inline-block; 
+  width: max-content; 
 }
 
 /* ==========================================================================
@@ -833,7 +831,7 @@ const participantsFormatted = proc.participants.map(p => {
   else if (cleanRole === "Оунер" || cleanRole === "Власник") roleClass = "ownerd";
   
   // 🔥 Використовуємо класи замість інлайн-стилів для красивих баджів
-  return `<span class="${roleClass}">${name} (${cleanRole})</span>`;
+  return `<div style="margin-bottom: 4px;"><span class="${roleClass}">${name} (${cleanRole})</span></div>`;
 });
 
 div.innerHTML = `
