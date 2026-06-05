@@ -108,11 +108,7 @@
   </div>
 
 <script>
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzPIdUQ6obtM9AjMoJeQKLJjLPtHcWYMYEex7UDYFqNtDHpoIQ0kyD73idI-wWyShEg/exec";
-
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwV4A-TF_G1yCOoQY_wofk1hq1kf-KP3EerfEgYhqXh-aWB8Vc1evFaxJuv5FlQ6Wcr/exec";
 
 document.getElementById("loginBtn").addEventListener("click", async function() {
   sessionStorage.clear();
@@ -128,31 +124,31 @@ document.getElementById("loginBtn").addEventListener("click", async function() {
   document.getElementById("marquee").style.display = "block";
 
   try {
-    // 1️⃣ Відправляємо логін (no-cors, відповіді не читаємо)
-    await fetch(SCRIPT_URL, {
+    // 1️⃣ Отправляем данные как URLSearchParams (это обходит блокировку CORS на этапе OPTIONS)
+    const response = await fetch(SCRIPT_URL, {
       method: "POST",
-      mode: "no-cors",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ action: "login", userName: u, password: p })
+      headers: {
+        // Явно НЕ указываем application/json, чтобы браузер слал простой запрос
+        "Content-Type": "application/x-www-form-urlencoded" 
+      },
+      body: new URLSearchParams({
+        action: "login",
+        userName: u,
+        password: p
+      })
     });
 
-    // 2️⃣ Чекаємо, щоб бекенд встиг записати токен
-    await sleep(2000);
-
-    // 3️⃣ Отримуємо токен по ключу (бекенд має повернути {token, userKey})
-    const respToken = await fetch(SCRIPT_URL + "?action=getToken&user=" + encodeURIComponent(u));
-    const tokenData = await respToken.json();
+    // Читаем JSON (теперь это сработает, так как ответ пропустит CORS-система Google)
+    const tokenData = await response.json();
 
     if (!tokenData.token || !tokenData.userKey) {
-      alert("Не вдалося отримати токен. Спробуйте ще раз.");
+      alert("Невірний логін або пароль. Спробуйте ще раз.");
       document.getElementById("marquee").style.display = "none";
       return;
     }
 
-    // 4️⃣ Перевіряємо токен і отримуємо перехід
-    const respMenu = await fetch(SCRIPT_URL + "?action=675&user=" + encodeURIComponent(tokenData.userKey) +
-                                 "&token=" + encodeURIComponent(tokenData.token) +
-                                 "&branch=crmkrio");
+    // 2️⃣ Шаг проверки сессии и редиректа (запрос GET к doGet)
+    const respMenu = await fetch(`${SCRIPT_URL}?action=675&user=${encodeURIComponent(tokenData.userKey)}&token=${encodeURIComponent(tokenData.token)}&branch=crmkrio`);
     const menuData = await respMenu.json();
 
     if (menuData.success) {
