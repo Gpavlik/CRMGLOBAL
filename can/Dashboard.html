@@ -5,8 +5,11 @@
   <title>Мої процеси</title>
   <link rel="icon" type="image/jpg" href="11.webp">
   <style>
+/* ==========================================================================
+   1. ГЛОБАЛЬНІ СТИЛІ ТА БЕКГРАУНД
+   ========================================================================== */
 body {
-  font-family: Arial, sans-serif;
+  font-family: 'Segoe UI', Arial, sans-serif;
   margin: 0; 
   padding: 0;
   background: linear-gradient(135deg, #009400, #004d00);
@@ -24,141 +27,143 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 100%; /* Гарантуємо, що контент не стискається */
-}
-
-/* Хедер */
-header { 
-  background: #2c3e50; 
-  color: white; 
-  padding: 10px 20px; 
-  display: flex; 
-  justify-content: space-around; 
-  align-items: center; 
   width: 100%;
   box-sizing: border-box;
 }
-header h1 { margin: 0; font-size: 22px; }
-header .user-info { font-size: 14px; font-weight: bold; }
+
+/* ==========================================================================
+   2. ШАПКА (HEADER)
+   ========================================================================== */
+header { 
+  background: #1e293b; /* Сучасніший темний відтінок */
+  color: white; 
+  padding: 15px 20px; 
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+  width: 100%;
+  box-sizing: border-box;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+header h1 { margin: 0; font-size: 20px; font-weight: 700; }
+header .user-info { font-size: 14px; font-weight: 600; background: rgba(255,255,255,0.1); padding: 6px 12px; border-radius: 20px; }
 header button { 
-  background: #3498db; 
+  background: #3b82f6; 
   color: white; 
   border: none; 
-  padding: 8px 12px; 
-  border-radius: 4px; 
+  padding: 8px 16px; 
+  border-radius: 8px; 
   cursor: pointer; 
-  transition: background 0.3s;
+  font-weight: 600;
+  transition: all 0.2s ease;
 }
-header button:hover { background: #2980b9; }
+header button:hover { background: #2563eb; transform: translateY(-1px); }
 
-/* Стилі для Канбан-Дошки */
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+@media screen and (max-width: 768px) {
+  .header-controls {
+    flex-direction: column;
+    width: 100%;
+  }
+  .header-controls select, .header-controls button {
+    width: 100%;
+  }
+}
+
+/* ==========================================================================
+   3. КАНБАН-ДОШКА (СТОВПЧИКИ ТА КОНТЕЙНЕРИ)
+   ========================================================================== */
 .kanban-board {
   display: flex;
-  gap: 20px;
+  gap: 16px;
   padding: 20px;
   width: 100%;
   box-sizing: border-box;
   align-items: flex-start;
-  overflow-x: auto; 
+  overflow-x: auto; /* Горизонтальна прокрутка для великої кількості стовпчиків */
 }
 
 .kanban-column {
   flex: 1;
-  min-width: 180px; /* Стовпчики не стиснуться в кашу на середніх екранах */
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 12px;
-  padding: 10px;
+  min-width: 280px; /* Оптимальна ширина стовпчика, щоб не тиснути картки */
+  max-width: 350px;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(5px);
+  border-radius: 16px;
+  padding: 12px;
   box-sizing: border-box;
   border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
 }
 
 .column-header {
   text-align: center;
-  font-weight: bold;
+  font-weight: 700;
   padding: 10px;
-  border-radius: 8px;
-  margin-bottom: 15px;
-  color: #000; 
-  font-size: 16px;
+  border-radius: 10px;
+  margin-bottom: 12px;
+  font-size: 15px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
 }
 
 /* Кольори заголовків стовпчиків */
-.column-header.lg-new { background: #eee; color: #000; }
-.column-header.lg-urgent { background: #fff; color: #000; }
-.column-header.lg-newTasks { background: yellow; color: #000; }
-.column-header.lg-deadline { background: orange; color: #fff; }
-.column-header.lg-overdue { background: red; color: #fff; }
-.column-header.lg-completed { background: linear-gradient(90deg, red, orange, green, blue, violet); color: #fff; }
+.column-header.lg-new { background: #cbd5e1; color: #1e293b; }
+.column-header.lg-urgent { background: #ffffff; color: #1e293b; }
+.column-header.lg-newTasks { background: #fef08a; color: #854d0e; }
+.column-header.lg-deadline { background: #fed7aa; color: #c2410c; }
+.column-header.lg-overdue { background: #fca5a5; color: #991b1b; }
+.column-header.lg-completed { background: linear-gradient(90deg, #f87171, #fb923c, #4ade80, #60a5fa, #c084fc); color: #fff; }
 
 .processes-list {
   display: flex;
   flex-direction: column;
-  gap: 15px;
-  min-height: 200px; 
+  gap: 12px;
+  min-height: 150px; 
 }
 
-/* Картка процесу в Канбані */
-.process { 
+/* ==========================================================================
+   4. СУЧАСНА КАРТКА ПРОЦЕСУ (Гібрид твоїх стилів)
+   ========================================================================== */
+.process-card {
   width: 100%; 
   box-sizing: border-box;
-  height: auto; 
-  min-height: 150px;
-  padding: 15px;
-  border: 4px solid transparent; 
-  border-radius: 12px; 
+  padding: 16px;
+  
+  /* 🪄 МАГІЯ СКЛА (Glassmorphism) */
+  background: rgba(255, 255, 255, 0.88); /* Робимо плашку прозорішою */
+  backdrop-filter: blur(12px);           /* Сильніше розмиваємо зелений фон за карткою */
+  -webkit-backdrop-filter: blur(12px);   /* Підтримка для Safari / iOS */
+  border: 1px solid rgba(255, 255, 255, 0.6); /* Світлий блик на гранях */
+  
+  border-radius: 14px;
+  box-shadow: 0 8px 32px rgba(0, 4d, 0, 0.15); /* Тінь тепер з легким зеленим відтінком */
   display: flex; 
   flex-direction: column; 
   align-items: center; 
   justify-content: center; 
   cursor: pointer; 
-  transition: all 0.3s; 
-  text-align: center; 
-}
-.process:hover { transform: scale(1.03); }
-.process h2 { margin: 0; font-size: 20px; font-weight: bold; }
-.process p { margin: 5px 0; font-size: 14px; }
-.process-card {
-  background: rgba(255, 255, 255, 0.85); /* Трішки пропускає фон */
-  backdrop-filter: blur(10px);           /* Гарно розмиває зелень позаду */
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  border-radius: 16px;                   /* М'які сучасні кути */
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.08); /* М'яка тінь */
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease; 
+  text-align: center;
 }
 
-/* Ефект при наведенні мишки */
-.process-card:hover {
-  transform: translateY(-4px); /* Картка ніби піднімається */
-  box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.12);
+.process-card:hover { 
+  transform: translateY(-4px) scale(1.01); 
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
 }
-.counters-container {
-  display: flex;
-  gap: 8px;
-  justify-content: center;
-  margin: 12px 0;
-}
-
-.counter-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 6px 10px;
-  border-radius: 20px;
-  font-size: 13px;
-  font-weight: 600;
-}
-
-/* Кольори для статусів */
-.badge-todo { background: #ffeeba; color: #856404; }     /* Жовтий */
-.badge-progress { background: #cce5ff; color: #004085; } /* Синій */
-.badge-done { background: #d4edda; color: #155724; }     /* Зелений */
 
 .process-title {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 700;
-  color: #1a1a1a;
-  
-  /* Магія обрізання тексту до 2 рядків */
+  color: #1e293b;
+  margin: 0 0 8px 0;
+  line-height: 1.4;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;  
@@ -166,222 +171,276 @@ header button:hover { background: #2980b9; }
   text-overflow: ellipsis;
 }
 
+.process-card p {
+  margin: 4px 0;
+  font-size: 13px;
+  color: #475569;
+}
+
+/* Контейнер баджів */
+.counters-container {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: 10px 0 4px 0;
+  width: 100%;
+}
+
+.counter-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 700;
+}
+.badge-todo { background: #fef3c7; color: #b45309; }
+.badge-progress { background: #dbeafe; color: #1d4ed8; }
+.badge-done { background: #d1fae5; color: #047857; }
+
 /* Особливий стан (Палаючий менеджер) */
-.process.manager-fire {
-  border: 2px solid #ff0000 !important;
-  box-shadow: 0 0 10px rgba(255, 0, 0, 0.4);
-  background: rgba(255, 0, 0, 0.1) !important;
+.process-card.manager-fire {
+  border: 2px dashed #ef4444 !important;
+  background: rgba(254, 242, 242, 0.95) !important;
 }
 
-/* Ролі */
-.owner { background: #ffffff; color: #000; }
-.ownerd { background: #008bfd; color: #fff; }
-.executor { background: #8e44ad; color: white; }
-.manager { background: #2ecc71; color: white; }
-
-/* Пульсація */
-@keyframes pulseGreen { 0%, 100% {box-shadow:0 0 5px #fff;} 50% {box-shadow:0 0 20px #fff;} }
-@keyframes pulseOrange { 0%, 100% {box-shadow:0 0 5px orange;} 50% {box-shadow:0 0 20px orange;} }
-@keyframes pulseYellow { 0%, 100% {box-shadow:0 0 5px yellow;} 50% {box-shadow:0 0 20px yellow;} }
-@keyframes pulseRed { 0%, 100% {box-shadow:0 0 5px red;} 50% {box-shadow:0 0 20px red;} }
+/* ==========================================================================
+   5. АНІМАЦІЇ ПУЛЬСАЦІЇ КАРТОК (Твої фірмові бордери)
+   ========================================================================== */
+@keyframes pulseGreen { 0%, 100% {box-shadow: 0 0 4px #fff;} 50% {box-shadow: 0 0 16px #fff; border-color: #fff;} }
+@keyframes pulseOrange { 0%, 100% {box-shadow: 0 0 4px orange;} 50% {box-shadow: 0 0 16px orange; border-color: orange;} }
+@keyframes pulseYellow { 0%, 100% {box-shadow: 0 0 4px yellow;} 50% {box-shadow: 0 0 16px yellow; border-color: yellow;} }
+@keyframes pulseRed { 0%, 100% {box-shadow: 0 0 4px red;} 50% {box-shadow: 0 0 16px red; border-color: red;} }
 @keyframes pulseRainbow {
-  0% {box-shadow:0 0 10px red;} 25% {box-shadow:0 0 10px orange;}
-  50% {box-shadow:0 0 10px green;} 75% {box-shadow:0 0 10px blue;}
-  100% {box-shadow:0 0 10px violet;}
+  0% {box-shadow:0 0 8px red;} 25% {box-shadow:0 0 8px orange;}
+  50% {box-shadow:0 0 8px green;} 75% {box-shadow:0 0 8px blue;}
+  100% {box-shadow:0 0 8px violet;}
 }
 
-.urgent { animation: pulseGreen 2s infinite; }
-.deadline { animation: pulseOrange 2s infinite; }
-.newTasks { animation: pulseYellow 2s infinite; }
-.overdue { animation: pulseRed 2s infinite; }
-.completed { animation: pulseRainbow 3s infinite; }
+/* Класи пульсації (навішуються на картку) */
+.urgent { animation: pulseGreen 2s infinite; border: 2px solid rgba(255,255,255,0.5); }
+.deadline { animation: pulseOrange 2s infinite; border: 2px solid rgba(255,165,0,0.5); }
+.newTasks { animation: pulseYellow 2s infinite; border: 2px solid rgba(255,255,0,0.5); }
+.overdue { animation: pulseRed 2s infinite; border: 2px solid rgba(255,0,0,0.5); }
+.completed { animation: pulseRainbow 3s infinite; border: 2px solid rgba(255,255,255,0.3); }
 
-/* Форма */
+/* ==========================================================================
+   6. РОЛІ ТА ЕЛЕМЕНТИ ФОРМИ
+   ========================================================================== */
+.owner { background: #f8fafc; color: #0f172a; font-weight: bold; padding: 2px 6px; border-radius: 4px; }
+.ownerd { background: #3b82f6; color: #fff; font-weight: bold; padding: 2px 6px; border-radius: 4px; }
+.executor { background: #8b5cf6; color: white; padding: 2px 6px; border-radius: 4px; }
+.manager { background: #10b981; color: white; padding: 2px 6px; border-radius: 4px; }
+
 #newBoardForm { 
   display: none; 
   flex-direction: column; 
-  gap: 10px; 
+  gap: 12px; 
   padding: 20px; 
   background: #fff; 
-  border-bottom: 1px solid #ccc; 
-  border-radius: 20px;
-  color: #000;
+  border-radius: 16px;
+  color: #1e293b;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  width: 90%;
+  max-width: 500px;
 }
 .form-row { display: flex; gap: 10px; }
 input, select { 
-  padding: 5px; 
-  background: #eee; 
-  border: 1px solid #ccc; 
-  border-radius: 4px;   
+  padding: 8px 12px; 
+  background: #f1f5f9; 
+  border: 1px solid #cbd5e1; 
+  border-radius: 6px;   
+  color: #1e293b;
 }
 
 /* Легенда */
 .legend { 
-  margin-top: 20px;
+  margin-top: 25px;
   border-top: 1px solid rgba(255,255,255,0.2); 
-  width: 320px; 
-  padding-top: 20px;
+  width: 100%;
+  max-width: 320px; 
+  padding: 20px 10px;
 }
-.legend-item { margin: 5px 0; display: flex; align-items: center; }
+.legend-item { margin: 8px 0; display: flex; align-items: center; font-size: 14px; }
 .legend span { 
   display: inline-block; 
-  width: 20px; 
-  height: 20px; 
-  margin-right: 10px; 
+  width: 16px; 
+  height: 16px; 
+  margin-right: 12px; 
   border-radius: 50%; 
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
-.lg-urgent { background: #fff; }
-.lg-deadline { background: orange; }
-.lg-new { background: yellow; }
-.lg-overdue { background: red; }
-.lg-completed { background: linear-gradient(90deg, red, orange, green, blue, violet); }
 
-/* Модалки */
+/* ==========================================================================
+   7. МОДАЛЬНІ ВІКНА
+   ========================================================================== */
 .modal {
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0,0,0,0.6);
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(4px);
   display: flex; justify-content: center; align-items: center;
   flex-direction: column;
   z-index: 1000;
 }
 .modal-content {
-  background: #fff; color: #000; padding: 25px; border-radius: 20px;
-  min-width: 300px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  background: #fff; color: #1e293b; padding: 24px; border-radius: 16px;
+  min-width: 300px; max-width: 90%; text-align: center; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
 }
-.modal-buttons { display: flex; gap: 10px; justify-content: center; margin-top: 15px; }
-.modal-buttons button { padding: 8px 12px; border: none; border-radius: 4px; cursor: pointer; color: #fff; font-weight: bold; }
-#deleteBtn { background: #e74c3c; }
-#editBtn { background: #f39c12; }
-#goBtn { background: #2ecc71; }
+.modal-buttons { display: flex; gap: 10px; justify-content: center; margin-top: 20px; }
+.modal-buttons button { padding: 10px 16px; border: none; border-radius: 8px; cursor: pointer; color: #fff; font-weight: 600; font-size: 14px; transition: opacity 0.2s; }
+.modal-buttons button:hover { opacity: 0.9; }
+#deleteBtn { background: #ef4444; }
+#editBtn { background: #f59e0b; }
+#goBtn { background: #10b981; }
 
-/* Адаптивність (всі медіа-запити зібрано разом) */
-@media screen and (max-width: 1024px) {
-  .kanban-board {
-    flex-direction: column;
-    overflow-x: hidden;
-  }
-  .kanban-column {
-    width: 100%;
-  }
+/* ==========================================================================
+   8. АДАПТИВНІСТЬ ТА MOBILE-FIRST (Важливо для APK)
+   ========================================================================== */
+@media screen and (max-width: 768px) {
   header { 
     flex-direction: column; 
-    gap: 10px; 
+    gap: 12px; 
     text-align: center;
+    padding: 12px;
   }
+  header h1 { font-size: 18px; }
+
+  /* 📲 Мобільний свайп для стовпчиків дошки (як у Trello) */
+  .kanban-board {
+    display: flex;
+    flex-direction: row; /* Залишаємо в рядок! */
+    overflow-x: auto;    /* Вмикаємо горизонтальний свайп пальцем */
+    scroll-snap-type: x mandatory;
+    padding: 10px;
+    gap: 12px;
+    width: 100vw;
+  }
+  
+  .kanban-column {
+    min-width: 85vw;    /* Кожен стовпчик займає майже весь екран телефона */
+    max-width: 85vw;
+    scroll-snap-align: center;
+  }
+
   .legend { 
-    margin-left: 0; 
     width: 90%;
   }
 }
   </style>
 </head>
 <body style="display:none;">
-  <div id="content">
+
   <header>
     <h1>Мої процеси</h1>
-    <p id="userInfoTop"></p>
-  <div id="userInfoTop"></div>
-  <label for="processSelector">📂 Обрати процес:</label>
-  <select id="processSelector">
-    <option value="">— виберіть процес —</option>
-  </select>
-    <button id="createBoardBtn" onclick="toggleForm()">Створити процес</button>
-   <button id="calendarBtn" onclick="window.location.href='calendar.html'">Перейти до календаря</button>
-   <button id="logoutBtn" style="background:#e74c3c; color:#fff;" onclick="window.location.href='index.html'">Вийти</button>
-  </header>
-   <img src="./logo.svg" alt="logo" width="260">
-<!-- Легенда кольорів -->
- <div style="display:flex; gap:20px; padding:20px; width: 100%; justify-content: flex-start;" width="98%" >
-  <div class="legend">
-    <h3>Карта бордерів</h3>
-    <div class="legend-item"><span class="lg-urgent"></span> Потрібне затвердження</div>
-    <div class="legend-item"><span class="lg-deadline"></span> Наближається дедлайн</div>
-    <div class="legend-item"><span class="lg-new"></span> Додані нові задачі</div>
-    <div class="legend-item"><span class="lg-overdue"></span> Протерміноване завдання</div>
-    <div class="legend-item"><span class="lg-completed"></span> Процес завершено</div>
+    <div id="userInfoTop" class="user-info"></div>
     
-    <h4>Карта Кольорів</h4>
-  <div class="legend-item"><span class="ownerd"></span> Власник процесу</div>
-  <div class="legend-item"><span class="executor"></span> Виконавець</div>
-  <div class="legend-item"><span class="manager"></span> Керівник</div>
-  </div>
-  <div  style="display:flex; gap:20px; padding:20px; width: 100%; justify-content: flex-start;" width="100%" flex-wrap="wrap" flex-direction="row">
-  
-  <!-- Список процесів -->
-  <div class="kanban-board">
-  
-  <div class="kanban-column">
-    <div class="column-header lg-new">🆕 Нові процеси</div>
-    <div class="processes-list" id="list-new"></div>
-  </div>
-
-  <div class="kanban-column">
-    <div class="column-header lg-urgent">⏳ Потребує затвердження</div>
-    <div class="processes-list" id="list-urgent"></div>
-  </div>
-
-  <div class="kanban-column">
-    <div class="column-header lg-newTasks">⚡ Додані нові задачі</div>
-    <div class="processes-list" id="list-newTasks"></div>
-  </div>
-
-  <div class="kanban-column">
-    <div class="column-header lg-deadline">⚠️ Наближається дедлайн</div>
-    <div class="processes-list" id="list-deadline"></div>
-  </div>
-
-  <div class="kanban-column">
-    <div class="column-header lg-overdue">🚨 Протерміновані</div>
-    <div class="processes-list" id="list-overdue"></div>
-  </div>
-
-  <div class="kanban-column">
-    <div class="column-header lg-completed">🎉 Завершено</div>
-    <div class="processes-list" id="list-completed"></div>
-  </div>
-
-</div>
-    <!-- Форма створення дошки -->
-  <div id="newBoardForm">
-    <input type="text" id="boardTitle" placeholder="Назва процесу">
-    <div class="form-row">
-      <label>Власник:
-        <input type="text" id="boardOwner" readonly>
-      </label>
+    <div class="header-controls">
+      <label for="processSelector">📂 Обрати процес:</label>
+      <select id="processSelector">
+        <option value="">— виберіть процес —</option>
+      </select>
+      <button id="createBoardBtn" onclick="toggleForm()">Створити процес</button>
+      <button id="calendarBtn" onclick="window.location.href='calendar.html'">Перейти до календаря</button>
+      <button id="logoutBtn" onclick="window.location.href='index.html'">Вийти</button>
     </div>
-    <div id="participants"></div>
-    <button onclick="addParticipant()">Додати учасника</button>
-    <button id="saveBtn" onclick="createBoard()">Створити</button>
-  </div>
- </div>
-</div>  
-<div id="processModal" class="modal" style="display:none;">
-  <div class="modal-content">
-    <h3 id="modalTitle"></h3>
-    <div class="modal-buttons">
-      <button id="deleteBtn">Видалити</button>
-      <button id="editBtn">Редагувати</button>
-      <button id="goBtn">Перейти</button>
+  </header>
+
+  <div id="content">
+    
+    <img src="./logo.svg" alt="logo" width="260" style="margin-top: 15px;">
+
+    <div class="main-workspace" style="display: flex; width: 100%; gap: 20px; padding: 20px; box-sizing: border-box; align-items: flex-start;">
+      
+      <div class="legend">
+        <h3>Карта бордерів</h3>
+        <div class="legend-item"><span class="lg-urgent"></span> Потрібне затвердження</div>
+        <div class="legend-item"><span class="lg-deadline"></span> Наближається дедлайн</div>
+        <div class="legend-item"><span class="lg-new"></span> Додані нові задачі</div>
+        <div class="legend-item"><span class="lg-overdue"></span> Протерміноване завдання</div>
+        <div class="legend-item"><span class="lg-completed"></span> Процес завершено</div>
+        
+        <h4>Карта Кольорів</h4>
+        <div class="legend-item"><span class="ownerd"></span> Власник процесу</div>
+        <div class="legend-item"><span class="executor"></span> Виконавець</div>
+        <div class="legend-item"><span class="manager"></span> Керівник</div>
+      </div>
+      
+      <div class="kanban-board">
+        
+        <div class="kanban-column">
+          <div class="column-header lg-new">🆕 Нові процеси</div>
+          <div class="processes-list" id="list-new"></div>
+        </div>
+
+        <div class="kanban-column">
+          <div class="column-header lg-urgent">⏳ Потребує затвердження</div>
+          <div class="processes-list" id="list-urgent"></div>
+        </div>
+
+        <div class="kanban-column">
+          <div class="column-header lg-newTasks">⚡ Додані нові задачі</div>
+          <div class="processes-list" id="list-newTasks"></div>
+        </div>
+
+        <div class="kanban-column">
+          <div class="column-header lg-deadline">⚠️ Наближається дедлайн</div>
+          <div class="processes-list" id="list-deadline"></div>
+        </div>
+
+        <div class="kanban-column">
+          <div class="column-header lg-overdue">🚨 Протерміновані</div>
+          <div class="processes-list" id="list-overdue"></div>
+        </div>
+
+        <div class="kanban-column">
+          <div class="column-header lg-completed">🎉 Завершено</div>
+          <div class="processes-list" id="list-completed"></div>
+        </div>
+
+      </div> </div> <div id="newBoardForm">
+      <input type="text" id="boardTitle" placeholder="Назва процесу">
+      <div class="form-row">
+        <label>Власник:
+          <input type="text" id="boardOwner" readonly>
+        </label>
+      </div>
+      <div id="participants"></div>
+      <button onclick="addParticipant()">Додати учасника</button>
+      <button id="saveBtn" onclick="createBoard()">Створити</button>
+    </div>
+
+    <img src="./ho.png" alt="logo sub" width="300" style="margin: 20px 0;">
+
+  </div> <div id="processModal" class="modal" style="display:none;">
+    <div class="modal-content">
+      <h3 id="modalTitle"></h3>
+      <div class="modal-buttons">
+        <button id="deleteBtn">Видалити</button>
+        <button id="editBtn">Редагувати</button>
+        <button id="goBtn">Перейти</button>
+      </div>
     </div>
   </div>
-</div>
-<div id="editProcessModal" class="modal" style="display:none;">
-  <div class="modal-content">
-  <h2>Редагування процесу</h2>
-  <label>Назва:</label>
-  <input type="text" id="editTitle">
 
-  <div id="editParticipants"></div>
-  <button onclick="addEditParticipant()">Додати учасника</button>
+  <div id="editProcessModal" class="modal" style="display:none;">
+    <div class="modal-content">
+      <h2>Редагування процесу</h2>
+      <div style="margin-bottom: 15px; text-align: left;">
+        <label style="font-weight: bold; display: block; margin-bottom: 5px;">Назва:</label>
+        <input type="text" id="editTitle" style="width: 100%; box-sizing: border-box;">
+      </div>
 
-  <button id="saveEditBtn">Зберегти</button>
+      <div id="editParticipants" style="margin-bottom: 15px;"></div>
+      <button onclick="addEditParticipant()" style="margin-bottom: 15px;">Додати учасника</button>
+
+      <div class="modal-buttons">
+        <button id="saveEditBtn" style="background: #10b981;">Зберегти</button>
+        <button onclick="document.getElementById('editProcessModal').style.display='none'" style="background: #64748b;">Скасувати</button>
+      </div>
+    </div>
   </div>
-</div>
-
-<img src="./ho.png" alt="logo" width="300">
-
-</div>
 <script>
 (async function(){
   const u = sessionStorage.getItem("currentUser");
