@@ -128,37 +128,38 @@ document.getElementById("loginBtn").addEventListener("click", async function() {
   document.getElementById("marquee").style.display = "block";
 
   try {
-    // 1️⃣ Відправляємо логін
-    await fetch(SCRIPT_URL, {
-      method: "POST",
-      mode: "no-cors",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ action: "login", userName: u, password: p })
-    });
+  // 1️⃣ Відправляємо логін
+  const respLogin = await fetch(SCRIPT_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ action: "login", userName: u, password: p })
+  });
 
     // 2️⃣ Чекаємо, щоб токен записався
     await sleep(2000);
 
-    // 3️⃣ Отримуємо токен
-    const respToken = await fetch(SCRIPT_URL + "?action=getToken&user=" + encodeURIComponent(tokenData.userKey));
-    const tokenData = await respToken.json();
+    const loginData = await respLogin.json();
 
-    if (!tokenData.token) {
-      alert("Не вдалося отримати токен. Спробуйте ще раз.");
-      document.getElementById("marquee").style.display = "none";
-      return;
-    }
+  if (!loginData.success) {
+    alert("Невірний логін або пароль!");
+    document.getElementById("marquee").style.display = "none";
+    return;
+  }
+
+    // 3️⃣ Отримуємо токен
+    const token = loginData.token;
+    const userKey = loginData.userKey;
 
     // 4️⃣ Перевіряємо токен і отримуємо перехід
-    const resp23114 = await fetch(SCRIPT_URL + "?action=675&user=" + encodeURIComponent(tokenData.userKey) +
-                                 "&token=" + encodeURIComponent(tokenData.token) +
+    const resp23114 = await fetch(SCRIPT_URL + "?action=675&user=" + encodeURIComponent(userKey) +
+                                 "&token=" + encodeURIComponent(token) +
                                  "&branch=crmph");
     const a345Data = await resp23114.json();
 
     if (a345Data.success) {
       // ✅ тільки тепер пишемо у sessionStorage
-      sessionStorage.setItem("currentUser", tokenData.userKey);
-      sessionStorage.setItem("sessionToken", tokenData.token);
+      sessionStorage.setItem("currentUser", userKey);
+      sessionStorage.setItem("sessionToken", token);
       window.location.href = a345Data.url;
     } else {
       alert("Сесія недійсна або час вийшов. Перелогінься!");
