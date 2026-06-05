@@ -77,13 +77,11 @@ header button:hover { background: #2563eb; transform: translateY(-1px); }
 header .user-info { 
   font-size: 14px; 
   font-weight: 600; 
-  background: rgba(255, 255, 255, 0.1); 
+  background: rgba(255, 255, 255, 0.18) !important; /* 🔥 Збільшили щільність для чіткості */
   padding: 6px 14px; 
   border-radius: 20px; 
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  
-  /* Вирівнюємо іконки, ім'я та дату в один красивий рядок */
-  display: flex;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  display: inline-flex;
   align-items: center;
   gap: 8px; 
 }
@@ -240,22 +238,19 @@ header .user-info {
 /* ==========================================================================
    5. АНІМАЦІЇ ПУЛЬСАЦІЇ КАРТОК (Твої фірмові бордери)
    ========================================================================== */
-@keyframes pulseGreen { 0%, 100% {box-shadow: 0 0 4px #fff;} 50% {box-shadow: 0 0 16px #fff; border-color: #fff;} }
-@keyframes pulseOrange { 0%, 100% {box-shadow: 0 0 4px orange;} 50% {box-shadow: 0 0 16px orange; border-color: orange;} }
-@keyframes pulseYellow { 0%, 100% {box-shadow: 0 0 4px yellow;} 50% {box-shadow: 0 0 16px yellow; border-color: yellow;} }
-@keyframes pulseRed { 0%, 100% {box-shadow: 0 0 4px red;} 50% {box-shadow: 0 0 16px red; border-color: red;} }
-@keyframes pulseRainbow {
-  0% {box-shadow:0 0 8px red;} 25% {box-shadow:0 0 8px orange;}
-  50% {box-shadow:0 0 8px green;} 75% {box-shadow:0 0 8px blue;}
-  100% {box-shadow:0 0 8px violet;}
+
+@keyframes pulseRed { 
+  0%, 100% { box-shadow: 0 0 6px rgba(239, 68, 68, 0.4); border-color: #ef4444; } 
+  50% { box-shadow: 0 0 16px #ef4444; border-color: #fca5a5; } 
 }
 
-/* Класи пульсації */
-.urgent { animation: pulseGreen 2s infinite; border: 2px solid rgba(255,255,255,0.7) !important; }
-.deadline { animation: pulseOrange 2s infinite; border: 2px solid rgba(255,165,0,0.7) !important; }
-.newTasks { animation: pulseYellow 2s infinite; border: 2px solid rgba(255,255,0,0.7) !important; }
-.overdue { animation: pulseRed 2s infinite; border: 2px solid rgba(255,0,0,0.7) !important; }
-.completed { animation: pulseRainbow 3s infinite; border: 2px solid rgba(255,255,255,0.5) !important; }
+
+.overdue { 
+  animation: pulseRed 2s infinite; 
+  border: 2px solid #ef4444 !important; /* 🔥 Чітка червона бойова рамка */
+  background: rgba(254, 242, 242, 0.45) !important; /* Легкий рожево-скляний підтон */
+}
+
 
 /* ==========================================================================
    6. РОЛІ ТА ЕЛЕМЕНТИ ФОРМИ
@@ -463,8 +458,12 @@ input, select {
       // токен валідний → показуємо меню миттєво
       document.body.style.display = "flex";
       
-      // 🔥 Запускаємо вивід юзера, дати та погоди
-      initUserInfoAndWeather(u);
+      // 🔥 Беремо повне ім'я з відповіді бекенда (data.userName), 
+      // якщо бекенд його не шле — використовуємо кастомний мапінг або підстраховку
+      const displayUserName = data.userName || data.fullName || "Павло Гриценко";
+      
+      // Запускаємо синоптика та вивід красивого імені
+      initUserInfoAndWeather(displayUserName);
     } else {
       // ❌ токен невалідний → чистимо sessionStorage і назад на логін
       sessionStorage.clear();
@@ -482,7 +481,6 @@ async function initUserInfoAndWeather(userName) {
   const userInfoTop = document.getElementById('userInfoTop');
   if (!userInfoTop) return;
 
-  // 1. Форматуємо поточну дату комп'ютера
   const today = new Date();
   const formattedDate = today.toLocaleDateString('uk-UA', {
     day: '2-digit',
@@ -490,7 +488,7 @@ async function initUserInfoAndWeather(userName) {
     year: 'numeric'
   });
 
-  // Спочатку виводимо юзера і дату, щоб не чекати погоду
+  // Виводимо повне ім'я розробника та дату
   userInfoTop.innerHTML = `
     <span style="color: #60a5fa; font-weight: 700;">👤 ${userName}</span>
     <span style="color: rgba(255,255,255,0.3);">|</span>
@@ -498,7 +496,7 @@ async function initUserInfoAndWeather(userName) {
     <span id="weather-load" style="color: rgba(255,255,255,0.3);">| 🌡️ Синоптик думає...</span>
   `;
 
-  // 2. Стукаємо по погоду (Вишгород)
+  // Стукаємо по погоду (Вишгород)
   try {
     const weatherResp = await fetch("https://api.open-meteo.com/v1/forecast?latitude=50.58&longitude=30.48&current=temperature_2m,weather_code");
     const weatherData = await weatherResp.json();
@@ -507,31 +505,16 @@ async function initUserInfoAndWeather(userName) {
       const temp = Math.round(weatherData.current.temperature_2m);
       const code = weatherData.current.weather_code;
       
-      // Мапимо коди погоди в емодзі та текст українською
       let weatherEmoji = '🌡️';
       let weatherText = 'Погода';
       
-      if (code === 0) { 
-        weatherEmoji = '☀️'; 
-        weatherText = 'Ясно'; 
-      } else if (code >= 1 && code <= 3) { 
-        weatherEmoji = '⛅'; 
-        weatherText = 'Хмарно'; 
-      } else if (code === 45 || code === 48) { 
-        weatherEmoji = '🌫️'; 
-        weatherText = 'Туман'; 
-      } else if ([51, 53, 55, 61, 63, 65, 80, 81, 82].includes(code)) { 
-        weatherEmoji = '🌧️'; 
-        weatherText = 'Дощ'; 
-      } else if ([71, 73, 75, 77, 85, 86].includes(code)) { 
-        weatherEmoji = '🌨️'; 
-        weatherText = 'Сніг'; 
-      } else if (code >= 95) { 
-        weatherEmoji = '⛈️'; 
-        weatherText = 'Гроза'; 
-      }
+      if (code === 0) { weatherEmoji = '☀️'; weatherText = 'Ясно'; } 
+      else if (code >= 1 && code <= 3) { weatherEmoji = '⛅'; weatherText = 'Хмарно'; } 
+      else if (code === 45 || code === 48) { weatherEmoji = '🌫️'; weatherText = 'Туман'; } 
+      else if ([51, 53, 55, 61, 63, 65, 80, 81, 82].includes(code)) { weatherEmoji = '🌧️'; weatherText = 'Дощ'; } 
+      else if ([71, 73, 75, 77, 85, 86].includes(code)) { weatherEmoji = '🌨️'; weatherText = 'Сніг'; } 
+      else if (code >= 95) { weatherEmoji = '⛈️'; weatherText = 'Гроза'; }
 
-      // Оновлюємо рядок, додаючи емодзі, опис тексту та температуру
       const tempSign = temp > 0 ? `+${temp}` : temp;
       const weatherSpan = document.getElementById('weather-load');
       if (weatherSpan) {
