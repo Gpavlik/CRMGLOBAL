@@ -253,80 +253,82 @@ header button:hover { background: #2563eb; transform: translateY(-1px); }
 .executor { background: #8b5cf6; color: white; padding: 2px 6px; border-radius: 4px; }
 .manager { background: #10b981; color: white; padding: 2px 6px; border-radius: 4px; }
 
-/* Перетворюємо форму на повноцінний Modal Overlay */
+/* ==========================================================================
+   6. МОДЕРНІЗОВАНА МОДАЛКА СТВОРЕННЯ ПРОЦЕСУ
+   ========================================================================== */
 #newBoardForm { 
   display: none; 
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(15, 23, 42, 0.6); /* Темний напівпрозорий фон */
-  backdrop-filter: blur(4px); /* Розмиття заднього плану */
+  background: rgba(15, 23, 42, 0.75); /* Темний напівпрозорий оверлей */
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
   justify-content: center; 
   align-items: center;
-  z-index: 1100; /* Вище за всі елементи */
+  z-index: 9999; /* Максимальний пріоритет */
 }
 
-/* Контент всередині форми (сама біла плашка) */
-.form-content {
-  background: #fff; 
-  padding: 24px; 
-  border-radius: 16px;
-  color: #1e293b;
-  box-shadow: 0 20px 25px -5px rgba(0,0,0,0.2);
-  width: 90%;
-  max-width: 450px;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  box-sizing: border-box;
+/* Конкретно біле вікно модалки, якого зараз немає на скріншоті */
+#newBoardForm .form-content {
+  background: #ffffff !important; 
+  padding: 25px !important; 
+  border-radius: 16px !important;
+  color: #1e293b !important;
+  box-shadow: 0 20px 25px -5px rgba(0,0,0,0.3), 0 10px 10px -5px rgba(0,0,0,0.2) !important;
+  width: 90% !important;
+  max-width: 420px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 14px !important;
+  box-sizing: border-box !important;
 }
 
-.form-content h2 {
-  margin: 0 0 4px 0;
-  font-size: 18px;
-  font-weight: 700;
-  color: #0f172a;
-  text-align: center;
+#newBoardForm h2 {
+  margin: 0 0 4px 0 !important;
+  font-size: 18px !important;
+  font-weight: 700 !important;
+  color: #0f172a !important;
+  text-align: center !important;
 }
 
-.form-row { 
-  display: flex; 
-  flex-direction: column;
-  gap: 6px; 
-  text-align: left;
-  font-weight: 600;
-  font-size: 13px;
+#newBoardForm .form-row { 
+  display: flex !important; 
+  flex-direction: column !important;
+  gap: 4px !important; 
+  text-align: left !important;
+  font-weight: 600 !important;
+  font-size: 13px !important;
+  color: #334155 !important;
 }
 
-.form-row input, .form-row select { 
-  width: 100%;
-  box-sizing: border-box;
+/* Примусовий гарний стиль для інпутів модалки */
+#newBoardForm input[type="text"] {
+  width: 100% !important;
+  box-sizing: border-box !important;
+  padding: 8px 12px !important;
+  background: #f1f5f9 !important;
+  border: 1px solid #cbd5e1 !important;
+  border-radius: 6px !important;
+  color: #1e293b !important;
+  font-size: 13px !important;
 }
 
-#participants {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  max-height: 120px;
-  overflow-y: auto;
+#newBoardForm .form-buttons {
+  display: flex !important;
+  gap: 10px !important;
+  justify-content: center !important;
+  margin-top: 8px !important;
 }
 
-/* Кнопки форми */
-.form-buttons {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-  margin-top: 10px;
+#newBoardForm .form-buttons button {
+  padding: 10px 20px !important;
+  border: none !important;
+  border-radius: 8px !important;
+  cursor: pointer !important;
+  font-weight: 600 !important;
+  font-size: 13px !important;
+  transition: background 0.2s !important;
 }
-.form-buttons button {
-  padding: 10px 16px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 600;
-  font-size: 13px;
-  transition: opacity 0.2s;
-}
-.form-buttons button:hover { opacity: 0.9; }
 /* ==========================================================================
    7. МОДАЛЬНІ ВІКНА
    ========================================================================== */
@@ -399,7 +401,6 @@ header button:hover { background: #2563eb; transform: translateY(-1px); }
   </header>
 
   <div id="content">
-    
     <img src="./logo.svg" alt="logo" width="260" style="margin-top: 15px;">
      
     <div class="kanban-board">
@@ -437,18 +438,6 @@ header button:hover { background: #2563eb; transform: translateY(-1px); }
     </div> 
   </div> 
 
-  <div id="newBoardForm">
-    <input type="text" id="boardTitle" placeholder="Назва процесу">
-    <div class="form-row">
-      <label>Власник:
-        <input type="text" id="boardOwner" readonly>
-      </label>
-    </div>
-    <div id="participants"></div>
-    <button onclick="addParticipant()">Додати учасника</button>
-    <button id="saveBtn" onclick="createBoard()">Створити</button>
-  </div>
-
   <img src="./ho.png" alt="logo sub" width="300" style="margin: 20px 0;">
 
   <div id="processModal" class="modal" style="display:none;">
@@ -462,7 +451,6 @@ header button:hover { background: #2563eb; transform: translateY(-1px); }
     </div>
   </div>
 
-  <!-- Оновлена модальна форма створення процесу -->
   <div id="newBoardForm">
     <div class="form-content">
       <h2>Створити новий процес</h2>
@@ -490,9 +478,7 @@ header button:hover { background: #2563eb; transform: translateY(-1px); }
       </div>
     </div>
   </div>
-  </div>
-</body>
-</html>
+
 <script>
 (async function(){
   const u = sessionStorage.getItem("currentUser");
