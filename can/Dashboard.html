@@ -155,7 +155,71 @@ input, select {
 #editBtn { background:#f39c12; color:#fff; }
 #goBtn { background:#2ecc71; color:#fff; }
 
+/* Стилі для Канбан-Дошки процесів */
+.kanban-board {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+  width: 100%;
+  box-sizing: border-box;
+  align-items: flex-start;
+  overflow-x: auto; /* Якщо монітор малий, буде скрол вбік */
+}
 
+.kanban-column {
+  flex: 1;
+  min-width: 280px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 10px;
+  box-sizing: border-box;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.column-header {
+  text-align: center;
+  font-weight: bold;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  color: #000; /* Чорний текст для кращої читаємості на яскравих плашках */
+  font-size: 16px;
+}
+
+/* Кольори заголовків стовпчиків відповідні до легенди */
+.column-header.lg-new { background: #eee; color: #000; }
+.column-header.lg-urgent { background: #fff; color: #000; }
+.column-header.lg-newTasks { background: yellow; color: #000; }
+.column-header.lg-deadline { background: orange; color: #fff; }
+.column-header.lg-overdue { background: red; color: #fff; }
+.column-header.lg-completed { background: linear-gradient(90deg, red, orange, green, blue, violet); color: #fff; }
+
+.processes-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  min-height: 200px; /* Щоб пусті стовпчики не стискалися в нуль */
+}
+
+/* Трохи підправимо саму плашку процесу, щоб вона адаптувалася під ширину стовпчика */
+.process {
+  width: 100% !important; /* Перебиваємо старі фіксовані 260px */
+  box-sizing: border-box;
+  height: auto;
+  min-height: 150px;
+  padding: 15px;
+}
+
+/* Адаптивність для мобілок: стовпчики лягають один під один */
+@media screen and (max-width: 1024px) {
+  .kanban-board {
+    flex-direction: column;
+    overflow-x: hidden;
+  }
+  .kanban-column {
+    width: 100%;
+  }
+}
 /* Адаптивність */
 @media screen and (max-width: 480px) {
   .process { width: 100%; } 
@@ -204,7 +268,39 @@ input, select {
   <div  style="display:flex; gap:20px; padding:20px; width: 100%; justify-content: flex-start;" width="100%" flex-wrap="wrap" flex-direction="row">
   
   <!-- Список процесів -->
-  <div class="processes" id="processList"></div>
+  <div class="kanban-board">
+  
+  <div class="kanban-column">
+    <div class="column-header lg-new">🆕 Нові процеси</div>
+    <div class="processes-list" id="list-new"></div>
+  </div>
+
+  <div class="kanban-column">
+    <div class="column-header lg-urgent">⏳ Потребує затвердження</div>
+    <div class="processes-list" id="list-urgent"></div>
+  </div>
+
+  <div class="kanban-column">
+    <div class="column-header lg-newTasks">⚡ Додані нові задачі</div>
+    <div class="processes-list" id="list-newTasks"></div>
+  </div>
+
+  <div class="kanban-column">
+    <div class="column-header lg-deadline">⚠️ Наближається дедлайн</div>
+    <div class="processes-list" id="list-deadline"></div>
+  </div>
+
+  <div class="kanban-column">
+    <div class="column-header lg-overdue">🚨 Протерміновані</div>
+    <div class="processes-list" id="list-overdue"></div>
+  </div>
+
+  <div class="kanban-column">
+    <div class="column-header lg-completed">🎉 Завершено</div>
+    <div class="processes-list" id="list-completed"></div>
+  </div>
+
+</div>
     <!-- Форма створення дошки -->
   <div id="newBoardForm">
     <input type="text" id="boardTitle" placeholder="Назва процесу">
@@ -400,24 +496,53 @@ async function initDashboard() {
 
 
 function renderDashboard(dashboardData) {
-  const list = document.getElementById("processList");
-  list.innerHTML = "";
+  // 1️⃣ Очищаємо всі стовпчики перед новим рендером
+  const columns = {
+    'new': document.getElementById("list-new"),
+    'urgent': document.getElementById("list-urgent"),
+    'newTasks': document.getElementById("list-newTasks"),
+    'deadline': document.getElementById("list-deadline"),
+    'overdue': document.getElementById("list-overdue"),
+    'completed': document.getElementById("list-completed")
+  };
+
+  // Обнуляємо текст у кожному стовпчику
+  Object.values(columns).forEach(col => {
+    if (col) col.innerHTML = "";
+  });
 
   if (!dashboardData.processes.length) {
-    list.innerHTML = "<p>У вас немає доступних процесів</p>";
+    // Якщо взагалі нічого немає, виведемо повідомлення в перший стовпчик
+    columns['new'].innerHTML = "<p style='color: #fff; text-align:center;'>Немає доступних процесів</p>";
     return;
   }
 
+  // 2️⃣ Біжимо по кожному процесу
   dashboardData.processes.forEach(proc => {
     const div = document.createElement("div");
-    div.className = "process owner newTasks";
-    div.dataset.status = proc.status || "new";
+    
+    // Визначаємо поточний статус процесу (якщо порожній — даємо 'new')
+    const status = proc.status ? proc.status.trim() : "new";
+    
+    // Автоматично підбираємо клас анімації бордера згідно з картою бордерів
+    let borderClass = "";
+    if (status === "urgent") borderClass = "urgent";
+    else if (status === "deadline") borderClass = "deadline";
+    else if (status === "newTasks") borderClass = "newTasks";
+    else if (status === "overdue") borderClass = "overdue";
+    else if (status === "completed") borderClass = "completed";
+
+    // Базовий клас ролі (наприклад, власник чи ні)
+    // Твій старий код використовував за замовчуванням класи .process .owner
+    div.className = `process owner ${borderClass}`;
+    
+    div.dataset.status = status;
     div.dataset.processId = proc.processID || "";
     div.dataset.procData = JSON.stringify(proc);
 
     const ownerName = usersMap[proc.owner] || proc.owner;
 
-    // розбиваємо учасників на ім’я та роль + додаємо кольори
+    // Форматування учасників (твій оригінальний код кольорів ролей)
     const participantsFormatted = proc.participants.map(p => {
       const [name, role] = p.split(" (");
       const cleanRole = role ? role.replace(")", "") : "";
@@ -430,18 +555,32 @@ function renderDashboard(dashboardData) {
       return `<span style="color:${color}">${name} — ${cleanRole}</span>`;
     });
 
+    // Наповнюємо плашку даними
     div.innerHTML = `
       <h2>${proc.title}</h2>
       <p>Власник: <span style="color:blue">${ownerName}</span></p>
       <p>Учасники:<br>${participantsFormatted.join("<br>")}</p>
-      <p>Статус: ${proc.status}</p>
+      <p style="font-size:12px; opacity:0.7;">Статус: ${status}</p>
     `;
 
     div.onclick = () => showProcessModal(proc);
-    list.appendChild(div);
+
+    // 3️⃣ Закидуємо плашку у відповідний стовпчик
+    if (columns[status]) {
+      columns[status].appendChild(div);
+    } else {
+      // Якщо статус якийсь екзотичний і стовпчика немає — кидаємо в "Нові"
+      columns['new'].appendChild(div);
+    }
+  });
+
+  // Перевірка на пустоту: якщо після сортування якийсь стовпчик пустий, напишемо про це
+  Object.entries(columns).forEach(([key, col]) => {
+    if (col && col.children.length === 0) {
+      col.innerHTML = "<p style='color: rgba(255,255,255,0.4); text-align:center; font-size:13px; margin: 20px 0;'>Порожньо</p>";
+    }
   });
 }
-
 function populateProcessSelector(processes) {
   const selector = document.getElementById("processSelector");
   selector.innerHTML = '<option value="">— виберіть процес —</option>';
