@@ -5,99 +5,171 @@
   <title>Календар задач</title>
   <link rel="icon" type="image/jpg" href="11.webp">
 
-<!-- Core -->
-<link href="https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.8/main.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.8/index.global.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.8/main.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.8/index.global.min.js"></script>
 
-<!-- Плагіни для потрібних view -->
-<link href="https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@6.1.8/main.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@6.1.8/index.global.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@6.1.8/main.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@6.1.8/index.global.min.js"></script>
 
-<link href="https://cdn.jsdelivr.net/npm/@fullcalendar/timegrid@6.1.8/main.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@fullcalendar/timegrid@6.1.8/index.global.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/@fullcalendar/timegrid@6.1.8/main.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/timegrid@6.1.8/index.global.min.js"></script>
 
-<link href="https://cdn.jsdelivr.net/npm/@fullcalendar/multimonth@6.1.8/main.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@fullcalendar/multimonth@6.1.8/index.global.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/@fullcalendar/multimonth@6.1.8/main.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/multimonth@6.1.8/index.global.min.js"></script>
 
-<!-- interaction для drag&drop -->
-<script src="https://cdn.jsdelivr.net/npm/@fullcalendar/interaction@6.1.8/index.global.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/interaction@6.1.8/index.global.min.js"></script>
 
   <style> 
+    /* ==========================================================================
+       1. ГЛОБАЛЬНІ СТИЛІ ТА ФОН (В унісон з Канбаном)
+       ========================================================================== */
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Segoe UI', Arial, sans-serif;
       margin: 0; 
       padding: 0;
       background: linear-gradient(135deg, #009400, #004d00);
-      color: #000000;
+      color: #fff;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
     }
-select {
-      font-family: Arial, sans-serif;
-      font-size: 14px;
-      padding: 6px 10px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      background-color: #fff;
-      color: #333;
-      transition: border-color 0.3s;
-width: 200px;
-    }
-    header { 
-      background:#2c3e50; 
-      color:white; 
-      padding:10px 20px; 
-      display:flex; 
-      justify-content:space-around; 
-      align-items:center; 
-      width:100%;
-      box-sizing:border-box;
-    }
-    header h1 { margin:0; font-size:22px; }
-    header .user-info { font-size:14px; font-weight:bold; }
-    header button { 
-      background:#3498db; 
-      color:white; 
-      border:none; 
-      padding:8px 12px; 
-      border-radius:4px; 
-      cursor:pointer; 
-      transition:background 0.3s;
-    }
-    header button:hover { background:#2980b9; }
 
+    /* ==========================================================================
+       2. ШАПКА В СТИЛІ GLASSMORPHISM
+       ========================================================================== */
+    header { 
+      background: #1e293b; 
+      color: white; 
+      padding: 15px 20px; 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center; 
+      width: 100%;
+      box-sizing: border-box;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    header h1 { margin: 0; font-size: 20px; font-weight: 700; }
+    
+    header .user-info { 
+      font-size: 14px; 
+      font-weight: 600; 
+      background: rgba(255, 255, 255, 0.22); 
+      padding: 6px 14px; 
+      border-radius: 20px; 
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      backdrop-filter: blur(4px);
+    }
+
+    .header-controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    select {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      font-size: 14px;
+      padding: 8px 12px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 6px;
+      background-color: #f1f5f9;
+      color: #1e293b;
+      transition: all 0.3s;
+      width: 220px;
+      font-weight: 600;
+    }
+
+    header button { 
+      background: #3b82f6; 
+      color: white; 
+      border: none; 
+      padding: 8px 16px; 
+      border-radius: 8px; 
+      cursor: pointer; 
+      font-weight: 600;
+      transition: all 0.2s ease;
+    }
+    header button:hover { background: #2563eb; transform: translateY(-1px); }
+    #saveBtn { background: #10b981; }
+    #saveBtn:hover { background: #059669; }
+
+    /* ==========================================================================
+       3. СУЧАСНИЙ СКЛЯНИЙ КАЛЕНДАР (Ефект пакетика)
+       ========================================================================== */
     #calendar {
-      width: 90%;
-      margin: 40px auto;
-      height: min-content;
-      padding:10px; 
-      border-radius:8px; 
-      background:#edffed;
+      width: 92%;
+      margin: 30px auto;
+      padding: 20px; 
+      border-radius: 16px; 
+      background: rgba(254, 254, 254, 0.92) !important; /* Легке благородне матове скло під сітку */
+      backdrop-filter: blur(10px);
+      box-shadow: 0 15px 35px rgba(0, 45, 0, 0.2);
+      color: #1e293b !important; /* Текст календаря глибокий темний */
+    }
+
+    /* Корекція внутрішніх кольорів інтерфейсу FullCalendar під темний колір тексту сторінки */
+    .fc { color: #1e293b !important; }
+    .fc a { color: #1e293b !important; text-decoration: none; font-weight: 600; }
+    .fc-theme-standard td, .fc-theme-standard th { border: 1px solid #cbd5e1 !important; }
+    .fc-col-header-cell { background: #f8fafc; padding: 8px 0 !important; }
+
+    /* Стилізація карток подій всередині календаря */
+    .fc-v-event {
+      border: 1px solid rgba(255,255,255,0.3) !important;
+      border-radius: 6px !important;
+      padding: 4px !important;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.08) !important;
     }
 
     .fc-timegrid-slot {
-      height: 30px !important;
-      min-height: 30px !important;
+      height: 35px !important;
+      min-height: 35px !important;
+    }
+
+    /* Етикетка критичного навантаження */
+    .critical-load-label {
+      background: #fee2e2;
+      border: 1px solid #fca5a5;
+      padding: 4px 8px;
+      border-radius: 6px;
+      text-align: center;
+      animation: pulseAlert 2s infinite;
+    }
+
+    @keyframes pulseAlert {
+      0%, 100% { box-shadow: 0 0 4px rgba(239, 68, 68, 0.2); }
+      50% { box-shadow: 0 0 10px rgba(239, 68, 68, 0.5); }
+    }
+
+    @media screen and (max-width: 768px) {
+      header { flex-direction: column; gap: 10px; padding: 15px; text-align: center; }
+      .header-controls { flex-direction: column; width: 100%; gap: 8px; }
+      select, header button { width: 100%; }
+      #calendar { width: 98%; padding: 10px; }
     }
   </style>
 </head>
 <body>
+
   <header>
     <h1>Календар задач</h1>
-    <div id="userInfoTop"></div>
-    <select id="processSelector"></select>
-    <button id="saveBtn">Зберегти зміни</button>
-    <button id="dashboardBtn" onclick="window.location.href='Dashboard.html'">Перейти на Dashboard</button>
+    <div id="userInfoTop" class="user-info"></div>
+    <div class="header-controls">
+      <select id="processSelector"></select>
+      <button id="saveBtn">Зберегти зміни</button>
+      <button id="dashboardBtn" onclick="window.location.href='Dashboard.html'">Перейти на Dashboard</button>
+    </div>
   </header>
 
-  <img src="./logo.svg" alt="logo" width="260">
+  <img src="./logo.svg" alt="logo" width="260" style="margin-top: 25px;">
   <div id="calendar"></div>
-  <img src="./ho.png" alt="logo" width="300">
+  <img src="./ho.png" alt="logo" width="300" style="margin-bottom: 25px;">
 
 <script>
-  
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwh5TrmNwDcMY51ToSGblbbzw2xF6sZPTuS677x3BHctpMinn4FCQsQmKkKwBus5kfq/exec";
 const PROCESSES_SHEET_URL = "https://docs.google.com/spreadsheets/d/1vjxURM8HlNTxdk-XGEh-99sYuHhtEgNKLf-39jRm8-Q/gviz/tq?tqx=out:json&sheet=Processes";
 
@@ -113,7 +185,10 @@ const usersMap = {
   tetiana: "Тетяна Яковець",
   admin: "Адмін"
 };
-document.getElementById("userInfoTop").innerText = `👤 Користувач: ${usersMap[currentUser] || currentUser}`;
+document.getElementById("userInfoTop").innerHTML = `<span>👤 Користувач: ${usersMap[currentUser] || currentUser}</span>`;
+
+// Глобальний масив для синхронізації
+let globalTasks = [];
 
 // --- Завантаження процесів ---
 async function loadProcesses() {
@@ -124,6 +199,7 @@ async function loadProcesses() {
   const json = JSON.parse(match[1]);
   const rows = json.table.rows;
   const tasksMap = {};
+  
   rows.forEach(r => {
     const taskID = r.c[5]?.v;
     if (!taskID) return;
@@ -171,7 +247,7 @@ function expandMultiDayTasks(tasks) {
       const endDate = new Date(t.deadline);
       for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
         events.push({
-          id: `${t.taskID || t.id}-${d.toISOString().split("T")[0]}`,
+          id: `${t.taskID}-${d.toISOString().split("T")[0]}`, // Унікальний ID для кожної плитки дня
           taskTitle: t.taskTitle || t.title,
           day: d.toISOString().split("T")[0],
           role: t.role,
@@ -186,13 +262,10 @@ function expandMultiDayTasks(tasks) {
   return events;
 }
 
-
 // --- Автоматичне розміщення задач + кольори ---
 function autoPlaceTasks(tasks) {
   const placed = [];
   const daySlots = {};
-
-  // сьогоднішня дата без часу
   const now = new Date();
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
@@ -201,22 +274,20 @@ function autoPlaceTasks(tasks) {
     if (!daySlots[day]) daySlots[day] = [];
     let hour = 8, minute = 0;
 
-    // дедлайн без часу
     const deadlineRaw = new Date(ev.deadline);
     const deadline = new Date(deadlineRaw.getFullYear(), deadlineRaw.getMonth(), deadlineRaw.getDate());
 
-    // 🔹 визначаємо колір один раз для всієї задачі
     let color;
-    if (ev.status === "done") {
-      color = "#2ecc71"; // зелений
+    if (ev.status === "done" || ev.status === "виконано") {
+      color = "#10b981"; // Смарагдовий зелений
     } else if (today > deadline) {
-      color = "#e74c3c"; // червоний (прострочена)
-    } else if (ev.status === "inprogress") {
-      color = "#f1c40f"; // жовтий
-    } else if (ev.status === "todo") {
-      color = "#3498db"; // синій
+      color = "#ef4444"; // Чистий червоний (прострочено)
+    } else if (ev.status === "inprogress" || ev.status === "в процесі") {
+      color = "#f59e0b"; // Бурштиновий жовтий
+    } else if (ev.status === "todo" || ev.status === "зробити") {
+      color = "#3b82f6"; // Сучасний синій
     } else {
-      color = "#8e44ad"; // інші
+      color = "#8b5cf6"; // Фіолетовий
     }
 
     while (hour < 18) {
@@ -228,8 +299,9 @@ function autoPlaceTasks(tasks) {
         const endSlot = `${String(endHour).padStart(2,"0")}:${String(endMinute===60?0:endMinute).padStart(2,"0")}`;
         ev.end = `${day}T${endSlot}:00`;
 
-        ev.title = `${ev.username || "невідомий"} — ${ev.taskTitle || ev.title}`;
+        ev.title = `${ev.username || "невідомий"} — ${ev.taskTitle || ev.processTitle}`;
         ev.backgroundColor = color;
+        ev.textColor = "#ffffff";
 
         daySlots[day].push(slot);
         placed.push(ev);
@@ -242,27 +314,23 @@ function autoPlaceTasks(tasks) {
   return placed;
 }
 
-
 // --- Кастомізація відображення подій ---
 function eventContent(arg) {
-  // Формуємо діапазон часу
   const start = arg.event.start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   const end = arg.event.end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   const timeRange = `${start} - ${end}`;
 
-  // HTML для двох рядків
   return {
     html: `
-      <div style="font-size:11px; font-weight:bold;">
+      <div style="font-size:11px; font-weight:700; text-shadow: 0 1px 2px rgba(0,0,0,0.2); line-height:1.2; overflow:hidden; text-overflow:ellipsis;">
         ${timeRange} — ${arg.event.extendedProps.taskTitle || ""}
       </div>
-      <div style="font-size:10px; opacity:0.9;">
-        ${arg.event.extendedProps.username || "невідомий"} (${arg.event.extendedProps.role || ""})
+      <div style="font-size:10px; opacity:0.9; font-weight:500; margin-top:2px;">
+        👤 ${arg.event.extendedProps.username || "невідомий"} (${arg.event.extendedProps.role || ""})
       </div>
     `
   };
 }
-
 
 function setupProcessSelector(tasks, calendar) {
   const selector = document.getElementById("processSelector");
@@ -284,12 +352,18 @@ function setupProcessSelector(tasks, calendar) {
     checkDayLoad(calendar);
   });
 }
+
 function checkDayLoad(calendar) {
   const days = {};
+  
+  // Видаляємо всі старі мітки критичного навантаження, щоб вони не дублювалися
+  document.querySelectorAll(".critical-load-label").forEach(l => l.remove());
+
   calendar.getEvents().forEach(ev => {
+    if (!ev.startStr) return;
     const day = ev.startStr.split("T")[0];
     if (!days[day]) days[day] = 0;
-    days[day] += 0.5; // кожна подія = 30 хв
+    days[day] += 0.5; // кожна плитка події = 30 хв
   });
 
   Object.entries(days).forEach(([day, hours]) => {
@@ -298,34 +372,38 @@ function checkDayLoad(calendar) {
         `.fc-timegrid-col[data-date="${day}"] .fc-timegrid-day-frame`
       );
       if (allDayCell) {
-        const oldLabel = allDayCell.querySelector(".critical-load-label");
-        if (oldLabel) oldLabel.remove();
-
         const label = document.createElement("div");
         label.className = "critical-load-label";
-        label.innerText = "Критичне навантаження";
-        label.style.color = "red";
-        label.style.fontWeight = "bold";
-        label.style.fontSize = "12px";
-        label.style.marginTop = "4px";
+        label.innerText = "🚨 Критичне навантаження";
+        label.style.color = "#b91c1c";
+        label.style.fontWeight = "700";
+        label.style.fontSize = "11px";
+        label.style.marginTop = "6px";
+        label.style.padding = "4px";
         allDayCell.appendChild(label);
       }
     }
   });
 }
-function updateTask(event, tasks) {
-  const taskID = event.id.split("-")[0];
-  const task = tasks.find(t => t.taskID === taskID);
+
+// 🔥 Фікс логіки оновлення дат (Зберігаємо структуру ISO без зламу дедлайнів всієї глобальної задачі)
+function updateTask(calendarEvent) {
+  const taskID = calendarEvent.id.split("-")[0];
+  const task = globalTasks.find(t => String(t.taskID) === String(taskID));
+  
   if (task) {
-    task.start = event.start.toISOString();
-    task.deadline = event.end.toISOString();
+    const newDayStr = calendarEvent.startStr.split("T")[0];
+    task.start = newDayStr;
+    task.deadline = newDayStr; // Синхронізуємо день у межах перетягнутого слота
   }
 }
+
 // --- Ініціалізація календаря ---
 document.addEventListener("DOMContentLoaded", async function() {
   try {
     let tasks = await loadProcesses();
     tasks = filterProcesses(tasks, usersMap[currentUser] || currentUser);
+    globalTasks = tasks; // Записуємо у глобальну змінну для updateTask
 
     sessionStorage.setItem("dashboardData", JSON.stringify({processes: tasks}));
 
@@ -338,9 +416,9 @@ document.addEventListener("DOMContentLoaded", async function() {
       initialView: "timeGridWeek",
       slotMinTime: "08:00:00",
       slotMaxTime: "18:00:00",
-      hiddenDays: [0,6],
+      hiddenDays: [0,6], // Ховаємо вихідні
       editable: true,
-      eventDurationEditable: true,
+      eventDurationEditable: false, // 🔥 Вимикаємо розтягування по хвилинах, щоб не збивати 30-хвилинні кроки автоплейсингу
       expandRows: true,
       height: "auto",
       slotDuration: "00:30:00",
@@ -353,11 +431,7 @@ document.addEventListener("DOMContentLoaded", async function() {
       eventContent: eventContent,
       events: allEvents,
       eventDrop: function(info) {
-        updateTask(info.event, tasks);
-        checkDayLoad(calendar);
-      },
-      eventResize: function(info) {
-        updateTask(info.event, tasks);
+        updateTask(info.event);
         checkDayLoad(calendar);
       }
     });
@@ -365,7 +439,6 @@ document.addEventListener("DOMContentLoaded", async function() {
     calendar.render();
     checkDayLoad(calendar);
 
-    // селектор процесів бачать усі
     setupProcessSelector(tasks, calendar);
 
     document.getElementById("saveBtn").addEventListener("click", () => {
@@ -375,16 +448,16 @@ document.addEventListener("DOMContentLoaded", async function() {
         headers: {"Content-Type":"application/json"},
         body: JSON.stringify({
           action: "updateCalendar",
-          processes: tasks
+          processes: globalTasks
         })
       });
+      alert("Зміни успішно надіслані до Google Таблиці! 🚀");
     });
 
   } catch (err) {
     console.error("Помилка при ініціалізації календаря:", err);
   }
 });
-
-</SCRIPT>
+</script>
 </body>
 </html>
