@@ -486,26 +486,39 @@ async function fetchTaskCounters() {
     const text = await res.text();
     const json = JSON.parse(text.substr(47).slice(0, -2));
 
-    const procAnalysis = {};
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
+    // 1️⃣ КРОК: Залишаємо тільки найсвіжіші апдейти для кожної задачі
+    const latestTasks = {};
+
     json.table.rows.slice(1).forEach(r => {
-      const procID = r.c[0]?.v || "";
-      const startStr = r.c[7]?.v || "";
-      const deadlineStr = r.c[8]?.v || "";
-      // З твоєї функції fetchDashboardData бачимо: 12-й стовпець (індекс 11) — це multiRole
-      const isMultiRole = r.c[11]?.v === "TRUE" || r.c[11]?.v === true; 
-      const taskStatus = (r.c[16]?.v || "").toLowerCase().trim(); // 17-й стовпець: TaskStatus
+      const procTaskID = r.c[4]?.v || ""; // 5-й стовпець: унікальний ID задачі
+      if (!procTaskID) return;
+
+      // Оскільки перебір йде зверху вниз, кожен новий рядок з таким же procTaskID 
+      // просто перезапише старий. В результаті в об'єкті залишаться тільки найостанніші дані.
+      latestTasks[procTaskID] = r;
+    });
+
+    // 2️⃣ КРОК: Аналізуємо вифільтровані актуальні задачі, групуючи за ProcessID
+    const procAnalysis = {};
+
+    Object.values(latestTasks).forEach(r => {
+      const procID = r.c[0]?.v || "";      // 1-й стовпець: ProcessID
+      const startStr = r.c[7]?.v || "";     // 8-й стовпець: Start
+      const deadlineStr = r.c[8]?.v || "";  // 9-й стовпець: Deadline
+      const isMultiRole = r.c[11]?.v === "TRUE" || r.c[11]?.v === true; // 12-й стовпець: multiRole
+      const taskStatus = (r.c[16]?.v || "").toLowerCase().trim();       // 17-й стовпець: Status
 
       if (!procID) return;
 
       if (!procAnalysis[procID]) {
         procAnalysis[procID] = {
           todo: 0, progress: 0, done: 0, totalTasks: 0,
-          hasOverdueExecutor: false,   // Прострочив виконавець
-          hasUrgentNormal: false,      // Треба затвердити (час є)
-          hasUrgentOverdue: false,     // Треба затвердити (але дедлайн МИНУВ!)
+          hasOverdueExecutor: false,
+          hasUrgentNormal: false,
+          hasUrgentOverdue: false,
           hasDeadlineClose: false,
           hasNewToday: false
         };
@@ -514,6 +527,7 @@ async function fetchTaskCounters() {
       const info = procAnalysis[procID];
       info.totalTasks++;
 
+      // Визначаємо актуальний статус
       const isDone = (taskStatus === "done" || taskStatus === "виконано" || taskStatus === "completed");
       if (isDone) {
         info.done++;
@@ -523,30 +537,28 @@ async function fetchTaskCounters() {
         info.todo++;
       }
 
-      // Базові дати
+      // Парсимо дати
       let dDeadline = null;
       let dStart = null;
-      if (deadlineStr) { dDeadline = new Date(deadlineStr); dDeadline.setHours(0,0,0,0); }
-      if (startStr) { dStart = new Date(startStr); dStart.setHours(0,0,0,0); }
+      if (deadlineStr) { dDeadline = new Date(deadlineStr); dDeadline.setHours(0, 0, 0, 0); }
+      if (startStr) { dStart = new Date(startStr); dStart.setHours(0, 0, 0, 0); }
 
-      // 🔍 АНАЛІЗ ПРАВИЛ КАНБАНУ
+      // 🔍 ПЕРЕВІРКА ПРАВИЛ КАНБАНУ НА СВІЖИХ ДАНИХ
       
-      // А. Керівник не затвердив вчасно (Задача Done + Потребує затвердження + Дедлайн минув)
+      // А. Керівник прострочив затвердження
       if (isDone && isMultiRole && dDeadline && today > dDeadline) {
         info.hasUrgentOverdue = true;
       }
-      
-      // Б. Керівник просто має затвердити (Задача Done + Потребує затвердження + Дедлайн ще НЕ минув)
+      // Б. Треба затвердити вчасно
       else if (isDone && isMultiRole && (!dDeadline || today <= dDeadline)) {
         info.hasUrgentNormal = true;
       }
-
-      // В. Прострочив виконавець (Задача НЕ Done + Дедлайн минув)
+      // В. Прострочив виконавець
       else if (!isDone && dDeadline && today > dDeadline) {
         info.hasOverdueExecutor = true;
       }
 
-      // Г. Наближається дедлайн (Не виконано, залишилося менше 20% часу)
+      // Г. Наближається дедлайн (менше 20% часу залишилось)
       if (!isDone && dStart && dDeadline && today <= dDeadline) {
         const totalDuration = dDeadline.getTime() - dStart.getTime();
         const timeSpent = today.getTime() - dStart.getTime();
@@ -564,38 +576,33 @@ async function fetchTaskCounters() {
       }
     });
 
-    // 🌟 ІЄРАРХІЯ КАНБАНУ З НОВИМ СТАТУСОМ
+    // 3️⃣ КРОК: Формуємо фінальний статус для кожного процесу (Канбан-сортування)
     const finalCounters = {};
     
     Object.entries(procAnalysis).forEach(([procID, info]) => {
       let calculatedStatus = "new";
-      let visualModifier = ""; // Додатковий маркер для спец-оформлення
+      let visualModifier = "";
 
       if (info.totalTasks === 0) {
         calculatedStatus = "new";
       } 
-      // 1. Прострочено виконавцем — безумовна пожежа в стовпчик Overdue
       else if (info.hasOverdueExecutor) {
         calculatedStatus = "overdue";
       } 
-      // 2. Керівник прострочив затвердження! Кидаємо в стовпчик Urgent, але міняємо візуал на критичний
       else if (info.hasUrgentOverdue) {
         calculatedStatus = "urgent";
-        visualModifier = "manager-overdue"; // 🔴 Спеціальний прапорець
+        visualModifier = "manager-overdue"; // 🔴 Той самий червоний обідок
       } 
-      // 3. Звичайне затвердження вчасно
       else if (info.hasUrgentNormal) {
         calculatedStatus = "urgent";
       } 
-      // 4. Наближається дедлайн
       else if (info.hasDeadlineClose) {
         calculatedStatus = "deadline";
       } 
-      // 5. Нові задачі
       else if (info.hasNewToday) {
         calculatedStatus = "newTasks";
       } 
-      // 6. Завершено
+      // Якщо абсолютно ВСІ унікальні задачі процесу мають статус done
       else if (info.done === info.totalTasks) {
         calculatedStatus = "completed";
       }
@@ -605,13 +612,13 @@ async function fetchTaskCounters() {
         progress: info.progress,
         done: info.done,
         autoStatus: calculatedStatus,
-        visualModifier: visualModifier // Передаємо цей маркер на фронт
+        visualModifier: visualModifier
       };
     });
 
     return finalCounters;
   } catch (err) {
-    console.error("Помилка аналізатора:", err);
+    console.error("Помилка дедуплікації та аналізу:", err);
     return {};
   }
 }
