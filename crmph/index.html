@@ -115,7 +115,7 @@ function sleep(ms) {
 }
 
 document.getElementById("loginBtn").addEventListener("click", async function() {
-  sessionStorage.clear(); // ❌ нічого не пишемо до перевірки
+  sessionStorage.clear();
 
   const u = document.getElementById("username").value.trim();
   const p = document.getElementById("password").value.trim();
@@ -128,43 +128,40 @@ document.getElementById("loginBtn").addEventListener("click", async function() {
   document.getElementById("marquee").style.display = "block";
 
   try {
-  // 1️⃣ Відправляємо логін
-  const respLogin = await fetch(SCRIPT_URL, {
-    method: "POST",
-    mode: "no-cors",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ action: "login", userName: u, password: p })
-  });
+    // 1️⃣ Відправляємо логін (no-cors, відповіді не читаємо)
+    await fetch(SCRIPT_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ action: "login", userName: u, password: p })
+    });
 
-    // 2️⃣ Чекаємо, щоб токен записався
+    // 2️⃣ Чекаємо, щоб бекенд встиг записати токен
     await sleep(2000);
 
-    const loginData = await respLogin.json();
+    // 3️⃣ Отримуємо токен по ключу (бекенд має повернути {token, userKey})
+    const respToken = await fetch(SCRIPT_URL + "?action=getToken&user=" + encodeURIComponent(u));
+    const tokenData = await respToken.json();
 
-  if (!loginData.success) {
-    alert("Невірний логін або пароль!");
-    document.getElementById("marquee").style.display = "none";
-    return;
-  }
-
-    // 3️⃣ Отримуємо токен
-    const token = loginData.token;
-    const userKey = loginData.userKey;
+    if (!tokenData.token || !tokenData.userKey) {
+      alert("Не вдалося отримати токен. Спробуйте ще раз.");
+      document.getElementById("marquee").style.display = "none";
+      return;
+    }
 
     // 4️⃣ Перевіряємо токен і отримуємо перехід
-    const resp23114 = await fetch(SCRIPT_URL + "?action=675&user=" + encodeURIComponent(userKey) +
-                                 "&token=" + encodeURIComponent(token) +
+    const respMenu = await fetch(SCRIPT_URL + "?action=675&user=" + encodeURIComponent(tokenData.userKey) +
+                                 "&token=" + encodeURIComponent(tokenData.token) +
                                  "&branch=crmph");
-    const a345Data = await resp23114.json();
+    const menuData = await respMenu.json();
 
-    if (a345Data.success) {
-      // ✅ тільки тепер пишемо у sessionStorage
-      sessionStorage.setItem("currentUser", userKey);
-      sessionStorage.setItem("sessionToken", token);
-      window.location.href = a345Data.url;
+    if (menuData.success) {
+      sessionStorage.setItem("currentUser", tokenData.userKey);
+      sessionStorage.setItem("sessionToken", tokenData.token);
+      window.location.href = menuData.url;
     } else {
       alert("Сесія недійсна або час вийшов. Перелогінься!");
-      window.location.href = a345Data.url;
+      window.location.href = menuData.url;
     }
 
   } catch (err) {
