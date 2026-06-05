@@ -2,6 +2,7 @@
 <html lang="uk">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Мої процеси</title>
   <link rel="icon" type="image/jpg" href="11.webp">
   <style>
@@ -35,7 +36,7 @@ body {
    2. ШАПКА (HEADER)
    ========================================================================== */
 header { 
-  background: #1e293b; /* Сучасніший темний відтінок */
+  background: #1e293b; 
   color: white; 
   padding: 15px 20px; 
   display: flex; 
@@ -73,23 +74,37 @@ header button:hover { background: #2563eb; transform: translateY(-1px); }
     width: 100%;
   }
 }
+header .user-info { 
+  font-size: 14px; 
+  font-weight: 600; 
+  background: rgba(255, 255, 255, 0.1); 
+  padding: 6px 14px; 
+  border-radius: 20px; 
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  
+  /* Вирівнюємо іконки, ім'я та дату в один красивий рядок */
+  display: flex;
+  align-items: center;
+  gap: 8px; 
+}
 
 /* ==========================================================================
    3. КАНБАН-ДОШКА (СТОВПЧИКИ ТА КОНТЕЙНЕРИ)
    ========================================================================== */
 .kanban-board {
   display: flex;
+  justify-content: center; /* 🔥 ТЕПЕР ДОШКА ПО ЦЕНТРУ НА ЕКРАНІ КОМП'ЮТЕРА */
   gap: 16px;
   padding: 20px;
   width: 100%;
   box-sizing: border-box;
   align-items: flex-start;
-  overflow-x: auto; /* Горизонтальна прокрутка для великої кількості стовпчиків */
+  overflow-x: auto; 
 }
 
 .kanban-column {
   flex: 1;
-  min-width: 280px; /* Оптимальна ширина стовпчика, щоб не тиснути картки */
+  min-width: 280px; 
   max-width: 350px;
   background: rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(5px);
@@ -105,7 +120,7 @@ header button:hover { background: #2563eb; transform: translateY(-1px); }
   text-align: center;
   font-weight: 700;
   padding: 10px;
-  border-radius: 10px;
+  border-radius: 12px; /* 🔥 Вирівняли під загальну геометрію */
   margin-bottom: 12px;
   font-size: 15px;
   text-transform: uppercase;
@@ -129,86 +144,78 @@ header button:hover { background: #2563eb; transform: translateY(-1px); }
 }
 
 /* ==========================================================================
-   4. СУЧАСНА КАРТКА ПРОЦЕСУ (Гібрид твоїх стилів)
+   4. СУЧАСНА КАРТКА ПРОЦЕСУ (Ефект пакетика з водою)
    ========================================================================== */
 .process-card {
   width: 100%; 
   box-sizing: border-box;
-  padding: 18px;
+  padding: 16px;
   
-  /* 💧 ОНОВЛЕНИЙ КОЛІР: Прохолодна рідка крига (ніжно-голубуватий з прозорістю) */
-  background: rgba(224, 242, 254, 0.78); /* Світло-блакитний відтінок води */
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  /* 💧 ПРАВИЛЬНА ПРОЗОРІСТЬ ДЛЯ СКЛА: знизили з 0.78 до 0.42, щоб бачити фон */
+  background: rgba(234, 244, 254, 0.42) !important; 
+  backdrop-filter: blur(14px) !important;
+  -webkit-backdrop-filter: blur(14px) !important;
   
-  border-radius: 20px; 
+  border-radius: 12px !important; /* 🔥 Ідеальний внутрішній радіус під колонку */
+  border: 1px solid rgba(255, 255, 255, 0.6) !important; 
   
-  /* Блик на краях тепер теж злегка блакитний */
-  border: 1px solid rgba(255, 255, 255, 0.7); 
-  
-  /* ТІНІ ДЛЯ ОБ'ЄМУ ПАКЕТИКА:
-     1. Зовнішня м'яка тінь під карткою
-     2. Внутрішній білий блік зверху-ліворуч
-     3. Внутрішня глибока блакитна тінь знизу-праворуч (ефект товщі води) */
+  /* Об'ємні глянцеві тіні всередині */
   box-shadow: 
-    0 10px 25px rgba(0, 45, 0, 0.15),
-    inset 4px 4px 8px rgba(255, 255, 255, 0.9),
-    inset -5px -5px 12px rgba(14, 165, 233, 0.2); /* Дає блакитний об'єм всередині */
+    0 8px 20px rgba(0, 45, 0, 0.12),
+    inset 3px 3px 6px rgba(255, 255, 255, 0.85),
+    inset -4px -4px 10px rgba(14, 165, 233, 0.18) !important; 
     
   display: flex; 
   flex-direction: column; 
-  align-items: center; 
-  justify-content: center; 
+  align-items: flex-start; /* 🔥 Вирівнювання ліворуч, як на твоєму скріншоті */
+  justify-content: flex-start; 
   cursor: pointer; 
   transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.2s ease; 
-  text-align: center;
+  text-align: left; /* 🔥 Текст тепер не стрибає в центр */
 }
 
-/* При наведенні робимо внутрішню блакитну глибину трохи соковитішою */
+/* Ефекти ховера та активності */
 .process-card:hover { 
-  transform: translateY(-2px) scale(1.02); 
-  background: rgba(224, 242, 254, 0.82);
+  transform: translateY(-2px) scale(1.01); 
+  background: rgba(234, 244, 254, 0.52) !important;
   box-shadow: 
-    0 14px 30px rgba(0, 45, 0, 0.2),
-    inset 6px 6px 12px rgba(255, 255, 255, 1),
-    inset -6px -6px 14px rgba(14, 165, 233, 0.25);
+    0 12px 24px rgba(0, 45, 0, 0.18),
+    inset 4px 4px 8px rgba(255, 255, 255, 0.9),
+    inset -5px -5px 12px rgba(14, 165, 233, 0.22) !important;
 }
 
-/* При кліку пакетик прогинається */
 .process-card:active {
-  transform: scale(0.97);
+  transform: scale(0.98);
   box-shadow: 
     0 4px 10px rgba(0, 45, 0, 0.1),
-    inset 2px 2px 6px rgba(255, 255, 255, 0.6),
-    inset -2px -2px 6px rgba(14, 165, 233, 0.15);
+    inset 2px 2px 4px rgba(255, 255, 255, 0.6),
+    inset -2px -2px 5px rgba(14, 165, 233, 0.12) !important;
 }
 
 .process-title {
   font-size: 16px;
   font-weight: 700;
-  color: #1e293b;
-  margin: 0 0 8px 0;
-  line-height: 1.4;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;  
-  overflow: hidden;
-  text-overflow: ellipsis;
+  color: #0f172a; /* Глибокий темний колір заголовку */
+  margin: 0 0 6px 0;
+  line-height: 1.3;
+  width: 100%;
 }
 
-.process-card p {
-  margin: 4px 0;
+/* Стилі для всього тексту всередині картки (користувачі, дати, параграфи) */
+.process-card p, .process-card div, .process-card span {
   font-size: 13px;
-  color: #475569;
+  color: #1e293b; /* Зробили текст темнішим, щоб він читався на склі */
+  margin: 3px 0;
+  font-weight: 500;
 }
 
 /* Контейнер баджів */
 .counters-container {
   display: flex;
   gap: 6px;
-  justify-content: center;
+  justify-content: flex-start;
   flex-wrap: wrap;
-  margin: 10px 0 4px 0;
+  margin: 8px 0 2px 0;
   width: 100%;
 }
 
@@ -243,12 +250,12 @@ header button:hover { background: #2563eb; transform: translateY(-1px); }
   100% {box-shadow:0 0 8px violet;}
 }
 
-/* Класи пульсації (навішуються на картку) */
-.urgent { animation: pulseGreen 2s infinite; border: 2px solid rgba(255,255,255,0.5); }
-.deadline { animation: pulseOrange 2s infinite; border: 2px solid rgba(255,165,0,0.5); }
-.newTasks { animation: pulseYellow 2s infinite; border: 2px solid rgba(255,255,0,0.5); }
-.overdue { animation: pulseRed 2s infinite; border: 2px solid rgba(255,0,0,0.5); }
-.completed { animation: pulseRainbow 3s infinite; border: 2px solid rgba(255,255,255,0.3); }
+/* Класи пульсації */
+.urgent { animation: pulseGreen 2s infinite; border: 2px solid rgba(255,255,255,0.7) !important; }
+.deadline { animation: pulseOrange 2s infinite; border: 2px solid rgba(255,165,0,0.7) !important; }
+.newTasks { animation: pulseYellow 2s infinite; border: 2px solid rgba(255,255,0,0.7) !important; }
+.overdue { animation: pulseRed 2s infinite; border: 2px solid rgba(255,0,0,0.7) !important; }
+.completed { animation: pulseRainbow 3s infinite; border: 2px solid rgba(255,255,255,0.5) !important; }
 
 /* ==========================================================================
    6. РОЛІ ТА ЕЛЕМЕНТИ ФОРМИ
@@ -314,11 +321,11 @@ input, select {
   }
   header h1 { font-size: 18px; }
 
-  /* 📲 Мобільний свайп для стовпчиків дошки (як у Trello) */
   .kanban-board {
     display: flex;
-    flex-direction: row; /* Залишаємо в рядок! */
-    overflow-x: auto;    /* Вмикаємо горизонтальний свайп пальцем */
+    flex-direction: row; 
+    justify-content: flex-start; /* На мобільних свайп іде зліва направо */
+    overflow-x: auto;    
     scroll-snap-type: x mandatory;
     padding: 10px;
     gap: 12px;
@@ -326,7 +333,7 @@ input, select {
   }
   
   .kanban-column {
-    min-width: 85vw;    /* Кожен стовпчик займає майже весь екран телефона */
+    min-width: 85vw;    
     max-width: 85vw;
     scroll-snap-align: center;
   }
@@ -354,7 +361,7 @@ input, select {
     
     <img src="./logo.svg" alt="logo" width="260" style="margin-top: 15px;">
      
-      <div class="kanban-board">
+    <div class="kanban-board">
         
         <div class="kanban-column">
           <div class="column-header lg-new">🆕 Нові процеси</div>
@@ -386,21 +393,24 @@ input, select {
           <div class="processes-list" id="list-completed"></div>
         </div>
 
-      </div> </div> <div id="newBoardForm">
-      <input type="text" id="boardTitle" placeholder="Назва процесу">
-      <div class="form-row">
-        <label>Власник:
-          <input type="text" id="boardOwner" readonly>
-        </label>
-      </div>
-      <div id="participants"></div>
-      <button onclick="addParticipant()">Додати учасника</button>
-      <button id="saveBtn" onclick="createBoard()">Створити</button>
+    </div> 
+  </div> 
+
+  <div id="newBoardForm">
+    <input type="text" id="boardTitle" placeholder="Назва процесу">
+    <div class="form-row">
+      <label>Власник:
+        <input type="text" id="boardOwner" readonly>
+      </label>
     </div>
+    <div id="participants"></div>
+    <button onclick="addParticipant()">Додати учасника</button>
+    <button id="saveBtn" onclick="createBoard()">Створити</button>
+  </div>
 
-    <img src="./ho.png" alt="logo sub" width="300" style="margin: 20px 0;">
+  <img src="./ho.png" alt="logo sub" width="300" style="margin: 20px 0;">
 
-  </div> <div id="processModal" class="modal" style="display:none;">
+  <div id="processModal" class="modal" style="display:none;">
     <div class="modal-content">
       <h3 id="modalTitle"></h3>
       <div class="modal-buttons">
@@ -427,6 +437,9 @@ input, select {
         <button onclick="document.getElementById('editProcessModal').style.display='none'" style="background: #64748b;">Скасувати</button>
       </div>
     </div>
+  </div>
+</body>
+</html>
 <script>
 (async function(){
   const u = sessionStorage.getItem("currentUser");
@@ -447,8 +460,11 @@ input, select {
     const data = await resp.json();
 
     if (data.success && data.url) {
-      // токен валідний → показуємо меню
+      // токен валідний → показуємо меню миттєво
       document.body.style.display = "flex";
+      
+      // 🔥 Запускаємо вивід юзера, дати та погоди
+      initUserInfoAndWeather(u);
     } else {
       // ❌ токен невалідний → чистимо sessionStorage і назад на логін
       sessionStorage.clear();
@@ -460,6 +476,74 @@ input, select {
     window.location.href = "index.html";
   }
 })();
+
+// 🔥 Функція виводу інфи та погоди з текстовим описом
+async function initUserInfoAndWeather(userName) {
+  const userInfoTop = document.getElementById('userInfoTop');
+  if (!userInfoTop) return;
+
+  // 1. Форматуємо поточну дату комп'ютера
+  const today = new Date();
+  const formattedDate = today.toLocaleDateString('uk-UA', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric'
+  });
+
+  // Спочатку виводимо юзера і дату, щоб не чекати погоду
+  userInfoTop.innerHTML = `
+    <span style="color: #60a5fa; font-weight: 700;">👤 ${userName}</span>
+    <span style="color: rgba(255,255,255,0.3);">|</span>
+    <span style="color: #94a3b8;">📅 ${formattedDate}</span>
+    <span id="weather-load" style="color: rgba(255,255,255,0.3);">| 🌡️ Синоптик думає...</span>
+  `;
+
+  // 2. Стукаємо по погоду (Вишгород)
+  try {
+    const weatherResp = await fetch("https://api.open-meteo.com/v1/forecast?latitude=50.58&longitude=30.48&current=temperature_2m,weather_code");
+    const weatherData = await weatherResp.json();
+    
+    if (weatherData && weatherData.current) {
+      const temp = Math.round(weatherData.current.temperature_2m);
+      const code = weatherData.current.weather_code;
+      
+      // Мапимо коди погоди в емодзі та текст українською
+      let weatherEmoji = '🌡️';
+      let weatherText = 'Погода';
+      
+      if (code === 0) { 
+        weatherEmoji = '☀️'; 
+        weatherText = 'Ясно'; 
+      } else if (code >= 1 && code <= 3) { 
+        weatherEmoji = '⛅'; 
+        weatherText = 'Хмарно'; 
+      } else if (code === 45 || code === 48) { 
+        weatherEmoji = '🌫️'; 
+        weatherText = 'Туман'; 
+      } else if ([51, 53, 55, 61, 63, 65, 80, 81, 82].includes(code)) { 
+        weatherEmoji = '🌧️'; 
+        weatherText = 'Дощ'; 
+      } else if ([71, 73, 75, 77, 85, 86].includes(code)) { 
+        weatherEmoji = '🌨️'; 
+        weatherText = 'Сніг'; 
+      } else if (code >= 95) { 
+        weatherEmoji = '⛈️'; 
+        weatherText = 'Гроза'; 
+      }
+
+      // Оновлюємо рядок, додаючи емодзі, опис тексту та температуру
+      const tempSign = temp > 0 ? `+${temp}` : temp;
+      const weatherSpan = document.getElementById('weather-load');
+      if (weatherSpan) {
+        weatherSpan.innerHTML = `| ${weatherEmoji} ${weatherText} ${tempSign}°C`;
+      }
+    }
+  } catch (wErr) {
+    console.error("Не вдалося завантажити погоду:", wErr);
+    const weatherSpan = document.getElementById('weather-load');
+    if (weatherSpan) weatherSpan.remove();
+  }
+}
 
 // 🔴 Логаут
 document.getElementById("logoutBtn").addEventListener("click", async function() {
@@ -480,7 +564,6 @@ document.getElementById("logoutBtn").addEventListener("click", async function() 
   sessionStorage.clear();
   window.location.href = "index.html";
 });
-
 </script>
 <script>
 let allProcesses = [];
