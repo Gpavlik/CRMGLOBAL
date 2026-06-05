@@ -134,28 +134,53 @@ header button:hover { background: #2563eb; transform: translateY(-1px); }
 .process-card {
   width: 100%; 
   box-sizing: border-box;
-  padding: 16px;
+  padding: 18px;
   
-  /* 🪄 МАГІЯ СКЛА (Glassmorphism) */
-  background: rgba(255, 255, 255, 0.88); /* Робимо плашку прозорішою */
-  backdrop-filter: blur(12px);           /* Сильніше розмиваємо зелений фон за карткою */
-  -webkit-backdrop-filter: blur(12px);   /* Підтримка для Safari / iOS */
-  border: 1px solid rgba(255, 255, 255, 0.6); /* Світлий блик на гранях */
+  /* 💧 ОНОВЛЕНИЙ КОЛІР: Прохолодна рідка крига (ніжно-голубуватий з прозорістю) */
+  background: rgba(224, 242, 254, 0.78); /* Світло-блакитний відтінок води */
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   
-  border-radius: 14px;
-  box-shadow: 0 8px 32px rgba(0, 4d, 0, 0.15); /* Тінь тепер з легким зеленим відтінком */
+  border-radius: 20px; 
+  
+  /* Блик на краях тепер теж злегка блакитний */
+  border: 1px solid rgba(255, 255, 255, 0.7); 
+  
+  /* ТІНІ ДЛЯ ОБ'ЄМУ ПАКЕТИКА:
+     1. Зовнішня м'яка тінь під карткою
+     2. Внутрішній білий блік зверху-ліворуч
+     3. Внутрішня глибока блакитна тінь знизу-праворуч (ефект товщі води) */
+  box-shadow: 
+    0 10px 25px rgba(0, 45, 0, 0.15),
+    inset 4px 4px 8px rgba(255, 255, 255, 0.9),
+    inset -5px -5px 12px rgba(14, 165, 233, 0.2); /* Дає блакитний об'єм всередині */
+    
   display: flex; 
   flex-direction: column; 
   align-items: center; 
   justify-content: center; 
   cursor: pointer; 
-  transition: transform 0.2s ease, box-shadow 0.2s ease; 
+  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.2s ease; 
   text-align: center;
 }
 
+/* При наведенні робимо внутрішню блакитну глибину трохи соковитішою */
 .process-card:hover { 
-  transform: translateY(-4px) scale(1.01); 
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px) scale(1.02); 
+  background: rgba(224, 242, 254, 0.82);
+  box-shadow: 
+    0 14px 30px rgba(0, 45, 0, 0.2),
+    inset 6px 6px 12px rgba(255, 255, 255, 1),
+    inset -6px -6px 14px rgba(14, 165, 233, 0.25);
+}
+
+/* При кліку пакетик прогинається */
+.process-card:active {
+  transform: scale(0.97);
+  box-shadow: 
+    0 4px 10px rgba(0, 45, 0, 0.1),
+    inset 2px 2px 6px rgba(255, 255, 255, 0.6),
+    inset -2px -2px 6px rgba(14, 165, 233, 0.15);
 }
 
 .process-title {
@@ -254,24 +279,6 @@ input, select {
   color: #1e293b;
 }
 
-/* Легенда */
-.legend { 
-  margin-top: 25px;
-  border-top: 1px solid rgba(255,255,255,0.2); 
-  width: 100%;
-  max-width: 320px; 
-  padding: 20px 10px;
-}
-.legend-item { margin: 8px 0; display: flex; align-items: center; font-size: 14px; }
-.legend span { 
-  display: inline-block; 
-  width: 16px; 
-  height: 16px; 
-  margin-right: 12px; 
-  border-radius: 50%; 
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
 /* ==========================================================================
    7. МОДАЛЬНІ ВІКНА
    ========================================================================== */
@@ -323,10 +330,6 @@ input, select {
     max-width: 85vw;
     scroll-snap-align: center;
   }
-
-  .legend { 
-    width: 90%;
-  }
 }
   </style>
 </head>
@@ -350,23 +353,7 @@ input, select {
   <div id="content">
     
     <img src="./logo.svg" alt="logo" width="260" style="margin-top: 15px;">
-
-    <div class="main-workspace" style="display: flex; width: 100%; gap: 20px; padding: 20px; box-sizing: border-box; align-items: flex-start;">
-      
-      <div class="legend">
-        <h3>Карта бордерів</h3>
-        <div class="legend-item"><span class="lg-urgent"></span> Потрібне затвердження</div>
-        <div class="legend-item"><span class="lg-deadline"></span> Наближається дедлайн</div>
-        <div class="legend-item"><span class="lg-new"></span> Додані нові задачі</div>
-        <div class="legend-item"><span class="lg-overdue"></span> Протерміноване завдання</div>
-        <div class="legend-item"><span class="lg-completed"></span> Процес завершено</div>
-        
-        <h4>Карта Кольорів</h4>
-        <div class="legend-item"><span class="ownerd"></span> Власник процесу</div>
-        <div class="legend-item"><span class="executor"></span> Виконавець</div>
-        <div class="legend-item"><span class="manager"></span> Керівник</div>
-      </div>
-      
+     
       <div class="kanban-board">
         
         <div class="kanban-column">
@@ -440,7 +427,6 @@ input, select {
         <button onclick="document.getElementById('editProcessModal').style.display='none'" style="background: #64748b;">Скасувати</button>
       </div>
     </div>
-  </div>
 <script>
 (async function(){
   const u = sessionStorage.getItem("currentUser");
