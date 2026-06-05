@@ -108,7 +108,7 @@
   </div>
 
 <script>
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxwAdjvlNPdISzmoZFXunUrBU0Ztb-0HvDpO2s7ZQMJhWF2HyBQ52qKwpywY7t9cUGr/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzPIdUQ6obtM9AjMoJeQKLJjLPtHcWYMYEex7UDYFqNtDHpoIQ0kyD73idI-wWyShEg/exec";
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -157,7 +157,7 @@ document.getElementById("loginBtn").addEventListener("click", async function() {
 
     if (a345Data.success) {
       // ✅ тільки тепер пишемо у sessionStorage
-      sessionStorage.setItem("currentUser", u);
+      sessionStorage.setItem("currentUser", tokenData.userKey);
       sessionStorage.setItem("sessionToken", tokenData.token);
       window.location.href = a345Data.url;
     } else {
