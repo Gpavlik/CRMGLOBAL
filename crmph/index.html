@@ -140,7 +140,7 @@ document.getElementById("loginBtn").addEventListener("click", async function() {
     await sleep(2000);
 
     // 3️⃣ Отримуємо токен
-    const respToken = await fetch(SCRIPT_URL + "?action=getToken&user=" + encodeURIComponent(u));
+    const respToken = await fetch(SCRIPT_URL + "?action=getToken&user=" + encodeURIComponent(tokenData.userKey));
     const tokenData = await respToken.json();
 
     if (!tokenData.token) {
@@ -150,7 +150,7 @@ document.getElementById("loginBtn").addEventListener("click", async function() {
     }
 
     // 4️⃣ Перевіряємо токен і отримуємо перехід
-    const resp23114 = await fetch(SCRIPT_URL + "?action=675&user=" + encodeURIComponent(u) +
+    const resp23114 = await fetch(SCRIPT_URL + "?action=675&user=" + encodeURIComponent(tokenData.userKey) +
                                  "&token=" + encodeURIComponent(tokenData.token) +
                                  "&branch=crmph");
     const a345Data = await resp23114.json();
