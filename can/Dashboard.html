@@ -246,33 +246,87 @@ header button:hover { background: #2563eb; transform: translateY(-1px); }
 }
 
 /* ==========================================================================
-   6. РОЛІ ТА ЕЛЕМЕНТИ ФОРМИ (Текст в учасниках — білий!)
+   6. РОЛІ ТА ЕЛЕМЕНТИ ФОРМИ (Перетворення на красиву модалку)
    ========================================================================== */
-.ownerd { 
-  background: #3b82f6; 
-  color: #fff !important; /* 🔥 Текст тепер чітко білий */
-  font-weight: bold; 
-  padding: 2px 8px; 
-  border-radius: 4px; 
-  display: inline-block; 
-}
-.executor { 
-  background: #8b5cf6; 
-  color: #fff !important; /* 🔥 Текст тепер чітко білий */
-  padding: 2px 8px; 
-  border-radius: 4px; 
-  display: inline-block; 
-  width: max-content; 
-}
-.manager { 
-  background: #10b981; 
-  color: #fff !important; /* 🔥 Текст тепер чітко білий */
-  padding: 2px 8px; 
-  border-radius: 4px; 
-  display: inline-block; 
-  width: max-content; 
+.owner { background: #f8fafc; color: #0f172a; font-weight: bold; padding: 2px 6px; border-radius: 4px; }
+.ownerd { background: #3b82f6; color: #fff; font-weight: bold; padding: 2px 6px; border-radius: 4px; }
+.executor { background: #8b5cf6; color: white; padding: 2px 6px; border-radius: 4px; }
+.manager { background: #10b981; color: white; padding: 2px 6px; border-radius: 4px; }
+
+/* Перетворюємо форму на повноцінний Modal Overlay */
+#newBoardForm { 
+  display: none; 
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(15, 23, 42, 0.6); /* Темний напівпрозорий фон */
+  backdrop-filter: blur(4px); /* Розмиття заднього плану */
+  justify-content: center; 
+  align-items: center;
+  z-index: 1100; /* Вище за всі елементи */
 }
 
+/* Контент всередині форми (сама біла плашка) */
+.form-content {
+  background: #fff; 
+  padding: 24px; 
+  border-radius: 16px;
+  color: #1e293b;
+  box-shadow: 0 20px 25px -5px rgba(0,0,0,0.2);
+  width: 90%;
+  max-width: 450px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  box-sizing: border-box;
+}
+
+.form-content h2 {
+  margin: 0 0 4px 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #0f172a;
+  text-align: center;
+}
+
+.form-row { 
+  display: flex; 
+  flex-direction: column;
+  gap: 6px; 
+  text-align: left;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.form-row input, .form-row select { 
+  width: 100%;
+  box-sizing: border-box;
+}
+
+#participants {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 120px;
+  overflow-y: auto;
+}
+
+/* Кнопки форми */
+.form-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 10px;
+}
+.form-buttons button {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 13px;
+  transition: opacity 0.2s;
+}
+.form-buttons button:hover { opacity: 0.9; }
 /* ==========================================================================
    7. МОДАЛЬНІ ВІКНА
    ========================================================================== */
@@ -408,22 +462,34 @@ header button:hover { background: #2563eb; transform: translateY(-1px); }
     </div>
   </div>
 
-  <div id="editProcessModal" class="modal" style="display:none;">
-    <div class="modal-content">
-      <h2>Редагування процесу</h2>
-      <div style="margin-bottom: 15px; text-align: left;">
-        <label style="font-weight: bold; display: block; margin-bottom: 5px;">Назва:</label>
-        <input type="text" id="editTitle" style="width: 100%; box-sizing: border-box;">
+  <!-- Оновлена модальна форма створення процесу -->
+  <div id="newBoardForm">
+    <div class="form-content">
+      <h2>Створити новий процес</h2>
+      
+      <div class="form-row">
+        <label>Назва процесу:</label>
+        <input type="text" id="boardTitle" placeholder="Введіть назву...">
       </div>
-
-      <div id="editParticipants" style="margin-bottom: 15px;"></div>
-      <button onclick="addEditParticipant()" style="margin-bottom: 15px;">Додати учасника</button>
-
-      <div class="modal-buttons">
-        <button id="saveEditBtn" style="background: #10b981;">Зберегти</button>
-        <button onclick="document.getElementById('editProcessModal').style.display='none'" style="background: #64748b;">Скасувати</button>
+      
+      <div class="form-row">
+        <label>Власник процесу:</label>
+        <input type="text" id="boardOwner" readonly style="background: #e2e8f0; color: #64748b;">
+      </div>
+      
+      <div class="form-row">
+        <label>Учасники проекту:</label>
+        <div id="participants"></div>
+      </div>
+      
+      <button type="button" onclick="addParticipant()" style="background: #64748b; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 12px; align-self: flex-start;">+ Додати учасника</button>
+      
+      <div class="form-buttons">
+        <button id="saveBtn" onclick="createBoard()" style="background: #10b981; color: white;">Створити</button>
+        <button type="button" onclick="toggleForm()" style="background: #94a3b8; color: white;">Скасувати</button>
       </div>
     </div>
+  </div>
   </div>
 </body>
 </html>
@@ -911,7 +977,8 @@ document.getElementById("saveBtn").addEventListener("click", () => {
 function toggleForm() {
   const form = document.getElementById("newBoardForm");
   if (!form) return;
-  form.style.display = form.style.display === "none" ? "flex" : "none";
+  // Перемикаємо між none та flex для ідеального центрування модалки
+  form.style.display = form.style.display === "none" || form.style.display === "" ? "flex" : "none";
 }
 function addParticipant() {
   const div = document.createElement("div");
