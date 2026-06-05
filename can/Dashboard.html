@@ -209,7 +209,12 @@ input, select {
   min-height: 150px;
   padding: 15px;
 }
-
+/* Процес у стовпчику затвердження, який палає через прострочений дедлайн */
+.process.manager-fire {
+  border: 2px solid #ff0000 !important;
+  box-shadow: 0 0 10px rgba(255, 0, 0, 0.4);
+  background: rgba(255, 0, 0, 0.05) !important;
+}
 /* Адаптивність для мобілок: стовпчики лягають один під один */
 @media screen and (max-width: 1024px) {
   .kanban-board {
@@ -401,7 +406,8 @@ let allProcesses = [];
 
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwh5TrmNwDcMY51ToSGblbbzw2xF6sZPTuS677x3BHctpMinn4FCQsQmKkKwBus5kfq/exec";
 const DASHBOARD_SHEET_URL = "https://docs.google.com/spreadsheets/d/1vjxURM8HlNTxdk-XGEh-99sYuHhtEgNKLf-39jRm8-Q/gviz/tq?tqx=out:json&sheet=Dashboard";
-
+// 🆕 Додаємо посилання на вкладку з задачами
+const PROCESSES_SHEET_URL = "https://docs.google.com/spreadsheets/d/1vjxURM8HlNTxdk-XGEh-99sYuHhtEgNKLf-39jRm8-Q/gviz/tq?tqx=out:json&sheet=Processes";
 const currentUser = sessionStorage.getItem("currentUser") || "невідомий";
 
 
@@ -474,29 +480,169 @@ function getVisibleProcesses(currentUserKey, processes) {
   });
 }
 
+async function fetchTaskCounters() {
+  try {
+    const res = await fetch(PROCESSES_SHEET_URL);
+    const text = await res.text();
+    const json = JSON.parse(text.substr(47).slice(0, -2));
 
+    const procAnalysis = {};
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    json.table.rows.slice(1).forEach(r => {
+      const procID = r.c[0]?.v || "";
+      const startStr = r.c[7]?.v || "";
+      const deadlineStr = r.c[8]?.v || "";
+      // З твоєї функції fetchDashboardData бачимо: 12-й стовпець (індекс 11) — це multiRole
+      const isMultiRole = r.c[11]?.v === "TRUE" || r.c[11]?.v === true; 
+      const taskStatus = (r.c[16]?.v || "").toLowerCase().trim(); // 17-й стовпець: TaskStatus
+
+      if (!procID) return;
+
+      if (!procAnalysis[procID]) {
+        procAnalysis[procID] = {
+          todo: 0, progress: 0, done: 0, totalTasks: 0,
+          hasOverdueExecutor: false,   // Прострочив виконавець
+          hasUrgentNormal: false,      // Треба затвердити (час є)
+          hasUrgentOverdue: false,     // Треба затвердити (але дедлайн МИНУВ!)
+          hasDeadlineClose: false,
+          hasNewToday: false
+        };
+      }
+
+      const info = procAnalysis[procID];
+      info.totalTasks++;
+
+      const isDone = (taskStatus === "done" || taskStatus === "виконано" || taskStatus === "completed");
+      if (isDone) {
+        info.done++;
+      } else if (taskStatus === "inprogress" || taskStatus === "в процесі" || taskStatus === "progress") {
+        info.progress++;
+      } else {
+        info.todo++;
+      }
+
+      // Базові дати
+      let dDeadline = null;
+      let dStart = null;
+      if (deadlineStr) { dDeadline = new Date(deadlineStr); dDeadline.setHours(0,0,0,0); }
+      if (startStr) { dStart = new Date(startStr); dStart.setHours(0,0,0,0); }
+
+      // 🔍 АНАЛІЗ ПРАВИЛ КАНБАНУ
+      
+      // А. Керівник не затвердив вчасно (Задача Done + Потребує затвердження + Дедлайн минув)
+      if (isDone && isMultiRole && dDeadline && today > dDeadline) {
+        info.hasUrgentOverdue = true;
+      }
+      
+      // Б. Керівник просто має затвердити (Задача Done + Потребує затвердження + Дедлайн ще НЕ минув)
+      else if (isDone && isMultiRole && (!dDeadline || today <= dDeadline)) {
+        info.hasUrgentNormal = true;
+      }
+
+      // В. Прострочив виконавець (Задача НЕ Done + Дедлайн минув)
+      else if (!isDone && dDeadline && today > dDeadline) {
+        info.hasOverdueExecutor = true;
+      }
+
+      // Г. Наближається дедлайн (Не виконано, залишилося менше 20% часу)
+      if (!isDone && dStart && dDeadline && today <= dDeadline) {
+        const totalDuration = dDeadline.getTime() - dStart.getTime();
+        const timeSpent = today.getTime() - dStart.getTime();
+        if (totalDuration > 0) {
+          const percentSpent = (timeSpent / totalDuration) * 100;
+          if (percentSpent >= 80) {
+            info.hasDeadlineClose = true;
+          }
+        }
+      }
+
+      // Д. Нова задача сьогодні
+      if (dStart && dStart.getTime() === today.getTime()) {
+        info.hasNewToday = true;
+      }
+    });
+
+    // 🌟 ІЄРАРХІЯ КАНБАНУ З НОВИМ СТАТУСОМ
+    const finalCounters = {};
+    
+    Object.entries(procAnalysis).forEach(([procID, info]) => {
+      let calculatedStatus = "new";
+      let visualModifier = ""; // Додатковий маркер для спец-оформлення
+
+      if (info.totalTasks === 0) {
+        calculatedStatus = "new";
+      } 
+      // 1. Прострочено виконавцем — безумовна пожежа в стовпчик Overdue
+      else if (info.hasOverdueExecutor) {
+        calculatedStatus = "overdue";
+      } 
+      // 2. Керівник прострочив затвердження! Кидаємо в стовпчик Urgent, але міняємо візуал на критичний
+      else if (info.hasUrgentOverdue) {
+        calculatedStatus = "urgent";
+        visualModifier = "manager-overdue"; // 🔴 Спеціальний прапорець
+      } 
+      // 3. Звичайне затвердження вчасно
+      else if (info.hasUrgentNormal) {
+        calculatedStatus = "urgent";
+      } 
+      // 4. Наближається дедлайн
+      else if (info.hasDeadlineClose) {
+        calculatedStatus = "deadline";
+      } 
+      // 5. Нові задачі
+      else if (info.hasNewToday) {
+        calculatedStatus = "newTasks";
+      } 
+      // 6. Завершено
+      else if (info.done === info.totalTasks) {
+        calculatedStatus = "completed";
+      }
+
+      finalCounters[procID] = {
+        todo: info.todo,
+        progress: info.progress,
+        done: info.done,
+        autoStatus: calculatedStatus,
+        visualModifier: visualModifier // Передаємо цей маркер на фронт
+      };
+    });
+
+    return finalCounters;
+  } catch (err) {
+    console.error("Помилка аналізатора:", err);
+    return {};
+  }
+}
 async function initDashboard() {
+  // 1. Спочатку пробуємо швидко показати те, що є в кеші ( session )
   const localData = sessionStorage.getItem("dashboardData");
   if (localData) {
     const parsed = JSON.parse(localData);
     allProcesses = parsed.processes || [];
     const visible = getVisibleProcesses(currentUser, allProcesses);
-    renderDashboard({ processes: visible });
+    renderDashboard({ processes: visible }, {}); // Поки без лічильників
   }
 
-  const data = await fetchDashboardData();
+  // 2. Смикаємо гугл-таблицю за процесами та задачами ОДНОЧАСНО
+  const [data, taskCounters] = await Promise.all([
+    fetchDashboardData(),
+    fetchTaskCounters()
+  ]);
+
   if (data.status === "ok") {
     allProcesses = data.processes;
     sessionStorage.setItem("dashboardData", JSON.stringify({ processes: allProcesses }));
+    
     const visible = getVisibleProcesses(currentUser, allProcesses);
-    renderDashboard({ processes: visible });
+    // Передаємо лічильники в рендер!
+    renderDashboard({ processes: visible }, taskCounters);
     populateProcessSelector(visible);
   }
 }
 
-
-function renderDashboard(dashboardData) {
-  // 1️⃣ Очищаємо всі стовпчики перед новим рендером
+function renderDashboard(dashboardData, taskCounters = {}) {
   const columns = {
     'new': document.getElementById("list-new"),
     'urgent': document.getElementById("list-urgent"),
@@ -506,25 +652,21 @@ function renderDashboard(dashboardData) {
     'completed': document.getElementById("list-completed")
   };
 
-  // Обнуляємо текст у кожному стовпчику
   Object.values(columns).forEach(col => {
     if (col) col.innerHTML = "";
   });
 
   if (!dashboardData.processes.length) {
-    // Якщо взагалі нічого немає, виведемо повідомлення в перший стовпчик
-    columns['new'].innerHTML = "<p style='color: #fff; text-align:center;'>Немає доступних процесів</p>";
+    columns['new'].innerHTML = "<p style='color: #fff; text-align:center; font-size:13px;'>Немає процесів</p>";
     return;
   }
 
-  // 2️⃣ Біжимо по кожному процесу
-  dashboardData.processes.forEach(proc => {
+dashboardData.processes.forEach(proc => {
     const div = document.createElement("div");
     
-    // Визначаємо поточний статус процесу (якщо порожній — даємо 'new')
-    const status = proc.status ? proc.status.trim() : "new";
+    const pCounts = taskCounters[proc.processID] || { todo: 0, progress: 0, done: 0, autoStatus: "new", visualModifier: "" };
+    const status = pCounts.autoStatus;
     
-    // Автоматично підбираємо клас анімації бордера згідно з картою бордерів
     let borderClass = "";
     if (status === "urgent") borderClass = "urgent";
     else if (status === "deadline") borderClass = "deadline";
@@ -532,52 +674,63 @@ function renderDashboard(dashboardData) {
     else if (status === "overdue") borderClass = "overdue";
     else if (status === "completed") borderClass = "completed";
 
-    // Базовий клас ролі (наприклад, власник чи ні)
-    // Твій старий код використовував за замовчуванням класи .process .owner
+    // 🔴 Якщо це прострочене керівником затвердження — додаємо спеціальний CSS-клас
+    if (pCounts.visualModifier === "manager-overdue") {
+      borderClass += " manager-fire"; 
+    }
+
     div.className = `process owner ${borderClass}`;
-    
     div.dataset.status = status;
     div.dataset.processId = proc.processID || "";
     div.dataset.procData = JSON.stringify(proc);
+    
+    // ... далі весь твій код відображення плашки залишається без змін ...
 
     const ownerName = usersMap[proc.owner] || proc.owner;
 
-    // Форматування учасників (твій оригінальний код кольорів ролей)
+    // Учасники
     const participantsFormatted = proc.participants.map(p => {
       const [name, role] = p.split(" (");
       const cleanRole = role ? role.replace(")", "") : "";
-
       let color = "black";
       if (cleanRole === "Виконавець") color = "purple";
       else if (cleanRole === "Керівник") color = "green";
       else if (cleanRole === "Оунер") color = "blue";
-
-      return `<span style="color:${color}">${name} — ${cleanRole}</span>`;
+      return `<span style="color:${color}">${name} (${cleanRole})</span>`;
     });
 
-    // Наповнюємо плашку даними
+    // 🎯 Отримуємо РЕАЛЬНІ цифри з нашого об'єкта лічильників за ID процесу
+
     div.innerHTML = `
       <h2>${proc.title}</h2>
-      <p>Власник: <span style="color:blue">${ownerName}</span></p>
-      <p>Учасники:<br>${participantsFormatted.join("<br>")}</p>
-      <p style="font-size:12px; opacity:0.7;">Статус: ${status}</p>
+      <p>👤 <span style="color:blue; font-weight:bold;">${ownerName}</span></p>
+      
+      <div class="task-counters">
+        <span class="cnt-todo">📋 Зробити: ${pCounts.todo}</span>
+        <span class="cnt-progress">⚙️ В процесі: ${pCounts.progress}</span>
+        <span class="cnt-done">✅ Виконано: ${pCounts.done}</span>
+      </div>
+
+      <details onclick="event.stopPropagation();">
+        <summary>👥 Учасники (${proc.participants.length})</summary>
+        <div style="margin-top: 5px; line-height: 1.4;">
+          ${participantsFormatted.join("<br>")}
+        </div>
+      </details>
     `;
 
     div.onclick = () => showProcessModal(proc);
 
-    // 3️⃣ Закидуємо плашку у відповідний стовпчик
     if (columns[status]) {
       columns[status].appendChild(div);
     } else {
-      // Якщо статус якийсь екзотичний і стовпчика немає — кидаємо в "Нові"
       columns['new'].appendChild(div);
     }
   });
 
-  // Перевірка на пустоту: якщо після сортування якийсь стовпчик пустий, напишемо про це
   Object.entries(columns).forEach(([key, col]) => {
     if (col && col.children.length === 0) {
-      col.innerHTML = "<p style='color: rgba(255,255,255,0.4); text-align:center; font-size:13px; margin: 20px 0;'>Порожньо</p>";
+      col.innerHTML = "<p style='color: rgba(255,255,255,0.3); text-align:center; font-size:12px; margin: 15px 0;'>Порожньо</p>";
     }
   });
 }
