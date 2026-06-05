@@ -131,6 +131,7 @@ document.getElementById("loginBtn").addEventListener("click", async function() {
   // 1️⃣ Відправляємо логін
   const respLogin = await fetch(SCRIPT_URL, {
     method: "POST",
+    mode: "no-cors",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ action: "login", userName: u, password: p })
   });
