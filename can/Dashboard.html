@@ -258,8 +258,8 @@ input, select {
 
   try {
     // ✅ перевірка токена та юзернейма
-    const resp = await fetch("https://script.google.com/macros/s/AKfycbwOEqMfhRV7f-Ifm15XmW7crLuBvbPBuAl4-Sr52dXfBIWN7XBm_KmQ1nkr4T85fH29/exec" +
-                             "?action=menu&user=" + encodeURIComponent(u) +
+    const resp = await fetch("https://script.google.com/macros/s/AKfycbxwAdjvlNPdISzmoZFXunUrBU0Ztb-0HvDpO2s7ZQMJhWF2HyBQ52qKwpywY7t9cUGr/exec" +
+                             "?action=675&user=" + encodeURIComponent(u) +
                              "&token=" + encodeURIComponent(token) +
                              "&branch=can");
     const data = await resp.json();
@@ -285,7 +285,7 @@ document.getElementById("logoutBtn").addEventListener("click", async function() 
   const token = sessionStorage.getItem("sessionToken");
 
   try {
-    await fetch("https://script.google.com/macros/s/AKfycbwOEqMfhRV7f-Ifm15XmW7crLuBvbPBuAl4-Sr52dXfBIWN7XBm_KmQ1nkr4T85fH29/exec", {
+    await fetch("https://script.google.com/macros/s/AKfycbxwAdjvlNPdISzmoZFXunUrBU0Ztb-0HvDpO2s7ZQMJhWF2HyBQ52qKwpywY7t9cUGr/exec", {
       method: "POST",
       mode: "no-cors",
       headers: { "Content-Type": "application/json" },
