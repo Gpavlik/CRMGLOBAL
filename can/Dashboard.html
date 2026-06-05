@@ -268,7 +268,7 @@ header button:hover { background: #2563eb; transform: translateY(-1px); }
   z-index: 9999; /* Максимальний пріоритет */
 }
 
-/* Конкретно біле вікно модалки, якого зараз немає на скріншоті */
+/* Конкретно біле вікно модалки */
 #newBoardForm .form-content {
   background: #ffffff !important; 
   padding: 25px !important; 
@@ -276,7 +276,7 @@ header button:hover { background: #2563eb; transform: translateY(-1px); }
   color: #1e293b !important;
   box-shadow: 0 20px 25px -5px rgba(0,0,0,0.3), 0 10px 10px -5px rgba(0,0,0,0.2) !important;
   width: 90% !important;
-  max-width: 420px !important;
+  max-width: 460px !important; /* Трохи збільшили, щоб усім вистачило місця в рядочку */
   display: flex !important;
   flex-direction: column !important;
   gap: 14px !important;
@@ -328,6 +328,74 @@ header button:hover { background: #2563eb; transform: translateY(-1px); }
   font-weight: 600 !important;
   font-size: 13px !important;
   transition: background 0.2s !important;
+}
+
+/* ==========================================================================
+   🔥 ДОДАНИЙ ФІКС: ВИРІВНЮВАННЯ УЧАСНИКІВ В РЯДОК
+   ========================================================================== */
+#newBoardForm #participants {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 8px !important;
+  max-height: 140px !important;
+  overflow-y: auto !important;
+  padding: 2px !important;
+}
+
+/* Змушуємо кожен рядок учасника бути флекс-контейнером */
+#newBoardForm #participants > div, 
+#newBoardForm .participant-row {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  gap: 10px !important;
+  width: 100% !important;
+  background: #f8fafc !important;
+  padding: 6px 10px !important;
+  border-radius: 8px !important;
+  border: 1px solid #e2e8f0 !important;
+  box-sizing: border-box !important;
+}
+
+/* Текст (ПІБ або чекбокс з текстом) */
+#newBoardForm #participants label,
+#newBoardForm #participants span {
+  flex: 1 !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  color: #1e293b !important;
+  margin: 0 !important;
+  white-space: nowrap !important;
+}
+
+/* Кастомізація селекту ролі всередині рядка */
+#newBoardForm #participants select {
+  width: 130px !important;
+  padding: 4px 8px !important;
+  font-size: 12px !important;
+  border: 1px solid #cbd5e1 !important;
+  border-radius: 6px !important;
+  background-color: #ffffff !important;
+  color: #1e293b !important;
+  margin: 0 !important;
+}
+
+/* Кнопка видалення (хрестик) */
+#newBoardForm #participants button {
+  background: none !important;
+  border: none !important;
+  color: #ef4444 !important;
+  font-size: 18px !important;
+  font-weight: bold !important;
+  cursor: pointer !important;
+  padding: 0 4px !important;
+  line-height: 1 !important;
+}
+#newBoardForm #participants button:hover {
+  color: #dc2626 !important;
 }
 /* ==========================================================================
    7. МОДАЛЬНІ ВІКНА
