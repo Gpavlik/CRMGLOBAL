@@ -489,28 +489,24 @@ async function fetchTaskCounters() {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    // 1️⃣ КРОК: Залишаємо тільки найсвіжіші апдейти для кожної задачі
+    // 1️⃣ КРОК: Дедуплікація за TaskID (Стовпець F, індекс 5)
     const latestTasks = {};
 
     json.table.rows.slice(1).forEach(r => {
-      const procTaskID = r.c[4]?.v || ""; // 5-й стовпець: унікальний ID задачі
+      if (!r || !r.c) return;
+      
+      const procTaskID = r.c[5]?.v ? String(r.c[5].v).trim() : ""; 
       if (!procTaskID) return;
 
-      // Оскільки перебір йде зверху вниз, кожен новий рядок з таким же procTaskID 
-      // просто перезапише старий. В результаті в об'єкті залишаться тільки найостанніші дані.
+      // Останній рядок у таблиці перезаписує старі версії цієї ж задачі
       latestTasks[procTaskID] = r;
     });
 
-    // 2️⃣ КРОК: Аналізуємо вифільтровані актуальні задачі, групуючи за ProcessID
+    // 2️⃣ КРОК: Рахуємо лічильники по унікальних актуальних рядках
     const procAnalysis = {};
 
     Object.values(latestTasks).forEach(r => {
-      const procID = r.c[0]?.v || "";      // 1-й стовпець: ProcessID
-      const startStr = r.c[7]?.v || "";     // 8-й стовпець: Start
-      const deadlineStr = r.c[8]?.v || "";  // 9-й стовпець: Deadline
-      const isMultiRole = r.c[11]?.v === "TRUE" || r.c[11]?.v === true; // 12-й стовпець: multiRole
-      const taskStatus = (r.c[16]?.v || "").toLowerCase().trim();       // 17-й стовпець: Status
-
+      const procID = r.c[0]?.v ? String(r.c[0].v).trim() : ""; // Стовпець A
       if (!procID) return;
 
       if (!procAnalysis[procID]) {
@@ -523,13 +519,13 @@ async function fetchTaskCounters() {
           hasNewToday: false
         };
       }
-
       const info = procAnalysis[procID];
       info.totalTasks++;
 
-      // Визначаємо актуальний статус
-      const isDone = (taskStatus === "done" || taskStatus === "виконано" || taskStatus === "completed");
-      if (isDone) {
+      // Читаємо статус задачі (Стовпець Q, індекс 16) — тепер це гарантовано рядок
+      const taskStatus = r.c[16]?.v ? String(r.c[16].v).toLowerCase().trim() : "";
+
+      if (taskStatus === "done" || taskStatus === "виконано" || taskStatus === "completed") {
         info.done++;
       } else if (taskStatus === "inprogress" || taskStatus === "в процесі" || taskStatus === "progress") {
         info.progress++;
@@ -537,75 +533,67 @@ async function fetchTaskCounters() {
         info.todo++;
       }
 
-      // Парсимо дати
+      // Читаємо дати як чисті рядки (Стовпці H=7, I=8)
+      const startStr = r.c[7]?.v ? String(r.c[7].v).trim() : "";
+      const deadlineStr = r.c[8]?.v ? String(r.c[8].v).trim() : "";
+      
+      // Стовпець L (MultiRole, індекс 11)
+      const isMultiRole = r.c[11]?.v ? String(r.c[11].v).toUpperCase().trim() === "TRUE" : false;
+
       let dDeadline = null;
       let dStart = null;
-      if (deadlineStr) { dDeadline = new Date(deadlineStr); dDeadline.setHours(0, 0, 0, 0); }
-      if (startStr) { dStart = new Date(startStr); dStart.setHours(0, 0, 0, 0); }
 
-      // 🔍 ПЕРЕВІРКА ПРАВИЛ КАНБАНУ НА СВІЖИХ ДАНИХ
-      
-      // А. Керівник прострочив затвердження
-      if (isDone && isMultiRole && dDeadline && today > dDeadline) {
-        info.hasUrgentOverdue = true;
+      // Оскільки формат тепер "Звичайний текст", Date() легко розпарсить рядок типу "2026-05-26"
+      if (deadlineStr) {
+        dDeadline = new Date(deadlineStr);
+        if (!isNaN(dDeadline.getTime())) dDeadline.setHours(0, 0, 0, 0);
+        else dDeadline = null;
       }
-      // Б. Треба затвердити вчасно
-      else if (isDone && isMultiRole && (!dDeadline || today <= dDeadline)) {
-        info.hasUrgentNormal = true;
-      }
-      // В. Прострочив виконавець
-      else if (!isDone && dDeadline && today > dDeadline) {
-        info.hasOverdueExecutor = true;
+      if (startStr) {
+        dStart = new Date(startStr);
+        if (!isNaN(dStart.getTime())) dStart.setHours(0, 0, 0, 0);
+        else dStart = null;
       }
 
-      // Г. Наближається дедлайн (менше 20% часу залишилось)
+      // 🔍 Застосовуємо правила Канбану
+      const isDone = (taskStatus === "done" || taskStatus === "виконано" || taskStatus === "completed");
+
+      if (isDone) {
+        if (isMultiRole && dDeadline && today > dDeadline) info.hasUrgentOverdue = true;
+        else if (isMultiRole) info.hasUrgentNormal = true;
+      } else {
+        if (dDeadline && today > dDeadline) info.hasOverdueExecutor = true;
+      }
+
+      // Наближення дедлайну (залишилось менше 20% часу)
       if (!isDone && dStart && dDeadline && today <= dDeadline) {
         const totalDuration = dDeadline.getTime() - dStart.getTime();
         const timeSpent = today.getTime() - dStart.getTime();
-        if (totalDuration > 0) {
-          const percentSpent = (timeSpent / totalDuration) * 100;
-          if (percentSpent >= 80) {
-            info.hasDeadlineClose = true;
-          }
+        if (totalDuration > 0 && (timeSpent / totalDuration) * 100 >= 80) {
+          info.hasDeadlineClose = true;
         }
       }
 
-      // Д. Нова задача сьогодні
+      // Нова задача сьогодні
       if (dStart && dStart.getTime() === today.getTime()) {
         info.hasNewToday = true;
       }
     });
 
-    // 3️⃣ КРОК: Формуємо фінальний статус для кожного процесу (Канбан-сортування)
+    // 3️⃣ КРОК: Визначаємо підсумковий статус для кожної картки процесу
     const finalCounters = {};
     
     Object.entries(procAnalysis).forEach(([procID, info]) => {
-      let calculatedStatus = "new";
+      let calculatedStatus = "active";
       let visualModifier = "";
 
-      if (info.totalTasks === 0) {
-        calculatedStatus = "new";
-      } 
-      else if (info.hasOverdueExecutor) {
-        calculatedStatus = "overdue";
-      } 
-      else if (info.hasUrgentOverdue) {
-        calculatedStatus = "urgent";
-        visualModifier = "manager-overdue"; // 🔴 Той самий червоний обідок
-      } 
-      else if (info.hasUrgentNormal) {
-        calculatedStatus = "urgent";
-      } 
-      else if (info.hasDeadlineClose) {
-        calculatedStatus = "deadline";
-      } 
-      else if (info.hasNewToday) {
-        calculatedStatus = "newTasks";
-      } 
-      // Якщо абсолютно ВСІ унікальні задачі процесу мають статус done
-      else if (info.done === info.totalTasks) {
-        calculatedStatus = "completed";
-      }
+      if (info.totalTasks === 0) calculatedStatus = "new";
+      else if (info.hasOverdueExecutor) calculatedStatus = "overdue";
+      else if (info.hasUrgentOverdue) { calculatedStatus = "urgent"; visualModifier = "manager-overdue"; }
+      else if (info.hasUrgentNormal) calculatedStatus = "urgent";
+      else if (info.hasDeadlineClose) calculatedStatus = "deadline";
+      else if (info.hasNewToday) calculatedStatus = "newTasks";
+      else if (info.done === info.totalTasks) calculatedStatus = "completed";
 
       finalCounters[procID] = {
         todo: info.todo,
@@ -618,7 +606,7 @@ async function fetchTaskCounters() {
 
     return finalCounters;
   } catch (err) {
-    console.error("Помилка дедуплікації та аналізу:", err);
+    console.error("Помилка підрахунку лічильників:", err);
     return {};
   }
 }
