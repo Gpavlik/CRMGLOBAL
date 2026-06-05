@@ -9,9 +9,6 @@
 /* ==========================================================================
    1. ГЛОБАЛЬНІ СТИЛІ ТА БЕКГРАУНД
    ========================================================================== */
-/* ==========================================================================
-   1. ГЛОБАЛЬНІ СТИЛІ ТА БЕКГРАУНД
-   ========================================================================== */
 body {
   font-family: 'Segoe UI', Arial, sans-serif;
   margin: 0; 
@@ -251,13 +248,12 @@ header button:hover { background: #2563eb; transform: translateY(-1px); }
 }
 
 /* ==========================================================================
-   6. РОЛІ ТА ЕЛЕМЕНТИ ФОРМИ
+   6. РОЛІ ТА ЕЛЕМЕНТИ ФОРМИ (Оновлені компактні баджі)
    ========================================================================== */
 .owner { background: #f8fafc; color: #0f172a; font-weight: bold; padding: 2px 6px; border-radius: 4px; }
-.ownerd { background: #3b82f6; color: #fff; font-weight: bold; padding: 2px 6px; border-radius: 4px; }
-.executor { background: #8b5cf6; color: white; padding: 2px 6px; border-radius: 4px; }
-.manager { background: #10b981; color: white; padding: 2px 6px; border-radius: 4px; }
-
+.ownerd { background: #3b82f6; color: #fff; font-weight: bold; padding: 2px 6px; border-radius: 4px; display: inline-block; }
+.executor { background: #8b5cf6; color: white; padding: 2px 6px; border-radius: 4px; display: inline-block; width: max-content; }
+.manager { background: #10b981; color: white; padding: 2px 6px; border-radius: 4px; display: inline-block; width: max-content; }
 #newBoardForm { 
   display: none; 
   flex-direction: column; 
@@ -819,45 +815,40 @@ dashboardData.processes.forEach(proc => {
       borderClass += " manager-fire"; 
     }
 
-    div.className = `process owner ${borderClass}`;
-    div.dataset.status = status;
-    div.dataset.processId = proc.processID || "";
-    div.dataset.procData = JSON.stringify(proc);
-    
-    // ... далі весь твій код відображення плашки залишається без змін ...
+    // ЗНАЙДИ І ЗАМІНИ ОЦЕЙ ШМАТОК У РЕНДЕРІ:
 
-    const ownerName = usersMap[proc.owner] || proc.owner;
+div.className = `process-card ${borderClass}`; // 🔥 Виправили на process-card і прибрали руйнівний клас owner!
+div.dataset.status = status;
+div.dataset.processId = proc.processID || "";
+div.dataset.procData = JSON.stringify(proc);
 
-    // Учасники
-    const participantsFormatted = proc.participants.map(p => {
-      const [name, role] = p.split(" (");
-      const cleanRole = role ? role.replace(")", "") : "";
-      let color = "black";
-      if (cleanRole === "Виконавець") color = "purple";
-      else if (cleanRole === "Керівник") color = "green";
-      else if (cleanRole === "Оунер") color = "blue";
-      return `<span style="color:${color}">${name} (${cleanRole})</span>`;
-    });
+const ownerName = usersMap[proc.owner] || proc.owner;
 
-    // 🎯 Отримуємо РЕАЛЬНІ цифри з нашого об'єкта лічильників за ID процесу
+// Учасники
+const participantsFormatted = proc.participants.map(p => {
+  const [name, role] = p.split(" (");
+  const cleanRole = role ? role.replace(")", "") : "";
+  let roleClass = "executor";
+  if (cleanRole === "Керівник") roleClass = "manager";
+  else if (cleanRole === "Оунер" || cleanRole === "Власник") roleClass = "ownerd";
+  
+  // 🔥 Використовуємо класи замість інлайн-стилів для красивих баджів
+  return `<span class="${roleClass}">${name} (${cleanRole})</span>`;
+});
 
-    div.innerHTML = `
-      <h2>${proc.title}</h2>
-      <p>👤 <span style="color:blue; font-weight:bold;">${ownerName}</span></p>
-      
-      <div class="task-counters">
-        <span class="cnt-todo">📋 Зробити: ${pCounts.todo}</span>
-        <span class="cnt-progress">⚙️ В процесі: ${pCounts.progress}</span>
-        <span class="cnt-done">✅ Виконано: ${pCounts.done}</span>
-      </div>
+div.innerHTML = `
+  <div class="process-title">${proc.title}</div> <p>👤 Власник: <span class="ownerd">${ownerName}</span></p> <div class="counters-container"> <span class="counter-badge badge-todo">📋 Зробити: ${pCounts.todo}</span>
+    <span class="counter-badge badge-progress">⚙️ В процесі: ${pCounts.progress}</span>
+    <span class="counter-badge badge-done">✅ Виконано: ${pCounts.done}</span>
+  </div>
 
-      <details onclick="event.stopPropagation();">
-        <summary>👥 Учасники (${proc.participants.length})</summary>
-        <div style="margin-top: 5px; line-height: 1.4;">
-          ${participantsFormatted.join("<br>")}
-        </div>
-      </details>
-    `;
+  <details onclick="event.stopPropagation();" style="width: 100%; margin-top: 8px;">
+    <summary style="color: #1e293b; font-weight: 600; cursor: pointer;">👥 Учасники (${proc.participants.length})</summary>
+    <div style="margin-top: 5px; line-height: 1.6; display: flex; flex-direction: column; gap: 4px;">
+      ${participantsFormatted.join("")}
+    </div>
+  </details>
+`;
 
     div.onclick = () => showProcessModal(proc);
 
