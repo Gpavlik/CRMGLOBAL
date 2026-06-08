@@ -6,465 +6,318 @@
   <title>Мої процеси</title>
   <link rel="icon" type="image/jpg" href="bol.jpg">
   <style>
-/* ==========================================================================
-   1. ГЛОБАЛЬНІ СТИЛІ ТА БЕКГРАУНД
-   ========================================================================== */
-body {
-  font-family: 'Segoe UI', Arial, sans-serif;
-  margin: 0; 
-  padding: 0;
-  background: linear-gradient(135deg, #009400, #004d00);
-  color: #fff;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
+    /* ==========================================================================
+       1. ГЛОБАЛЬНІ СТИЛІ ТА БЕКГРАУНД
+       ========================================================================== */
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      margin: 0; 
+      padding: 0;
+      background: linear-gradient(135deg, #009400, #004d00);
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
 
-#content {
-  display: flex;
-  gap: 10px;
-  margin-top: 20px;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  box-sizing: border-box;
-}
+    #content {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      box-sizing: border-box;
+    }
 
-/* ==========================================================================
-   2. ШАПКА (HEADER)
-   ========================================================================== */
-header { 
-  background: #1e293b; 
-  color: white; 
-  padding: 15px 20px; 
-  display: flex; 
-  justify-content: space-between; 
-  align-items: center; 
-  width: 100%;
-  box-sizing: border-box;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-}
-header h1 { margin: 0; font-size: 20px; font-weight: 700; }
+    /* ==========================================================================
+       2. ШАПКА (HEADER) + КЛІКАБЕЛЬНА ЮЗЕР-ЗОНА
+       ========================================================================== */
+    header { 
+      background: #1e293b; 
+      color: white; 
+      padding: 15px 20px; 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center; 
+      width: 100%;
+      box-sizing: border-box;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    header h1 { margin: 0; font-size: 20px; font-weight: 700; }
 
-header .user-info { 
-  font-size: 14px; 
-  font-weight: 600; 
-  background: rgba(255, 255, 255, 0.22) !important; /* 🔥 Густіший фон для ідеальної читабельності */
-  padding: 6px 14px; 
-  border-radius: 20px; 
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  display: inline-flex;
-  align-items: center;
-  gap: 8px; 
-  backdrop-filter: blur(4px);
-}
+    /* Клікабельний блок профілю та календаря */
+    header .user-info { 
+      font-size: 14px; 
+      font-weight: 600; 
+      background: rgba(255, 255, 255, 0.22) !important; 
+      padding: 6px 14px; 
+      border-radius: 20px; 
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px; 
+      backdrop-filter: blur(4px);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    header .user-info:hover {
+      background: rgba(255, 255, 255, 0.35) !important;
+      border-color: rgba(255, 255, 255, 0.5);
+      transform: translateY(-1px);
+    }
 
-header button { 
-  background: #3b82f6; 
-  color: white; 
-  border: none; 
-  padding: 8px 16px; 
-  border-radius: 8px; 
-  cursor: pointer; 
-  font-weight: 600;
-  transition: all 0.2s ease;
-}
-header button:hover { background: #2563eb; transform: translateY(-1px); }
+    header button { 
+      background: #3b82f6; 
+      color: white; 
+      border: none; 
+      padding: 8px 16px; 
+      border-radius: 8px; 
+      cursor: pointer; 
+      font-weight: 600;
+      transition: all 0.2s ease;
+    }
+    header button:hover { background: #2563eb; transform: translateY(-1px); }
+    #logoutBtn { background: #475569; }
+    #logoutBtn:hover { background: #334155; }
 
-.header-controls {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
+    .header-controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 13px;
+      font-weight: 600;
+    }
 
-@media screen and (max-width: 768px) {
-  .header-controls {
-    flex-direction: column;
-    width: 100%;
-  }
-  .header-controls select, .header-controls button {
-    width: 100%;
-  }
-}
+    .header-controls select {
+      padding: 6px 10px;
+      border-radius: 6px;
+      border: 1px solid #cbd5e1;
+      background: #fff;
+      color: #1e293b;
+      font-weight: 600;
+      outline: none;
+    }
 
-/* ==========================================================================
-   3. КАНБАН-ДОШКА (СТОВПЧИКИ ТА КОНТЕЙНЕРИ)
-   ========================================================================== */
-.kanban-board {
-  display: flex;
-  justify-content: center; 
-  gap: 16px;
-  padding: 20px;
-  width: 100%;
-  box-sizing: border-box;
-  align-items: flex-start;
-  overflow-x: auto; 
-}
+    @media screen and (max-width: 1024px) {
+      header { flex-direction: column; gap: 12px; text-align: center; }
+      .header-controls { flex-direction: column; width: 100%; gap: 8px; }
+      .header-controls select, .header-controls button { width: 100%; }
+    }
 
-.kanban-column {
-  flex: 1;
-  min-width: 280px; 
-  max-width: 350px;
-  background: rgba(255, 255, 255, 0.05); /* Легке затінення стовпчика */
-  backdrop-filter: blur(5px);
-  border-radius: 16px;
-  padding: 12px;
-  box-sizing: border-box;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  display: flex;
-  flex-direction: column;
-}
+    /* ==========================================================================
+       3. КАНБАН-ДОШКА (СТОВПЧИКИ ТА КОНТЕЙНЕРИ)
+       ========================================================================== */
+    .kanban-board {
+      display: flex;
+      justify-content: center; 
+      gap: 16px;
+      padding: 20px;
+      width: 100%;
+      box-sizing: border-box;
+      align-items: flex-start;
+      overflow-x: auto; 
+    }
 
-.column-header {
-  text-align: center;
-  font-weight: 700;
-  padding: 10px;
-  border-radius: 12px; 
-  margin-bottom: 12px;
-  font-size: 15px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-}
+    .kanban-column {
+      flex: 1;
+      min-width: 280px; 
+      max-width: 350px;
+      background: rgba(255, 255, 255, 0.05); 
+      backdrop-filter: blur(5px);
+      border-radius: 16px;
+      padding: 12px;
+      box-sizing: border-box;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      flex-direction: column;
+    }
 
-/* Кольори заголовків стовпчиків */
-.column-header.lg-new { background: #cbd5e1; color: #1e293b; }
-.column-header.lg-urgent { background: #ffffff; color: #1e293b; }
-.column-header.lg-newTasks { background: #fef08a; color: #854d0e; }
-.column-header.lg-deadline { background: #fed7aa; color: #c2410c; }
-.column-header.lg-overdue { background: #fca5a5; color: #991b1b; }
-.column-header.lg-completed { background: linear-gradient(90deg, #f87171, #fb923c, #4ade80, #60a5fa, #c084fc); color: #fff; }
+    .column-header {
+      text-align: center;
+      font-weight: 700;
+      padding: 10px;
+      border-radius: 12px; 
+      margin-bottom: 12px;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    }
 
-.processes-list {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  min-height: 180px; /* Трохи збільшили, щоб порожні колонки мали об'єм */
-}
+    .column-header.lg-new { background: #cbd5e1; color: #1e293b; }
+    .column-header.lg-urgent { background: #ffffff; color: #1e293b; }
+    .column-header.lg-newTasks { background: #fef08a; color: #854d0e; }
+    .column-header.lg-deadline { background: #fed7aa; color: #c2410c; }
+    .column-header.lg-overdue { background: #fca5a5; color: #991b1b; }
+    .column-header.lg-completed { background: linear-gradient(90deg, #f87171, #fb923c, #4ade80, #60a5fa, #c084fc); color: #fff; }
 
-/* ==========================================================================
-   4. СУЧАСНА КАРТКА ПРОЦЕСУ (Ефект пакетика з водою)
-   ========================================================================== */
-.process-card {
-  width: 100%; 
-  box-sizing: border-box;
-  padding: 16px;
-  
-  /* 💧 Скляний напівпрозорий фон для ВСІХ карток за замовчуванням */
-  background: rgba(234, 244, 254, 0.42) !important; 
-  backdrop-filter: blur(14px) !important;
-  -webkit-backdrop-filter: blur(14px) !important;
-  
-  border-radius: 12px !important; 
-  border: 1px solid rgba(255, 255, 255, 0.5) !important; 
-  
-  /* Внутрішні глянцеві тіні пакетика */
-  box-shadow: 
-    0 8px 20px rgba(0, 45, 0, 0.12),
-    inset 3px 3px 6px rgba(255, 255, 255, 0.85),
-    inset -4px -4px 10px rgba(14, 165, 233, 0.18) !important; 
+    .processes-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      min-height: 220px; 
+    }
+
+    /* ==========================================================================
+       4. СУЧАСНА КАРТКА ПРОЦЕСУ (Ефект пакетика з водою)
+       ========================================================================== */
+    .process-card {
+      width: 100%; 
+      box-sizing: border-box;
+      padding: 16px;
+      background: rgba(234, 244, 254, 0.42) !important; 
+      backdrop-filter: blur(14px) !important;
+      -webkit-backdrop-filter: blur(14px) !important;
+      border-radius: 12px !important; 
+      border: 1px solid rgba(255, 255, 255, 0.5) !important; 
+      box-shadow: 
+        0 8px 20px rgba(0, 45, 0, 0.12),
+        inset 3px 3px 6px rgba(255, 255, 255, 0.85),
+        inset -4px -4px 10px rgba(14, 165, 233, 0.18) !important; 
+      display: flex; 
+      flex-direction: column; 
+      align-items: flex-start; 
+      justify-content: flex-start; 
+      cursor: pointer; 
+      transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.2s ease; 
+      text-align: left; 
+    }
+
+    .process-card:hover { 
+      transform: translateY(-2px) scale(1.01); 
+      background: rgba(234, 244, 254, 0.52) !important;
+      box-shadow: 
+        0 12px 24px rgba(0, 45, 0, 0.18),
+        inset 4px 4px 8px rgba(255, 255, 255, 0.9),
+        inset -5px -5px 12px rgba(14, 165, 233, 0.22) !important;
+    }
+
+    .process-title { font-size: 16px; font-weight: 700; color: #0f172a; margin: 0 0 6px 0; line-height: 1.3; width: 100%; }
+    .process-card p, .process-card div, .process-card span { font-size: 13px; color: #1e293b; margin: 3px 0; font-weight: 500; }
+
+    .counters-container { display: flex; gap: 6px; justify-content: flex-start; flex-wrap: wrap; margin: 8px 0 2px 0; width: 100%; }
+    .counter-badge { display: inline-flex; align-items: center; padding: 4px 8px; border-radius: 12px; font-size: 11px; font-weight: 700; }
+    .badge-todo { background: #fef3c7; color: #b45309; }
+    .badge-progress { background: #dbeafe; color: #1d4ed8; }
+    .badge-done { background: #d1fae5; color: #047857; }
+
+    /* ==========================================================================
+       5. СУВОРІ СТАТУСИ (Монолітні рамки)
+       ========================================================================== */
+    .urgent, .process-card.urgent { border: 2px solid #3b82f6 !important; }
+    .deadline, .process-card.deadline { border: 2px solid #f59e0b !important; }
+    .newTasks, .process-card.newTasks { border: 2px solid #eab308 !important; }
+    .completed, .process-card.completed { border: 2px solid #10b981 !important; }
+
+    .overdue, .process-card.overdue { 
+      border: 4px solid #ef4444 !important; 
+      border-radius: 12px !important; 
+      background: rgba(254, 242, 242, 0.55) !important; 
+      box-shadow: 0 0 12px rgba(239, 68, 68, 0.35), inset 3px 3px 6px rgba(255, 255, 255, 0.85) !important;
+    }
+    .process-card.manager-fire {
+      border: 4px solid #ef4444 !important; 
+      border-radius: 12px !important;
+      background: rgba(254, 242, 242, 0.55) !important;
+    }
+
+    /* Спеціальні класи для ролей */
+    .owner { background: #f8fafc; color: #0f172a; font-weight: bold; padding: 2px 6px; border-radius: 4px; }
+    .ownerd { background: #3b82f6; color: white; font-weight: bold; padding: 2px 6px; border-radius: 4px; }
+    .executor { background: #8b5cf6; color: white; padding: 2px 6px; border-radius: 4px; }
+    .manager { background: #10b981; color: white; padding: 2px 6px; border-radius: 4px; }
+
+    /* ==========================================================================
+       6. МОДЕРНІЗОВАНІ МОДАЛКИ (Створення та Редагування)
+       ========================================================================== */
+    #newBoardForm, #editProcessModal { 
+      display: none; 
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(15, 23, 42, 0.75); 
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      justify-content: center; 
+      align-items: center;
+      z-index: 9999; 
+    }
+
+    .form-content {
+      background: #ffffff !important; 
+      padding: 25px !important; 
+      border-radius: 16px !important;
+      color: #1e293b !important;
+      box-shadow: 0 20px 25px -5px rgba(0,0,0,0.3) !important;
+      width: 90% !important;
+      max-width: 460px !important; 
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 14px !important;
+      box-sizing: border-box !important;
+    }
+
+    .form-content h2 { margin: 0 0 4px 0 !important; font-size: 18px !important; font-weight: 700 !important; color: #0f172a !important; text-align: center !important; }
+    .form-row { display: flex !important; flex-direction: column !important; gap: 4px !important; text-align: left !important; font-weight: 600 !important; font-size: 13px !important; color: #334155 !important; }
     
-  display: flex; 
-  flex-direction: column; 
-  align-items: flex-start; 
-  justify-content: flex-start; 
-  cursor: pointer; 
-  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.2s ease, border-color 0.2s ease; 
-  text-align: left; 
-}
+    input[type="text"], .form-content select { 
+      width: 100% !important; box-sizing: border-box !important; padding: 8px 12px !important; background: #f1f5f9 !important; border: 1px solid #cbd5e1 !important; border-radius: 6px !important; color: #1e293b !important; font-size: 13px !important; outline: none;
+    }
 
-/* Ховер ефекти */
-.process-card:hover { 
-  transform: translateY(-2px) scale(1.01); 
-  background: rgba(234, 244, 254, 0.52) !important;
-  box-shadow: 
-    0 12px 24px rgba(0, 45, 0, 0.18),
-    inset 4px 4px 8px rgba(255, 255, 255, 0.9),
-    inset -5px -5px 12px rgba(14, 165, 233, 0.22) !important;
-}
+    .form-buttons { display: flex !important; gap: 10px !important; justify-content: center !important; margin-top: 8px !important; }
+    .form-buttons button { padding: 10px 20px !important; border: none !important; border-radius: 8px !important; cursor: pointer !important; font-weight: 600 !important; font-size: 13px !important; }
 
-.process-card:active {
-  transform: scale(0.98);
-}
+    #participants, #editParticipants { display: flex !important; flex-direction: column !important; gap: 8px !important; max-height: 140px !important; overflow-y: auto !important; padding: 2px !important; }
+    
+    .participant-row {
+      display: flex !important; flex-direction: row !important; align-items: center !important; gap: 10px !important; width: 100% !important; background: #f8fafc !important; padding: 6px 10px !important; border-radius: 8px !important; border: 1px solid #e2e8f0 !important; box-sizing: border-box !important;
+    }
+    .participant-row span { flex: 1 !important; font-size: 13px !important; font-weight: 600 !important; color: #1e293b !important; white-space: nowrap !important; }
+    .participant-row select { width: 130px !important; padding: 4px 8px !important; margin: 0 !important; background: #fff !important; }
+    
+    .participant-row button, .form-row button { background: none !important; border: none !important; color: #ef4444 !important; font-size: 18px !important; font-weight: bold !important; cursor: pointer !important; padding: 0 4px !important; }
 
-.process-title {
-  font-size: 16px;
-  font-weight: 700;
-  color: #0f172a; 
-  margin: 0 0 6px 0;
-  line-height: 1.3;
-  width: 100%;
-}
+    /* ==========================================================================
+       7. МОДАЛКА ДІЙ (ПЕРЕХІД / ВИДАЛЕННЯ)
+       ========================================================================== */
+    .modal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); display: flex; justify-content: center; align-items: center; z-index: 1000; }
+    .modal-content { background: #fff; color: #1e293b; padding: 24px; border-radius: 16px; min-width: 300px; max-width: 90%; text-align: center; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); }
+    .modal-buttons { display: flex; gap: 10px; justify-content: center; margin-top: 20px; }
+    .modal-buttons button { padding: 10px 16px; border: none; border-radius: 8px; cursor: pointer; color: #fff; font-weight: 600; font-size: 14px; }
+    #deleteBtn { background: #ef4444; }
+    #editBtn { background: #f59e0b; }
+    #goBtn { background: #10b981; }
 
-/* Текст всередині картки */
-.process-card p, .process-card div, .process-card span {
-  font-size: 13px;
-  color: #1e293b; 
-  margin: 3px 0;
-  font-weight: 500;
-}
-
-/* Контейнер баджів */
-.counters-container {
-  display: flex;
-  gap: 6px;
-  justify-content: flex-start;
-  flex-wrap: wrap;
-  margin: 8px 0 2px 0;
-  width: 100%;
-}
-
-.counter-badge {
-  display: inline-flex;
-  align-items: center;
-  padding: 4px 8px;
-  border-radius: 12px;
-  font-size: 11px;
-  font-weight: 700;
-}
-.badge-todo { background: #fef3c7; color: #b45309; }
-.badge-progress { background: #dbeafe; color: #1d4ed8; }
-.badge-done { background: #d1fae5; color: #047857; }
-
-/* ==========================================================================
-   5. СУВОРІ СТАТУСИ (Робимо рамку монолітною)
-   ========================================================================== */
-.overdue, .process-card.overdue { 
-  border: 4px solid #ef4444 !important; /* 🔥 Завжди монолітна сувора рамка */
-  border-radius: 12px !important; 
-  background: rgba(254, 242, 242, 0.45) !important; 
-  box-shadow: 0 0 12px rgba(239, 68, 68, 0.35), inset 3px 3px 6px rgba(255, 255, 255, 0.85) !important;
-}
-
-/* Особливий стан (Палаючий менеджер) — теж робимо монолітною лінією */
-.process-card.manager-fire {
-  border: 4px solid #ef4444 !important; /* 🔥 Змінили dashed на solid */
-  border-radius: 12px !important;
-  background: rgba(254, 242, 242, 0.45) !important;
-}
-
-/* ==========================================================================
-   6. РОЛІ ТА ЕЛЕМЕНТИ ФОРМИ (Перетворення на красиву модалку)
-   ========================================================================== */
-.owner { background: #f8fafc; color: #0f172a; font-weight: bold; padding: 2px 6px; border-radius: 4px; }
-.ownerd { background: #3b82f6; color: #fff; font-weight: bold; padding: 2px 6px; border-radius: 4px; }
-.executor { background: #8b5cf6; color: white; padding: 2px 6px; border-radius: 4px; }
-.manager { background: #10b981; color: white; padding: 2px 6px; border-radius: 4px; }
-
-/* ==========================================================================
-   6. МОДЕРНІЗОВАНА МОДАЛКА СТВОРЕННЯ ПРОЦЕСУ
-   ========================================================================== */
-#newBoardForm { 
-  display: none; 
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(15, 23, 42, 0.75); /* Темний напівпрозорий оверлей */
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  justify-content: center; 
-  align-items: center;
-  z-index: 9999; /* Максимальний пріоритет */
-}
-
-/* Конкретно біле вікно модалки */
-#newBoardForm .form-content {
-  background: #ffffff !important; 
-  padding: 25px !important; 
-  border-radius: 16px !important;
-  color: #1e293b !important;
-  box-shadow: 0 20px 25px -5px rgba(0,0,0,0.3), 0 10px 10px -5px rgba(0,0,0,0.2) !important;
-  width: 90% !important;
-  max-width: 460px !important; /* Трохи збільшили, щоб усім вистачило місця в рядочку */
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 14px !important;
-  box-sizing: border-box !important;
-}
-
-#newBoardForm h2 {
-  margin: 0 0 4px 0 !important;
-  font-size: 18px !important;
-  font-weight: 700 !important;
-  color: #0f172a !important;
-  text-align: center !important;
-}
-
-#newBoardForm .form-row { 
-  display: flex !important; 
-  flex-direction: column !important;
-  gap: 4px !important; 
-  text-align: left !important;
-  font-weight: 600 !important;
-  font-size: 13px !important;
-  color: #334155 !important;
-}
-
-/* Примусовий гарний стиль для інпутів модалки */
-#newBoardForm input[type="text"] {
-  width: 100% !important;
-  box-sizing: border-box !important;
-  padding: 8px 12px !important;
-  background: #f1f5f9 !important;
-  border: 1px solid #cbd5e1 !important;
-  border-radius: 6px !important;
-  color: #1e293b !important;
-  font-size: 13px !important;
-}
-
-#newBoardForm .form-buttons {
-  display: flex !important;
-  gap: 10px !important;
-  justify-content: center !important;
-  margin-top: 8px !important;
-}
-
-#newBoardForm .form-buttons button {
-  padding: 10px 20px !important;
-  border: none !important;
-  border-radius: 8px !important;
-  cursor: pointer !important;
-  font-weight: 600 !important;
-  font-size: 13px !important;
-  transition: background 0.2s !important;
-}
-
-/* ==========================================================================
-   🔥 ДОДАНИЙ ФІКС: ВИРІВНЮВАННЯ УЧАСНИКІВ В РЯДОК
-   ========================================================================== */
-#newBoardForm #participants {
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 8px !important;
-  max-height: 140px !important;
-  overflow-y: auto !important;
-  padding: 2px !important;
-}
-
-/* Змушуємо кожен рядок учасника бути флекс-контейнером */
-#newBoardForm #participants > div, 
-#newBoardForm .participant-row {
-  display: flex !important;
-  flex-direction: row !important;
-  align-items: center !important;
-  gap: 10px !important;
-  width: 100% !important;
-  background: #f8fafc !important;
-  padding: 6px 10px !important;
-  border-radius: 8px !important;
-  border: 1px solid #e2e8f0 !important;
-  box-sizing: border-box !important;
-}
-
-/* Текст (ПІБ або чекбокс з текстом) */
-#newBoardForm #participants label,
-#newBoardForm #participants span {
-  flex: 1 !important;
-  display: flex !important;
-  align-items: center !important;
-  gap: 6px !important;
-  font-size: 13px !important;
-  font-weight: 600 !important;
-  color: #1e293b !important;
-  margin: 0 !important;
-  white-space: nowrap !important;
-}
-
-/* Кастомізація селекту ролі всередині рядка */
-#newBoardForm #participants select {
-  width: 130px !important;
-  padding: 4px 8px !important;
-  font-size: 12px !important;
-  border: 1px solid #cbd5e1 !important;
-  border-radius: 6px !important;
-  background-color: #ffffff !important;
-  color: #1e293b !important;
-  margin: 0 !important;
-}
-
-/* Кнопка видалення (хрестик) */
-#newBoardForm #participants button {
-  background: none !important;
-  border: none !important;
-  color: #ef4444 !important;
-  font-size: 18px !important;
-  font-weight: bold !important;
-  cursor: pointer !important;
-  padding: 0 4px !important;
-  line-height: 1 !important;
-}
-#newBoardForm #participants button:hover {
-  color: #dc2626 !important;
-}
-/* ==========================================================================
-   7. МОДАЛЬНІ ВІКНА
-   ========================================================================== */
-.modal {
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(15, 23, 42, 0.6);
-  backdrop-filter: blur(4px);
-  display: flex; justify-content: center; align-items: center;
-  flex-direction: column;
-  z-index: 1000;
-}
-.modal-content {
-  background: #fff; color: #1e293b; padding: 24px; border-radius: 16px;
-  min-width: 300px; max-width: 90%; text-align: center; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
-}
-.modal-buttons { display: flex; gap: 10px; justify-content: center; margin-top: 20px; }
-.modal-buttons button { padding: 10px 16px; border: none; border-radius: 8px; cursor: pointer; color: #fff; font-weight: 600; font-size: 14px; transition: opacity 0.2s; }
-.modal-buttons button:hover { opacity: 0.9; }
-#deleteBtn { background: #ef4444; }
-#editBtn { background: #f59e0b; }
-#goBtn { background: #10b981; }
-
-/* ==========================================================================
-   8. АДАПТИВНІСТЬ ТА MOBILE-FIRST (Важливо для APK)
-   ========================================================================== */
-@media screen and (max-width: 768px) {
-  header { 
-    flex-direction: column; 
-    gap: 12px; 
-    text-align: center;
-    padding: 12px;
-  }
-  header h1 { font-size: 18px; }
-
-  .kanban-board {
-    display: flex;
-    flex-direction: row; 
-    justify-content: flex-start; 
-    overflow-x: auto;    
-    scroll-snap-type: x mandatory;
-    padding: 10px;
-    gap: 12px;
-    width: 100vw;
-  }
-  
-  .kanban-column {
-    min-width: 85vw;    
-    max-width: 85vw;
-    scroll-snap-align: center;
-  }
-}
+    /* ==========================================================================
+       8. АДАПТИВНІСТЬ ДЛЯ СМАРТФОНІВ
+       ========================================================================== */
+    @media screen and (max-width: 768px) {
+      .kanban-board { display: flex; flex-direction: row; justify-content: flex-start; overflow-x: auto; scroll-snap-type: x mandatory; padding: 10px; gap: 12px; width: 100vw; }
+      .kanban-column { min-width: 85vw; max-width: 85vw; scroll-snap-align: center; }
+    }
   </style>
 </head>
 <body style="display:none;">
 
   <header>
     <h1>Мої процеси</h1>
-    <div id="userInfoTop" class="user-info"></div>
+    <div id="userInfoTop" class="user-info" title="Перейти до календаря задач" onclick="window.location.href='calendar.html'"></div>
     
     <div class="header-controls">
       <label for="processSelector">📂 Обрати процес:</label>
       <select id="processSelector">
         <option value="">— виберіть процес —</option>
       </select>
+
+      <label for="userFilterSelector" id="userFilterLabel" style="display: none;">👥 Учасник:</label>
+      <select id="userFilterSelector" style="display: none;">
+        <option value="all">Всі користувачі</option>
+      </select>
+
       <button id="createBoardBtn" onclick="toggleForm()">Створити процес</button>
-      <button id="calendarBtn" onclick="window.location.href='calendar.html'">Перейти до календаря</button>
-      <button id="logoutBtn" onclick="window.location.href='index.html'">Вийти</button>
+      <button id="logoutBtn">Вийти</button>
     </div>
   </header>
 
@@ -472,37 +325,30 @@ header button:hover { background: #2563eb; transform: translateY(-1px); }
     <img src="./logo.svg" alt="logo" width="260" style="margin-top: 15px;">
      
     <div class="kanban-board">
-        
         <div class="kanban-column">
           <div class="column-header lg-new">🆕 Нові процеси</div>
           <div class="processes-list" id="list-new"></div>
         </div>
-
         <div class="kanban-column">
           <div class="column-header lg-urgent">⏳ Потребує затвердження</div>
           <div class="processes-list" id="list-urgent"></div>
         </div>
-
         <div class="kanban-column">
           <div class="column-header lg-newTasks">⚡ Додані нові задачі</div>
           <div class="processes-list" id="list-newTasks"></div>
         </div>
-
         <div class="kanban-column">
           <div class="column-header lg-deadline">⚠️ Наближається дедлайн</div>
           <div class="processes-list" id="list-deadline"></div>
         </div>
-
         <div class="kanban-column">
           <div class="column-header lg-overdue">🚨 Протерміновані</div>
           <div class="processes-list" id="list-overdue"></div>
         </div>
-
         <div class="kanban-column">
           <div class="column-header lg-completed">🎉 Завершено</div>
           <div class="processes-list" id="list-completed"></div>
         </div>
-
     </div> 
   </div> 
 
@@ -522,24 +368,19 @@ header button:hover { background: #2563eb; transform: translateY(-1px); }
   <div id="newBoardForm">
     <div class="form-content">
       <h2>Створити новий процес</h2>
-      
       <div class="form-row">
         <label>Назва процесу:</label>
         <input type="text" id="boardTitle" placeholder="Введіть назву...">
       </div>
-      
       <div class="form-row">
         <label>Власник процесу:</label>
         <input type="text" id="boardOwner" readonly style="background: #e2e8f0; color: #64748b;">
       </div>
-      
       <div class="form-row">
         <label>Учасники проекту:</label>
         <div id="participants"></div>
       </div>
-      
       <button type="button" onclick="addParticipant()" style="background: #64748b; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 12px; align-self: flex-start;">+ Додати учасника</button>
-      
       <div class="form-buttons">
         <button id="saveBtn" onclick="createBoard()" style="background: #10b981; color: white;">Створити</button>
         <button type="button" onclick="toggleForm()" style="background: #94a3b8; color: white;">Скасувати</button>
@@ -547,128 +388,33 @@ header button:hover { background: #2563eb; transform: translateY(-1px); }
     </div>
   </div>
 
-<script>
-(async function(){
-  const u = sessionStorage.getItem("currentUser");
-  const token = sessionStorage.getItem("sessionToken");
+  <div id="editProcessModal">
+    <div class="form-content">
+      <h2>Редагувати процес</h2>
+      <div class="form-row">
+        <label>Назва процесу:</label>
+        <input type="text" id="editTitle">
+      </div>
+      <div class="form-row">
+        <label>Учасники процесу:</label>
+        <div id="editParticipants"></div>
+      </div>
+      <button type="button" onclick="addEditParticipant()" style="background: #64748b; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 12px; align-self: flex-start;">+ Додати учасника</button>
+      <div class="form-buttons">
+        <button id="saveEditBtn" style="background: #10b981; color: white;">Зберегти зміни</button>
+        <button type="button" onclick="document.getElementById('editProcessModal').style.display='none'" style="background: #94a3b8; color: white;">Скасувати</button>
+      </div>
+    </div>
+  </div>
 
-  // ❌ якщо немає даних → назад на логін
-  if (!u || !token) {
-    window.location.href = "index.html";
-    return;
-  }
-
-  try {
-    // ✅ перевірка токена та юзернейма
-    const resp = await fetch("https://script.google.com/macros/s/AKfycbzPIdUQ6obtM9AjMoJeQKLJjLPtHcWYMYEex7UDYFqNtDHpoIQ0kyD73idI-wWyShEg/exec" +
-                             "?action=675&user=" + encodeURIComponent(u) +
-                             "&token=" + encodeURIComponent(token) +
-                             "&branch=can");
-    const data = await resp.json();
-
-    if (data.success && data.url) {
-      // токен валідний → показуємо меню миттєво
-      document.body.style.display = "flex";
-      
-      // 🔥 Беремо повне ім'я з відповіді бекенда (data.userName), 
-      // якщо бекенд його не шле — використовуємо кастомний мапінг або підстраховку
-      const displayUserName = data.userName || data.fullName || "Павло Гриценко";
-      
-      // Запускаємо синоптика та вивід красивого імені
-      initUserInfoAndWeather(displayUserName);
-    } else {
-      // ❌ токен невалідний → чистимо sessionStorage і назад на логін
-      sessionStorage.clear();
-      window.location.href = "index.html";
-    }
-  } catch(err) {
-    console.error("Помилка перевірки токена:", err);
-    sessionStorage.clear();
-    window.location.href = "index.html";
-  }
-})();
-
-// 🔥 Функція виводу інфи та погоди з текстовим описом
-async function initUserInfoAndWeather(userName) {
-  const userInfoTop = document.getElementById('userInfoTop');
-  if (!userInfoTop) return;
-
-  const today = new Date();
-  const formattedDate = today.toLocaleDateString('uk-UA', {
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric'
-  });
-
-  // Виводимо повне ім'я розробника та дату
-  userInfoTop.innerHTML = `
-    <span style="color: #60a5fa; font-weight: 700;">👤 ${userName}</span>
-    <span style="color: rgba(255,255,255,0.3);">|</span>
-    <span style="color: #94a3b8;">📅 ${formattedDate}</span>
-    <span id="weather-load" style="color: rgba(255,255,255,0.3);">| 🌡️ Синоптик думає...</span>
-  `;
-
-  // Стукаємо по погоду (Вишгород)
-  try {
-    const weatherResp = await fetch("https://api.open-meteo.com/v1/forecast?latitude=50.58&longitude=30.48&current=temperature_2m,weather_code");
-    const weatherData = await weatherResp.json();
-    
-    if (weatherData && weatherData.current) {
-      const temp = Math.round(weatherData.current.temperature_2m);
-      const code = weatherData.current.weather_code;
-      
-      let weatherEmoji = '🌡️';
-      let weatherText = 'Погода';
-      
-      if (code === 0) { weatherEmoji = '☀️'; weatherText = 'Ясно'; } 
-      else if (code >= 1 && code <= 3) { weatherEmoji = '⛅'; weatherText = 'Хмарно'; } 
-      else if (code === 45 || code === 48) { weatherEmoji = '🌫️'; weatherText = 'Туман'; } 
-      else if ([51, 53, 55, 61, 63, 65, 80, 81, 82].includes(code)) { weatherEmoji = '🌧️'; weatherText = 'Дощ'; } 
-      else if ([71, 73, 75, 77, 85, 86].includes(code)) { weatherEmoji = '🌨️'; weatherText = 'Сніг'; } 
-      else if (code >= 95) { weatherEmoji = '⛈️'; weatherText = 'Гроза'; }
-
-      const tempSign = temp > 0 ? `+${temp}` : temp;
-      const weatherSpan = document.getElementById('weather-load');
-      if (weatherSpan) {
-        weatherSpan.innerHTML = `| ${weatherEmoji} ${weatherText} ${tempSign}°C`;
-      }
-    }
-  } catch (wErr) {
-    console.error("Не вдалося завантажити погоду:", wErr);
-    const weatherSpan = document.getElementById('weather-load');
-    if (weatherSpan) weatherSpan.remove();
-  }
-}
-
-// 🔴 Логаут
-document.getElementById("logoutBtn").addEventListener("click", async function() {
-  const u = sessionStorage.getItem("currentUser");
-  const token = sessionStorage.getItem("sessionToken");
-
-  try {
-    await fetch("https://script.google.com/macros/s/AKfycbzPIdUQ6obtM9AjMoJeQKLJjLPtHcWYMYEex7UDYFqNtDHpoIQ0kyD73idI-wWyShEg/exec", {
-      method: "POST",
-      mode: "no-cors",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ action: "logout", userName: u, token })
-    });
-  } catch(err) {
-    console.error("Помилка виходу:", err);
-  }
-
-  sessionStorage.clear();
-  window.location.href = "index.html";
-});
-</script>
 <script>
 let allProcesses = [];
+let globalTaskCounters = {}; 
 
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwh5TrmNwDcMY51ToSGblbbzw2xF6sZPTuS677x3BHctpMinn4FCQsQmKkKwBus5kfq/exec";
 const DASHBOARD_SHEET_URL = "https://docs.google.com/spreadsheets/d/1vjxURM8HlNTxdk-XGEh-99sYuHhtEgNKLf-39jRm8-Q/gviz/tq?tqx=out:json&sheet=Dashboard";
-// 🆕 Додаємо посилання на вкладку з задачами
 const PROCESSES_SHEET_URL = "https://docs.google.com/spreadsheets/d/1vjxURM8HlNTxdk-XGEh-99sYuHhtEgNKLf-39jRm8-Q/gviz/tq?tqx=out:json&sheet=Processes";
 const currentUser = sessionStorage.getItem("currentUser") || "невідомий";
-
 
 const usersMap = {
   gala: "Галина Кузнєцова",
@@ -681,142 +427,166 @@ const usersMap = {
   tetiana: "Тетяна Яковець"
 };
 
-window.addEventListener("DOMContentLoaded", initDashboard);
-document.getElementById("boardOwner").value = usersMap[currentUser] || currentUser;
+// Сесія авторизації та перевірки токена
+(function(){
+  const u = sessionStorage.getItem("currentUser");
+  const token = sessionStorage.getItem("sessionToken");
+  if (!u || !token) { window.location.href = "index.html"; return; }
 
-// --- gviz fetch ---
-async function fetchDashboardData() {
+  fetch("https://script.google.com/macros/s/AKfycbzPIdUQ6obtM9AjMoJeQKLJjLPtHcWYMYEex7UDYFqNtDHpoIQ0kyD73idI-wWyShEg/exec?action=675&user=" + encodeURIComponent(u) + "&token=" + encodeURIComponent(token) + "&branch=can")
+    .then(r => r.json())
+    .then(data => {
+      if (data.success && data.url) {
+        document.body.style.display = "flex";
+        initUserInfoAndWeather(data.userName || data.fullName || "Павло Гриценко");
+      } else {
+        sessionStorage.clear(); window.location.href = "index.html";
+      }
+    }).catch(() => { sessionStorage.clear(); window.location.href = "index.html"; });
+})();
+
+async function initUserInfoAndWeather(userName) {
+  const userInfoTop = document.getElementById('userInfoTop');
+  if (!userInfoTop) return;
+  const formattedDate = new Date().toLocaleDateString('uk-UA', { day: '2-digit', month: '2-digit', year: 'numeric' });
+  
+  userInfoTop.innerHTML = `
+    <span style="color: #60a5fa; font-weight: 700;">👤 ${userName}</span>
+    <span style="color: rgba(255,255,255,0.3);">|</span>
+    <span style="color: #94a3b8;">📅 ${formattedDate}</span>
+    <span id="weather-load" style="color: rgba(255,255,255,0.3);">| 🌡️ Погода...</span>
+  `;
+
   try {
-    const res = await fetch(DASHBOARD_SHEET_URL);
-    const text = await res.text();
-    const json = JSON.parse(text.substr(47).slice(0, -2));
+    const r = await fetch("https://api.open-meteo.com/v1/forecast?latitude=50.58&longitude=30.48&current=temperature_2m,weather_code");
+    const w = await r.json();
+    if (w && w.current) {
+      const temp = Math.round(w.current.temperature_2m);
+      const code = w.current.weather_code;
+      let em = '🌡️', txt = 'Погода';
+      if (code === 0) { em = '☀️'; txt = 'Ясно'; } 
+      else if (code >= 1 && code <= 3) { em = '⛅'; txt = 'Хмарно'; } 
+      else if ([51,53,55,61,63,65,80,81,82].includes(code)) { em = '🌧️'; txt = 'Дощ'; }
+      else if (code >= 95) { em = '⛈️'; txt = 'Гроза'; }
+      document.getElementById('weather-load').innerHTML = `| ${em} ${txt} ${temp > 0 ? `+${temp}` : temp}°C`;
+    }
+  } catch (e) { const s = document.getElementById('weather-load'); if (s) s.remove(); }
+}
 
-    const processes = json.table.rows.slice(2).map(r => ({
-      processID: r.c[0]?.v || "",
-      title: r.c[1]?.v || "",
-      owner: r.c[2]?.v || "",
-      participants: (r.c[3]?.v || "").split(", ").filter(Boolean),
-      status: r.c[4]?.v || "new"
-    }));
+// --- Ініціалізація Дашборду ---
+window.addEventListener("DOMContentLoaded", initDashboard);
 
-    return { status: "ok", processes };
-  } catch (err) {
-    console.error("Помилка при читанні Dashboard через gviz:", err);
-    return { status: "error", processes: [] };
+async function initDashboard() {
+  document.getElementById("boardOwner").value = usersMap[currentUser] || currentUser;
+
+  // 🔑 Перевірка ролі поточного користувача для фільтрації
+  const currentKey = normalizeUser(currentUser);
+  const privilegedKeys = ["adminp", "gala", "pasha"];
+
+  if (privilegedKeys.includes(currentKey)) {
+    populateUserFilterSelector();
+    document.getElementById("userFilterLabel").style.display = "inline-block";
+    document.getElementById("userFilterSelector").style.display = "inline-block";
+  }
+
+  const localData = sessionStorage.getItem("dashboardData");
+  if (localData) {
+    allProcesses = JSON.parse(localData).processes || [];
+    renderFilteredDashboard();
+  }
+
+  const [data, taskCounters] = await Promise.all([fetchDashboardData(), fetchTaskCounters()]);
+
+  if (data.status === "ok") {
+    allProcesses = data.processes;
+    globalTaskCounters = taskCounters;
+    sessionStorage.setItem("dashboardData", JSON.stringify({ processes: allProcesses }));
+    
+    renderFilteredDashboard();
+    populateProcessSelector(getVisibleProcesses(currentUser, allProcesses));
   }
 }
-const visible = getVisibleProcesses(currentUser, allProcesses);
-renderDashboard({ processes: visible });
-// --- фільтрація видимих процесів ---
 
-function normalizeUser(userKeyOrName) {
-  // якщо це ключ
-  if (usersMap[userKeyOrName]) return userKeyOrName;
-
-  // якщо це ім’я — шукаємо ключ
-  const foundKey = Object.keys(usersMap).find(k => usersMap[k] === userKeyOrName);
-  return foundKey || userKeyOrName;
+function populateUserFilterSelector() {
+  const filterSel = document.getElementById("userFilterSelector");
+  filterSel.innerHTML = '<option value="all">Всі користувачі</option>';
+  Object.entries(usersMap).forEach(([key, name]) => {
+    const opt = document.createElement("option"); opt.value = name; opt.textContent = name; filterSel.appendChild(opt);
+  });
+  filterSel.addEventListener("change", renderFilteredDashboard);
 }
 
+function renderFilteredDashboard() {
+  let processes = getVisibleProcesses(currentUser, allProcesses);
+  const selectedUser = document.getElementById("userFilterSelector").value;
+
+  if (selectedUser && selectedUser !== "all") {
+    processes = processes.filter(proc => {
+      const ownerName = usersMap[normalizeUser(proc.owner)] || proc.owner;
+      return ownerName === selectedUser || proc.participants.map(p => p.split(" (")[0]).includes(selectedUser);
+    });
+  }
+  renderDashboard({ processes }, globalTaskCounters);
+}
+
+function normalizeUser(userKeyOrName) {
+  if (usersMap[userKeyOrName]) return userKeyOrName;
+  return Object.keys(usersMap).find(k => usersMap[k] === userKeyOrName) || userKeyOrName;
+}
+
+// Безпечне отримання списку процесів за рівнем доступу
 function getVisibleProcesses(currentUserKey, processes) {
   const currentKey = normalizeUser(currentUserKey);
   const currentName = usersMap[currentKey] || currentUserKey;
-
-  // список привілейованих
-  const privilegedKeys = ["adminp", "gala", "pasha"];
-  if (privilegedKeys.includes(currentKey)) return processes;
+  if (["adminp", "gala", "pasha"].includes(currentKey)) return processes;
 
   return processes.filter(proc => {
-    // нормалізуємо власника
-    const ownerKey = normalizeUser(proc.owner);
-    const ownerName = usersMap[ownerKey] || proc.owner;
-
-    // учасники у форматі "Ім’я (Роль)" → беремо тільки ім’я
-    const participantNames = proc.participants.map(p => p.split(" (")[0]);
-
-    // видимість: якщо користувач є власником або учасником
-    return ownerName === currentName || participantNames.includes(currentName);
+    const ownerName = usersMap[normalizeUser(proc.owner)] || proc.owner;
+    return ownerName === currentName || proc.participants.map(p => p.split(" (")[0]).includes(currentName);
   });
 }
 
+// --- Розрахунок лічильників з Google-таблиці з урахуванням дедуплікації ---
 async function fetchTaskCounters() {
   try {
     const res = await fetch(PROCESSES_SHEET_URL);
     const text = await res.text();
     const json = JSON.parse(text.substr(47).slice(0, -2));
-
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    // 1️⃣ КРОК: Дедуплікація за TaskID (Стовпець F, індекс 5)
+    const today = new Date(); today.setHours(0, 0, 0, 0);
     const latestTasks = {};
 
     json.table.rows.slice(1).forEach(r => {
       if (!r || !r.c) return;
-      
-      const procTaskID = r.c[5]?.v ? String(r.c[5].v).trim() : ""; 
-      if (!procTaskID) return;
-
-      // Останній рядок у таблиці перезаписує старі версії цієї ж задачі
-      latestTasks[procTaskID] = r;
+      const id = r.c[5]?.v ? String(r.c[5].v).trim() : ""; 
+      if (id) latestTasks[id] = r;
     });
 
-    // 2️⃣ КРОК: Рахуємо лічильники по унікальних актуальних рядках
     const procAnalysis = {};
-
     Object.values(latestTasks).forEach(r => {
-      const procID = r.c[0]?.v ? String(r.c[0].v).trim() : ""; // Стовпець A
+      const procID = r.c[0]?.v ? String(r.c[0].v).trim() : "";
       if (!procID) return;
 
       if (!procAnalysis[procID]) {
-        procAnalysis[procID] = {
-          todo: 0, progress: 0, done: 0, totalTasks: 0,
-          hasOverdueExecutor: false,
-          hasUrgentNormal: false,
-          hasUrgentOverdue: false,
-          hasDeadlineClose: false,
-          hasNewToday: false
-        };
+        procAnalysis[procID] = { todo: 0, progress: 0, done: 0, totalTasks: 0, hasOverdueExecutor: false, hasUrgentNormal: false, hasUrgentOverdue: false, hasDeadlineClose: false, hasNewToday: false };
       }
       const info = procAnalysis[procID];
       info.totalTasks++;
 
-      // Читаємо статус задачі (Стовпець Q, індекс 16) — тепер це гарантовано рядок
       const taskStatus = r.c[16]?.v ? String(r.c[16].v).toLowerCase().trim() : "";
+      if (["done", "виконано", "completed"].includes(taskStatus)) info.done++;
+      else if (["inprogress", "в процесі", "progress"].includes(taskStatus)) info.progress++;
+      else info.todo++;
 
-      if (taskStatus === "done" || taskStatus === "виконано" || taskStatus === "completed") {
-        info.done++;
-      } else if (taskStatus === "inprogress" || taskStatus === "в процесі" || taskStatus === "progress") {
-        info.progress++;
-      } else {
-        info.todo++;
-      }
-
-      // Читаємо дати як чисті рядки (Стовпці H=7, I=8)
       const startStr = r.c[7]?.v ? String(r.c[7].v).trim() : "";
       const deadlineStr = r.c[8]?.v ? String(r.c[8].v).trim() : "";
-      
-      // Стовпець L (MultiRole, індекс 11)
       const isMultiRole = r.c[11]?.v ? String(r.c[11].v).toUpperCase().trim() === "TRUE" : false;
 
-      let dDeadline = null;
-      let dStart = null;
+      let dDeadline = deadlineStr ? new Date(deadlineStr) : null;
+      let dStart = startStr ? new Date(startStr) : null;
+      if (dDeadline && !isNaN(dDeadline.getTime())) dDeadline.setHours(0,0,0,0); else dDeadline = null;
+      if (dStart && !isNaN(dStart.getTime())) dStart.setHours(0,0,0,0); else dStart = null;
 
-      // Оскільки формат тепер "Звичайний текст", Date() легко розпарсить рядок типу "2026-05-26"
-      if (deadlineStr) {
-        dDeadline = new Date(deadlineStr);
-        if (!isNaN(dDeadline.getTime())) dDeadline.setHours(0, 0, 0, 0);
-        else dDeadline = null;
-      }
-      if (startStr) {
-        dStart = new Date(startStr);
-        if (!isNaN(dStart.getTime())) dStart.setHours(0, 0, 0, 0);
-        else dStart = null;
-      }
-
-      // 🔍 Застосовуємо правила Канбану
-      const isDone = (taskStatus === "done" || taskStatus === "виконано" || taskStatus === "completed");
-
+      const isDone = ["done", "виконано", "completed"].includes(taskStatus);
       if (isDone) {
         if (isMultiRole && dDeadline && today > dDeadline) info.hasUrgentOverdue = true;
         else if (isMultiRole) info.hasUrgentNormal = true;
@@ -824,28 +594,18 @@ async function fetchTaskCounters() {
         if (dDeadline && today > dDeadline) info.hasOverdueExecutor = true;
       }
 
-      // Наближення дедлайну (залишилось менше 20% часу)
       if (!isDone && dStart && dDeadline && today <= dDeadline) {
-        const totalDuration = dDeadline.getTime() - dStart.getTime();
-        const timeSpent = today.getTime() - dStart.getTime();
-        if (totalDuration > 0 && (timeSpent / totalDuration) * 100 >= 80) {
-          info.hasDeadlineClose = true;
-        }
+        const dur = dDeadline.getTime() - dStart.getTime();
+        const spent = today.getTime() - dStart.getTime();
+        if (dur > 0 && (spent / dur) * 100 >= 80) info.hasDeadlineClose = true;
       }
-
-      // Нова задача сьогодні
-      if (dStart && dStart.getTime() === today.getTime()) {
-        info.hasNewToday = true;
-      }
+      if (dStart && dStart.getTime() === today.getTime()) info.hasNewToday = true;
     });
 
-    // 3️⃣ КРОК: Визначаємо підсумковий статус для кожної картки процесу
     const finalCounters = {};
-    
     Object.entries(procAnalysis).forEach(([procID, info]) => {
       let calculatedStatus = "active";
       let visualModifier = "";
-
       if (info.totalTasks === 0) calculatedStatus = "new";
       else if (info.hasOverdueExecutor) calculatedStatus = "overdue";
       else if (info.hasUrgentOverdue) { calculatedStatus = "urgent"; visualModifier = "manager-overdue"; }
@@ -854,485 +614,227 @@ async function fetchTaskCounters() {
       else if (info.hasNewToday) calculatedStatus = "newTasks";
       else if (info.done === info.totalTasks) calculatedStatus = "completed";
 
-      finalCounters[procID] = {
-        todo: info.todo,
-        progress: info.progress,
-        done: info.done,
-        autoStatus: calculatedStatus,
-        visualModifier: visualModifier
-      };
+      finalCounters[procID] = { todo: info.todo, progress: info.progress, done: info.done, autoStatus: calculatedStatus, visualModifier: visualModifier };
     });
-
     return finalCounters;
-  } catch (err) {
-    console.error("Помилка підрахунку лічильників:", err);
-    return {};
-  }
-}
-async function initDashboard() {
-  // 1. Спочатку пробуємо швидко показати те, що є в кеші ( session )
-  const localData = sessionStorage.getItem("dashboardData");
-  if (localData) {
-    const parsed = JSON.parse(localData);
-    allProcesses = parsed.processes || [];
-    const visible = getVisibleProcesses(currentUser, allProcesses);
-    renderDashboard({ processes: visible }, {}); // Поки без лічильників
-  }
-
-  // 2. Смикаємо гугл-таблицю за процесами та задачами ОДНОЧАСНО
-  const [data, taskCounters] = await Promise.all([
-    fetchDashboardData(),
-    fetchTaskCounters()
-  ]);
-
-  if (data.status === "ok") {
-    allProcesses = data.processes;
-    sessionStorage.setItem("dashboardData", JSON.stringify({ processes: allProcesses }));
-    
-    const visible = getVisibleProcesses(currentUser, allProcesses);
-    // Передаємо лічильники в рендер!
-    renderDashboard({ processes: visible }, taskCounters);
-    populateProcessSelector(visible);
-  }
+  } catch (e) { console.error(e); return {}; }
 }
 
+async function fetchDashboardData() {
+  try {
+    const res = await fetch(DASHBOARD_SHEET_URL);
+    const text = await res.text();
+    const json = JSON.parse(text.substr(47).slice(0, -2));
+    const processes = json.table.rows.slice(2).map(r => ({
+      processID: r.c[0]?.v || "", title: r.c[1]?.v || "", owner: r.c[2]?.v || "", participants: (r.c[3]?.v || "").split(", ").filter(Boolean), status: r.c[4]?.v || "new"
+    }));
+    return { status: "ok", processes };
+  } catch (err) { return { status: "error", processes: [] }; }
+}
+
+// Рендер Канбан стовпчиків
 function renderDashboard(dashboardData, taskCounters = {}) {
-  const columns = {
-    'new': document.getElementById("list-new"),
-    'urgent': document.getElementById("list-urgent"),
-    'newTasks': document.getElementById("list-newTasks"),
-    'deadline': document.getElementById("list-deadline"),
-    'overdue': document.getElementById("list-overdue"),
-    'completed': document.getElementById("list-completed")
-  };
-
-  Object.values(columns).forEach(col => {
-    if (col) col.innerHTML = "";
-  });
+  const columns = { 'new': document.getElementById("list-new"), 'urgent': document.getElementById("list-urgent"), 'newTasks': document.getElementById("list-newTasks"), 'deadline': document.getElementById("list-deadline"), 'overdue': document.getElementById("list-overdue"), 'completed': document.getElementById("list-completed") };
+  Object.values(columns).forEach(col => { if (col) col.innerHTML = ""; });
 
   if (!dashboardData.processes.length) {
-    columns['new'].innerHTML = "<p style='color: #fff; text-align:center; font-size:13px;'>Немає процесів</p>";
-    return;
+    columns['new'].innerHTML = "<p style='color: #fff; text-align:center; font-size:13px;'>Процесів не знайдено</p>"; return;
   }
 
-dashboardData.processes.forEach(proc => {
+  dashboardData.processes.forEach(proc => {
     const div = document.createElement("div");
-    
     const pCounts = taskCounters[proc.processID] || { todo: 0, progress: 0, done: 0, autoStatus: "new", visualModifier: "" };
     const status = pCounts.autoStatus;
     
-    let borderClass = "";
-    if (status === "urgent") borderClass = "urgent";
-    else if (status === "deadline") borderClass = "deadline";
-    else if (status === "newTasks") borderClass = "newTasks";
-    else if (status === "overdue") borderClass = "overdue";
-    else if (status === "completed") borderClass = "completed";
+    let borderClass = ["urgent","deadline","newTasks","overdue","completed"].includes(status) ? status : "";
+    if (pCounts.visualModifier === "manager-overdue") borderClass += " manager-fire"; 
 
-    // 🔴 Якщо це прострочене керівником затвердження — додаємо спеціальний CSS-клас
-    if (pCounts.visualModifier === "manager-overdue") {
-      borderClass += " manager-fire"; 
-    }
+    div.className = `process-card ${borderClass}`;
+    div.dataset.status = status;
+    div.dataset.processId = proc.processID || "";
 
-    // ЗНАЙДИ І ЗАМІНИ ОЦЕЙ ШМАТОК У РЕНДЕРІ:
+    const ownerName = usersMap[proc.owner] || proc.owner;
+    const participantsFormatted = proc.participants.map(p => {
+      const [name, role] = p.split(" (");
+      const cleanRole = role ? role.replace(")", "") : "";
+      let rClass = "executor";
+      if (cleanRole === "Керівник") rClass = "manager";
+      else if (["Оунер", "Власник"].includes(cleanRole)) rClass = "ownerd";
+      return `<div style="margin-bottom: 4px;"><span class="${rClass}">${name} (${cleanRole})</span></div>`;
+    });
 
-div.className = `process-card ${borderClass}`; // 🔥 Виправили на process-card і прибрали руйнівний клас owner!
-div.dataset.status = status;
-div.dataset.processId = proc.processID || "";
-div.dataset.procData = JSON.stringify(proc);
-
-const ownerName = usersMap[proc.owner] || proc.owner;
-
-// Учасники
-const participantsFormatted = proc.participants.map(p => {
-  const [name, role] = p.split(" (");
-  const cleanRole = role ? role.replace(")", "") : "";
-  let roleClass = "executor";
-  if (cleanRole === "Керівник") roleClass = "manager";
-  else if (cleanRole === "Оунер" || cleanRole === "Власник") roleClass = "ownerd";
-  
-  // 🔥 Використовуємо класи замість інлайн-стилів для красивих баджів
-  return `<div style="margin-bottom: 4px;"><span class="${roleClass}">${name} (${cleanRole})</span></div>`;
-});
-
-div.innerHTML = `
-  <div class="process-title">${proc.title}</div> <p>👤 Власник: <span class="ownerd">${ownerName}</span></p> <div class="counters-container"> <span class="counter-badge badge-todo">📋 Зробити: ${pCounts.todo}</span>
-    <span class="counter-badge badge-progress">⚙️ В процесі: ${pCounts.progress}</span>
-    <span class="counter-badge badge-done">✅ Виконано: ${pCounts.done}</span>
-  </div>
-
-  <details onclick="event.stopPropagation();" style="width: 100%; margin-top: 8px;">
-    <summary style="color: #1e293b; font-weight: 600; cursor: pointer;">👥 Учасники (${proc.participants.length})</summary>
-    <div style="margin-top: 5px; line-height: 1.6; display: flex; flex-direction: column; gap: 4px;">
-      ${participantsFormatted.join("")}
-    </div>
-  </details>
-`;
+    div.innerHTML = `
+      <div class="process-title">${proc.title}</div>
+      <p>👤 Власник: <span class="ownerd">${ownerName}</span></p>
+      <div class="counters-container">
+        <span class="counter-badge badge-todo">📋 Зробити: ${pCounts.todo}</span>
+        <span class="counter-badge badge-progress">⚙️ В процесі: ${pCounts.progress}</span>
+        <span class="counter-badge badge-done">✅ Виконано: ${pCounts.done}</span>
+      </div>
+      <details onclick="event.stopPropagation();" style="width: 100%; margin-top: 8px;">
+        <summary style="color: #1e293b; font-weight: 600; cursor: pointer;">👥 Учасники (${proc.participants.length})</summary>
+        <div style="margin-top: 5px; line-height: 1.6; display: flex; flex-direction: column; gap: 4px;">
+          ${participantsFormatted.join("")}
+        </div>
+      </details>
+    `;
 
     div.onclick = () => showProcessModal(proc);
-
-    if (columns[status]) {
-      columns[status].appendChild(div);
-    } else {
-      columns['new'].appendChild(div);
-    }
+    if (columns[status]) columns[status].appendChild(div);
+    else columns['new'].appendChild(div);
   });
 
   Object.entries(columns).forEach(([key, col]) => {
-    if (col && col.children.length === 0) {
-      col.innerHTML = "<p style='color: rgba(255,255,255,0.3); text-align:center; font-size:12px; margin: 15px 0;'>Порожньо</p>";
-    }
+    if (col && col.children.length === 0) col.innerHTML = "<p style='color: rgba(255,255,255,0.3); text-align:center; font-size:12px; margin: 15px 0;'>Порожньо</p>";
   });
 }
+
 function populateProcessSelector(processes) {
   const selector = document.getElementById("processSelector");
   selector.innerHTML = '<option value="">— виберіть процес —</option>';
-
   processes.forEach(proc => {
-    const opt = document.createElement("option");
-    opt.value = proc.processID;
-    opt.textContent = proc.title;
-    selector.appendChild(opt);
+    const opt = document.createElement("option"); opt.value = proc.processID; opt.textContent = proc.title; selector.appendChild(opt);
   });
-
-  selector.onchange = () => {
-    const selectedId = selector.value;
-    if (!selectedId) return;
-    const proc = processes.find(p => p.processID === selectedId);
-    if (proc) showProcessModal(proc);
-  };
+  selector.onchange = () => { const id = selector.value; if (id) showProcessModal(processes.find(p => p.processID === id)); };
 }
-
-
-// --- пушимо на бекенд з no-cors ---
-document.getElementById("saveBtn").addEventListener("click", () => {
-  const processes = [];
-  document.querySelectorAll(".process").forEach(proc => {
-    processes.push({
-      processID: proc.dataset.processId || Date.now().toString(),
-      title: proc.querySelector("h2").innerText,
-      owner: proc.querySelector("p").innerText.replace("Власник: ",""),
-      participants: proc.querySelector("p:nth-of-type(2)").innerText.replace("Учасники:\n","").split("\n"),
-      status: proc.dataset.status || "new"
-    });
-  });
-
-  const dashboardData = { processes };
-  sessionStorage.setItem("dashboardData", JSON.stringify(dashboardData));
-
-  fetch(SCRIPT_URL, {
-    method: "POST",
-    mode: "no-cors",
-    headers: { "Content-Type":"application/json" },
-    body: JSON.stringify({ action:"saveDashboard", data:dashboardData })
-  });
-
-});
 
 function toggleForm() {
-  const form = document.getElementById("newBoardForm");
-  if (!form) return;
-  // Перемикаємо між none та flex для ідеального центрування модалки
-  form.style.display = form.style.display === "none" || form.style.display === "" ? "flex" : "none";
+  const form = document.getElementById("newBoardForm"); if (!form) return;
+  form.style.display = ["none", ""].includes(form.style.display) ? "flex" : "none";
 }
+
 function addParticipant() {
-  const div = document.createElement("div");
-  div.className = "form-row";
-
-  // селект користувачів
-  const userSelect = document.createElement("select");
-  Object.entries(usersMap).forEach(([key, name]) => {
-    const opt = document.createElement("option");
-    opt.value = key;
-    opt.textContent = name;
-    userSelect.appendChild(opt);
-  });
-
-  // селект ролей
-  const roleSelect = document.createElement("select");
-  ["executor","manager"].forEach(r => {
-    const opt = document.createElement("option");
-    opt.value = r;
-    opt.textContent = r==="executor" ? "Виконавець" : "Керівник";
-    roleSelect.appendChild(opt);
-  });
-
-  div.appendChild(userSelect);
-  div.appendChild(roleSelect);
+  const div = document.createElement("div"); div.className = "participant-row";
+  const uSel = document.createElement("select");
+  Object.entries(usersMap).forEach(([k, v]) => { const o = document.createElement("option"); o.value = k; o.textContent = v; uSel.appendChild(o); });
+  const rSel = document.createElement("select");
+  [["executor","Виконавець"], ["manager","Керівник"]].forEach(([k,v]) => { const o = document.createElement("option"); o.value = k; o.textContent = v; rSel.appendChild(o); });
+  const btn = document.createElement("button"); btn.type = "button"; btn.textContent = "×"; btn.onclick = () => div.remove();
+  div.appendChild(uSel); div.appendChild(rSel); div.appendChild(btn);
   document.getElementById("participants").appendChild(div);
 }
 
-// --- створення нового процесу ---
 function createBoard() {
   const title = document.getElementById("boardTitle").value.trim();
   if (!title) { alert("Введіть назву дошки"); return; }
-
   const ownerKey = usersMap[currentUser] ? currentUser : null;
   const ownerName = usersMap[ownerKey] || ownerKey;
+  let participants = [`${ownerName} (Оунер)`];
 
-  let participants = [];
-  participants.push(`${ownerName} (Оунер)`);
-
-  document.querySelectorAll("#participants .form-row").forEach(row => {
+  document.querySelectorAll("#participants .participant-row").forEach(row => {
     const selects = row.querySelectorAll("select");
-    const userKey = selects[0].value;
-    const roleKey = selects[1].value;
-    const userName = usersMap[userKey] || userKey;
-    const roleName = roleKey === "executor" ? "Виконавець" : "Керівник";
-    participants.push(`${userName} (${roleName})`);
+    participants.push(`${usersMap[selects[0].value]} (${selects[1].value === "executor" ? "Виконавець" : "Керівник"})`);
   });
 
-  const processData = {
-    processID: Date.now().toString(),
-    title,
-    owner: ownerKey,        // 🔑 зберігаємо ключ
-    participants,
-    status: "new"
-  };
-
+  const processData = { processID: Date.now().toString(), title, owner: ownerKey, participants, status: "new" };
   allProcesses.push(processData);
-
-  // 🔑 у sessionStorage завжди зберігаємо всі процеси
   sessionStorage.setItem("dashboardData", JSON.stringify({ processes: allProcesses }));
+  
+  renderFilteredDashboard();
+  fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "saveDashboard", data: { processes: allProcesses } }) });
 
-  // 🔑 рендеримо тільки видимі процеси
-  const visible = getVisibleProcesses(currentUser, allProcesses);
-  renderDashboard({ processes: visible });
-
-  // пушимо на бекенд
-  fetch(SCRIPT_URL, {
-    method: "POST",
-    mode: "no-cors",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ action: "saveDashboard", data: { processes: allProcesses } })
-  });
-
-  // очищаємо форму
-  document.getElementById("boardTitle").value = "";
-  document.getElementById("participants").innerHTML = "";
-  document.getElementById("newBoardForm").style.display = "none";
+  document.getElementById("boardTitle").value = ""; document.getElementById("participants").innerHTML = ""; document.getElementById("newBoardForm").style.display = "none";
 }
-
 
 function showProcessModal(proc) {
   const currentKey = normalizeUser(currentUser);
   const ownerKey = normalizeUser(proc.owner);
 
   if (currentKey === ownerKey) {
-    // --- Оунер бачить модалку ---
     const modal = document.getElementById("processModal");
     document.getElementById("modalTitle").innerText = proc.title;
     modal.style.display = "flex";
 
-    // --- Видалити ---
-    document.getElementById("deleteBtn").onclick = async () => {
+    document.getElementById("deleteBtn").onclick = () => {
       allProcesses = allProcesses.filter(p => p.processID !== proc.processID);
       sessionStorage.setItem("dashboardData", JSON.stringify({ processes: allProcesses }));
-      renderDashboard({ processes: allProcesses });
-
-      fetch(SCRIPT_URL, {
-        method: "POST",
-        mode: "no-cors",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action: "saveDashboard", data: { processes: allProcesses } })
-      })
-      .then(async () => {
-        await new Promise(resolve => setTimeout(resolve, 1500));
-        const data = await fetchDashboardData();
-        if (data.status === "ok") {
-          allProcesses = data.processes;
-          sessionStorage.setItem("dashboardData", JSON.stringify(data));
-          renderDashboard(data);
-        }
-      });
-
+      renderFilteredDashboard();
+      fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "saveDashboard", data: { processes: allProcesses } }) });
       modal.style.display = "none";
     };
 
-    // --- Редагувати ---
-    document.getElementById("editBtn").onclick = () => {
-      modal.style.display = "none";
-      showEditModal(proc);
-    };
-
-    // --- Перейти ---
-    document.getElementById("goBtn").onclick = async () => {
-      sessionStorage.setItem("currentProcess", JSON.stringify(proc));
-      const ownerName = usersMap[currentUser] || currentUser;
-
-      const payload = {
-        action: "openProcess",
-        data: { title: proc.title, owner: ownerName }
-      };
-
-      try {
-        await fetch(SCRIPT_URL, {
-          method: "POST",
-          mode: "no-cors",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload)
-        });
-      } catch (e) {
-        console.error("Помилка при записі в OpenLog:", e);
-      }
-
-      window.location.href = "proc.html";
-    };
-
-    // --- Закриття по кліку поза модалкою ---
-    modal.onclick = (e) => {
-      if (e.target === modal) {
-        modal.style.display = "none";
-      }
-    };
-
+    document.getElementById("editBtn").onclick = () => { modal.style.display = "none"; showEditModal(proc); };
+    document.getElementById("goBtn").onclick = () => { redirectToProcess(proc); };
+    modal.onclick = (e) => { if (e.target === modal) modal.style.display = "none"; };
   } else {
-    // --- Не оунер: одразу перехід ---
-    sessionStorage.setItem("currentProcess", JSON.stringify(proc));
-    const ownerName = usersMap[currentUser] || currentUser;
-
-    const payload = {
-      action: "openProcess",
-      data: { title: proc.title, owner: ownerName }
-    };
-
-    fetch(SCRIPT_URL, {
-      method: "POST",
-      mode: "no-cors",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload)
-    }).catch(e => console.error("Помилка при записі в OpenLog:", e));
-
-    window.location.href = "proc.html";
+    redirectToProcess(proc);
   }
 }
 
+function redirectToProcess(proc) {
+  sessionStorage.setItem("currentProcess", JSON.stringify(proc));
+  fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "openProcess", data: { title: proc.title, owner: usersMap[currentUser] || currentUser } }) });
+  window.location.href = "proc.html";
+}
 
+// --- Логіка вікна редагування процесу ---
 function showEditModal(proc) {
   const modal = document.getElementById("editProcessModal");
   modal.style.display = "flex";
-
-  // заповнюємо назву
   document.getElementById("editTitle").value = proc.title;
 
-  // заповнюємо учасників
   const container = document.getElementById("editParticipants");
   container.innerHTML = "";
+  
   proc.participants.forEach(p => {
-    const div = document.createElement("div");
-    div.className = "form-row";
-
-    // селект користувачів
-    const userSelect = document.createElement("select");
+    if (p.includes("Оунер") || p.includes("Власник")) return; 
+    const div = document.createElement("div"); div.className = "participant-row";
+    
+    const uSel = document.createElement("select");
     Object.entries(usersMap).forEach(([key, name]) => {
-      const opt = document.createElement("option");
-      opt.value = key;
-      opt.textContent = name;
+      const opt = document.createElement("option"); opt.value = key; opt.textContent = name;
       if (p.includes(name)) opt.selected = true;
-      userSelect.appendChild(opt);
+      uSel.appendChild(opt);
     });
 
-    // селект ролей
-    const roleSelect = document.createElement("select");
-    ["executor","manager"].forEach(r => {
-      const opt = document.createElement("option");
-      opt.value = r;
-      opt.textContent = r==="executor" ? "Виконавець" : "Керівник";
-      if (p.includes(opt.textContent)) opt.selected = true;
-      roleSelect.appendChild(opt);
+    const rSel = document.createElement("select");
+    [["executor","Виконавець"], ["manager","Керівник"]].forEach(([k,v]) => {
+      const opt = document.createElement("option"); opt.value = k; opt.textContent = v;
+      if (p.includes(v)) opt.selected = true;
+      rSel.appendChild(opt);
     });
 
-    div.appendChild(userSelect);
-    div.appendChild(roleSelect);
-
-    // кнопка видалення учасника
-    const removeBtn = document.createElement("button");
-    removeBtn.textContent = "❌";
-    removeBtn.onclick = () => div.remove();
-    div.appendChild(removeBtn);
-
+    const removeBtn = document.createElement("button"); removeBtn.textContent = "×"; removeBtn.onclick = () => div.remove();
+    div.appendChild(uSel); div.appendChild(rSel); div.appendChild(removeBtn);
     container.appendChild(div);
   });
 
-  // кнопка збереження
-  document.getElementById("saveEditBtn").onclick = async () => {
+  document.getElementById("saveEditBtn").onclick = () => {
     proc.title = document.getElementById("editTitle").value;
+    const ownerName = usersMap[normalizeUser(proc.owner)] || proc.owner;
+    let newParticipants = [`${ownerName} (Оунер)`];
 
-    // нові учасники
-    let newParticipants = [];
-    container.querySelectorAll(".form-row").forEach(row => {
+    container.querySelectorAll(".participant-row").forEach(row => {
       const selects = row.querySelectorAll("select");
-      const userKey = selects[0].value;
-      const roleKey = selects[1].value;
-      const userName = usersMap[userKey] || userKey;
-      const roleName = roleKey==="executor" ? "Виконавець" : "Керівник";
-      newParticipants.push(`${userName} (${roleName})`);
+      newParticipants.push(`${usersMap[selects[0].value]} (${selects[1].value === "executor" ? "Виконавець" : "Керівник"})`);
     });
     proc.participants = newParticipants;
 
-    // оновлюємо масив і локалку
     allProcesses = allProcesses.map(p => p.processID === proc.processID ? proc : p);
-    sessionStorage.setItem("dashboardData", JSON.stringify({processes: allProcesses}));
+    sessionStorage.setItem("dashboardData", JSON.stringify({ processes: allProcesses }));
+    renderFilteredDashboard();
 
-    // одразу показуємо оновлені дані з локалки
-    renderDashboard({processes: allProcesses});
-
-    // пушимо на бекенд у фоні
-    fetch(SCRIPT_URL, {
-      method: "POST",
-      mode: "no-cors",
-      headers: {"Content-Type":"application/json"},
-      body: JSON.stringify({ action:"saveDashboard", data:{processes: allProcesses} })
-    })
-    .then(async () => {
-      // невелика пауза і підтягнемо gviz
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      const data = await fetchDashboardData();
-      if (data.status === "ok") {
-        allProcesses = data.processes;
-        sessionStorage.setItem("dashboardData", JSON.stringify(data));
-        renderDashboard(data);
-      }
-    });
-
-    // закриваємо модалку одразу після збереження
+    fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", headers: {"Content-Type":"application/json"}, body: JSON.stringify({ action:"saveDashboard", data:{processes: allProcesses} }) });
     modal.style.display = "none";
   };
 }
 
 function addEditParticipant() {
-  const div = document.createElement("div");
-  div.className = "form-row";
-
-  // селект користувачів
-  const userSelect = document.createElement("select");
-  Object.entries(usersMap).forEach(([key, name]) => {
-    const opt = document.createElement("option");
-    opt.value = key;
-    opt.textContent = name;
-    userSelect.appendChild(opt);
-  });
-
-  // селект ролей
-  const roleSelect = document.createElement("select");
-  ["executor","manager"].forEach(r => {
-    const opt = document.createElement("option");
-    opt.value = r;
-    opt.textContent = r==="executor" ? "Виконавець" : "Керівник";
-    roleSelect.appendChild(opt);
-  });
-
-  // кнопка видалення
-  const removeBtn = document.createElement("button");
-  removeBtn.textContent = "❌";
-  removeBtn.onclick = () => div.remove();
-
-  div.appendChild(userSelect);
-  div.appendChild(roleSelect);
-  div.appendChild(removeBtn);
-
-  document.getElementById("editParticipants").appendChild(div);
+  const container = document.getElementById("editParticipants");
+  const div = document.createElement("div"); div.className = "participant-row";
+  const uSel = document.createElement("select");
+  Object.entries(usersMap).forEach(([k, v]) => { const o = document.createElement("option"); o.value = k; o.textContent = v; uSel.appendChild(o); });
+  const rSel = document.createElement("select");
+  [["executor","Виконавець"], ["manager","Керівник"]].forEach(([k,v]) => { const o = document.createElement("option"); o.value = k; o.textContent = v; rSel.appendChild(o); });
+  const btn = document.createElement("button"); btn.textContent = "×"; btn.onclick = () => div.remove();
+  div.appendChild(uSel); div.appendChild(rSel); div.appendChild(btn);
+  container.appendChild(div);
 }
 
+// Вихід
+document.getElementById("logoutBtn").addEventListener("click", function() {
+  sessionStorage.clear(); window.location.href = "index.html";
+});
 </script>
 </body>
 </html>
