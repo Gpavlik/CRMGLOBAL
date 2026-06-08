@@ -176,18 +176,33 @@
       width: 100%; box-sizing: border-box; padding: 5px 8px; border: 1px solid #cbd5e1; border-radius: 6px; background: #f8fafc; font-size: 12px; color: #1e293b; margin-top: 2px;
     }
 
-    .taskUser { display: inline-block; font-size: 11px; font-weight: 700; padding: 2px 6px; border-radius: 4px; color: white !important; white-space: nowrap; }
+    /* Оновлений бейдж: вільніший падінг, щоб довгі імена не тиснули */
+    .taskUser { 
+      display: inline-block; 
+      font-size: 11px; 
+      font-weight: 700; 
+      padding: 4px 10px; /* Збільшили відступи, щоб текст дихав */
+      border-radius: 6px; 
+      color: white !important; 
+      white-space: nowrap; 
+    }
     .card.owner .taskUser { background: #3b82f6; }
     .card.manager .taskUser { background: #10b981; }
     .card.executor .taskUser { background: #8b5cf6; }
 
     /* ==========================================================================
-       6. СУВОРІ СТАТУСИ (Монолітні рамки)
+       6. СУВОРІ СТАТУСИ ТА СТИЛЬ ЗАТВЕРДЖЕННЯ
        ========================================================================== */
     .newTasks, .card.newTasks { border: 2px solid #3b82f6 !important; }
     .urgent, .card.indigo-border { border: 2px solid #8b5cf6 !important; } 
     .completed, .card.completed { border: 2px solid #10b981 !important; } 
     .overdue, .card.overdue { border: 4px solid #ef4444 !important; background: rgba(254, 242, 242, 0.55) !important; }
+    
+    /* 🔥 НОВИЙ КЛАС: Червона рамка для задач, що потребують затвердження */
+    .card.requires-approval {
+      border: 3px solid #ef4444 !important;
+      box-shadow: 0 0 12px rgba(239, 68, 68, 0.25), inset 2px 2px 4px rgba(255, 255, 255, 0.85) !important;
+    }
 
     /* ==========================================================================
        7. ВНУТРІШНІЙ ЧАТ КАРТКИ
@@ -508,10 +523,18 @@ function createTaskCard(ev, dragged) {
 }
 
 function applyStatusClass(card, status) {
-  card.classList.remove("newTasks","urgent","completed","overdue");
+  card.classList.remove("newTasks","urgent","completed","overdue", "requires-approval");
+
+  // Спочатку задаємо базовий колір за станом колонки
   if (status === "inprogress") card.classList.add("urgent");
   else if (status === "done") card.classList.add("completed");
   else card.classList.add("newTasks");
+
+  // 🔥 Перевірка на потребу затвердження (якщо чекбокс активний — перебиваємо червоною рамкою)
+  const approveInput = card.querySelector(".approveInput");
+  if (approveInput && approveInput.checked) {
+    card.classList.add("requires-approval");
+  }
 }
 
 function attachChat(card) {
@@ -651,6 +674,14 @@ function renderKanban(tasks) {
     };
 
     applyStatusClass(card, t.status);
+
+    const approveInp = card.querySelector(".approveInput");
+    if (approveInp) {
+      approveInp.addEventListener("change", () => {
+        applyStatusClass(card, card.dataset.status);
+        syncTasks();
+      });
+    }
     card.querySelectorAll("input,select").forEach(inp => { if (inp.classList.contains("chatInput")) return; if (!editable) inp.disabled = true; else inp.addEventListener("change", syncTasks); });
     card.querySelector(".titleInput").addEventListener("input", e => { if (editable) { card.querySelector(".taskTitle").innerText = e.target.value || `${card.dataset.username} — нова задача`; syncTasks(); } });
 
