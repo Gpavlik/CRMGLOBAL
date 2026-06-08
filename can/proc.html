@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="uk">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Управління процесом</title>
   <link rel="icon" type="image/jpg" href="bol.jpg">
   <style>
@@ -22,7 +22,7 @@
     }
 
     /* ==========================================================================
-       2. ШАПКА В СТИЛІ GLASSMORPHISM
+       2. ШАПКА В СТИЛІ GLASSMORPHISM + MOBILE FIX
        ========================================================================== */
     header { 
       background: #1e293b; 
@@ -57,6 +57,26 @@
     header button:hover { background: #2563eb; transform: translateY(-1px); }
     #saveAndBackBtn { background: #10b981; }
     #saveAndBackBtn:hover { background: #059669; }
+
+    /* 🔥 Мобільний адаптив для хедера сторінки процесу (До 768px) */
+    @media screen and (max-width: 768px) {
+      header { 
+        flex-direction: column; 
+        gap: 12px; 
+        text-align: center;
+        padding: 15px;
+      }
+      header h1 { font-size: 18px; }
+      
+      .header-controls {
+        flex-direction: column;
+        width: 100%;
+        gap: 8px;
+      }
+      .header-controls p, .header-controls button {
+        width: 100%;
+      }
+    }
 
     /* ==========================================================================
        3. СТРУКТУРА КОНТЕЙНЕРА ТА УЧАСНИКИ
@@ -186,7 +206,6 @@
       gap: 6px;
     }
 
-    /* Форми всередині картки */
     .spoiler label {
       font-size: 12px;
       font-weight: 600;
@@ -207,7 +226,6 @@
       margin-top: 2px;
     }
 
-    /* Баджі ролей (Замість зафарбовування всієї картки) */
     .taskUser {
       display: inline-block;
       font-size: 11px;
@@ -225,10 +243,9 @@
        6. СУВОРІ СТАТУСИ (Монолітні рамки замість тіней)
        ========================================================================== */
     .newTasks, .card.newTasks { border: 2px solid #3b82f6 !important; }
-    .urgent, .card.indigo-border { border: 2px solid #8b5cf6 !important; } /* В процесі */
-    .completed, .card.completed { border: 2px solid #10b981 !important; } /* Виконано */
+    .urgent, .card.indigo-border { border: 2px solid #8b5cf6 !important; } 
+    .completed, .card.completed { border: 2px solid #10b981 !important; } 
     
-    /* 🔥 ТОЙ САМИЙ ЖИРНИЙ МОНОЛІТНИЙ БОРДЮР ДЛЯ ПРОТЕРМІНОВАНИХ */
     .overdue, .card.overdue { 
       border: 4px solid #ef4444 !important; 
       background: rgba(254, 242, 242, 0.55) !important;
@@ -360,7 +377,6 @@
       background: rgba(226, 232, 240, 0.8);
     }
 
-    /* Плашки задач Ганта */
     .task {
       position: absolute;
       height: 30px;
@@ -472,7 +488,7 @@ async function initProcess() {
   const userInfo = document.getElementById("userInfoTop");
   if (userInfo) {
     const displayName = usersMap[currentUser] || currentUser;
-    userInfo.innerHTML = `<span style="background:rgba(255,255,255,0.15); padding:6px 12px; border-radius:20px; border:1px solid rgba(255,255,255,0.2);">👤 Робоча сесія: ${displayName}</span>`;
+    userInfo.innerHTML = `<span style="background:rgba(255,255,255,0.15); padding:6px 12px; border-radius:20px; border:1px solid rgba(255,255,255,0.2); white-space:nowrap; display:inline-block;">👤 Робоча сесія: ${displayName}</span>`;
   }
 
   const participantsDiv = document.getElementById("participants");
@@ -565,7 +581,6 @@ function normalizeUser(userKeyOrName) {
   return userKeyOrName;
 }
 
-// Покращений екстракт імені учасника
 function extractName(participant) {
   if (participant.includes("(")) return participant.split(" (")[0].trim();
   if (participant.includes("—")) return participant.split("—")[0].trim();
@@ -681,14 +696,14 @@ function applyStatusClass(card, status) {
 
   switch (status) {
     case "inprogress":
-      card.classList.add("urgent"); // В процесі
+      card.classList.add("urgent"); 
       break;
     case "done":
-      card.classList.add("completed"); // Завершено
+      card.classList.add("completed"); 
       break;
     case "todo":
     default:
-      card.classList.add("newTasks"); // До виконання
+      card.classList.add("newTasks"); 
       break;
   }
 }
@@ -733,6 +748,7 @@ function attachChat(card) {
   card.appendChild(chatBox);
 }
 
+// Синхронізація
 function syncTasks() {
   allTasks = [];
   const titles = [];
@@ -760,17 +776,7 @@ function syncTasks() {
 
     allTasks.push({
       id: card.dataset.taskId || Date.now().toString(),
-      title,
-      start,
-      deadline,
-      role,
-      username,
-      multiRole,
-      dependencyTitle: depTitle,
-      priority,
-      files,
-      chat,
-      status
+      title, start, deadline, role, username, multiRole, dependencyTitle: depTitle, priority, files, chat, status
     });
   });
 
@@ -779,8 +785,7 @@ function syncTasks() {
     sel.innerHTML = `<option value="">—</option>`;
     titles.forEach(t => {
       const opt = document.createElement("option");
-      opt.value = t;
-      opt.textContent = t;
+      opt.value = t; opt.textContent = t;
       if (t === current) opt.selected = true;
       sel.appendChild(opt);
     });
@@ -793,15 +798,7 @@ function syncTasks() {
 document.getElementById("saveAndBackBtn").onclick = async () => {
   try {
     const safeTasks = (processData.tasks || []).map(t => ({
-      id: t.id,
-      title: t.title || "",
-      start: t.start || "",
-      deadline: t.deadline || "",
-      role: t.role || "executor",
-      username: t.username || "",
-      multiRole: !!t.multiRole,
-      dependencyTitle: t.dependencyTitle || null,
-      priority: t.priority || "medium",
+      id: t.id, title: t.title || "", start: t.start || "", deadline: t.deadline || "", role: t.role || "executor", username: t.username || "", multiRole: !!t.multiRole, dependencyTitle: t.dependencyTitle || null, priority: t.priority || "medium",
       files: (t.files || []).map(f => ({ name: f.name, url: f.url || "", deleteUrl: f.deleteUrl || "" })),
       chat: (t.chat || []).map(c => ({ user: c.user || "", text: c.text || "" })),
       status: t.status || "todo"
@@ -816,25 +813,15 @@ document.getElementById("saveAndBackBtn").onclick = async () => {
     });
 
     const safeProcess = {
-      processID: processData.processID,
-      title: processData.title,
-      owner: usersMap[currentUser] || currentUser,
-      participants: safeParticipants,
-      status: processData.status || "new",
-      tasks: safeTasks
+      processID: processData.processID, title: processData.title, owner: usersMap[currentUser] || currentUser, participants: safeParticipants, status: processData.status || "new", tasks: safeTasks
     };
 
     await fetch(SCRIPT_URL, {
-      method: "POST",
-      mode: "no-cors",
-      headers: { "Content-Type":"application/json" },
-      body: JSON.stringify({ action:"updateProcess", process: safeProcess })
+      method: "POST", mode: "no-cors", headers: { "Content-Type":"application/json" }, body: JSON.stringify({ action:"updateProcess", process: safeProcess })
     });
 
     window.location.href = "Dashboard.html";
-  } catch(err) {
-    console.error("Помилка при збереженні:", err);
-  }
+  } catch(err) { console.error("Помилка при збереженні:", err); }
 };
 
 async function fetchDashboardData() {
@@ -842,59 +829,32 @@ async function fetchDashboardData() {
     const res = await fetch(Processes_SHEET_URL);
     const text = await res.text();
     const json = JSON.parse(text.substr(47).slice(0, -2));
-
     const rows = json.table.rows;
     const processes = {};
 
     rows.forEach(r => {
       const [
-        processID, title, owner, participants, status, taskID,
-        taskTitle, start, deadline, role, username,
-        multiRole, dependency, priority, files, chat, taskStatus
+        processID, title, owner, participants, status, taskID, taskTitle, start, deadline, role, username, multiRole, dependency, priority, files, chat, taskStatus
       ] = r.c.map(c => c ? c.v : "");
 
       if (!processes[processID]) {
-        processes[processID] = {
-          processID, title, owner,
-          participants: participants ? participants.split(", ") : [],
-          status, tasks:[]
-        };
+        processes[processID] = { processID, title, owner, participants: participants ? participants.split(", ") : [], status, tasks:[] };
       }      
 
       const parsedTask = {
-        id: taskID,
-        title: taskTitle || "",
-        start: start || "",
-        deadline: deadline || "",
-        role: role || "executor",
-        username: username || "",
-        multiRole: multiRole === "TRUE" || multiRole === true,
-        dependencyTitle: dependency || null,
-        priority: priority || "medium",
-        files: files ? files.split(", ").map(f => {
-          const [name, url, deleteUrl] = f.split("::");
-          return { name: name || "", url: url || "", deleteUrl: deleteUrl || "" };
-        }) : [],
-        chat: chat ? chat.split(" || ").map(c => {
-          const [user, text] = c.split(": ");
-          return { user: user || "?", text: text || "" };
-        }) : [],
+        id: taskID, title: taskTitle || "", start: start || "", deadline: deadline || "", role: role || "executor", username: username || "", multiRole: multiRole === "TRUE" || multiRole === true, dependencyTitle: dependency || null, priority: priority || "medium",
+        files: files ? files.split(", ").map(f => { const [name, url, deleteUrl] = f.split("::"); return { name: name || "", url: url || "", deleteUrl: deleteUrl || "" }; }) : [],
+        chat: chat ? chat.split(" || ").map(c => { const [user, text] = c.split(": "); return { user: user || "?", text: text || "" }; }) : [],
         status: taskStatus || "todo"
       };
 
       const existingIdx = processes[processID].tasks.findIndex(t => t.id === taskID);
-      if (existingIdx >= 0) {
-        processes[processID].tasks[existingIdx] = parsedTask;
-      } else {
-        processes[processID].tasks.push(parsedTask);
-      }
+      if (existingIdx >= 0) processes[processID].tasks[existingIdx] = parsedTask;
+      else processes[processID].tasks.push(parsedTask);
     });
 
     return { status:"ok", currentProcess: processes[processData.processID], processes:Object.values(processes) };
-  } catch(err) {
-    console.error("Помилка читання таблиці:", err);
-    return { status:"error", processes:[] };
-  }
+  } catch(err) { return { status:"error", processes:[] }; }
 }
 
 function renderKanban(tasks) {
@@ -910,10 +870,7 @@ function renderKanban(tasks) {
     card.dataset.status = t.status;
 
     const editable = canEditTask(t, processData, currentUser);
-    if (editable) {
-      card.setAttribute("draggable","true");
-      card.ondragstart = drag;
-    }
+    if (editable) { card.setAttribute("draggable","true"); card.ondragstart = drag; }
 
     card.innerHTML = `
       <details class="spoiler" open>
@@ -946,9 +903,7 @@ function renderKanban(tasks) {
     card.chat = t.chat || [];
     const messagesDiv = card.querySelector(".messages");
     card.chat.forEach(c => {
-      const m = document.createElement("div");
-      m.innerText = `${c.user}: ${c.text}`;
-      messagesDiv.appendChild(m);
+      const m = document.createElement("div"); m.innerText = `${c.user}: ${c.text}`; messagesDiv.appendChild(m);
     });
 
     const chatPreview = document.createElement("div");
@@ -962,9 +917,7 @@ function renderKanban(tasks) {
       if (chatInput.value.trim() !== "") {
         const msgObj = { user: usersMap[currentUser] || currentUser, text: chatInput.value.trim() };
         card.chat.push(msgObj);
-        const m = document.createElement("div");
-        m.innerText = `${msgObj.user}: ${msgObj.text}`;
-        messagesDiv.appendChild(m);
+        const m = document.createElement("div"); m.innerText = `${msgObj.user}: ${msgObj.text}`; messagesDiv.appendChild(m);
         chatPreview.innerHTML += `<div>${msgObj.user}: ${msgObj.text}</div>`;
         chatInput.value = "";
 
@@ -984,10 +937,7 @@ function renderKanban(tasks) {
     });
 
     card.querySelector(".titleInput").addEventListener("input", e => {
-      if (editable) {
-        card.querySelector(".taskTitle").innerText = e.target.value || `${card.dataset.username} — нова задача`;
-        syncTasks();
-      }
+      if (editable) { card.querySelector(".taskTitle").innerText = e.target.value || `${card.dataset.username} — нова задача`; syncTasks(); }
     });
 
     if (t.status === "inprogress") document.querySelector("#inProgressList .cards").appendChild(card);
@@ -998,8 +948,7 @@ function renderKanban(tasks) {
 
 function renderGantt(tasks) {
   const gantt = document.getElementById("ganttChart");
-  gantt.innerHTML = "";
-  if (!tasks.length) return;
+  gantt.innerHTML = ""; if (!tasks.length) return;
 
   tasks.sort((a,b) => new Date(a.start) - new Date(b.start));
   const starts = tasks.map(t => new Date(t.start)).filter(d => !isNaN(d));
@@ -1018,61 +967,21 @@ function renderGantt(tasks) {
   gantt.style.height = `${tasks.length*60 + 120}px`;
 
   for (let i = 0; i < diffDays; i++) {
-    const date = new Date(minDate);
-    date.setDate(minDate.getDate() + i);
-
-    const dayBox = document.createElement("div");
-    dayBox.className = "gantt-date";
-    dayBox.style.left = `${i*dayWidth + 160}px`;
-    dayBox.style.width = `${dayWidth}px`;
-    dayBox.innerText = date.toLocaleDateString("uk-UA", { day:"2-digit", month:"2-digit" });
-    gantt.appendChild(dayBox);
-
-    const weekdayBox = document.createElement("div");
-    weekdayBox.className = "gantt-weekday";
-    weekdayBox.style.left = `${i*dayWidth + 160}px`;
-    weekdayBox.style.width = `${dayWidth}px`;
-    weekdayBox.innerText = date.toLocaleDateString("uk-UA", { weekday:"short" });
-    gantt.appendChild(weekdayBox);
-
-    const vLine = document.createElement("div");
-    vLine.className = "gantt-vertical-line";
-    vLine.style.left = `${i*dayWidth + 160}px`;
-    gantt.appendChild(vLine);
+    const date = new Date(minDate); date.setDate(minDate.getDate() + i);
+    const dayBox = document.createElement("div"); dayBox.className = "gantt-date"; dayBox.style.left = `${i*dayWidth + 160}px`; dayBox.style.width = `${dayWidth}px`; dayBox.innerText = date.toLocaleDateString("uk-UA", { day:"2-digit", month:"2-digit" }); gantt.appendChild(dayBox);
+    const weekdayBox = document.createElement("div"); weekdayBox.className = "gantt-weekday"; weekdayBox.style.left = `${i*dayWidth + 160}px`; weekdayBox.style.width = `${dayWidth}px`; weekdayBox.innerText = date.toLocaleDateString("uk-UA", { weekday:"short" }); gantt.appendChild(weekdayBox);
+    const vLine = document.createElement("div"); vLine.className = "gantt-vertical-line"; vLine.style.left = `${i*dayWidth + 160}px`; gantt.appendChild(vLine);
   }
 
   const todayOffset = Math.floor((now - minDate)/(1000*60*60*24));
   if (todayOffset >= 0 && todayOffset < diffDays) {
-    const todayLine = document.createElement("div");
-    todayLine.style.position = "absolute";
-    todayLine.style.left = `${todayOffset*dayWidth + 160}px`;
-    todayLine.style.top = "0";
-    todayLine.style.width = `${dayWidth}px`;
-    todayLine.style.height = "100%";
-    todayLine.style.background = "rgba(255,200,0,0.18)";
-    todayLine.style.borderLeft = "2px dashed #f59e0b";
-    todayLine.style.pointerEvents = "none";
-    todayLine.style.zIndex = "2";
-    gantt.appendChild(todayLine);
+    const todayLine = document.createElement("div"); todayLine.style.position = "absolute"; todayLine.style.left = `${todayOffset*dayWidth + 160}px`; todayLine.style.top = "0"; todayLine.style.width = `${dayWidth}px`; todayLine.style.height = "100%"; todayLine.style.background = "rgba(255,200,0,0.18)"; todayLine.style.borderLeft = "2px dashed #f59e0b"; todayLine.style.pointerEvents = "none"; todayLine.style.zIndex = "2"; gantt.appendChild(todayLine);
   }
 
   tasks.forEach((t, idx) => {
     const rowTop = (idx+1)*60 + 40;
-    const rowLine = document.createElement("div");
-    rowLine.className = "gantt-row-line";
-    rowLine.style.top = `${rowTop}px`;
-    gantt.appendChild(rowLine);
-
-    const label = document.createElement("div");
-    label.innerText = t.username || "—";
-    label.style.position = "absolute";
-    label.style.left = "15px";
-    label.style.top = `${rowTop + 6}px`;
-    label.style.width = "140px";
-    label.style.textAlign = "left";
-    label.style.fontSize = "12px";
-    label.style.fontWeight = "700";
-    gantt.appendChild(label);
+    const rowLine = document.createElement("div"); rowLine.className = "gantt-row-line"; rowLine.style.top = `${rowTop}px`; gantt.appendChild(rowLine);
+    const label = document.createElement("div"); label.innerText = t.username || "—"; label.style.position = "absolute"; label.style.left = "15px"; label.style.top = `${rowTop + 6}px`; label.style.width = "140px"; label.style.textAlign = "left"; label.style.fontSize = "12px"; label.style.fontWeight = "700"; gantt.appendChild(label);
   });
 
   tasks.forEach((t, idx) => {
@@ -1081,10 +990,7 @@ function renderGantt(tasks) {
     const rowTop = (idx+1)*60 + 45;
 
     const task = document.createElement("div");
-    task.className = "task";
-    task.style.top = `${rowTop}px`;
-    task.style.left = `${startOffset*dayWidth + 160}px`;
-    task.style.width = `${duration*dayWidth - 4}px`;
+    task.className = "task"; task.style.top = `${rowTop}px`; task.style.left = `${startOffset*dayWidth + 160}px`; task.style.width = `${duration*dayWidth - 4}px`;
 
     if (t.role === "owner") task.style.background = "linear-gradient(135deg, #3b82f6, #1d4ed8)";
     else if (t.role === "manager") task.style.background = "linear-gradient(135deg, #10b981, #047857)";
@@ -1092,20 +998,10 @@ function renderGantt(tasks) {
     if (t.multiRole) task.style.background = "linear-gradient(90deg, #6d28d9 50%, #f59e0b 50%)";
 
     let statusText = "";
-    if (now < new Date(t.start)) {
-      task.style.opacity = "0.6";
-      task.style.border = "1px dashed #64748b";
-      statusText = "Планується";
-    } else if (now > new Date(t.deadline) && t.status !== "done") {
-      task.style.border = "2px solid #ef4444";
-      statusText = "Протерміновано";
-    } else if (t.status === "done") {
-      task.style.border = "2px solid #10b981";
-      statusText = "Виконано";
-    } else {
-      task.style.border = "2px solid #f59e0b";
-      statusText = "У процесі";
-    }
+    if (now < new Date(t.start)) { task.style.opacity = "0.6"; task.style.border = "1px dashed #64748b"; statusText = "Планується"; }
+    else if (now > new Date(t.deadline) && t.status !== "done") { task.style.border = "2px solid #ef4444"; statusText = "Протерміновано"; }
+    else if (t.status === "done") { task.style.border = "2px solid #10b981"; statusText = "Виконано"; }
+    else { task.style.border = "2px solid #f59e0b"; statusText = "У процесі"; }
 
     task.innerText = t.title;
     task.title = `${t.title}\nСтатус: ${statusText}\nВиконавець: ${t.username || "—"}`;

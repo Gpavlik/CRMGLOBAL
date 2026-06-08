@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="uk">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Календар задач</title>
   <link rel="icon" type="image/jpg" href="bol.jpg">
 
@@ -37,7 +37,7 @@
     }
 
     /* ==========================================================================
-       2. ШАПКА В СТИЛІ GLASSMORPHISM
+       2. ШАПКА В СТИЛІ GLASSMORPHISM + MOBILE FIX
        ========================================================================== */
     header { 
       background: #1e293b; 
@@ -69,9 +69,11 @@
       display: flex;
       align-items: center;
       gap: 12px;
+      font-size: 13px;
+      font-weight: 600;
     }
 
-    select {
+    .header-controls select {
       font-family: 'Segoe UI', Arial, sans-serif;
       font-size: 14px;
       padding: 8px 12px;
@@ -80,8 +82,9 @@
       background-color: #f1f5f9;
       color: #1e293b;
       transition: all 0.3s;
-      width: 220px;
+      width: 200px;
       font-weight: 600;
+      outline: none;
     }
 
     header button { 
@@ -97,6 +100,8 @@
     header button:hover { background: #2563eb; transform: translateY(-1px); }
     #saveBtn { background: #10b981; }
     #saveBtn:hover { background: #059669; }
+    #dashboardBtn { background: #64748b; }
+    #dashboardBtn:hover { background: #475569; }
 
     /* ==========================================================================
        3. СУЧАСНИЙ СКЛЯНИЙ КАЛЕНДАР (Ефект пакетика)
@@ -106,19 +111,17 @@
       margin: 30px auto;
       padding: 20px; 
       border-radius: 16px; 
-      background: rgba(254, 254, 254, 0.92) !important; /* Легке благородне матове скло під сітку */
+      background: rgba(254, 254, 254, 0.92) !important; 
       backdrop-filter: blur(10px);
       box-shadow: 0 15px 35px rgba(0, 45, 0, 0.2);
-      color: #1e293b !important; /* Текст календаря глибокий темний */
+      color: #1e293b !important; 
     }
 
-    /* Корекція внутрішніх кольорів інтерфейсу FullCalendar під темний колір тексту сторінки */
     .fc { color: #1e293b !important; }
     .fc a { color: #1e293b !important; text-decoration: none; font-weight: 600; }
     .fc-theme-standard td, .fc-theme-standard th { border: 1px solid #cbd5e1 !important; }
     .fc-col-header-cell { background: #f8fafc; padding: 8px 0 !important; }
 
-    /* Стилізація карток подій всередині календаря */
     .fc-v-event {
       border: 1px solid rgba(255,255,255,0.3) !important;
       border-radius: 6px !important;
@@ -131,7 +134,6 @@
       min-height: 35px !important;
     }
 
-    /* Етикетка критичного навантаження */
     .critical-load-label {
       background: #fee2e2;
       border: 1px solid #fca5a5;
@@ -146,11 +148,13 @@
       50% { box-shadow: 0 0 10px rgba(239, 68, 68, 0.5); }
     }
 
-    @media screen and (max-width: 768px) {
-      header { flex-direction: column; gap: 10px; padding: 15px; text-align: center; }
+    /* 🔥 АДАПТИВНІСТЬ ДЛЯ МОБІЛОК */
+    @media screen and (max-width: 1024px) {
+      header { flex-direction: column; gap: 12px; padding: 15px; text-align: center; }
       .header-controls { flex-direction: column; width: 100%; gap: 8px; }
-      select, header button { width: 100%; }
-      #calendar { width: 98%; padding: 10px; }
+      .header-controls select, header button { width: 100% !important; }
+      #calendar { width: 98%; padding: 10px; margin: 15px auto; }
+      .fc-toolbar { flex-direction: column; gap: 8px; }
     }
   </style>
 </head>
@@ -160,9 +164,16 @@
     <h1>Календар задач</h1>
     <div id="userInfoTop" class="user-info"></div>
     <div class="header-controls">
+      <label for="processSelector">📂 Процес:</label>
       <select id="processSelector"></select>
+
+      <label for="userFilterSelector" id="userFilterLabel" style="display: none;">👥 Учасник:</label>
+      <select id="userFilterSelector" style="display: none;">
+        <option value="all">Всі користувачі</option>
+      </select>
+
       <button id="saveBtn">Зберегти зміни</button>
-      <button id="dashboardBtn" onclick="window.location.href='Dashboard.html'">Перейти на Dashboard</button>
+      <button id="dashboardBtn" onclick="window.location.href='Dashboard.html'">На Dashboard</button>
     </div>
   </header>
 
@@ -184,12 +195,18 @@ const usersMap = {
   pasha: "Павло Гриценко",
   anya: "Ганна Мойсеєнко",
   tetiana: "Тетяна Яковець",
-  admin: "Адмін"
+  adminp: "Адмін"
 };
+
 document.getElementById("userInfoTop").innerHTML = `<span>👤 Користувач: ${usersMap[currentUser] || currentUser}</span>`;
 
-// Глобальний масив для синхронізації
-let globalTasks = [];
+let globalTasks = []; // Актуальний масив відфільтрованих процесових тасок
+let currentCalendar = null; // Посилання на інстанс FullCalendar
+
+function normalizeUser(userKeyOrName) {
+  if (usersMap[userKeyOrName]) return userKeyOrName;
+  return Object.keys(usersMap).find(k => usersMap[k] === userKeyOrName) || userKeyOrName;
+}
 
 // --- Завантаження процесів ---
 async function loadProcesses() {
@@ -205,41 +222,29 @@ async function loadProcesses() {
     const taskID = r.c[5]?.v;
     if (!taskID) return;
     tasksMap[taskID] = {
-      processID: r.c[0]?.v,
-      title: r.c[1]?.v,
-      owner: r.c[2]?.v,
+      processID: r.c[0]?.v, title: r.c[1]?.v, owner: r.c[2]?.v,
       participants: r.c[3]?.v ? r.c[3].v.split(", ") : [],
-      statusProc: r.c[4]?.v,
-      taskID: r.c[5]?.v,
-      taskTitle: r.c[6]?.v,
-      start: r.c[7]?.v,
-      deadline: r.c[8]?.v,
-      role: r.c[9]?.v,
-      username: r.c[10]?.v,
-      multiRole: r.c[11]?.v === "TRUE",
-      dependency: r.c[12]?.v,
-      priority: r.c[13]?.v,
-      files: r.c[14]?.v,
-      chat: r.c[15]?.v,
-      statusTask: r.c[16]?.v
+      statusProc: r.c[4]?.v, taskID: r.c[5]?.v, taskTitle: r.c[6]?.v,
+      start: r.c[7]?.v, deadline: r.c[8]?.v, role: r.c[9]?.v, username: r.c[10]?.v,
+      multiRole: r.c[11]?.v === "TRUE", dependency: r.c[12]?.v, priority: r.c[13]?.v,
+      files: r.c[14]?.v, chat: r.c[15]?.v, statusTask: r.c[16]?.v
     };
   });
   return Object.values(tasksMap);
 }
 
-// --- Фільтрація ---
-function filterProcesses(tasks, currentUserName) {
+// --- ACL Безпека: Базова видимість ---
+function filterProcessesByAccess(tasks, currentUserName) {
   if (currentUserName === "Адмін") return tasks;
   if (["Галина Кузнєцова", "Павло Гриценко"].includes(currentUserName)) {
     return tasks.filter(t =>
-      t.owner === currentUserName ||
-      (t.participants || []).some(part => part.includes(currentUserName))
+      t.owner === currentUserName || (t.participants || []).some(part => part.includes(currentUserName))
     );
   }
   return tasks.filter(t => t.username?.includes(currentUserName));
 }
 
-// --- Розгортання багатоденних задач ---
+// --- Екстракт дат ---
 function expandMultiDayTasks(tasks) {
   const events = [];
   tasks.forEach(t => {
@@ -248,14 +253,10 @@ function expandMultiDayTasks(tasks) {
       const endDate = new Date(t.deadline);
       for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
         events.push({
-          id: `${t.taskID}-${d.toISOString().split("T")[0]}`, // Унікальний ID для кожної плитки дня
+          id: `${t.taskID}-${d.toISOString().split("T")[0]}`, 
           taskTitle: t.taskTitle || t.title,
           day: d.toISOString().split("T")[0],
-          role: t.role,
-          status: t.statusTask || t.status,
-          deadline: t.deadline,
-          processTitle: t.title,
-          username: t.username
+          role: t.role, status: t.statusTask || t.status, deadline: t.deadline, processTitle: t.title, username: t.username
         });
       }
     }
@@ -263,12 +264,11 @@ function expandMultiDayTasks(tasks) {
   return events;
 }
 
-// --- Автоматичне розміщення задач + кольори ---
+// --- Автоплейсинг в тайм-сітку ---
 function autoPlaceTasks(tasks) {
   const placed = [];
   const daySlots = {};
-  const now = new Date();
-  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const today = new Date(); today.setHours(0,0,0,0);
 
   tasks.forEach(ev => {
     const day = ev.day;
@@ -279,17 +279,12 @@ function autoPlaceTasks(tasks) {
     const deadline = new Date(deadlineRaw.getFullYear(), deadlineRaw.getMonth(), deadlineRaw.getDate());
 
     let color;
-    if (ev.status === "done" || ev.status === "виконано") {
-      color = "#10b981"; // Смарагдовий зелений
-    } else if (today > deadline) {
-      color = "#ef4444"; // Чистий червоний (прострочено)
-    } else if (ev.status === "inprogress" || ev.status === "в процесі") {
-      color = "#f59e0b"; // Бурштиновий жовтий
-    } else if (ev.status === "todo" || ev.status === "зробити") {
-      color = "#3b82f6"; // Сучасний синій
-    } else {
-      color = "#8b5cf6"; // Фіолетовий
-    }
+    const s = String(ev.status).toLowerCase().trim();
+    if (["done", "виконано", "completed"].includes(s)) color = "#10b981"; 
+    else if (today > deadline) color = "#ef4444"; 
+    else if (["inprogress", "в процесі", "progress"].includes(s)) color = "#f59e0b"; 
+    else if (["todo", "зробити"].includes(s)) color = "#3b82f6"; 
+    else color = "#8b5cf6"; 
 
     while (hour < 18) {
       const slot = `${String(hour).padStart(2,"0")}:${String(minute).padStart(2,"0")}`;
@@ -304,27 +299,21 @@ function autoPlaceTasks(tasks) {
         ev.backgroundColor = color;
         ev.textColor = "#ffffff";
 
-        daySlots[day].push(slot);
-        placed.push(ev);
-        break;
+        daySlots[day].push(slot); placed.push(ev); break;
       }
-      minute += 30;
-      if (minute === 60) { minute = 0; hour++; }
+      minute += 30; if (minute === 60) { minute = 0; hour++; }
     }
   });
   return placed;
 }
 
-// --- Кастомізація відображення подій ---
 function eventContent(arg) {
   const start = arg.event.start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   const end = arg.event.end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-  const timeRange = `${start} - ${end}`;
-
   return {
     html: `
-      <div style="font-size:11px; font-weight:700; text-shadow: 0 1px 2px rgba(0,0,0,0.2); line-height:1.2; overflow:hidden; text-overflow:ellipsis;">
-        ${timeRange} — ${arg.event.extendedProps.taskTitle || ""}
+      <div style="font-size:11px; font-weight:700; text-shadow:0 1px 2px rgba(0,0,0,0.2); line-height:1.2; overflow:hidden; text-overflow:ellipsis;">
+        ${start} - ${end} — ${arg.event.extendedProps.taskTitle || ""}
       </div>
       <div style="font-size:10px; opacity:0.9; font-weight:500; margin-top:2px;">
         👤 ${arg.event.extendedProps.username || "невідомий"} (${arg.event.extendedProps.role || ""})
@@ -333,131 +322,135 @@ function eventContent(arg) {
   };
 }
 
-function setupProcessSelector(tasks, calendar) {
+function setupProcessSelector(tasks) {
   const selector = document.getElementById("processSelector");
   const uniqueProcesses = [...new Set(tasks.map(t => t.title))];
+  selector.innerHTML = `<option value="all">Всі процеси</option>` + uniqueProcesses.map(p => `<option value="${p}">${p}</option>`).join("");
+  selector.addEventListener("change", applyCombinedFilters);
+}
 
-  selector.innerHTML = `<option value="all">Всі процеси</option>` +
-    uniqueProcesses.map(p => `<option value="${p}">${p}</option>`).join("");
-
-  selector.addEventListener("change", e => {
-    const selectedProcess = e.target.value;
-    let filtered = tasks;
-    if (selectedProcess !== "all") {
-      filtered = tasks.filter(t => t.title === selectedProcess);
-    }
-    const expanded = expandMultiDayTasks(filtered);
-    const events = autoPlaceTasks(expanded);
-    calendar.removeAllEvents();
-    calendar.addEventSource(events);
-    checkDayLoad(calendar);
+// 🆕 Наповнення селектора учасників (Лише для адмін-складу)
+function populateUserFilterSelector() {
+  const filterSel = document.getElementById("userFilterSelector");
+  filterSel.innerHTML = '<option value="all">Всі користувачі</option>';
+  Object.entries(usersMap).forEach(([key, name]) => {
+    const opt = document.createElement("option"); opt.value = name; opt.textContent = name; filterSel.appendChild(opt);
   });
+  filterSel.addEventListener("change", applyCombinedFilters);
+}
+
+// 🔥 Розумна комбінована фільтрація подій в FullCalendar
+function applyCombinedFilters() {
+  if (!currentCalendar) return;
+
+  const selectedProcess = document.getElementById("processSelector").value;
+  const selectedUser = document.getElementById("userFilterSelector").value;
+
+  let filtered = globalTasks;
+
+  // 1. Фільтр за обраним процесом
+  if (selectedProcess !== "all") {
+    filtered = filtered.filter(t => t.title === selectedProcess);
+  }
+
+  // 2. Фільтр за обраною людиною (якщо селектор активний)
+  if (selectedUser && selectedUser !== "all") {
+    filtered = filtered.filter(t => t.username === selectedUser);
+  }
+
+  const expanded = expandMultiDayTasks(filtered);
+  const events = autoPlaceTasks(expanded);
+  
+  currentCalendar.removeAllEvents();
+  currentCalendar.addEventSource(events);
+  checkDayLoad(currentCalendar);
 }
 
 function checkDayLoad(calendar) {
   const days = {};
-  
-  // Видаляємо всі старі мітки критичного навантаження, щоб вони не дублювалися
   document.querySelectorAll(".critical-load-label").forEach(l => l.remove());
 
   calendar.getEvents().forEach(ev => {
     if (!ev.startStr) return;
     const day = ev.startStr.split("T")[0];
-    if (!days[day]) days[day] = 0;
-    days[day] += 0.5; // кожна плитка події = 30 хв
+    if (!days[day]) days[day] = 0; days[day] += 0.5;
   });
 
   Object.entries(days).forEach(([day, hours]) => {
     if (hours > 5) {
-      const allDayCell = document.querySelector(
-        `.fc-timegrid-col[data-date="${day}"] .fc-timegrid-day-frame`
-      );
+      const allDayCell = document.querySelector(`.fc-timegrid-col[data-date="${day}"] .fc-timegrid-day-frame`);
       if (allDayCell) {
         const label = document.createElement("div");
-        label.className = "critical-load-label";
-        label.innerText = "🚨 Критичне навантаження";
-        label.style.color = "#b91c1c";
-        label.style.fontWeight = "700";
-        label.style.fontSize = "11px";
-        label.style.marginTop = "6px";
-        label.style.padding = "4px";
+        label.className = "critical-load-label"; label.innerText = "🚨 Критичне навантаження";
+        label.style.color = "#b91c1c"; label.style.fontWeight = "700"; label.style.fontSize = "11px"; label.style.marginTop = "6px"; label.style.padding = "4px";
         allDayCell.appendChild(label);
       }
     }
   });
 }
 
-// 🔥 Фікс логіки оновлення дат (Зберігаємо структуру ISO без зламу дедлайнів всієї глобальної задачі)
 function updateTask(calendarEvent) {
   const taskID = calendarEvent.id.split("-")[0];
   const task = globalTasks.find(t => String(t.taskID) === String(taskID));
-  
   if (task) {
     const newDayStr = calendarEvent.startStr.split("T")[0];
-    task.start = newDayStr;
-    task.deadline = newDayStr; // Синхронізуємо день у межах перетягнутого слота
+    task.start = newDayStr; task.deadline = newDayStr; 
   }
 }
 
-// --- Ініціалізація календаря ---
+// --- Головний старт ---
 document.addEventListener("DOMContentLoaded", async function() {
   try {
     let tasks = await loadProcesses();
-    tasks = filterProcesses(tasks, usersMap[currentUser] || currentUser);
-    globalTasks = tasks; // Записуємо у глобальну змінну для updateTask
+    const currentName = usersMap[currentUser] || currentUser;
+    
+    // Захист видимості даних
+    tasks = filterProcessesByAccess(tasks, currentName);
+    globalTasks = tasks; 
 
-    sessionStorage.setItem("dashboardData", JSON.stringify({processes: tasks}));
+    sessionStorage.setItem("dashboardData", JSON.stringify({ processes: tasks }));
+
+    // 🔑 Перевірка доступу до адмін-селектора
+    const currentKey = normalizeUser(currentUser);
+    if (["adminp", "gala", "pasha"].includes(currentKey)) {
+      populateUserFilterSelector();
+      document.getElementById("userFilterLabel").style.display = "inline-block";
+      document.getElementById("userFilterSelector").style.display = "inline-block";
+    }
 
     const expandedTasks = expandMultiDayTasks(tasks);
     const allEvents = autoPlaceTasks(expandedTasks);
 
     const calendarEl = document.getElementById("calendar");
-    const calendar = new FullCalendar.Calendar(calendarEl, {
+    currentCalendar = new FullCalendar.Calendar(calendarEl, {
       locale: "uk",
       initialView: "timeGridWeek",
-      slotMinTime: "08:00:00",
-      slotMaxTime: "18:00:00",
-      hiddenDays: [0,6], // Ховаємо вихідні
+      slotMinTime: "08:00:00", slotMaxTime: "18:00:00",
+      hiddenDays: [0,6], 
       editable: true,
-      eventDurationEditable: false, // 🔥 Вимикаємо розтягування по хвилинах, щоб не збивати 30-хвилинні кроки автоплейсингу
-      expandRows: true,
-      height: "auto",
-      slotDuration: "00:30:00",
+      eventDurationEditable: false, 
+      expandRows: true, height: "auto", slotDuration: "00:30:00",
       slotLabelFormat: { hour: "2-digit", minute: "2-digit", hour12: false },
-      headerToolbar: {
-        left: "prev,next today",
-        center: "title",
-        right: "timeGridDay,timeGridWeek,dayGridMonth,multiMonthYear"
-      },
+      headerToolbar: { left: "prev,next today", center: "title", right: "timeGridDay,timeGridWeek,dayGridMonth,multiMonthYear" },
       eventContent: eventContent,
       events: allEvents,
-      eventDrop: function(info) {
-        updateTask(info.event);
-        checkDayLoad(calendar);
-      }
+      eventDrop: function(info) { updateTask(info.event); checkDayLoad(currentCalendar); }
     });
 
-    calendar.render();
-    checkDayLoad(calendar);
+    currentCalendar.render();
+    checkDayLoad(currentCalendar);
+    setupProcessSelector(tasks);
 
-    setupProcessSelector(tasks, calendar);
-
+    // Збереження
     document.getElementById("saveBtn").addEventListener("click", () => {
       fetch(SCRIPT_URL, {
-        method: "POST",
-        mode: "no-cors",
-        headers: {"Content-Type":"application/json"},
-        body: JSON.stringify({
-          action: "updateCalendar",
-          processes: globalTasks
-        })
+        method: "POST", mode: "no-cors", headers: {"Content-Type":"application/json"},
+        body: JSON.stringify({ action: "updateCalendar", processes: globalTasks })
       });
       alert("Зміни успішно надіслані до Google Таблиці! 🚀");
     });
 
-  } catch (err) {
-    console.error("Помилка при ініціалізації календаря:", err);
-  }
+  } catch (err) { console.error("Помилка ініціалізації календаря:", err); }
 });
 </script>
 </body>
