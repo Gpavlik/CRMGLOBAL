@@ -58,24 +58,11 @@
     #saveAndBackBtn { background: #10b981; }
     #saveAndBackBtn:hover { background: #059669; }
 
-    /* 🔥 Мобільний адаптив для хедера сторінки процесу (До 768px) */
     @media screen and (max-width: 768px) {
-      header { 
-        flex-direction: column; 
-        gap: 12px; 
-        text-align: center;
-        padding: 15px;
-      }
+      header { flex-direction: column; gap: 12px; text-align: center; padding: 15px; }
       header h1 { font-size: 18px; }
-      
-      .header-controls {
-        flex-direction: column;
-        width: 100%;
-        gap: 8px;
-      }
-      .header-controls p, .header-controls button {
-        width: 100%;
-      }
+      .header-controls { flex-direction: column; width: 100%; gap: 8px; }
+      .header-controls p, .header-controls button { width: 100%; }
     }
 
     /* ==========================================================================
@@ -158,12 +145,7 @@
       border-radius: 8px;
     }
     
-    .cards {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      flex: 1;
-    }
+    .cards { display: flex; flex-direction: column; gap: 12px; flex: 1; }
 
     /* ==========================================================================
        5. СУЧАСНА КАРТКА ЗАДАЧІ (Ефект водяного пакетика)
@@ -184,218 +166,122 @@
       transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
     
-    .card:hover {
-      transform: translateY(-2px);
-      background: rgba(234, 244, 254, 0.52) !important;
-    }
+    .card:hover { transform: translateY(-2px); background: rgba(234, 244, 254, 0.52) !important; }
 
-    .spoiler summary { 
-      font-weight: 700; 
-      cursor: pointer; 
-      padding: 0 0 6px 0; 
-      font-size: 14px;
-      color: #0f172a;
-      outline: none;
-    }
+    .spoiler summary { font-weight: 700; cursor: pointer; padding: 0 0 4px 0; font-size: 14px; color: #0f172a; outline: none; display: flex; justify-content: space-between; align-items: center; }
+    .spoiler div { padding: 8px 0 0 0; border-top: 1px solid rgba(0, 0, 0, 0.08); display: flex; flex-direction: column; gap: 6px; }
+    .spoiler label { font-size: 12px; font-weight: 600; color: #334155; }
     
-    .spoiler div { 
-      padding: 8px 0 0 0; 
-      border-top: 1px solid rgba(0, 0, 0, 0.08);
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
+    .spoiler input[type="text"], .spoiler input[type="date"], .spoiler select {
+      width: 100%; box-sizing: border-box; padding: 5px 8px; border: 1px solid #cbd5e1; border-radius: 6px; background: #f8fafc; font-size: 12px; color: #1e293b; margin-top: 2px;
     }
 
-    .spoiler label {
-      font-size: 12px;
-      font-weight: 600;
-      color: #334155;
-    }
-    
-    .spoiler input[type="text"], 
-    .spoiler input[type="date"], 
-    .spoiler select {
-      width: 100%;
-      box-sizing: border-box;
-      padding: 5px 8px;
-      border: 1px solid #cbd5e1;
-      border-radius: 6px;
-      background: #f8fafc;
-      font-size: 12px;
-      color: #1e293b;
-      margin-top: 2px;
-    }
-
-    .taskUser {
-      display: inline-block;
-      font-size: 11px;
-      font-weight: 700;
-      padding: 2px 6px;
-      border-radius: 4px;
-      margin-top: 4px;
-      color: white !important;
-    }
+    .taskUser { display: inline-block; font-size: 11px; font-weight: 700; padding: 2px 6px; border-radius: 4px; color: white !important; white-space: nowrap; }
     .card.owner .taskUser { background: #3b82f6; }
     .card.manager .taskUser { background: #10b981; }
     .card.executor .taskUser { background: #8b5cf6; }
 
     /* ==========================================================================
-       6. СУВОРІ СТАТУСИ (Монолітні рамки замість тіней)
+       6. СУВОРІ СТАТУСИ (Монолітні рамки)
        ========================================================================== */
     .newTasks, .card.newTasks { border: 2px solid #3b82f6 !important; }
     .urgent, .card.indigo-border { border: 2px solid #8b5cf6 !important; } 
     .completed, .card.completed { border: 2px solid #10b981 !important; } 
-    
-    .overdue, .card.overdue { 
-      border: 4px solid #ef4444 !important; 
-      background: rgba(254, 242, 242, 0.55) !important;
-    }
+    .overdue, .card.overdue { border: 4px solid #ef4444 !important; background: rgba(254, 242, 242, 0.55) !important; }
 
     /* ==========================================================================
        7. ВНУТРІШНІЙ ЧАТ КАРТКИ
        ========================================================================== */
-    .chatBox {
-      background: rgba(255, 255, 255, 0.6) !important;
-      border: 1px solid #cbd5e1;
-      border-radius: 8px;
-      padding: 8px;
-      margin-top: 10px;
-    }
-    
-    .messages {
-      max-height: 90px;
-      overflow-y: auto;
-      font-size: 11px;
-      line-height: 1.4;
-      color: #1e293b;
-      margin-bottom: 6px;
-      display: flex;
-      flex-direction: column;
-      gap: 3px;
-    }
-    .messages div {
-      background: rgba(255,255,255,0.8);
-      padding: 3px 6px;
-      border-radius: 4px;
-      border-left: 3px solid #64748b;
-    }
-    
-    .chatInput {
-      width: 68% !important;
-      padding: 4px 6px !important;
-      font-size: 11px !important;
-      border-radius: 4px !important;
-      border: 1px solid #cbd5e1 !important;
-    }
-    
-    .sendBtn {
-      width: 28%;
-      padding: 4px;
-      font-size: 11px;
-      font-weight: 600;
-      background: #475569;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
+    .chatBox { background: rgba(255, 255, 255, 0.6) !important; border: 1px solid #cbd5e1; border-radius: 8px; padding: 8px; margin-top: 10px; }
+    .messages { max-height: 90px; overflow-y: auto; font-size: 11px; line-height: 1.4; color: #1e293b; margin-bottom: 6px; display: flex; flex-direction: column; gap: 3px; }
+    .messages div { background: rgba(255,255,255,0.8); padding: 3px 6px; border-radius: 4px; border-left: 3px solid #64748b; }
+    .chatInput { width: 68% !important; padding: 4px 6px !important; font-size: 11px !important; border-radius: 4px !important; border: 1px solid #cbd5e1 !important; }
+    .sendBtn { width: 28%; padding: 4px; font-size: 11px; font-weight: 600; background: #475569; color: white; border: none; border-radius: 4px; cursor: pointer; }
     .sendBtn:hover { background: #334155; }
-
-    .chatPreview {
-      font-size: 10px;
-      color: #475569;
-      margin-top: 6px;
-      border-top: 1px dashed rgba(0,0,0,0.1);
-      padding-top: 4px;
-    }
+    .chatPreview { font-size: 10px; color: #475569; margin-top: 6px; border-top: 1px dashed rgba(0,0,0,0.1); padding-top: 4px; }
 
     /* ==========================================================================
-       8. ДІАГРАМА ГАНТА (Об'ємна скляна панель)
+       8. ДІАГРАМА ГАНТА (🔥 PREMIUM УЛЬТРА-ОПТИМІЗАЦІЯ СТИЛІВ)
        ========================================================================== */
     .gboard {
       position: relative;
-      background: rgba(254, 254, 254, 0.94) !important;
+      background: rgba(255, 255, 255, 0.96) !important;
       border: 1px solid rgba(255, 255, 255, 0.5);
       border-radius: 16px;
       margin: 0;
-      padding: 20px;
+      padding: 24px;
       width: 100%;  
-      box-shadow: 0 15px 35px rgba(0, 45, 0, 0.15);
+      box-shadow: 0 20px 40px rgba(0, 45, 0, 0.18);
       color: #1e293b !important;
+      box-sizing: border-box;
     }
-    .gboard h2 { margin-top: 0; font-size: 16px; text-transform: uppercase; color: #0f172a; }
+    .gboard h2 { margin-top: 0; font-size: 16px; text-transform: uppercase; color: #0f172a; font-weight: 700; letter-spacing: 0.5px; }
+
+    .gantt-wrapper {
+      width: 100%;
+      overflow-x: auto; /* Скрол тільки для самої сітки графіка */
+      border-radius: 10px;
+      border: 1px solid #cbd5e1;
+      background: #f8fafc;
+    }
 
     #ganttChart {
       position: relative;
       background: #f8fafc;
-      border: 1px solid #e2e8f0;
-      border-radius: 8px;
       width: 100%;
+      min-height: 300px;
     }
 
+    /* Верхня панель дат */
     .gantt-date {
       position: absolute;
-      top: 0;
-      height: 20px;
-      text-align: center;
-      font-size: 10px;
-      font-weight: 700;
-      border-bottom: 1px solid #cbd5e1;
-      background: #e2e8f0;
-      color: #334155;
-      z-index: 5;
-      line-height: 20px;
+      top: 0; height: 22px; text-align: center; font-size: 10px; font-weight: 700;
+      border-bottom: 1px solid #cbd5e1; border-right: 1px solid #e2e8f0;
+      background: #e2e8f0; color: #1e293b; z-index: 5; line-height: 22px; box-sizing: border-box;
     }
 
+    /* Верхня панель днів тижня */
     .gantt-weekday {
       position: absolute;
-      top: 20px;
-      height: 20px;
-      text-align: center;
-      font-size: 10px;
-      font-weight: 600;
-      color: #64748b;
-      background: #f1f5f9;
-      border-bottom: 1px solid #cbd5e1;
-      z-index: 5;
-      line-height: 20px;
+      top: 22px; height: 22px; text-align: center; font-size: 10px; font-weight: 600;
+      color: #475569; background: #f1f5f9; border-bottom: 1px solid #cbd5e1; border-right: 1px solid #e2e8f0;
+      z-index: 5; line-height: 22px; box-sizing: border-box;
     }
 
-    .gantt-row-line {
+    /* Ліва фіксована колонка імен */
+    .gantt-label-column {
       position: absolute;
-      left: 0;
-      width: 100%;
-      height: 1px;
-      background: #e2e8f0;
+      left: 0; top: 44px; width: 160px; height: calc(100% - 44px);
+      background: #1e293b; /* Сучасне контрастне темне поле для імен */
+      border-right: 2px solid #0f172a; z-index: 6; box-shadow: 4px 0 10px rgba(0,0,0,0.1);
     }
 
-    .gantt-vertical-line {
-      position: absolute;
-      top: 40px;
-      width: 1px;
-      height: calc(100% - 40px);
-      background: rgba(226, 232, 240, 0.8);
+    .gantt-user-label {
+      position: absolute; left: 0; width: 100%; height: 60px;
+      padding: 0 12px; display: flex; align-items: center; justify-content: flex-start;
+      color: #f1f5f9; font-size: 12px; font-weight: 700; border-bottom: 1px solid #334155;
+      box-sizing: border-box; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
 
+    /* Сітка */
+    .gantt-row-line { position: absolute; left: 0; width: 100%; height: 1px; background: #cbd5e1; z-index: 1; }
+    .gantt-vertical-line { position: absolute; top: 44px; width: 1px; height: calc(100% - 44px); background: rgba(203, 213, 225, 0.6); z-index: 1; }
+
+    /* Лінія поточного дня (Сьогодні) */
+    .gantt-today-line {
+      position: absolute; top: 0; height: 100%; background: rgba(245, 158, 11, 0.08);
+      border-left: 2px dashed #f59e0b; border-right: 2px dashed #f59e0b; pointer-events: none; z-index: 4;
+    }
+
+    /* Плашки задач Ганта */
     .task {
-      position: absolute;
-      height: 30px;
-      border-radius: 6px;
-      color: white;
-      padding: 5px 8px;
-      font-size: 11px;
-      font-weight: 600;
-      box-shadow: 0 3px 6px rgba(0,0,0,0.15);
-      box-sizing: border-box;
-      display: flex;
-      align-items: center;
-      text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+      position: absolute; height: 32px; border-radius: 8px; color: white; padding: 0 12px;
+      font-size: 11px; font-weight: 600; box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+      box-sizing: border-box; display: flex; align-items: center; z-index: 3;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.4); cursor: help;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
-
-    .task:hover {
-      transform: scale(1.02);
-      opacity: 0.95;
-    }
+    .task:hover { transform: translateY(-1px) scale(1.01); box-shadow: 0 6px 14px rgba(0,0,0,0.25); opacity: 1 !important; }
 
     @media screen and (max-width: 1024px) {
       .container { flex-direction: column; }
@@ -440,7 +326,9 @@
 
   <div id="ganttView" class="gboard" style="display:none;">
     <h2>📊 Діаграма Ганта процесу</h2>
-    <div class="gantt" id="ganttChart"></div>
+    <div class="gantt-wrapper">
+      <div class="gantt" id="ganttChart"></div>
+    </div>
   </div>
 </div>
 
@@ -459,25 +347,13 @@ const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwh5TrmNwDcMY51ToSGb
 const Processes_SHEET_URL = "https://docs.google.com/spreadsheets/d/1vjxURM8HlNTxdk-XGEh-99sYuHhtEgNKLf-39jRm8-Q/gviz/tq?tqx=out:json&sheet=Processes";
 const currentUser = sessionStorage.getItem("currentUser") || "невідомий";
 let processData = JSON.parse(sessionStorage.getItem("currentProcess")) || {
-  processID: Date.now().toString(),
-  title: "Без назви",
-  owner: currentUser,
-  participants: [],
-  tasks: []
+  processID: Date.now().toString(), title: "Без назви", owner: currentUser, participants: [], tasks: []
 };
 let allTasks = [];
 let dragged;
 
 const usersMap = {
-  gala: "Галина Кузнєцова",
-  olenka: "Олена Поліщук",
-  dima: "Дмитро Приходько",
-  serega: "Сергій Комашко",
-  sasha: "Олександр Волянюк",
-  pasha: "Павло Гриценко",
-  anya: "Ганна Мойсеєнко",
-  tetiana: "Тетяна Яковець",
-  adminp: "Адмін"
+  gala: "Галина Кузнєцова", olenka: "Олена Поліщук", dima: "Дмитро Приходько", serega: "Сергій Комашко", sasha: "Олександр Волянюк", pasha: "Павло Гриценко", anya: "Ганна Мойсеєнко", tetiana: "Тетяна Яковець", adminp: "Адмін"
 };
 
 window.addEventListener("DOMContentLoaded", initProcess);
@@ -495,10 +371,7 @@ async function initProcess() {
   participantsDiv.innerHTML = "<h3>👥 Учасники</h3>";
   (processData.participants || []).forEach(p => {
     const div = document.createElement("div");
-    div.className = "participant";
-    div.innerText = p;
-    div.draggable = true;
-    div.ondragstart = drag;
+    div.className = "participant"; div.innerText = p; div.draggable = true; div.ondragstart = drag;
     participantsDiv.appendChild(div);
   });
 
@@ -513,9 +386,7 @@ async function initProcess() {
       sessionStorage.setItem("currentProcess", JSON.stringify(processData));
       renderKanban(processData.tasks || []);
     }
-  } catch(err) {
-    console.error("Помилка при підтягуванні з бекенду:", err);
-  }
+  } catch(err) { console.error("Помилка при підтягуванні з бекенду:", err); }
 }
 
 function toggleView() {
@@ -525,15 +396,11 @@ function toggleView() {
   const participants = document.querySelector(".participants");
 
   if (kanban.style.display === "none") {
-    kanban.style.display = "flex";
-    gantt.style.display = "none";
-    btn.innerText = "Вигляд діаграми";
-    participants.style.display = "block";
+    kanban.style.display = "flex"; gantt.style.display = "none";
+    btn.innerText = "Вигляд діаграми"; participants.style.display = "block";
   } else {
-    kanban.style.display = "none";
-    gantt.style.display = "block";
-    participants.style.display = "none";
-    btn.innerText = "Вигляд канбану";
+    kanban.style.display = "none"; gantt.style.display = "block";
+    participants.style.display = "none"; btn.innerText = "Вигляд канбану";
     renderGantt(processData.tasks || []);
   }
 }
@@ -542,21 +409,13 @@ function drag(ev) { dragged = ev.target; }
 function allowDrop(ev) { ev.preventDefault(); }
 
 function drop(ev) {
-  ev.preventDefault();
-  if (!dragged) return;
+  ev.preventDefault(); if (!dragged) return;
+  const targetList = ev.target.closest(".list"); if (!targetList) return;
 
-  const targetList = ev.target.closest(".list");
-  if (!targetList) return;
-
-  if (dragged.classList.contains("participant")) {
-    createTaskCard(ev, dragged);
-    dragged = null;
-    return;
-  }
+  if (dragged.classList.contains("participant")) { createTaskCard(ev, dragged); dragged = null; return; }
 
   if (dragged.classList.contains("card")) {
     targetList.querySelector(".cards").appendChild(dragged);
-
     let newStatus = "todo";
     if (targetList.id === "inProgressList") newStatus = "inprogress";
     else if (targetList.id === "doneList") newStatus = "done";
@@ -566,44 +425,24 @@ function drop(ev) {
 
     const taskId = dragged.dataset.taskId;
     const idx = processData.tasks.findIndex(t => t.id === taskId);
-    if (idx >= 0) {
-      processData.tasks[idx].status = newStatus;
-    }
+    if (idx >= 0) processData.tasks[idx].status = newStatus;
 
     sessionStorage.setItem("currentProcess", JSON.stringify(processData));
-    syncTasks();
-    dragged = null;
+    syncTasks(); dragged = null;
   }
 }
 
-function normalizeUser(userKeyOrName) {
-  if (usersMap[userKeyOrName]) return usersMap[userKeyOrName];
-  return userKeyOrName;
-}
-
-function extractName(participant) {
-  if (participant.includes("(")) return participant.split(" (")[0].trim();
-  if (participant.includes("—")) return participant.split("—")[0].trim();
-  return participant.trim();
-}
+function normalizeUser(userKeyOrName) { if (usersMap[userKeyOrName]) return usersMap[userKeyOrName]; return userKeyOrName; }
+function extractName(participant) { if (participant.includes("(")) return participant.split(" (")[0].trim(); if (participant.includes("—")) return participant.split("—")[0].trim(); return participant.trim(); }
 
 function canEditTask(task, proc, currentUser) {
   const currentName = normalizeUser(currentUser);
   const ownerName = normalizeUser(proc.owner);
-
   if (Array.isArray(proc.participants)) {
-    const isManager = proc.participants.some(p =>
-      extractName(p) === currentName && (p.includes("Керівник") || p.includes("manager"))
-    );
-    if (isManager) return true;
+    if (proc.participants.some(p => extractName(p) === currentName && (p.includes("Керівник") || p.includes("manager")))) return true;
   }
-
-  if (ownerName === currentName) {
-    if (task.username === currentName || task.role === "executor") return true;
-  }
-
+  if (ownerName === currentName) { if (task.username === currentName || task.role === "executor") return true; }
   if (task.username === currentName && task.role === "executor") return true;
-
   return false;
 }
 
@@ -613,26 +452,17 @@ function createTaskCard(ev, dragged) {
   else if (dragged.innerText.includes("Керівник")) roleClass = "manager";
 
   const [userName, roleRaw] = dragged.innerText.split(" (");
-
   const editable = canEditTask({ username: userName, role: roleClass }, processData, currentUser);
-  if (!editable) {
-    alert("У вас немає прав створювати або редагувати цю задачу");
-    return;
-  }
+  if (!editable) { alert("У вас немає прав створювати або редагувати цю задачу"); return; }
 
   const card = document.createElement("div");
   card.className = `card ${roleClass}`;
-  if (editable) {
-    card.setAttribute("draggable","true");
-    card.ondragstart = drag;
-  }
+  if (editable) { card.setAttribute("draggable","true"); card.ondragstart = drag; }
 
-  card.dataset.username = userName;
-  card.dataset.role = roleClass;
-  const taskId = Date.now().toString();
-  card.dataset.taskId = taskId;
-  card.dataset.status = "todo";
+  card.dataset.username = userName; card.dataset.role = roleClass;
+  const taskId = Date.now().toString(); card.dataset.taskId = taskId; card.dataset.status = "todo";
 
+  // 🔥 Важливий момент: Нові картки теж створюємо ЗГОРНУТИМИ за замовчуванням (без open)
   card.innerHTML = `
     <details class="spoiler">
       <summary>
@@ -647,9 +477,7 @@ function createTaskCard(ev, dragged) {
         <label style="flex-direction:row; gap:6px; margin-top:4px;"><input type="checkbox" class="approveInput"> Потребує затвердження</label>
         <label>Пріоритет:
           <select class="priorityInput">
-            <option value="high">Високий</option>
-            <option value="medium" selected>Середній</option>
-            <option value="low">Низький</option>
+            <option value="high">Високий</option> <option value="medium" selected>Середній</option> <option value="low">Низький</option>
           </select>
         </label>
         <label>Файли: <input type="file" multiple style="font-size:11px;"></label>
@@ -657,206 +485,102 @@ function createTaskCard(ev, dragged) {
     </details>
   `;
   document.querySelector("#todoList .cards").appendChild(card);
-
-  attachChat(card);
-  applyStatusClass(card, "todo");
+  attachChat(card); applyStatusClass(card, "todo");
 
   card.querySelectorAll("input,select").forEach(inp => {
-    inp.disabled = !editable;
-    if (editable) inp.addEventListener("change", syncTasks);
+    inp.disabled = !editable; if (editable) inp.addEventListener("change", syncTasks);
   });
-
   card.querySelector(".titleInput").addEventListener("input", e => {
-    card.querySelector(".taskTitle").innerText = e.target.value || `${userName} — нова таска`;
-    syncTasks();
+    card.querySelector(".taskTitle").innerText = e.target.value || `${userName} — нова таска`; syncTasks();
   });
 
   if (!processData.tasks) processData.tasks = [];
-  processData.tasks.push({
-    id: taskId,
-    title: card.querySelector(".taskTitle").innerText,
-    start: "",
-    deadline: "",
-    role: roleClass,
-    username: userName,
-    multiRole: false,
-    dependencyTitle: null,
-    priority: "medium",
-    files: [],
-    chat: [],
-    status: "todo"
-  });
-
-  sessionStorage.setItem("currentProcess", JSON.stringify(processData));
-  syncTasks();
+  processData.tasks.push({ id: taskId, title: `${userName} — нова таска`, start: "", deadline: "", role: roleClass, username: userName, multiRole: false, dependencyTitle: null, priority: "medium", files: [], chat: [], status: "todo" });
+  sessionStorage.setItem("currentProcess", JSON.stringify(processData)); syncTasks();
 }
 
 function applyStatusClass(card, status) {
   card.classList.remove("newTasks","urgent","completed","overdue");
-
-  switch (status) {
-    case "inprogress":
-      card.classList.add("urgent"); 
-      break;
-    case "done":
-      card.classList.add("completed"); 
-      break;
-    case "todo":
-    default:
-      card.classList.add("newTasks"); 
-      break;
-  }
+  if (status === "inprogress") card.classList.add("urgent");
+  else if (status === "done") card.classList.add("completed");
+  else card.classList.add("newTasks");
 }
 
 function attachChat(card) {
-  const chatBox = document.createElement("div");
-  chatBox.className = "chatBox";
-
-  const messages = document.createElement("div");
-  messages.className = "messages";
-
-  const input = document.createElement("input");
-  input.type = "text";
-  input.className = "chatInput";
-  input.placeholder = "Коментар...";
-
-  const sendBtn = document.createElement("button");
-  sendBtn.className = "sendBtn";
-  sendBtn.innerText = "ОК";
+  const chatBox = document.createElement("div"); chatBox.className = "chatBox";
+  const messages = document.createElement("div"); messages.className = "messages";
+  const input = document.createElement("input"); input.type = "text"; input.className = "chatInput"; input.placeholder = "Коментар...";
+  const sendBtn = document.createElement("button"); sendBtn.className = "sendBtn"; sendBtn.innerText = "ОК";
 
   sendBtn.onclick = () => {
     if (input.value.trim() !== "") {
       const msgObj = { user: usersMap[currentUser] || currentUser, text: input.value.trim() };
-      const msgDiv = document.createElement("div");
-      msgDiv.innerText = `${msgObj.user}: ${msgObj.text}`;
-      messages.appendChild(msgDiv);
-
-      if (!card.chat) card.chat = [];
-      card.chat.push(msgObj);
-
-      const idx = processData.tasks.findIndex(x => x.id === card.dataset.taskId);
-      if (idx >= 0) processData.tasks[idx].chat = card.chat;
-
-      sessionStorage.setItem("currentProcess", JSON.stringify(processData));
-      input.value = "";
+      const msgDiv = document.createElement("div"); msgDiv.innerText = `${msgObj.user}: ${msgObj.text}`; messages.appendChild(msgDiv);
+      if (!card.chat) card.chat = []; card.chat.push(msgObj);
+      const idx = processData.tasks.findIndex(x => x.id === card.dataset.taskId); if (idx >= 0) processData.tasks[idx].chat = card.chat;
+      sessionStorage.setItem("currentProcess", JSON.stringify(processData)); input.value = "";
     }
   };
-
-  chatBox.appendChild(messages);
-  chatBox.appendChild(input);
-  chatBox.appendChild(sendBtn);
-  card.appendChild(chatBox);
+  chatBox.appendChild(messages); chatBox.appendChild(input); chatBox.appendChild(sendBtn); card.appendChild(chatBox);
 }
 
-// Синхронізація
 function syncTasks() {
-  allTasks = [];
-  const titles = [];
-
+  allTasks = []; const titles = [];
   document.querySelectorAll(".card").forEach(card => {
-    const title = card.querySelector(".titleInput")?.value || card.querySelector(".taskTitle").innerText;
-    titles.push(title);
-
+    const title = card.querySelector(".titleInput")?.value || card.querySelector(".taskTitle").innerText; titles.push(title);
     const start = card.querySelector(".startInput")?.value || "";
     const deadline = card.querySelector(".deadlineInput")?.value || "";
-    const role = card.classList.contains("owner") ? "owner" :
-                 card.classList.contains("manager") ? "manager" : "executor";
+    const role = card.classList.contains("owner") ? "owner" : card.classList.contains("manager") ? "manager" : "executor";
     const username = card.dataset.username || "";
     const multiRole = card.querySelector(".approveInput")?.checked || false;
     const depTitle = card.querySelector(".depSelect")?.value || null;
     const priority = card.querySelector(".priorityInput")?.value || "medium";
     const status = card.dataset.status || "todo";
-
     const fileInput = card.querySelector("input[type=file]");
-    const files = fileInput && fileInput.files.length > 0
-      ? Array.from(fileInput.files).map(f => ({ name: f.name, url: "" }))
-      : (card.files || []);
-
+    const files = fileInput && fileInput.files.length > 0 ? Array.from(fileInput.files).map(f => ({ name: f.name, url: "" })) : (card.files || []);
     const chat = card.chat || [];
-
-    allTasks.push({
-      id: card.dataset.taskId || Date.now().toString(),
-      title, start, deadline, role, username, multiRole, dependencyTitle: depTitle, priority, files, chat, status
-    });
+    allTasks.push({ id: card.dataset.taskId || Date.now().toString(), title, start, deadline, role, username, multiRole, dependencyTitle: depTitle, priority, files, chat, status });
   });
 
   document.querySelectorAll(".depSelect").forEach(sel => {
-    const current = sel.value;
-    sel.innerHTML = `<option value="">—</option>`;
-    titles.forEach(t => {
-      const opt = document.createElement("option");
-      opt.value = t; opt.textContent = t;
-      if (t === current) opt.selected = true;
-      sel.appendChild(opt);
-    });
+    const current = sel.value; sel.innerHTML = `<option value="">—</option>`;
+    titles.forEach(t => { const opt = document.createElement("option"); opt.value = t; opt.textContent = t; if (t === current) opt.selected = true; sel.appendChild(opt); });
   });
-
-  processData.tasks = allTasks;
-  sessionStorage.setItem("currentProcess", JSON.stringify(processData));
+  processData.tasks = allTasks; sessionStorage.setItem("currentProcess", JSON.stringify(processData));
 }
 
 document.getElementById("saveAndBackBtn").onclick = async () => {
   try {
     const safeTasks = (processData.tasks || []).map(t => ({
       id: t.id, title: t.title || "", start: t.start || "", deadline: t.deadline || "", role: t.role || "executor", username: t.username || "", multiRole: !!t.multiRole, dependencyTitle: t.dependencyTitle || null, priority: t.priority || "medium",
-      files: (t.files || []).map(f => ({ name: f.name, url: f.url || "", deleteUrl: f.deleteUrl || "" })),
-      chat: (t.chat || []).map(c => ({ user: c.user || "", text: c.text || "" })),
-      status: t.status || "todo"
+      files: (t.files || []).map(f => ({ name: f.name, url: f.url || "", deleteUrl: f.deleteUrl || "" })), chat: (t.chat || []).map(c => ({ user: c.user || "", text: c.text || "" })), status: t.status || "todo"
     }));
+    const safeParticipants = (processData.participants || []).map(p => { if (p.includes("—")) { const [name, role] = p.split("—").map(s => s.trim()); return `${name} (${role})`; } return p; });
+    const safeProcess = { processID: processData.processID, title: processData.title, owner: usersMap[currentUser] || currentUser, participants: safeParticipants, status: processData.status || "new", tasks: safeTasks };
 
-    const safeParticipants = (processData.participants || []).map(p => {
-      if (p.includes("—")) {
-        const [name, role] = p.split("—").map(s => s.trim());
-        return `${name} (${role})`;
-      }
-      return p;
-    });
-
-    const safeProcess = {
-      processID: processData.processID, title: processData.title, owner: usersMap[currentUser] || currentUser, participants: safeParticipants, status: processData.status || "new", tasks: safeTasks
-    };
-
-    await fetch(SCRIPT_URL, {
-      method: "POST", mode: "no-cors", headers: { "Content-Type":"application/json" }, body: JSON.stringify({ action:"updateProcess", process: safeProcess })
-    });
-
+    await fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", headers: { "Content-Type":"application/json" }, body: JSON.stringify({ action:"updateProcess", process: safeProcess }) });
     window.location.href = "Dashboard.html";
   } catch(err) { console.error("Помилка при збереженні:", err); }
 };
 
 async function fetchDashboardData() {
   try {
-    const res = await fetch(Processes_SHEET_URL);
-    const text = await res.text();
-    const json = JSON.parse(text.substr(47).slice(0, -2));
-    const rows = json.table.rows;
-    const processes = {};
-
+    const res = await fetch(Processes_SHEET_URL); const text = await res.text(); const json = JSON.parse(text.substr(47).slice(0, -2)); const rows = json.table.rows; const processes = {};
     rows.forEach(r => {
-      const [
-        processID, title, owner, participants, status, taskID, taskTitle, start, deadline, role, username, multiRole, dependency, priority, files, chat, taskStatus
-      ] = r.c.map(c => c ? c.v : "");
-
-      if (!processes[processID]) {
-        processes[processID] = { processID, title, owner, participants: participants ? participants.split(", ") : [], status, tasks:[] };
-      }      
-
+      const [processID, title, owner, participants, status, taskID, taskTitle, start, deadline, role, username, multiRole, dependency, priority, files, chat, taskStatus] = r.c.map(c => c ? c.v : "");
+      if (!processes[processID]) { processes[processID] = { processID, title, owner, participants: participants ? participants.split(", ") : [], status, tasks:[] }; }      
       const parsedTask = {
         id: taskID, title: taskTitle || "", start: start || "", deadline: deadline || "", role: role || "executor", username: username || "", multiRole: multiRole === "TRUE" || multiRole === true, dependencyTitle: dependency || null, priority: priority || "medium",
         files: files ? files.split(", ").map(f => { const [name, url, deleteUrl] = f.split("::"); return { name: name || "", url: url || "", deleteUrl: deleteUrl || "" }; }) : [],
-        chat: chat ? chat.split(" || ").map(c => { const [user, text] = c.split(": "); return { user: user || "?", text: text || "" }; }) : [],
-        status: taskStatus || "todo"
+        chat: chat ? chat.split(" || ").map(c => { const [user, text] = c.split(": "); return { user: user || "?", text: text || "" }; }) : [], status: taskStatus || "todo"
       };
-
-      const existingIdx = processes[processID].tasks.findIndex(t => t.id === taskID);
-      if (existingIdx >= 0) processes[processID].tasks[existingIdx] = parsedTask;
-      else processes[processID].tasks.push(parsedTask);
+      const existingIdx = processes[processID].tasks.findIndex(t => t.id === taskID); if (existingIdx >= 0) processes[processID].tasks[existingIdx] = parsedTask; else processes[processID].tasks.push(parsedTask);
     });
-
     return { status:"ok", currentProcess: processes[processData.processID], processes:Object.values(processes) };
   } catch(err) { return { status:"error", processes:[] }; }
 }
 
+// 🔥 ВЕРСІЯ З КАРТКАМИ, ЗГОРНУТИМИ ЗА ЗАМОВЧУВАННЯМ (Прибрали атрибут open)
 function renderKanban(tasks) {
   document.querySelector("#todoList .cards").innerHTML = "";
   document.querySelector("#inProgressList .cards").innerHTML = "";
@@ -864,16 +588,13 @@ function renderKanban(tasks) {
 
   tasks.forEach(t => {
     const card = document.createElement("div");
-    card.className = `card ${t.role}`;
-    card.dataset.taskId = t.id;
-    card.dataset.username = t.username;
-    card.dataset.status = t.status;
-
+    card.className = `card ${t.role}`; card.dataset.taskId = t.id; card.dataset.username = t.username; card.dataset.status = t.status;
     const editable = canEditTask(t, processData, currentUser);
     if (editable) { card.setAttribute("draggable","true"); card.ondragstart = drag; }
 
+    // Тег <details class="spoiler"> без слова open тепер завжди згорнутий при першому рендері
     card.innerHTML = `
-      <details class="spoiler" open>
+      <details class="spoiler">
         <summary>
           <span class="taskTitle">${t.title}</span>
           <div class="taskUser">${t.username || "—"}</div>
@@ -902,43 +623,28 @@ function renderKanban(tasks) {
 
     card.chat = t.chat || [];
     const messagesDiv = card.querySelector(".messages");
-    card.chat.forEach(c => {
-      const m = document.createElement("div"); m.innerText = `${c.user}: ${c.text}`; messagesDiv.appendChild(m);
-    });
+    card.chat.forEach(c => { const m = document.createElement("div"); m.innerText = `${c.user}: ${c.text}`; messagesDiv.appendChild(m); });
 
     const chatPreview = document.createElement("div");
     chatPreview.className = "chatPreview";
     chatPreview.innerHTML = card.chat.map(c => `<div>${c.user}: ${c.text}</div>`).join("");
     card.appendChild(chatPreview);
 
-    const sendBtn = card.querySelector(".sendBtn");
-    const chatInput = card.querySelector(".chatInput");
+    const sendBtn = card.querySelector(".sendBtn"); const chatInput = card.querySelector(".chatInput");
     sendBtn.onclick = () => {
       if (chatInput.value.trim() !== "") {
         const msgObj = { user: usersMap[currentUser] || currentUser, text: chatInput.value.trim() };
         card.chat.push(msgObj);
         const m = document.createElement("div"); m.innerText = `${msgObj.user}: ${msgObj.text}`; messagesDiv.appendChild(m);
-        chatPreview.innerHTML += `<div>${msgObj.user}: ${msgObj.text}</div>`;
-        chatInput.value = "";
-
-        const idx = processData.tasks.findIndex(x => x.id === card.dataset.taskId);
-        if (idx >= 0) processData.tasks[idx].chat = card.chat;
-        sessionStorage.setItem("currentProcess", JSON.stringify(processData));
-        syncTasks();
+        chatPreview.innerHTML += `<div>${msgObj.user}: ${msgObj.text}</div>`; chatInput.value = "";
+        const idx = processData.tasks.findIndex(x => x.id === card.dataset.taskId); if (idx >= 0) processData.tasks[idx].chat = card.chat;
+        sessionStorage.setItem("currentProcess", JSON.stringify(processData)); syncTasks();
       }
     };
 
     applyStatusClass(card, t.status);
-
-    card.querySelectorAll("input,select").forEach(inp => {
-      if (inp.classList.contains("chatInput")) return;
-      if (!editable) inp.disabled = true;
-      else inp.addEventListener("change", syncTasks);
-    });
-
-    card.querySelector(".titleInput").addEventListener("input", e => {
-      if (editable) { card.querySelector(".taskTitle").innerText = e.target.value || `${card.dataset.username} — нова задача`; syncTasks(); }
-    });
+    card.querySelectorAll("input,select").forEach(inp => { if (inp.classList.contains("chatInput")) return; if (!editable) inp.disabled = true; else inp.addEventListener("change", syncTasks); });
+    card.querySelector(".titleInput").addEventListener("input", e => { if (editable) { card.querySelector(".taskTitle").innerText = e.target.value || `${card.dataset.username} — нова задача`; syncTasks(); } });
 
     if (t.status === "inprogress") document.querySelector("#inProgressList .cards").appendChild(card);
     else if (t.status === "done") document.querySelector("#doneList .cards").appendChild(card);
@@ -946,6 +652,7 @@ function renderKanban(tasks) {
   });
 }
 
+// 🔥 PREMIUM ВЕРСІЯ РЕНДЕРУ ДІАГРАМИ ГАНТА (СТРУКТУРОВАНИЙ ПРОФЕСІЙНИЙ UI)
 function renderGantt(tasks) {
   const gantt = document.getElementById("ganttChart");
   gantt.innerHTML = ""; if (!tasks.length) return;
@@ -958,54 +665,67 @@ function renderGantt(tasks) {
   const diffDays = Math.ceil((maxDate - minDate)/(1000*60*60*24)) + 1;
   const now = new Date();
 
-  const containerWidth = gantt.clientWidth || 1000;
-  const dayWidth = Math.max(45, Math.floor((containerWidth - 160) / diffDays));
+  const containerWidth = gantt.parentElement.clientWidth || 1000;
+  const dayWidth = Math.max(50, Math.floor((containerWidth - 160) / diffDays));
 
   gantt.style.position = "relative";
-  gantt.style.overflow = "visible";
   gantt.style.width = `${diffDays * dayWidth + 160}px`;
-  gantt.style.height = `${tasks.length*60 + 120}px`;
+  gantt.style.height = `${tasks.length * 60 + 55}px`;
 
+  // 1. Створюємо таймлайн шапки дат
   for (let i = 0; i < diffDays; i++) {
     const date = new Date(minDate); date.setDate(minDate.getDate() + i);
-    const dayBox = document.createElement("div"); dayBox.className = "gantt-date"; dayBox.style.left = `${i*dayWidth + 160}px`; dayBox.style.width = `${dayWidth}px`; dayBox.innerText = date.toLocaleDateString("uk-UA", { day:"2-digit", month:"2-digit" }); gantt.appendChild(dayBox);
-    const weekdayBox = document.createElement("div"); weekdayBox.className = "gantt-weekday"; weekdayBox.style.left = `${i*dayWidth + 160}px`; weekdayBox.style.width = `${dayWidth}px`; weekdayBox.innerText = date.toLocaleDateString("uk-UA", { weekday:"short" }); gantt.appendChild(weekdayBox);
-    const vLine = document.createElement("div"); vLine.className = "gantt-vertical-line"; vLine.style.left = `${i*dayWidth + 160}px`; gantt.appendChild(vLine);
+    const leftPos = i * dayWidth + 160;
+
+    const dayBox = document.createElement("div"); dayBox.className = "gantt-date"; dayBox.style.left = `${leftPos}px`; dayBox.style.width = `${dayWidth}px`; dayBox.innerText = date.toLocaleDateString("uk-UA", { day:"2-digit", month:"2-digit" }); gantt.appendChild(dayBox);
+    const weekdayBox = document.createElement("div"); weekdayBox.className = "gantt-weekday"; weekdayBox.style.left = `${leftPos}px`; weekdayBox.style.width = `${dayWidth}px`; weekdayBox.innerText = date.toLocaleDateString("uk-UA", { weekday:"short" }); gantt.appendChild(weekdayBox);
+    const vLine = document.createElement("div"); vLine.className = "gantt-vertical-line"; vLine.style.left = `${leftPos}px`; gantt.appendChild(vLine);
   }
 
+  // 2. Маркер поточного дня (Сьогодні)
   const todayOffset = Math.floor((now - minDate)/(1000*60*60*24));
   if (todayOffset >= 0 && todayOffset < diffDays) {
-    const todayLine = document.createElement("div"); todayLine.style.position = "absolute"; todayLine.style.left = `${todayOffset*dayWidth + 160}px`; todayLine.style.top = "0"; todayLine.style.width = `${dayWidth}px`; todayLine.style.height = "100%"; todayLine.style.background = "rgba(255,200,0,0.18)"; todayLine.style.borderLeft = "2px dashed #f59e0b"; todayLine.style.pointerEvents = "none"; todayLine.style.zIndex = "2"; gantt.appendChild(todayLine);
+    const todayLine = document.createElement("div"); todayLine.className = "gantt-today-line"; todayLine.style.left = `${todayOffset * dayWidth + 160}px`; todayLine.style.width = `${dayWidth}px`; gantt.appendChild(todayLine);
   }
 
+  // 3. Будуємо ліву фіксовану колонку імен
+  const labelColumn = document.createElement("div");
+  labelColumn.className = "gantt-label-column";
+  gantt.appendChild(labelColumn);
+
+  // 4. Наповнюємо рядки даними та плашками задач
   tasks.forEach((t, idx) => {
-    const rowTop = (idx+1)*60 + 40;
-    const rowLine = document.createElement("div"); rowLine.className = "gantt-row-line"; rowLine.style.top = `${rowTop}px`; gantt.appendChild(rowLine);
-    const label = document.createElement("div"); label.innerText = t.username || "—"; label.style.position = "absolute"; label.style.left = "15px"; label.style.top = `${rowTop + 6}px`; label.style.width = "140px"; label.style.textAlign = "left"; label.style.fontSize = "12px"; label.style.fontWeight = "700"; gantt.appendChild(label);
-  });
+    const rowTop = idx * 60; // Розрахунок відносного зміщення рядка
+    
+    // Горизонтальний розділювач рядків сітки
+    const rowLine = document.createElement("div"); rowLine.className = "gantt-row-line"; rowLine.style.top = `${rowTop + 44}px`; gantt.appendChild(rowLine);
 
-  tasks.forEach((t, idx) => {
-    const startOffset = Math.floor((new Date(t.start)-minDate)/(1000*60*60*24));
-    const duration = Math.max(1, Math.ceil((new Date(t.deadline)-new Date(t.start))/(1000*60*60*24))+1);
-    const rowTop = (idx+1)*60 + 45;
+    // Додаємо ім'я виконавця в ліву темну плашку
+    const label = document.createElement("div"); label.className = "gantt-user-label"; label.style.top = `${rowTop}px`; label.innerHTML = `👤 ${t.username || "—"}`; labelColumn.appendChild(label);
 
-    const task = document.createElement("div");
-    task.className = "task"; task.style.top = `${rowTop}px`; task.style.left = `${startOffset*dayWidth + 160}px`; task.style.width = `${duration*dayWidth - 4}px`;
+    // Рендеримо саму плашку таски
+    const startOffset = Math.floor((new Date(t.start) - minDate) / (1000*60*60*24));
+    const duration = Math.max(1, Math.ceil((new Date(t.deadline) - new Date(t.start)) / (1000*60*60*24)) + 1);
 
-    if (t.role === "owner") task.style.background = "linear-gradient(135deg, #3b82f6, #1d4ed8)";
-    else if (t.role === "manager") task.style.background = "linear-gradient(135deg, #10b981, #047857)";
-    else if (t.role === "executor") task.style.background = "linear-gradient(135deg, #8b5cf6, #6d28d9)";
-    if (t.multiRole) task.style.background = "linear-gradient(90deg, #6d28d9 50%, #f59e0b 50%)";
+    const taskBar = document.createElement("div");
+    taskBar.className = "task"; taskBar.style.top = `${rowTop + 58}px`; taskBar.style.left = `${startOffset * dayWidth + 160}px`; taskBar.style.width = `${duration * dayWidth - 6}px`;
 
-    let statusText = "";
-    if (now < new Date(t.start)) { task.style.opacity = "0.6"; task.style.border = "1px dashed #64748b"; statusText = "Планується"; }
-    else if (now > new Date(t.deadline) && t.status !== "done") { task.style.border = "2px solid #ef4444"; statusText = "Протерміновано"; }
-    else if (t.status === "done") { task.style.border = "2px solid #10b981"; statusText = "Виконано"; }
-    else { task.style.border = "2px solid #f59e0b"; statusText = "У процесі"; }
+    // Градієнт за ролями
+    if (t.role === "owner") taskBar.style.background = "linear-gradient(135deg, #3b82f6, #1d4ed8)";
+    else if (t.role === "manager") taskBar.style.background = "linear-gradient(135deg, #10b981, #047857)";
+    else taskBar.style.background = "linear-gradient(135deg, #8b5cf6, #6d28d9)";
+    if (t.multiRole) taskBar.style.background = "linear-gradient(90deg, #6d28d9 50%, #f59e0b 50%)";
 
-    task.innerText = t.title;
-    task.title = `${t.title}\nСтатус: ${statusText}\nВиконавець: ${t.username || "—"}`;
-    gantt.appendChild(task);
+    // Бордюри станів таски
+    let statusText = "У процесі";
+    if (now < new Date(t.start)) { taskBar.style.opacity = "0.6"; taskBar.style.border = "1px dashed #64748b"; statusText = "Планується"; }
+    else if (now > new Date(t.deadline) && t.status !== "done") { taskBar.style.border = "2px solid #ef4444"; statusText = "Протерміновано"; }
+    else if (t.status === "done") { taskBar.style.border = "2px solid #10b981"; statusText = "Виконано"; }
+    else { taskBar.style.border = "2px solid #f59e0b"; }
+
+    taskBar.innerText = t.title;
+    taskBar.title = `${t.title}\nСтатус: ${statusText}\nВиконавець: ${t.username || "—"}`;
+    gantt.appendChild(taskBar);
   });
 }
 </script>
