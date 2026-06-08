@@ -201,7 +201,7 @@
     .chatPreview { font-size: 10px; color: #475569; margin-top: 6px; border-top: 1px dashed rgba(0,0,0,0.1); padding-top: 4px; }
 
     /* ==========================================================================
-       8. ДІАГРАМА ГАНТА (🔥 PREMIUM УЛЬТРА-ОПТИМІЗАЦІЯ СТИЛІВ)
+       8. ДІАГРАМА ГАНТА (ФІКС ШИРИНИ ТА ТЕКСТУ ПЛАШОК)
        ========================================================================== */
     .gboard {
       position: relative;
@@ -219,7 +219,7 @@
 
     .gantt-wrapper {
       width: 100%;
-      overflow-x: auto; /* Скрол тільки для самої сітки графіка */
+      overflow-x: auto; 
       border-radius: 10px;
       border: 1px solid #cbd5e1;
       background: #f8fafc;
@@ -228,11 +228,10 @@
     #ganttChart {
       position: relative;
       background: #f8fafc;
-      width: 100%;
+      width: 100%; /* 🔥 Завжди на всю ширину */
       min-height: 300px;
     }
 
-    /* Верхня панель дат */
     .gantt-date {
       position: absolute;
       top: 0; height: 22px; text-align: center; font-size: 10px; font-weight: 700;
@@ -240,7 +239,6 @@
       background: #e2e8f0; color: #1e293b; z-index: 5; line-height: 22px; box-sizing: border-box;
     }
 
-    /* Верхня панель днів тижня */
     .gantt-weekday {
       position: absolute;
       top: 22px; height: 22px; text-align: center; font-size: 10px; font-weight: 600;
@@ -248,11 +246,10 @@
       z-index: 5; line-height: 22px; box-sizing: border-box;
     }
 
-    /* Ліва фіксована колонка імен */
     .gantt-label-column {
       position: absolute;
       left: 0; top: 44px; width: 160px; height: calc(100% - 44px);
-      background: #1e293b; /* Сучасне контрастне темне поле для імен */
+      background: #1e293b; 
       border-right: 2px solid #0f172a; z-index: 6; box-shadow: 4px 0 10px rgba(0,0,0,0.1);
     }
 
@@ -263,26 +260,37 @@
       box-sizing: border-box; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
 
-    /* Сітка */
     .gantt-row-line { position: absolute; left: 0; width: 100%; height: 1px; background: #cbd5e1; z-index: 1; }
     .gantt-vertical-line { position: absolute; top: 44px; width: 1px; height: calc(100% - 44px); background: rgba(203, 213, 225, 0.6); z-index: 1; }
+    .gantt-today-line { position: absolute; top: 0; height: 100%; background: rgba(245, 158, 11, 0.08); border-left: 2px dashed #f59e0b; border-right: 2px dashed #f59e0b; pointer-events: none; z-index: 4; }
 
-    /* Лінія поточного дня (Сьогодні) */
-    .gantt-today-line {
-      position: absolute; top: 0; height: 100%; background: rgba(245, 158, 11, 0.08);
-      border-left: 2px dashed #f59e0b; border-right: 2px dashed #f59e0b; pointer-events: none; z-index: 4;
-    }
-
-    /* Плашки задач Ганта */
+    /* 🔥 ОНОВЛЕНА ПЛАШКА: Авто-висота, захист від вилізання тексту */
     .task {
-      position: absolute; height: 32px; border-radius: 8px; color: white; padding: 0 12px;
-      font-size: 11px; font-weight: 600; box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-      box-sizing: border-box; display: flex; align-items: center; z-index: 3;
-      text-shadow: 0 1px 2px rgba(0,0,0,0.4); cursor: help;
+      position: absolute; 
+      min-height: 32px; 
+      height: auto; /* Дозволяємо адаптивно розширюватися вниз */
+      border-radius: 8px; 
+      color: white; 
+      padding: 4px 10px;
+      font-size: 11px; 
+      font-weight: 600; 
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+      box-sizing: border-box; 
+      display: flex; 
+      align-items: center; 
+      z-index: 3;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.4); 
+      cursor: help;
       transition: transform 0.2s ease, box-shadow 0.2s ease;
+      
+      /* Захист тексту */
+      white-space: normal; /* Дозволяємо перенос, якщо плашка довга */
+      word-break: break-word;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .task:hover { transform: translateY(-1px) scale(1.01); box-shadow: 0 6px 14px rgba(0,0,0,0.25); opacity: 1 !important; }
-
+    
     @media screen and (max-width: 1024px) {
       .container { flex-direction: column; }
       .participants { width: 100%; }
@@ -652,7 +660,7 @@ function renderKanban(tasks) {
   });
 }
 
-// 🔥 PREMIUM ВЕРСІЯ РЕНДЕРУ ДІАГРАМИ ГАНТА (СТРУКТУРОВАНИЙ ПРОФЕСІЙНИЙ UI)
+// 🔥 СВІЖА ПРАВКА СІТКИ ТА ШИРИНИ ГАНТА
 function renderGantt(tasks) {
   const gantt = document.getElementById("ganttChart");
   gantt.innerHTML = ""; if (!tasks.length) return;
@@ -665,8 +673,11 @@ function renderGantt(tasks) {
   const diffDays = Math.ceil((maxDate - minDate)/(1000*60*60*24)) + 1;
   const now = new Date();
 
-  const containerWidth = gantt.parentElement.clientWidth || 1000;
-  const dayWidth = Math.max(50, Math.floor((containerWidth - 160) / diffDays));
+  // 🔥 Отримуємо реальну ширину контейнера
+  const wrapperWidth = gantt.parentElement.clientWidth || 1000;
+  
+  // 🔥 Розрахунок: беремо або ширину екрана поділену на кількість днів, або мінімум 65px (якщо днів забагато)
+  const dayWidth = Math.max(65, Math.floor((wrapperWidth - 160) / diffDays));
 
   gantt.style.position = "relative";
   gantt.style.width = `${diffDays * dayWidth + 160}px`;
@@ -695,7 +706,7 @@ function renderGantt(tasks) {
 
   // 4. Наповнюємо рядки даними та плашками задач
   tasks.forEach((t, idx) => {
-    const rowTop = idx * 60; // Розрахунок відносного зміщення рядка
+    const rowTop = idx * 60; 
     
     // Горизонтальний розділювач рядків сітки
     const rowLine = document.createElement("div"); rowLine.className = "gantt-row-line"; rowLine.style.top = `${rowTop + 44}px`; gantt.appendChild(rowLine);
@@ -708,7 +719,10 @@ function renderGantt(tasks) {
     const duration = Math.max(1, Math.ceil((new Date(t.deadline) - new Date(t.start)) / (1000*60*60*24)) + 1);
 
     const taskBar = document.createElement("div");
-    taskBar.className = "task"; taskBar.style.top = `${rowTop + 58}px`; taskBar.style.left = `${startOffset * dayWidth + 160}px`; taskBar.style.width = `${duration * dayWidth - 6}px`;
+    taskBar.className = "task"; 
+    taskBar.style.top = `${rowTop + 58}px`; 
+    taskBar.style.left = `${startOffset * dayWidth + 160}px`; 
+    taskBar.style.width = `${duration * dayWidth - 8}px`; // Дали мікро-відступ справа, щоб картки не злипалися
 
     // Градієнт за ролями
     if (t.role === "owner") taskBar.style.background = "linear-gradient(135deg, #3b82f6, #1d4ed8)";
