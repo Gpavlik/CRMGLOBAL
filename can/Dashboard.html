@@ -411,7 +411,7 @@
 let allProcesses = [];
 let globalTaskCounters = {}; 
 
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwh5TrmNwDcMY51ToSGblbbzw2xF6sZPTuS677x3BHctpMinn4FCQsQmKkKwBus5kfq/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyQWNkdxePA_JHU9l5yAr0TAgGIL6CSHSbqXKri1HF5FHFg4TGYBM4eAKLMCADbG4YO/exec";
 const DASHBOARD_SHEET_URL = "https://docs.google.com/spreadsheets/d/1vjxURM8HlNTxdk-XGEh-99sYuHhtEgNKLf-39jRm8-Q/gviz/tq?tqx=out:json&sheet=Dashboard";
 const PROCESSES_SHEET_URL = "https://docs.google.com/spreadsheets/d/1vjxURM8HlNTxdk-XGEh-99sYuHhtEgNKLf-39jRm8-Q/gviz/tq?tqx=out:json&sheet=Processes";
 const currentUser = sessionStorage.getItem("currentUser") || "невідомий";
@@ -433,7 +433,7 @@ const usersMap = {
   const token = sessionStorage.getItem("sessionToken");
   if (!u || !token) { window.location.href = "index.html"; return; }
 
-  fetch("https://script.google.com/macros/s/AKfycbzPIdUQ6obtM9AjMoJeQKLJjLPtHcWYMYEex7UDYFqNtDHpoIQ0kyD73idI-wWyShEg/exec?action=675&user=" + encodeURIComponent(u) + "&token=" + encodeURIComponent(token) + "&branch=can")
+  fetch("https://script.google.com/macros/s/AKfycbyQWNkdxePA_JHU9l5yAr0TAgGIL6CSHSbqXKri1HF5FHFg4TGYBM4eAKLMCADbG4YO/exec?action=675&user=" + encodeURIComponent(u) + "&token=" + encodeURIComponent(token) + "&branch=can")
     .then(r => r.json())
     .then(data => {
       if (data.success && data.url) {
@@ -745,14 +745,30 @@ function showProcessModal(proc) {
     document.getElementById("modalTitle").innerText = proc.title;
     modal.style.display = "flex";
 
-    document.getElementById("deleteBtn").onclick = () => {
-      allProcesses = allProcesses.filter(p => p.processID !== proc.processID);
-      sessionStorage.setItem("dashboardData", JSON.stringify({ processes: allProcesses }));
-      renderFilteredDashboard();
-      fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "saveDashboard", data: { processes: allProcesses } }) });
-      modal.style.display = "none";
-    };
+    document.getElementById("deleteBtn").onclick = async () => {
+  // 1. Оновлюємо локальний масив
+  allProcesses = allProcesses.filter(p => p.processID !== proc.processID);
+  sessionStorage.setItem("dashboardData", JSON.stringify({ processes: allProcesses }));
+  renderFilteredDashboard();
+  modal.style.display = "none";
 
+  // 2. ВІДПРАВЛЯЄМО ЗАПИТ НА ВИДАЛЕННЯ У GOOGLE ТАБЛИЦЮ
+  try {
+    await fetch(SCRIPT_URL, { 
+      method: "POST", 
+      mode: "no-cors", 
+      headers: { "Content-Type": "application/json" }, 
+      body: JSON.stringify({ 
+        action: "deleteProcess", // Переконайся, що твій скрипт обробляє цю дію
+        processID: proc.processID 
+      }) 
+    });
+    console.log("Процес видалено з бази даних");
+  } catch (err) {
+    console.error("Помилка видалення з бази:", err);
+    alert("Процес видалено локально, але сталася помилка при видаленні з сервера.");
+  }
+};
     document.getElementById("editBtn").onclick = () => { modal.style.display = "none"; showEditModal(proc); };
     document.getElementById("goBtn").onclick = () => { redirectToProcess(proc); };
     modal.onclick = (e) => { if (e.target === modal) modal.style.display = "none"; };
