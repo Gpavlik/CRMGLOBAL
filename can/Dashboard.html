@@ -433,7 +433,7 @@ const usersMap = {
   const token = sessionStorage.getItem("sessionToken");
   if (!u || !token) { window.location.href = "index.html"; return; }
 
-  fetch("https://script.google.com/macros/s/AKfycbyQWNkdxePA_JHU9l5yAr0TAgGIL6CSHSbqXKri1HF5FHFg4TGYBM4eAKLMCADbG4YO/exec?action=675&user=" + encodeURIComponent(u) + "&token=" + encodeURIComponent(token) + "&branch=can")
+  fetch("https://script.google.com/macros/s/AKfycbwV4A-TF_G1yCOoQY_wofk1hq1kf-KP3EerfEgYhqXh-aWB8Vc1evFaxJuv5FlQ6Wcr/exec?action=675&user=" + encodeURIComponent(u) + "&token=" + encodeURIComponent(token) + "&branch=can")
     .then(r => r.json())
     .then(data => {
       if (data.success && data.url) {
