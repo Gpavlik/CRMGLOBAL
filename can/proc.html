@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <title>Управління процесом</title>
   <link rel="icon" type="image/jpg" href="bol.jpg">
   <style>
@@ -321,6 +323,8 @@
     <p id="userInfoTop"></p>
     <button id="toggleViewBtn" onclick="toggleView()">Вигляд діаграми</button>
     <button id="saveAndBackBtn">Зберегти і повернутися</button>
+    <button id="downloadGanttBtn" onclick="exportGantt()" style="display:none; background:#8b5cf6;">💾 Зберегти Гант (JPG)</button>
+    <button id="exportExcelBtn" onclick="exportExcel()" style="display:none; background:#10b981;">📊 Експорт Excel</button>
   </div>
 </header>
 
@@ -412,18 +416,51 @@ async function initProcess() {
   } catch(err) { console.error("Помилка при підтягуванні з бекенду:", err); }
 }
 
+// 🔥 ФУНКЦІЯ ЕКСПОРТУ В ЗОБРАЖЕННЯ
+function exportGantt() {
+  const ganttElement = document.getElementById("ganttView");
+  html2canvas(ganttElement, { scale: 2 }).then(canvas => {
+    const link = document.createElement("a");
+    link.download = `Gantt_${processData.title}.jpg`;
+    link.href = canvas.toDataURL("image/jpeg");
+    link.click();
+  });
+}
+
+// 🔥 ФУНКЦІЯ ЕКСПОРТУ В EXCEL
+function exportExcel() {
+  const data = processData.tasks.map(t => ({
+    "Задача": t.title,
+    "Виконавець": t.username,
+    "Початок": t.start,
+    "Дедлайн": t.deadline,
+    "Пріоритет": t.priority,
+    "Статус": t.status
+  }));
+
+  const ws = XLSX.utils.json_to_sheet(data);
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, "Tasks");
+  XLSX.writeFile(wb, `Tasks_${processData.title}.xlsx`);
+}
+
+// 🔥 ОНОВЛЕНА ФУНКЦІЯ TOGGLEVIEW (щоб показувати нові кнопки)
 function toggleView() {
   const kanban = document.getElementById("kanbanView");
   const gantt = document.getElementById("ganttView");
   const btn = document.getElementById("toggleViewBtn");
   const participants = document.querySelector(".participants");
+  const downloadBtn = document.getElementById("downloadGanttBtn");
+  const excelBtn = document.getElementById("exportExcelBtn");
 
   if (kanban.style.display === "none") {
     kanban.style.display = "flex"; gantt.style.display = "none";
     btn.innerText = "Вигляд діаграми"; participants.style.display = "block";
+    downloadBtn.style.display = "none"; excelBtn.style.display = "none";
   } else {
     kanban.style.display = "none"; gantt.style.display = "block";
     participants.style.display = "none"; btn.innerText = "Вигляд канбану";
+    downloadBtn.style.display = "inline-block"; excelBtn.style.display = "inline-block";
     renderGantt(processData.tasks || []);
   }
 }
