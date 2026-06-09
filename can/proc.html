@@ -379,6 +379,34 @@
 .cell-inprogress { background-color: #f59e0b; color: white; font-weight: bold; }
 .cell-todo { background-color: #3b82f6; color: white; font-weight: bold; }
 .cell-empty { background-color: #f8fafc; }
+/* ==========================================================================
+   МІНІ-КНОПКИ ЕКСПОРТУ НА ДІАГРАМІ
+   ========================================================================== */
+.export-mini-btns {
+  display: flex;
+  gap: 8px;
+}
+
+.export-mini-btns button {
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: none;
+  border-radius: 8px;
+  background: rgba(30, 41, 59, 0.1); /* Напівпрозорий фон */
+  font-size: 18px; /* Розмір іконки */
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(4px); /* Ефект скла */
+}
+
+.export-mini-btns button:hover {
+  background: rgba(30, 41, 59, 0.25); /* При наведенні стає трохи темнішим */
+  transform: scale(1.1); /* Легке збільшення */
+}
   </style>
 </head>
 <body>
@@ -389,9 +417,7 @@
     <p id="userInfoTop"></p>
     <button id="toggleViewBtn" onclick="toggleView()">Вигляд діаграми</button>
     <button id="saveAndBackBtn">Зберегти і повернутися</button>
-    <button id="downloadGanttBtn" onclick="exportGantt()" style="display:none; background:#8b5cf6;">💾 Зберегти Гант (JPG)</button>
-    <button id="exportExcelBtn" onclick="exportExcel()" style="display:none; background:#10b981;">📊 Експорт Excel</button>
-  </div>
+      </div>
 </header>
 
 <img src="./logo.svg" alt="logo" width="260" style="margin-top: 25px;">
@@ -418,10 +444,16 @@
   </div>
 
   <div id="ganttView" class="gboard" style="display:none;">
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px;">
     <h2>📊 Діаграма Ганта процесу</h2>
+    <div class="export-mini-btns">
+        <button onclick="exportGantt()" title="Зберегти як картинку (JPG)">🖼️</button>
+        <button onclick="exportExcel()" title="Експортувати в Excel">📗</button>
+      </div>
     <div class="gantt-wrapper">
       <div class="gantt" id="ganttChart"></div>
     </div>
+  </div>
   </div>
 </div>
 
@@ -482,10 +514,16 @@ async function initProcess() {
   } catch(err) { console.error("Помилка при підтягуванні з бекенду:", err); }
 }
 
-// 🔥 ФУНКЦІЯ ЕКСПОРТУ В ЗОБРАЖЕННЯ
+
+// 🔥 ОНОВЛЕНИЙ ЕКСПОРТ КАРТИНКИ (ХОВАЄМО КНОПКИ ПЕРЕД СКРІНШОТОМ)
 function exportGantt() {
+  const btns = document.querySelector(".export-mini-btns");
+  btns.style.display = "none"; // Ховаємо кнопки, щоб їх не було на картинці
+
   const ganttElement = document.getElementById("ganttView");
   html2canvas(ganttElement, { scale: 2 }).then(canvas => {
+    btns.style.display = "flex"; // Повертаємо кнопки назад
+
     const link = document.createElement("a");
     link.download = `Gantt_${processData.title}.jpg`;
     link.href = canvas.toDataURL("image/jpeg");
@@ -493,7 +531,7 @@ function exportGantt() {
   });
 }
 
-// 🔥 ФУНКЦІЯ ЕКСПОРТУ В EXCEL
+
 // 🔥 ФУНКЦІЯ ЕКСПОРТУ В EXCEL З ВІЗУАЛЬНИМ ГАНТОМ
 function exportExcel() {
   if (!processData.tasks || processData.tasks.length === 0) {
@@ -617,23 +655,23 @@ function exportExcel() {
   XLSX.writeFile(wb, `Gantt_${processData.title}.xlsx`);
 }
 
-// 🔥 ОНОВЛЕНА ФУНКЦІЯ TOGGLEVIEW (щоб показувати нові кнопки)
+// 🔥 ОНОВЛЕНА ФУНКЦІЯ TOGGLEVIEW (без старих кнопок)
 function toggleView() {
   const kanban = document.getElementById("kanbanView");
   const gantt = document.getElementById("ganttView");
   const btn = document.getElementById("toggleViewBtn");
   const participants = document.querySelector(".participants");
-  const downloadBtn = document.getElementById("downloadGanttBtn");
-  const excelBtn = document.getElementById("exportExcelBtn");
 
   if (kanban.style.display === "none") {
-    kanban.style.display = "flex"; gantt.style.display = "none";
-    btn.innerText = "Вигляд діаграми"; participants.style.display = "block";
-    downloadBtn.style.display = "none"; excelBtn.style.display = "none";
+    kanban.style.display = "flex"; 
+    gantt.style.display = "none";
+    btn.innerText = "Вигляд діаграми"; 
+    participants.style.display = "block";
   } else {
-    kanban.style.display = "none"; gantt.style.display = "block";
-    participants.style.display = "none"; btn.innerText = "Вигляд канбану";
-    downloadBtn.style.display = "inline-block"; excelBtn.style.display = "inline-block";
+    kanban.style.display = "none"; 
+    gantt.style.display = "block";
+    participants.style.display = "none"; 
+    btn.innerText = "Вигляд канбану";
     renderGantt(processData.tasks || []);
   }
 }
