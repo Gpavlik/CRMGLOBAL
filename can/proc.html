@@ -313,6 +313,72 @@
       .participants { width: 100%; }
       .board { flex-direction: column; width: 100%; }
     }
+
+    /* ==========================================================================
+   ОНОВЛЕНИЙ ГАНТ (СІТКА ЯК В EXCEL)
+   ========================================================================== */
+.gantt-grid-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  background: white;
+}
+
+.gantt-table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 11px;
+  color: #1e293b;
+  min-width: 800px;
+}
+
+.gantt-table th, .gantt-table td {
+  border: 1px solid #cbd5e1;
+  padding: 6px 8px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* Темна шапка для основних колонок */
+.gantt-table th.main-header {
+  background: #1e293b;
+  color: white;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+/* Світла шапка для дат */
+.gantt-table th.date-header {
+  background: #e2e8f0;
+  color: #1e293b;
+  font-weight: 700;
+}
+
+/* "Прилипання" перших двох колонок при скролі */
+.gantt-table td.sticky-col, .gantt-table th.sticky-col {
+  position: sticky;
+  left: 0;
+  background: #f8fafc;
+  z-index: 5;
+  text-align: left;
+  font-weight: 600;
+  box-shadow: 2px 0 5px rgba(0,0,0,0.05);
+}
+.gantt-table td.sticky-col-2, .gantt-table th.sticky-col-2 {
+  position: sticky;
+  left: 180px; /* Приблизна ширина першої колонки */
+  background: #f8fafc;
+  z-index: 5;
+  box-shadow: 2px 0 5px rgba(0,0,0,0.05);
+}
+
+/* Кольори статусів у сітці */
+.cell-done { background-color: #10b981; color: white; font-weight: bold; }
+.cell-inprogress { background-color: #f59e0b; color: white; font-weight: bold; }
+.cell-todo { background-color: #3b82f6; color: white; font-weight: bold; }
+.cell-empty { background-color: #f8fafc; }
   </style>
 </head>
 <body>
@@ -428,20 +494,127 @@ function exportGantt() {
 }
 
 // 🔥 ФУНКЦІЯ ЕКСПОРТУ В EXCEL
+// 🔥 ФУНКЦІЯ ЕКСПОРТУ В EXCEL З ВІЗУАЛЬНИМ ГАНТОМ
 function exportExcel() {
-  const data = processData.tasks.map(t => ({
-    "Задача": t.title,
-    "Виконавець": t.username,
-    "Початок": t.start,
-    "Дедлайн": t.deadline,
-    "Пріоритет": t.priority,
-    "Статус": t.status
-  }));
+  if (!processData.tasks || processData.tasks.length === 0) {
+    alert("Немає задач для експорту.");
+    return;
+  }
 
-  const ws = XLSX.utils.json_to_sheet(data);
-  const wb = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb, ws, "Tasks");
-  XLSX.writeFile(wb, `Tasks_${processData.title}.xlsx`);
+  // 1. Збираємо всі дати для шкали
+  const starts = processData.tasks.map(t => new Date(t.start)).filter(d => !isNaN(d));
+  const ends = processData.tasks.map(t => new Date(t.deadline)).filter(d => !isNaN(d));
+  
+  if (starts.length === 0 || ends.length === 0) {
+      alert("Задачі не мають коректних дат.");
+      return;
+  }
+
+  const minDate = new Date(Math.min(...starts));
+  const maxDate = new Date(Math.max(...ends));
+  // Додаємо буфер в 2 дні
+  maxDate.setDate(maxDate.getDate() + 2);
+  
+  const diffDays = Math.ceil((maxDate - minDate)/(1000*60*60*24)) + 1;
+  const dateList = [];
+  for (let i = 0; i < diffDays; i++) {
+    const d = new Date(minDate);
+    d.setDate(minDate.getDate() + i);
+    dateList.push(d);
+  }
+
+  // 2. Створюємо приховану HTML таблицю для форматування
+  const table = document.createElement("table");
+  
+  // Рядок заголовків
+  const trHead = document.createElement("tr");
+  const headers = ['Задача', 'Виконавець', 'Початок', 'Дедлайн', 'Статус'];
+  
+  headers.forEach(h => {
+    const th = document.createElement("th");
+    th.innerText = h;
+    th.style.backgroundColor = "#1e293b";
+    th.style.color = "#ffffff";
+    th.style.fontWeight = "bold";
+    trHead.appendChild(th);
+  });
+
+  // Додаємо дати в заголовок
+  dateList.forEach(d => {
+    const th = document.createElement("th");
+    th.innerText = d.toLocaleDateString("uk-UA", { day:"2-digit", month:"2-digit" });
+    th.style.backgroundColor = "#e2e8f0";
+    trHead.appendChild(th);
+  });
+  table.appendChild(trHead);
+
+  // 3. Заповнюємо рядки задач
+  processData.tasks.forEach(t => {
+    const tr = document.createElement("tr");
+    
+    // Базові дані
+    const tdTask = document.createElement("td"); tdTask.innerText = t.title || ""; tr.appendChild(tdTask);
+    const tdUser = document.createElement("td"); tdUser.innerText = t.username || ""; tr.appendChild(tdUser);
+    const tdStart = document.createElement("td"); tdStart.innerText = t.start || ""; tr.appendChild(tdStart);
+    const tdEnd = document.createElement("td"); tdEnd.innerText = t.deadline || ""; tr.appendChild(tdEnd);
+    
+    // Переклад статусу
+    let statusText = "В черзі";
+    if (t.status === 'done') statusText = "Виконано";
+    else if (t.status === 'inprogress') statusText = "В процесі";
+    const tdStatus = document.createElement("td"); tdStatus.innerText = statusText; tr.appendChild(tdStatus);
+
+    // Логіка Ганта (замальовуємо клітинки)
+    const taskStart = new Date(t.start);
+    const taskEnd = new Date(t.deadline);
+    
+    dateList.forEach(currentDate => {
+      const tdGantt = document.createElement("td");
+      
+      // Скидаємо час для точного порівняння дат
+      const dCurrent = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate());
+      const dStart = new Date(taskStart.getFullYear(), taskStart.getMonth(), taskStart.getDate());
+      const dEnd = new Date(taskEnd.getFullYear(), taskEnd.getMonth(), taskEnd.getDate());
+
+      if (dCurrent >= dStart && dCurrent <= dEnd) {
+        // Колір залежить від статусу
+        if (t.status === 'done') {
+            tdGantt.style.backgroundColor = "#10b981"; // Зелений
+            tdGantt.innerText = "✓";
+        } else if (t.status === 'inprogress') {
+            tdGantt.style.backgroundColor = "#f59e0b"; // Оранжевий
+            tdGantt.innerText = "▶";
+        } else {
+            tdGantt.style.backgroundColor = "#3b82f6"; // Синій
+            tdGantt.innerText = "○";
+        }
+        tdGantt.style.color = "#ffffff";
+        tdGantt.style.textAlign = "center";
+      }
+      tr.appendChild(tdGantt);
+    });
+    
+    table.appendChild(tr);
+  });
+
+  // 4. Конвертуємо HTML таблицю в Excel за допомогою SheetJS
+  const wb = XLSX.utils.table_to_book(table, { sheet: "Gantt" });
+  
+  // Налаштування ширини стовпців для кращого вигляду (опціонально)
+  if(wb.Sheets["Gantt"]["!cols"]) {
+     wb.Sheets["Gantt"]["!cols"][0] = { wch: 40 }; // Ширина для 'Задача'
+     wb.Sheets["Gantt"]["!cols"][1] = { wch: 20 }; // Ширина для 'Виконавець'
+  } else {
+      wb.Sheets["Gantt"]["!cols"] = [
+          { wch: 40 }, // Задача
+          { wch: 20 }, // Виконавець
+          { wch: 12 }, // Початок
+          { wch: 12 }, // Дедлайн
+          { wch: 15 }  // Статус
+      ];
+  }
+
+  XLSX.writeFile(wb, `Gantt_${processData.title}.xlsx`);
 }
 
 // 🔥 ОНОВЛЕНА ФУНКЦІЯ TOGGLEVIEW (щоб показувати нові кнопки)
@@ -728,87 +901,122 @@ function renderKanban(tasks) {
   });
 }
 
-// 🔥 СВІЖА ПРАВКА СІТКИ ТА ШИРИНИ ГАНТА
+// 🔥 СВІЖА ПРАВКА СІТКИ: ВИГЛЯД ЯК У EXCEL ПЛАНУВАЛЬНИКУ
 function renderGantt(tasks) {
   const gantt = document.getElementById("ganttChart");
-  gantt.innerHTML = ""; if (!tasks.length) return;
+  gantt.innerHTML = ""; 
+  
+  if (!tasks || tasks.length === 0) {
+    gantt.innerHTML = "<p style='padding: 20px; text-align: center;'>Немає задач для відображення</p>";
+    return;
+  }
 
+  // 1. Рахуємо дати
   tasks.sort((a,b) => new Date(a.start) - new Date(b.start));
   const starts = tasks.map(t => new Date(t.start)).filter(d => !isNaN(d));
   const ends = tasks.map(t => new Date(t.deadline)).filter(d => !isNaN(d));
+  
   const minDate = new Date(Math.min(...starts));
   const maxDate = new Date(Math.max(...ends));
+  maxDate.setDate(maxDate.getDate() + 2); // Додаємо 2 дні буферу справа
+
   const diffDays = Math.ceil((maxDate - minDate)/(1000*60*60*24)) + 1;
-  const now = new Date();
-
-  // 🔥 Отримуємо реальну ширину контейнера
-  const wrapperWidth = gantt.parentElement.clientWidth || 1000;
-  
-  // 🔥 Розрахунок: беремо або ширину екрана поділену на кількість днів, або мінімум 65px (якщо днів забагато)
-  const dayWidth = Math.max(65, Math.floor((wrapperWidth - 160) / diffDays));
-
-  gantt.style.position = "relative";
-  gantt.style.width = `${diffDays * dayWidth + 160}px`;
-  gantt.style.height = `${tasks.length * 60 + 55}px`;
-
-  // 1. Створюємо таймлайн шапки дат
+  const dateList = [];
   for (let i = 0; i < diffDays; i++) {
-    const date = new Date(minDate); date.setDate(minDate.getDate() + i);
-    const leftPos = i * dayWidth + 160;
-
-    const dayBox = document.createElement("div"); dayBox.className = "gantt-date"; dayBox.style.left = `${leftPos}px`; dayBox.style.width = `${dayWidth}px`; dayBox.innerText = date.toLocaleDateString("uk-UA", { day:"2-digit", month:"2-digit" }); gantt.appendChild(dayBox);
-    const weekdayBox = document.createElement("div"); weekdayBox.className = "gantt-weekday"; weekdayBox.style.left = `${leftPos}px`; weekdayBox.style.width = `${dayWidth}px`; weekdayBox.innerText = date.toLocaleDateString("uk-UA", { weekday:"short" }); gantt.appendChild(weekdayBox);
-    const vLine = document.createElement("div"); vLine.className = "gantt-vertical-line"; vLine.style.left = `${leftPos}px`; gantt.appendChild(vLine);
+    const d = new Date(minDate);
+    d.setDate(minDate.getDate() + i);
+    dateList.push(d);
   }
 
-  // 2. Маркер поточного дня (Сьогодні)
-  const todayOffset = Math.floor((now - minDate)/(1000*60*60*24));
-  if (todayOffset >= 0 && todayOffset < diffDays) {
-    const todayLine = document.createElement("div"); todayLine.className = "gantt-today-line"; todayLine.style.left = `${todayOffset * dayWidth + 160}px`; todayLine.style.width = `${dayWidth}px`; gantt.appendChild(todayLine);
-  }
+  // 2. Створюємо контейнер та таблицю
+  const wrapper = document.createElement("div");
+  wrapper.className = "gantt-grid-wrapper";
+  
+  const table = document.createElement("table");
+  table.className = "gantt-table";
 
-  // 3. Будуємо ліву фіксовану колонку імен
-  const labelColumn = document.createElement("div");
-  labelColumn.className = "gantt-label-column";
-  gantt.appendChild(labelColumn);
+  // 3. ШАПКА ТАБЛИЦІ
+  const thead = document.createElement("thead");
+  const trHead = document.createElement("tr");
 
-  // 4. Наповнюємо рядки даними та плашками задач
-  tasks.forEach((t, idx) => {
-    const rowTop = idx * 60; 
-    
-    // Горизонтальний розділювач рядків сітки
-    const rowLine = document.createElement("div"); rowLine.className = "gantt-row-line"; rowLine.style.top = `${rowTop + 44}px`; gantt.appendChild(rowLine);
+  const headers = [
+    { text: "Задача", class: "sticky-col", width: "180px" },
+    { text: "Виконавець", class: "sticky-col-2", width: "100px" },
+    { text: "Початок" },
+    { text: "Дедлайн" },
+    { text: "Статус" }
+  ];
 
-    // Додаємо ім'я виконавця в ліву темну плашку
-    const label = document.createElement("div"); label.className = "gantt-user-label"; label.style.top = `${rowTop}px`; label.innerHTML = `👤 ${t.username || "—"}`; labelColumn.appendChild(label);
-
-    // Рендеримо саму плашку таски
-    const startOffset = Math.floor((new Date(t.start) - minDate) / (1000*60*60*24));
-    const duration = Math.max(1, Math.ceil((new Date(t.deadline) - new Date(t.start)) / (1000*60*60*24)) + 1);
-
-    const taskBar = document.createElement("div");
-    taskBar.className = "task"; 
-    taskBar.style.top = `${rowTop + 58}px`; 
-    taskBar.style.left = `${startOffset * dayWidth + 160}px`; 
-    taskBar.style.width = `${duration * dayWidth - 8}px`; // Дали мікро-відступ справа, щоб картки не злипалися
-
-    // Градієнт за ролями
-    if (t.role === "owner") taskBar.style.background = "linear-gradient(135deg, #3b82f6, #1d4ed8)";
-    else if (t.role === "manager") taskBar.style.background = "linear-gradient(135deg, #10b981, #047857)";
-    else taskBar.style.background = "linear-gradient(135deg, #8b5cf6, #6d28d9)";
-    if (t.multiRole) taskBar.style.background = "linear-gradient(90deg, #6d28d9 50%, #f59e0b 50%)";
-
-    // Бордюри станів таски
-    let statusText = "У процесі";
-    if (now < new Date(t.start)) { taskBar.style.opacity = "0.6"; taskBar.style.border = "1px dashed #64748b"; statusText = "Планується"; }
-    else if (now > new Date(t.deadline) && t.status !== "done") { taskBar.style.border = "2px solid #ef4444"; statusText = "Протерміновано"; }
-    else if (t.status === "done") { taskBar.style.border = "2px solid #10b981"; statusText = "Виконано"; }
-    else { taskBar.style.border = "2px solid #f59e0b"; }
-
-    taskBar.innerText = t.title;
-    taskBar.title = `${t.title}\nСтатус: ${statusText}\nВиконавець: ${t.username || "—"}`;
-    gantt.appendChild(taskBar);
+  headers.forEach(h => {
+    const th = document.createElement("th");
+    th.innerText = h.text;
+    th.className = "main-header " + (h.class || "");
+    if (h.width) th.style.minWidth = h.width;
+    trHead.appendChild(th);
   });
+
+  // Додаємо дати в шапку
+  dateList.forEach(d => {
+    const th = document.createElement("th");
+    th.innerText = d.toLocaleDateString("uk-UA", { day:"2-digit", month:"2-digit" });
+    th.className = "date-header";
+    trHead.appendChild(th);
+  });
+  
+  thead.appendChild(trHead);
+  table.appendChild(thead);
+
+  // 4. ТІЛО ТАБЛИЦІ (Рядки з задачами)
+  const tbody = document.createElement("tbody");
+
+  tasks.forEach(t => {
+    const tr = document.createElement("tr");
+    
+    // Переклад статусу
+    let statusText = "В черзі";
+    let statusClass = "cell-todo";
+    let icon = "○";
+    
+    if (t.status === 'done') { statusText = "Виконано"; statusClass = "cell-done"; icon = "✓"; }
+    else if (t.status === 'inprogress') { statusText = "В процесі"; statusClass = "cell-inprogress"; icon = "▶"; }
+
+    // Базові колонки (ліва частина)
+    tr.innerHTML = `
+      <td class="sticky-col">${t.title || "—"}</td>
+      <td class="sticky-col-2">${t.username || "—"}</td>
+      <td>${t.start || "—"}</td>
+      <td>${t.deadline || "—"}</td>
+      <td><strong>${statusText}</strong></td>
+    `;
+
+    // Логіка клітинок Ганта (права частина)
+    const taskStart = new Date(t.start);
+    const taskEnd = new Date(t.deadline);
+    
+    dateList.forEach(currentDate => {
+      const td = document.createElement("td");
+      
+      // Скидаємо години для точного порівняння по днях
+      const dCurrent = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate());
+      const dStart = new Date(taskStart.getFullYear(), taskStart.getMonth(), taskStart.getDate());
+      const dEnd = new Date(taskEnd.getFullYear(), taskEnd.getMonth(), taskEnd.getDate());
+
+      if (dCurrent >= dStart && dCurrent <= dEnd) {
+        td.className = statusClass;
+        td.innerText = icon;
+      } else {
+        td.className = "cell-empty";
+      }
+      
+      tr.appendChild(td);
+    });
+    
+    tbody.appendChild(tr);
+  });
+
+  table.appendChild(tbody);
+  wrapper.appendChild(table);
+  gantt.appendChild(wrapper);
 }
 </script>
 </body>
