@@ -78,6 +78,94 @@
       0%   { transform: translateX(0); }
       100% { transform: translateX(-100%); }
     }
+    .unit {  
+      height: 140px;
+      width: 250px;
+      /* 💧 Ефект матового аквамаринового скла */
+      background: rgba(255, 255, 255, 0.9) !important;
+      backdrop-filter: blur(12px) !important;
+      -webkit-backdrop-filter: blur(12px) !important;
+      
+      /* Елегантний тонкий білий бордюр */
+      border: 1px solid rgba(255, 255, 255, 0.25) !important;
+      border-radius: 24px !important;
+      padding: 0;
+      margin: 0;
+      box-sizing: border-box;
+      overflow: hidden;
+      cursor: pointer;
+      /* Внутрішнє глянцеве свічення */
+      box-shadow: 
+        0 10px 25px rgba(0, 45, 0, 0.15),
+        inset 2px 2px 5px rgba(255, 255, 255, 0.2) !important;
+        
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+
+    .unit a {
+      display: flex;
+      width: 100%;
+      height: 100%;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+    }
+
+    /* Стилізація твоїх картинок-логотипів */
+    .unit img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover; /* Ідеально вписує картинку без деформацій */
+      border-radius: 23px; /* Трохи менше за unit, щоб не вилазило */
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+
+    /* 🔥 ХОВЕР ЕФЕКТИ: Плитка оживає */
+    .unit:hover {
+      transform: translateY(-6px) scale(1.03);
+      border-color: rgba(255, 255, 255, 0.45) !important;
+      box-shadow: 
+        0 15px 35px rgba(0, 35, 0, 0.25),
+        inset 3px 3px 6px rgba(255, 255, 255, 0.35) !important;
+    }
+
+    .unit:hover img {
+      transform: scale(1.02);
+      opacity: 1; /* Картинка стає на 100% чіткою */
+    }
+
+    /* ==========================================================================
+       3. АДАПТИВНІСТЬ ТА АДАПТАЦІЯ ПІД МОБІЛЬНІ (APK / Смартфони)
+       ========================================================================== */
+    
+    /* 📱 Mobile (Смартфони) */
+    @media screen and (max-width: 540px) {
+      body {
+        padding: 30px 10px;
+      }
+      .units {
+        flex-direction: column;
+        gap: 20px;
+      }
+      .unit {
+        width: 250px;
+        height: 120px;
+      }
+    }
+
+    /* 📲 Tablet (Планшети) */
+    @media screen and (min-width: 541px) and (max-width: 1023px) {
+      .units {
+        gap: 20px;
+      }
+      .unit {
+        width: 200px;
+        height: 100px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -90,9 +178,9 @@
     <label>Пароль:
       <input type="password" id="password" name="password" autocomplete="current-password">
     </label>
-    <button id="loginBtn">Увійти</button>
-  </div>
-  <img src="./ap.png" alt="logo" width="260">
+      </div>
+    <div class="unit" id="loginBtn"><img src="./ap.png" alt="logo" width="260"></div>
+
   <div id="marquee">
     <span>
       Вантажимо для вас найкращих партнерів... 

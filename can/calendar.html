@@ -156,6 +156,42 @@
       #calendar { width: 98%; padding: 10px; margin: 15px auto; }
       .fc-toolbar { flex-direction: column; gap: 8px; }
     }
+    .unit {  
+      height: 140px;
+      width: 250px;
+      /* 💧 Ефект матового аквамаринового скла */
+      background: rgba(255, 255, 255, 0.9) !important;
+      backdrop-filter: blur(12px) !important;
+      -webkit-backdrop-filter: blur(12px) !important;
+      
+      /* Елегантний тонкий білий бордюр */
+      border: 1px solid rgba(255, 255, 255, 0.25) !important;
+      border-radius: 24px !important;
+      padding: 0;
+      margin: 0;
+      box-sizing: border-box;
+      overflow: hidden;
+      cursor: pointer;
+      
+      /* Внутрішнє глянцеве свічення */
+      box-shadow: 
+        0 10px 25px rgba(0, 45, 0, 0.15),
+        inset 2px 2px 5px rgba(255, 255, 255, 0.2) !important;
+        
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+
+    /* Стилізація твоїх картинок-логотипів */
+    .unit img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover; /* Ідеально вписує картинку без деформацій */
+      border-radius: 23px; /* Трохи менше за unit, щоб не вилазило */
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
   </style>
 </head>
 <body>
@@ -179,7 +215,8 @@
 
   <img src="./logo.svg" alt="logo" width="260" style="margin-top: 25px;">
   <div id="calendar"></div>
-  <img src="./ho.png" alt="logo" width="300" style="margin-bottom: 25px;">
+  
+<div class="unit"><img  src="./ho.png" alt="logo" width="260"></div>
 
 <script>
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyQWNkdxePA_JHU9l5yAr0TAgGIL6CSHSbqXKri1HF5FHFg4TGYBM4eAKLMCADbG4YO/exec";
