@@ -604,7 +604,7 @@ if (!visitId) {
 
     try {
       // Відправка короткої інформації
-      await fetch("https://script.google.com/macros/s/AKfycbz_uLWhj_ww5YLdnrdgGWu9l2AGraznsiGjVSV8dnMuPygaK8vJRKlv-7O9Ou0krKzIAA/exec", {
+      await fetch("https://script.google.com/macros/s/AKfycbynBIbtijtRi152N9clzJawnKjc2DfnLZ_qzoRg3F-h5O9uFAseeqoqgfSIsMKX5dD7og/exec", {
         method: "POST",
         mode: "no-cors",
         body: JSON.stringify(shortData),
@@ -612,7 +612,7 @@ if (!visitId) {
       });
 
       // Відправка детальної інформації
-      await fetch("https://script.google.com/macros/s/AKfycbz_uLWhj_ww5YLdnrdgGWu9l2AGraznsiGjVSV8dnMuPygaK8vJRKlv-7O9Ou0krKzIAA/exec", {
+      await fetch("https://script.google.com/macros/s/AKfycbynBIbtijtRi152N9clzJawnKjc2DfnLZ_qzoRg3F-h5O9uFAseeqoqgfSIsMKX5dD7og/exec", {
         method: "POST",
         mode: "no-cors",
         body: JSON.stringify({
@@ -640,14 +640,14 @@ if (!visitId) {
     alert("Не вдалося отримати координати, візит буде збережено без них.");
 
     try {
-      await fetch("https://script.google.com/macros/s/AKfycbz_uLWhj_ww5YLdnrdgGWu9l2AGraznsiGjVSV8dnMuPygaK8vJRKlv-7O9Ou0krKzIAA/exec", {
+      await fetch("https://script.google.com/macros/s/AKfycbynBIbtijtRi152N9clzJawnKjc2DfnLZ_qzoRg3F-h5O9uFAseeqoqgfSIsMKX5dD7og/exec", {
         method: "POST",
         mode: "no-cors",
         body: JSON.stringify(shortData),
         headers: { "Content-Type": "application/json" }
       });
 
-      await fetch("https://script.google.com/macros/s/AKfycbz_uLWhj_ww5YLdnrdgGWu9l2AGraznsiGjVSV8dnMuPygaK8vJRKlv-7O9Ou0krKzIAA/exec", {
+      await fetch("https://script.google.com/macros/s/AKfycbynBIbtijtRi152N9clzJawnKjc2DfnLZ_qzoRg3F-h5O9uFAseeqoqgfSIsMKX5dD7og/exec", {
         method: "POST",
         mode: "no-cors",
         body: JSON.stringify({

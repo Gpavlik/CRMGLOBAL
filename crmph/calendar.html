@@ -695,7 +695,7 @@ async function updateStatusInBackend(event, newStatus) {
   }
 
   // бекенд
-  await fetch("https://script.google.com/macros/s/AKfycbz_uLWhj_ww5YLdnrdgGWu9l2AGraznsiGjVSV8dnMuPygaK8vJRKlv-7O9Ou0krKzIAA/exec", {
+  await fetch("https://script.google.com/macros/s/AKfycbynBIbtijtRi152N9clzJawnKjc2DfnLZ_qzoRg3F-h5O9uFAseeqoqgfSIsMKX5dD7og/exec", {
     method: "POST",
     mode: "no-cors",
     body: JSON.stringify({
@@ -787,7 +787,7 @@ async function updateDateInBackend(event, newDate, newTime) {
   if (el) styleEvent({ event: event, el: el });
 
   // бекенд
-  await fetch("https://script.google.com/macros/s/AKfycbz_uLWhj_ww5YLdnrdgGWu9l2AGraznsiGjVSV8dnMuPygaK8vJRKlv-7O9Ou0krKzIAA/exec", {
+  await fetch("https://script.google.com/macros/s/AKfycbynBIbtijtRi152N9clzJawnKjc2DfnLZ_qzoRg3F-h5O9uFAseeqoqgfSIsMKX5dD7og/exec", {
     method: "POST",
     mode: "no-cors",
     body: JSON.stringify({
@@ -858,7 +858,7 @@ async function addVisit() {
   sessionStorage.setItem("visits", JSON.stringify(visits));
 
  // бекенд
-await fetch("https://script.google.com/macros/s/AKfycbz_uLWhj_ww5YLdnrdgGWu9l2AGraznsiGjVSV8dnMuPygaK8vJRKlv-7O9Ou0krKzIAA/exec", {
+await fetch("https://script.google.com/macros/s/AKfycbynBIbtijtRi152N9clzJawnKjc2DfnLZ_qzoRg3F-h5O9uFAseeqoqgfSIsMKX5dD7og/exec", {
   method: "POST",
   mode: "no-cors",
   headers: { "Content-Type": "application/json" },
@@ -886,7 +886,7 @@ async function loadVisits() {
     renderVisits(localVisits);
 
     // тягнемо бекенд
-    const res = await fetch("https://script.google.com/macros/s/AKfycbz_uLWhj_ww5YLdnrdgGWu9l2AGraznsiGjVSV8dnMuPygaK8vJRKlv-7O9Ou0krKzIAA/exec?type=calendar");
+    const res = await fetch("https://script.google.com/macros/s/AKfycbynBIbtijtRi152N9clzJawnKjc2DfnLZ_qzoRg3F-h5O9uFAseeqoqgfSIsMKX5dD7og/exec?type=calendar");
      if (!res.ok) throw new Error("Backend error: " + res.status);
 
     const backendVisits = await res.json();

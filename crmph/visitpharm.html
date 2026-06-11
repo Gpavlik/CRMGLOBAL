@@ -278,19 +278,19 @@ td.to-sell { text-align: center; font-weight: bold; color: white; }
   <br>
   <div style="text-align: center; display: flex; gap: 10px; flex-direction: row; flex-wrap: wrap; justify-content: center;" >  
  <!-- Кнопка для фото -->
-<!--<button type="button" id="cameraBtn">📸 Зробити фото</button>-->
+<button type="button" id="cameraBtn">📸 Зробити фото</button>
 
 <!-- Інпут для камери -->
-<!--<input type="file" id="cameraInput" accept="image/*" capture="environment" style="display:none;">-->
+<input type="file" id="cameraInput" accept="image/*" capture="environment" style="display:none;">
 
 <!-- Кнопка для галереї -->
-<!--<button type="button" id="galleryBtn">🖼️ Додати з галереї</button>
-<input type="file" id="galleryInput" accept="image/*" style="display:none;">-->
+<button type="button" id="galleryBtn">🖼️ Додати з галереї</button>
+<input type="file" id="galleryInput" accept="image/*" style="display:none;">
 
 <!-- Прев’ю -->
-<!--<div id="photoPreview" style="margin-top:10px;">
+<div id="photoPreview" style="margin-top:10px;">
   <img id="previewImg" src="" alt="Прев’ю фото" style="max-width:200px; display:none; border:1px solid #ccc;"/>
-</div>-->
+</div>
   <button type="button" id="saveVisitBtn">Зберегти візит</button>
    <button><a style="text-decoration: none; color: white;" href="calendar.html">Перейти в календар</a></button>
 <a href="menu.html"><button>Перейти в меню</button></a>
@@ -565,7 +565,7 @@ if (!visitId) {
 
     try {
       // короткі дані
-      await fetch("https://script.google.com/macros/s/AKfycbz_uLWhj_ww5YLdnrdgGWu9l2AGraznsiGjVSV8dnMuPygaK8vJRKlv-7O9Ou0krKzIAA/exec", {
+      await fetch("https://script.google.com/macros/s/AKfycbynBIbtijtRi152N9clzJawnKjc2DfnLZ_qzoRg3F-h5O9uFAseeqoqgfSIsMKX5dD7og/exec", {
         method: "POST",
         mode: "no-cors",
         body: JSON.stringify(shortData),
@@ -574,7 +574,7 @@ if (!visitId) {
 
       // продукти з VisitID + викладка, обізнаність, коментар
       if (productsData.length > 0) {
-        await fetch("https://script.google.com/macros/s/AKfycbz_uLWhj_ww5YLdnrdgGWu9l2AGraznsiGjVSV8dnMuPygaK8vJRKlv-7O9Ou0krKzIAA/exec", {
+        await fetch("https://script.google.com/macros/s/AKfycbynBIbtijtRi152N9clzJawnKjc2DfnLZ_qzoRg3F-h5O9uFAseeqoqgfSIsMKX5dD7og/exec", {
           method: "POST",
           mode: "no-cors",
           body: JSON.stringify({
@@ -605,8 +605,44 @@ if (!visitId) {
   });
 }
 
+/**
+ * Функція для стиснення та зміни розміру фото
+ * @param {File} file - файл, вибраний користувачем
+ * @returns {Promise<string>} - стиснутий Base64 рядок
+ */
+async function compressImage(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = (event) => {
+      const img = new Image();
+      img.src = event.target.result;
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const MAX_WIDTH = 1200;
+        const MAX_HEIGHT = 720;
+        let width = img.width;
+        let height = img.height;
 
-/*Виклик камери
+        if (width > height) {
+          if (width > MAX_WIDTH) { height *= MAX_WIDTH / width; width = MAX_WIDTH; }
+        } else {
+          if (height > MAX_HEIGHT) { width *= MAX_HEIGHT / height; height = MAX_HEIGHT; }
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+        
+        // Стиснення з якістю 0.7 (оптимально для 500кб)
+        resolve(canvas.toDataURL('image/jpeg', 0.7));
+      };
+      img.onerror = reject;
+    };
+  });
+}
+//Виклик камери
 document.getElementById("cameraBtn").addEventListener("click", () => {
   document.getElementById("cameraInput").click();
 });
@@ -629,20 +665,37 @@ document.getElementById("galleryInput").addEventListener("change", (event) => {
 });
 
 // Загальна функція обробки файлу
-function handleFile(file) {
-  const reader = new FileReader();
-  reader.onload = async (e) => {
-    const photoBase64 = e.target.result;
-    if (!photoBase64 || !photoBase64.startsWith("data:image")) {
-      console.error("Некоректне фото");
-      return;
-    }
-    showPreview(photoBase64);
-    await sendPhoto(photoBase64);
-  };
-  reader.readAsDataURL(file);
+async function handleFile(file) {
+  try {
+    const compressedPhoto = await compressImage(file);
+    
+    // Відображаємо прев’ю
+    const preview = document.getElementById("previewImg");
+    preview.src = compressedPhoto;
+    preview.style.display = "block";
+    
+    // Відправляємо дані
+    await sendPhoto(compressedPhoto);
+    
+    // ОЧИЩЕННЯ ПІСЛЯ УСПІХУ
+    clearPhotoUI();
+    
+  } catch (err) {
+    console.error("Помилка обробки фото:", err);
+    alert("Помилка при обробці фото.");
+  }
 }
-
+function clearPhotoUI() {
+  const preview = document.getElementById("previewImg");
+  preview.src = "";
+  preview.style.display = "none";
+  
+  // Скидаємо значення інпутів, щоб можна було завантажити те саме фото знову
+  document.getElementById("cameraInput").value = "";
+  document.getElementById("galleryInput").value = "";
+  
+  console.log("▶ Інтерфейс фото очищено");
+}
 // Прев’ю
 function showPreview(photo) {
   const preview = document.getElementById("previewImg");
@@ -651,9 +704,11 @@ function showPreview(photo) {
   console.log("▶ Прев’ю фото оновлено");
 }
 
-// Відправка фото
+//** Відправка фото та даних візиту у форматі JSON
+ /* @param {string} photoBase64 - стиснутий рядок зображення
+ */
 async function sendPhoto(photoBase64) {
-  // базові дані
+  // Базові дані користувачів
   const userNames = {
     fedir: "Олександр Красніков",
     olena: "Тетяна Романовська",
@@ -663,42 +718,42 @@ async function sendPhoto(photoBase64) {
     serhiy: "Ілона Бабенко",
     admin: "admin"
   };
-  let userKey = sessionStorage.getItem("currentUser");
-  let userName = userNames[userKey] || userKey || "невідомий";
 
-  // створюємо FormData
-  const formData = new FormData();
-  formData.append("action", "savePharmacyPhoto");
-  formData.append("userName", userName);
-  formData.append("date", document.getElementById("visitDate")?.value || "");
-  formData.append("time", document.getElementById("visitTime")?.value || "");
-  formData.append("partnerId", document.getElementById("partnerSelect")?.value || "");
-  formData.append("partnerName", document.getElementById("partnerSelect")?.options[
-    document.getElementById("partnerSelect")?.selectedIndex
-  ]?.text || "");
-  formData.append("city", document.getElementById("city")?.value || "");
-  formData.append("address", document.getElementById("pharmacyAddress")?.value || "");
+  const userKey = sessionStorage.getItem("currentUser");
+  const userName = userNames[userKey] || userKey || "невідомий";
 
-  // додаємо фото як Base64
-  if (photoBase64) {
-    formData.append("photo", photoBase64);
-  }
+  // Збираємо дані у звичайний об'єкт JavaScript
+  const payload = {
+    action: "savePharmacyPhoto",
+    userName: userName,
+    date: document.getElementById("visitDate")?.value || "",
+    time: document.getElementById("visitTime")?.value || "",
+    partnerId: document.getElementById("partnerSelect")?.value || "",
+    partnerName: document.getElementById("partnerSelect")?.options[
+      document.getElementById("partnerSelect")?.selectedIndex
+    ]?.text || "",
+    city: document.getElementById("city")?.value || "",
+    address: document.getElementById("pharmacyAddress")?.value || "",
+    photo: photoBase64 // Передаємо Base64 як рядок всередині JSON
+  };
 
   try {
-    const res = await fetch("https://script.google.com/macros/s/AKfycbw360K3q2Nnc0B2c6D9VLcOsL-3EBA2r307Xcde5Kclxxlztc0KVgpbXujlbjhqlXMY4Q/exec", {
+    const response = await fetch("https://script.google.com/macros/s/AKfycbw360K3q2Nnc0B2c6D9VLcOsL-3EBA2r307Xcde5Kclxxlztc0KVgpbXujlbjhqlXMY4Q/exec", {
       method: "POST",
-      mode: "no-cors", // залишаємо, як ти просив
-      body: formData
+      mode: "no-cors",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(payload)
     });
 
-    console.log("▶ Дані відправлені через FormData");
-    alert("Фото та дані відправлені у Google Таблицю!");
+    console.log("▶ Дані успішно відправлені (JSON)");
+    alert("Фото та дані успішно відправлені!");
   } catch (err) {
     console.error("Помилка відправки:", err);
-    alert("Не вдалося відправити дані");
+    alert("Не вдалося відправити дані. Перевірте інтернет-з'єднання.");
   }
-}*/
-
+}
 
 </script>
 </body>

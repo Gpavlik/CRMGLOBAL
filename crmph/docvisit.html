@@ -720,7 +720,7 @@ if (!visitId) {
     const lon = pos.coords.longitude;
 
     try {
-      await fetch("https://script.google.com/macros/s/AKfycbz_uLWhj_ww5YLdnrdgGWu9l2AGraznsiGjVSV8dnMuPygaK8vJRKlv-7O9Ou0krKzIAA/exec", {
+      await fetch("https://script.google.com/macros/s/AKfycbynBIbtijtRi152N9clzJawnKjc2DfnLZ_qzoRg3F-h5O9uFAseeqoqgfSIsMKX5dD7og/exec", {
         method: "POST",
         mode: "no-cors",
         body: JSON.stringify({
@@ -750,7 +750,7 @@ if (!visitId) {
     console.error("❌ Помилка GPS:", err);
     alert("Не вдалося отримати координати, але візит буде збережено без них.");
     // fallback: відправка без координат
-    fetch("https://script.google.com/macros/s/AKfycbz_uLWhj_ww5YLdnrdgGWu9l2AGraznsiGjVSV8dnMuPygaK8vJRKlv-7O9Ou0krKzIAA/exec", {
+    fetch("https://script.google.com/macros/s/AKfycbynBIbtijtRi152N9clzJawnKjc2DfnLZ_qzoRg3F-h5O9uFAseeqoqgfSIsMKX5dD7og/exec", {
       method: "POST",
       mode: "no-cors",
       body: JSON.stringify({
@@ -798,7 +798,7 @@ function validateVisitForm() {
 async function loadPreviousVisit(doctorName) {
   try {
     const res = await fetch(
-      "https://script.google.com/macros/s/AKfycbz_uLWhj_ww5YLdnrdgGWu9l2AGraznsiGjVSV8dnMuPygaK8vJRKlv-7O9Ou0krKzIAA/exec?type=doctor&doctor=" 
+      "https://script.google.com/macros/s/AKfycbynBIbtijtRi152N9clzJawnKjc2DfnLZ_qzoRg3F-h5O9uFAseeqoqgfSIsMKX5dD7og/exec?type=doctor&doctor=" 
       + encodeURIComponent(doctorName)
     );
     const visits = await res.json();

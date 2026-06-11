@@ -868,7 +868,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 async function preloadCalendarVisits() {
   try {
-    const url = "https://script.google.com/macros/s/AKfycbz_uLWhj_ww5YLdnrdgGWu9l2AGraznsiGjVSV8dnMuPygaK8vJRKlv-7O9Ou0krKzIAA/exec?type=calendar";
+    const url = "https://script.google.com/macros/s/AKfycbynBIbtijtRi152N9clzJawnKjc2DfnLZ_qzoRg3F-h5O9uFAseeqoqgfSIsMKX5dD7og/exec?type=calendar";
     const res = await fetch(url);
     const raw = await res.text();
     const data = JSON.parse(raw);
