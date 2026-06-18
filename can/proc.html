@@ -384,36 +384,69 @@ function attachChat(card) {
 
 // 🔥 ОНОВЛЕНА СИНХРОНІЗАЦІЯ (Оновлює статуси у ВСІХ шматочках задачі)
 function syncTasks() {
-  const newTasks = []; 
-  const titles = [];
+  const cardDataMap = {};
   
+  // 1. Збираємо всі дані з карток, які зараз є на дошці Канбану
   document.querySelectorAll(".card").forEach(card => {
-    const title = card.querySelector(".titleInput")?.value || card.querySelector(".taskTitle").innerText; 
-    titles.push(title);
-    
-    newTasks.push({ 
-      id: card.dataset.taskId, 
-      title: title, 
-      start: card.querySelector(".startInput")?.value || "", 
-      deadline: card.querySelector(".deadlineInput")?.value || "", 
-      role: card.classList.contains("owner") ? "owner" : card.classList.contains("manager") ? "manager" : "executor",
-      username: card.dataset.username || "",
+    const taskId = card.dataset.taskId; // Це базовий ID (наприклад, TASK-123)
+    cardDataMap[taskId] = {
+      title: card.querySelector(".titleInput")?.value || card.querySelector(".taskTitle").innerText,
+      // Зберігаємо дати з карток ТІЛЬКИ на випадок, якщо це абсолютно нова задача
+      start: card.querySelector(".startInput")?.value || "",
+      deadline: card.querySelector(".deadlineInput")?.value || "",
+      role: card.dataset.role,
+      username: card.dataset.username,
       multiRole: card.querySelector(".approveInput")?.checked || false,
       dependencyTitle: card.querySelector(".depSelect")?.value || null,
       priority: card.querySelector(".priorityInput")?.value || "medium",
       status: card.dataset.status || "todo",
       chat: card.chat || []
-    });
+    };
   });
 
-  processData.tasks = newTasks;
-  // ПРОСТО зберігаємо актуальний список задач як rawTasks. 
-  // Жодного розмноження фрагментів тут не має бути!
-  processData.rawTasks = JSON.parse(JSON.stringify(newTasks)); 
-  
+  const updatedRawTasks = [];
+  const processedCards = new Set();
+
+  // 2. Оновлюємо ІСНУЮЧІ фрагменти (щоб не втратити час, встановлений в Календарі)
+  (processData.rawTasks || []).forEach(frag => {
+    // Відрізаємо суфікс дати, щоб знайти відповідну картку (TASK-123_2026-06-15 -> TASK-123)
+    const baseId = frag.id ? frag.id.split("_")[0] : null; 
+    
+    if (baseId && cardDataMap[baseId]) {
+      const cardInfo = cardDataMap[baseId];
+      
+      // ВАЖЛИВО: Беремо оригінальний фрагмент (...frag) з його унікальним ID і точним часом, 
+      // і оновлюємо ТІЛЬКИ статуси, текст та відповідальних. Час залишається недоторканим!
+      updatedRawTasks.push({
+        ...frag, 
+        title: cardInfo.title,
+        role: cardInfo.role,
+        username: cardInfo.username,
+        multiRole: cardInfo.multiRole,
+        dependencyTitle: cardInfo.dependencyTitle,
+        priority: cardInfo.priority,
+        status: cardInfo.status,
+        chat: cardInfo.chat
+      });
+      
+      processedCards.add(baseId);
+    }
+  });
+
+  // 3. Додаємо повністю НОВІ задачі (які щойно створили в Канбані і яких ще немає в базі)
+  Object.keys(cardDataMap).forEach(baseId => {
+    if (!processedCards.has(baseId)) {
+      updatedRawTasks.push({
+        id: baseId,
+        ...cardDataMap[baseId]
+      });
+    }
+  });
+
+  // 4. Перезаписуємо базу даних і пам'ять
+  processData.rawTasks = updatedRawTasks;
   sessionStorage.setItem("currentProcess", JSON.stringify(processData));
 }
-
 async function fetchDashboardData() {
   try {
     const res = await fetch(Processes_SHEET_URL);

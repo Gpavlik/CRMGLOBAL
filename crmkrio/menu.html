@@ -217,7 +217,14 @@ input, select {
     }
 </style>
 </head>
-<body style="display:none;">
+<body>
+<div id="loadingScreen" style="display: flex; flex: 1; justify-content: center; align-items: center; width: 100%; min-height: 100vh;">
+    <img src="./logo.svg" alt="logo" width="760">
+  </div>
+
+  <div id="appContent" style="display: none; width: 100%; flex-direction: column; align-items: center;">
+
+
   <div id="content">
 
      <h1>Меню</h1>
@@ -280,38 +287,38 @@ input, select {
   <div class="unit"><img src="./M3.png" alt="logo" width="260"></div>
  </div>
  </div>
+  </div>
 <script>
 (async function(){
-  const u = sessionStorage.getItem("currentUser");
+   const u = sessionStorage.getItem("currentUser");
   const token = sessionStorage.getItem("sessionToken");
-
-  // ❌ якщо немає даних → назад на логін
-  if (!u || !token) {
-    window.location.href = "index.html";
-    return;
+  
+  if (!u || !token) { 
+    window.location.href = "index.html"; 
+    return; 
   }
 
-  try {
-    // ✅ перевірка токена та юзернейма
-    const resp = await fetch("https://script.google.com/macros/s/AKfycbzPIdUQ6obtM9AjMoJeQKLJjLPtHcWYMYEex7UDYFqNtDHpoIQ0kyD73idI-wWyShEg/exec" +
-                             "?action=675&user=" + encodeURIComponent(u) +
-                             "&token=" + encodeURIComponent(token) +
-                             "&branch=crmkrio");
-    const data = await resp.json();
-
-    if (data.success && data.url) {
-      // токен валідний → показуємо меню
-      document.body.style.display = "flex";
-    } else {
-      // ❌ токен невалідний → чистимо sessionStorage і назад на логін
-      sessionStorage.clear();
-      window.location.href = "index.html";
-    }
-  } catch(err) {
-    console.error("Помилка перевірки токена:", err);
-    sessionStorage.clear();
-    window.location.href = "index.html";
-  }
+  fetch("https://script.google.com/macros/s/AKfycbwV4A-TF_G1yCOoQY_wofk1hq1kf-KP3EerfEgYhqXh-aWB8Vc1evFaxJuv5FlQ6Wcr/exec?action=675&user=" + encodeURIComponent(u) + "&token=" + encodeURIComponent(token) + "&branch=can")
+    .then(r => r.json())
+    .then(data => {
+      if (data.success && data.url) {
+        // 1. Ховаємо екран завантаження з логотипом
+        document.getElementById("loadingScreen").style.display = "none";
+        
+        // 2. Показуємо основний інтерфейс додатку
+        document.getElementById("appContent").style.display = "flex";
+        
+        // 3. Ініціалізація даних користувача
+        initUserInfoAndWeather(data.userName || data.fullName || "Павло Гриценко");
+      } else {
+        sessionStorage.clear(); 
+        window.location.href = "index.html";
+      }
+    }).catch(err => { 
+      console.error("Помилка авторизації:", err);
+      sessionStorage.clear(); 
+      window.location.href = "index.html"; 
+    });
 })();
 
 // 🔴 Логаут

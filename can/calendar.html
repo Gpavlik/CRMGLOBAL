@@ -233,15 +233,31 @@ function explodeTasks(rawTasks) {
 }
 
 // --- 3. ПІДГОТОВКА ДЛЯ КАЛЕНДАРЯ (Тепер всі задачі одноденні) ---
+// --- ПІДГОТОВКА ДЛЯ КАЛЕНДАРЯ (З розумними кольорами) ---
 function processEventsForCalendar(tasks) {
-  const today = new Date(); today.setHours(0,0,0,0);
+  const today = new Date(); 
+  today.setHours(0,0,0,0);
+
+  // 1. Знаходимо максимальний дедлайн для кожної серії задач
+  const maxDeadlines = {};
+  tasks.forEach(t => {
+    const baseId = String(t.taskID).split("_")[0]; // Отримуємо TASK-123 з TASK-123_2026-06-18
+    const tDead = new Date(t.deadline).getTime();
+    if (!maxDeadlines[baseId] || tDead > maxDeadlines[baseId]) {
+      maxDeadlines[baseId] = tDead;
+    }
+  });
+
   return tasks.map(t => {
     let color;
     const s = String(t.statusTask || t.statusProc || "").toLowerCase().trim();
-    const taskDeadlineObj = new Date(t.deadline);
+    const baseId = String(t.taskID).split("_")[0];
+    
+    // Беремо фінальний дедлайн всього ланцюжка
+    const globalDeadlineObj = new Date(maxDeadlines[baseId]); 
 
     if (["done", "виконано", "completed"].includes(s)) color = "#10b981"; 
-    else if (today > taskDeadlineObj) color = "#ef4444"; 
+    else if (today > globalDeadlineObj) color = "#ef4444"; // Червоніє ТІЛЬКИ коли сплине остання
     else if (["inprogress", "в процесі", "progress"].includes(s)) color = "#f59e0b"; 
     else if (["todo", "зробити"].includes(s)) color = "#3b82f6"; 
     else color = "#8b5cf6"; 
@@ -341,21 +357,35 @@ function handleDateSelect(info) {
   openModal('createModal');
 }
 
-// Збереження нової задачі (з розбиттям, якщо вибрано кілька днів)
+// Збереження нової задачі (з прив'язкою до існуючого процесу)
 function saveNewTask() {
-  const process = document.getElementById("modalProcess").value;
+  const processTitle = document.getElementById("modalProcess").value;
   const title = document.getElementById("modalTaskTitle").value || "Нова задача";
   const user = document.getElementById("modalUser").value;
   const baseId = "TASK-" + Date.now();
 
+  // 1. ШУКАЄМО СПРАВЖНІЙ PROCESS ID ТА ДАНІ ПРОЦЕСУ
+  const existingTask = globalTasks.find(t => t.title === processTitle);
+  const actualProcessID = existingTask ? existingTask.processID : Date.now().toString();
+  const actualOwner = existingTask ? existingTask.owner : (usersMap[currentUser] || currentUser);
+  const actualParticipants = existingTask ? existingTask.participants : [];
+
   const newTask = {
-    processID: "NEW", title: process, owner: usersMap[currentUser] || currentUser,
-    participants: [], statusProc: "В процесі", taskID: baseId, taskTitle: title,
-    start: toLocalISOString(tempEventStart), deadline: toLocalISOString(tempEventEnd), 
-    role: "Виконавець", username: user, statusTask: "todo", chat: ""
+    processID: actualProcessID, // Більше ніяких "NEW"
+    title: processTitle, 
+    owner: actualOwner,
+    participants: actualParticipants, 
+    statusProc: existingTask ? existingTask.statusProc : "В процесі", 
+    taskID: baseId, // Даємо чистий ID, Календар сам його розіб'є, якщо треба
+    taskTitle: title,
+    start: toLocalISOString(tempEventStart), 
+    deadline: toLocalISOString(tempEventEnd), 
+    role: "executor", 
+    username: user, 
+    statusTask: "todo", 
+    chat: ""
   };
 
-  // Додаємо і одразу проганяємо через explodeTasks, щоб розбити і знайти місце
   globalTasks.push(newTask);
   globalTasks = explodeTasks(globalTasks);
   
