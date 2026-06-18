@@ -8,189 +8,93 @@
 
   <link href="https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.8/main.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.8/index.global.min.js"></script>
-
   <link href="https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@6.1.8/main.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@6.1.8/index.global.min.js"></script>
-
   <link href="https://cdn.jsdelivr.net/npm/@fullcalendar/timegrid@6.1.8/main.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/timegrid@6.1.8/index.global.min.js"></script>
-
   <link href="https://cdn.jsdelivr.net/npm/@fullcalendar/multimonth@6.1.8/main.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/multimonth@6.1.8/index.global.min.js"></script>
-
   <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/interaction@6.1.8/index.global.min.js"></script>
 
   <style> 
-    /* ==========================================================================
-       1. ГЛОБАЛЬНІ СТИЛІ ТА ФОН (В унісон з Канбаном)
-       ========================================================================== */
+    /* ================== ГЛОБАЛЬНІ СТИЛІ ================== */
     body {
       font-family: 'Segoe UI', Arial, sans-serif;
-      margin: 0; 
-      padding: 0;
+      margin: 0; padding: 0;
       background: linear-gradient(135deg, #009400, #004d00);
-      color: #fff;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      color: #fff; min-height: 100vh; display: flex; flex-direction: column; align-items: center;
     }
 
-    /* ==========================================================================
-       2. ШАПКА В СТИЛІ GLASSMORPHISM + MOBILE FIX
-       ========================================================================== */
+    /* ================== ШАПКА ================== */
     header { 
-      background: #1e293b; 
-      color: white; 
-      padding: 15px 20px; 
-      display: flex; 
-      justify-content: space-between; 
-      align-items: center; 
-      width: 100%;
-      box-sizing: border-box;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      background: #1e293b; color: white; padding: 15px 20px; 
+      display: flex; justify-content: space-between; align-items: center; 
+      width: 100%; box-sizing: border-box; box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     }
     header h1 { margin: 0; font-size: 20px; font-weight: 700; }
-    
     header .user-info { 
-      font-size: 14px; 
-      font-weight: 600; 
-      background: rgba(255, 255, 255, 0.22); 
-      padding: 6px 14px; 
-      border-radius: 20px; 
-      border: 1px solid rgba(255, 255, 255, 0.25);
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      backdrop-filter: blur(4px);
+      font-size: 14px; font-weight: 600; background: rgba(255, 255, 255, 0.22); 
+      padding: 6px 14px; border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.25);
+      display: inline-flex; align-items: center; gap: 8px; backdrop-filter: blur(4px);
     }
-
-    .header-controls {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-size: 13px;
-      font-weight: 600;
-    }
-
+    .header-controls { display: flex; align-items: center; gap: 12px; font-size: 13px; font-weight: 600; }
     .header-controls select {
-      font-family: 'Segoe UI', Arial, sans-serif;
-      font-size: 14px;
-      padding: 8px 12px;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 6px;
-      background-color: #f1f5f9;
-      color: #1e293b;
-      transition: all 0.3s;
-      width: 200px;
-      font-weight: 600;
-      outline: none;
+      font-family: 'Segoe UI', Arial, sans-serif; font-size: 14px; padding: 8px 12px;
+      border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 6px; background-color: #f1f5f9;
+      color: #1e293b; transition: all 0.3s; width: 200px; font-weight: 600; outline: none;
     }
-
     header button { 
-      background: #3b82f6; 
-      color: white; 
-      border: none; 
-      padding: 8px 16px; 
-      border-radius: 8px; 
-      cursor: pointer; 
-      font-weight: 600;
-      transition: all 0.2s ease;
+      background: #3b82f6; color: white; border: none; padding: 8px 16px; 
+      border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.2s ease;
     }
     header button:hover { background: #2563eb; transform: translateY(-1px); }
-    #saveBtn { background: #10b981; }
-    #saveBtn:hover { background: #059669; }
-    #dashboardBtn { background: #64748b; }
-    #dashboardBtn:hover { background: #475569; }
+    #saveBtn { background: #10b981; } #saveBtn:hover { background: #059669; }
+    #dashboardBtn { background: #64748b; } #dashboardBtn:hover { background: #475569; }
 
-    /* ==========================================================================
-       3. СУЧАСНИЙ СКЛЯНИЙ КАЛЕНДАР (Ефект пакетика)
-       ========================================================================== */
+    /* ================== КАЛЕНДАР ================== */
     #calendar {
-      width: 92%;
-      margin: 30px auto;
-      padding: 20px; 
-      border-radius: 16px; 
-      background: rgba(254, 254, 254, 0.92) !important; 
-      backdrop-filter: blur(10px);
-      box-shadow: 0 15px 35px rgba(0, 45, 0, 0.2);
-      color: #1e293b !important; 
+      width: 92%; margin: 30px auto; padding: 20px; border-radius: 16px; 
+      background: rgba(254, 254, 254, 0.92) !important; backdrop-filter: blur(10px);
+      box-shadow: 0 15px 35px rgba(0, 45, 0, 0.2); color: #1e293b !important; 
     }
-
     .fc { color: #1e293b !important; }
     .fc a { color: #1e293b !important; text-decoration: none; font-weight: 600; }
     .fc-theme-standard td, .fc-theme-standard th { border: 1px solid #cbd5e1 !important; }
     .fc-col-header-cell { background: #f8fafc; padding: 8px 0 !important; }
-
     .fc-v-event {
-      border: 1px solid rgba(255,255,255,0.3) !important;
-      border-radius: 6px !important;
-      padding: 4px !important;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.08) !important;
+      border: 1px solid rgba(255,255,255,0.3) !important; border-radius: 6px !important;
+      padding: 4px !important; box-shadow: 0 4px 6px rgba(0,0,0,0.08) !important;
     }
+    .fc-timegrid-slot { height: 35px !important; min-height: 35px !important; }
 
-    .fc-timegrid-slot {
-      height: 35px !important;
-      min-height: 35px !important;
+    /* ================== МОДАЛЬНІ ВІКНА ================== */
+    .modal-overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6); backdrop-filter: blur(5px);
+      display: none; justify-content: center; align-items: center; z-index: 9999;
     }
-
-    .critical-load-label {
-      background: #fee2e2;
-      border: 1px solid #fca5a5;
-      padding: 4px 8px;
-      border-radius: 6px;
-      text-align: center;
-      animation: pulseAlert 2s infinite;
+    .modal-box {
+      background: #ffffff; color: #1e293b; padding: 25px; border-radius: 12px;
+      width: 90%; max-width: 400px; box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+      display: flex; flex-direction: column; gap: 12px;
     }
-
-    @keyframes pulseAlert {
-      0%, 100% { box-shadow: 0 0 4px rgba(239, 68, 68, 0.2); }
-      50% { box-shadow: 0 0 10px rgba(239, 68, 68, 0.5); }
+    .modal-box h3 { margin: 0 0 10px 0; font-size: 18px; color: #004d00; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; }
+    .modal-box label { font-size: 13px; font-weight: 700; color: #475569; margin-bottom: -8px; }
+    .modal-box input, .modal-box select, .modal-box textarea {
+      padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-family: inherit; font-size: 14px;
     }
+    .modal-box textarea { resize: vertical; min-height: 60px; }
+    .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 10px; }
+    .btn-cancel { background: #94a3b8; color: white; border: none; padding: 8px 15px; border-radius: 6px; cursor: pointer; font-weight: 600;}
+    .btn-submit { background: #10b981; color: white; border: none; padding: 8px 15px; border-radius: 6px; cursor: pointer; font-weight: 600;}
+    .btn-delete { background: #ef4444; color: white; border: none; padding: 8px 15px; border-radius: 6px; cursor: pointer; font-weight: 600;}
+    .btn-duplicate { background: #3b82f6; color: white; border: none; padding: 8px 15px; border-radius: 6px; cursor: pointer; font-weight: 600;}
 
-    /* 🔥 АДАПТИВНІСТЬ ДЛЯ МОБІЛОК */
     @media screen and (max-width: 1024px) {
       header { flex-direction: column; gap: 12px; padding: 15px; text-align: center; }
       .header-controls { flex-direction: column; width: 100%; gap: 8px; }
       .header-controls select, header button { width: 100% !important; }
       #calendar { width: 98%; padding: 10px; margin: 15px auto; }
-      .fc-toolbar { flex-direction: column; gap: 8px; }
-    }
-    .unit {  
-      height: 140px;
-      width: 250px;
-      /* 💧 Ефект матового аквамаринового скла */
-      background: rgba(255, 255, 255, 0.9) !important;
-      backdrop-filter: blur(12px) !important;
-      -webkit-backdrop-filter: blur(12px) !important;
-      
-      /* Елегантний тонкий білий бордюр */
-      border: 1px solid rgba(255, 255, 255, 0.25) !important;
-      border-radius: 24px !important;
-      padding: 0;
-      margin: 0;
-      box-sizing: border-box;
-      overflow: hidden;
-      cursor: pointer;
-      
-      /* Внутрішнє глянцеве свічення */
-      box-shadow: 
-        0 10px 25px rgba(0, 45, 0, 0.15),
-        inset 2px 2px 5px rgba(255, 255, 255, 0.2) !important;
-        
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease, border-color 0.3s ease;
-    }
-
-    /* Стилізація твоїх картинок-логотипів */
-    .unit img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover; /* Ідеально вписує картинку без деформацій */
-      border-radius: 23px; /* Трохи менше за unit, щоб не вилазило */
-      transition: transform 0.3s ease, opacity 0.3s ease;
     }
   </style>
 </head>
@@ -213,10 +117,47 @@
     </div>
   </header>
 
-  <img src="./logo.svg" alt="logo" width="260" style="margin-top: 25px;">
   <div id="calendar"></div>
-  
-<div class="unit"><img  src="./H2.png" alt="logo" width="260"></div>
+
+  <div id="createModal" class="modal-overlay">
+    <div class="modal-box">
+      <h3>Створити нову задачу</h3>
+      
+      <label>Процес:</label>
+      <select id="modalProcess"></select>
+      
+      <label>Назва задачі:</label>
+      <input type="text" id="modalTaskTitle" placeholder="Коротко про задачу...">
+      
+      <label>Виконавець:</label>
+      <select id="modalUser"></select>
+      
+      <div class="modal-actions">
+        <button class="btn-cancel" onclick="closeModal('createModal')">Скасувати</button>
+        <button class="btn-submit" onclick="saveNewTask()">Створити</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="actionModal" class="modal-overlay">
+    <div class="modal-box">
+      <h3 id="actionModalTitle">Редагування задачі</h3>
+      
+      <label>Коментар / Чат:</label>
+      <textarea id="modalComment" placeholder="Додайте коментар..."></textarea>
+      <button class="btn-submit" style="width: 100%;" onclick="saveTaskComment()">Зберегти коментар</button>
+
+      <div style="border-top: 1px solid #e2e8f0; margin: 10px 0;"></div>
+      
+      <div class="modal-actions" style="justify-content: space-between;">
+        <button class="btn-delete" onclick="deleteTask()">🗑 Видалити</button>
+        <div style="display: flex; gap: 10px;">
+          <button class="btn-cancel" onclick="closeModal('actionModal')">Закрити</button>
+          <button class="btn-duplicate" onclick="duplicateTask()">⧉ Дублювати</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
 <script>
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyQWNkdxePA_JHU9l5yAr0TAgGIL6CSHSbqXKri1HF5FHFg4TGYBM4eAKLMCADbG4YO/exec";
@@ -224,25 +165,30 @@ const PROCESSES_SHEET_URL = "https://docs.google.com/spreadsheets/d/1vjxURM8HlNT
 
 const currentUser = sessionStorage.getItem("currentUser") || "невідомий";
 const usersMap = {
-  gala: "Галина Кузнєцова",
-  olenka: "Олена Поліщук",
-  dima: "Дмитро Приходько",
-  serega: "Сергій Комашко",
-  sasha: "Олександр Волянюк",
-  pasha: "Павло Гриценко",
-  anya: "Ганна Мойсеєнко",
-  tetiana: "Тетяна Яковець",
-  adminp: "Адмін"
+  gala: "Галина Кузнєцова", olenka: "Олена Поліщук", dima: "Дмитро Приходько",
+  serega: "Сергій Комашко", sasha: "Олександр Волянюк", pasha: "Павло Гриценко",
+  anya: "Ганна Мойсеєнко", tetiana: "Тетяна Яковець", adminp: "Адмін"
 };
 
 document.getElementById("userInfoTop").innerHTML = `<span>👤 Користувач: ${usersMap[currentUser] || currentUser}</span>`;
 
-let globalTasks = []; // Актуальний масив відфільтрованих процесових тасок
-let currentCalendar = null; // Посилання на інстанс FullCalendar
+let globalTasks = []; 
+let currentCalendar = null; 
+
+// Тимчасові змінні для модалок
+let tempEventStart = null;
+let tempEventEnd = null;
+let activeTaskId = null;
 
 function normalizeUser(userKeyOrName) {
   if (usersMap[userKeyOrName]) return userKeyOrName;
   return Object.keys(usersMap).find(k => usersMap[k] === userKeyOrName) || userKeyOrName;
+}
+
+// Конвертер локального часу для збереження без зсуву часових поясів
+function toLocalISOString(date) {
+  const tzOffset = date.getTimezoneOffset() * 60000; 
+  return (new Date(date.getTime() - tzOffset)).toISOString().slice(0, 19);
 }
 
 // --- Завантаження процесів ---
@@ -270,172 +216,209 @@ async function loadProcesses() {
   return Object.values(tasksMap);
 }
 
-// --- ACL Безпека: Базова видимість ---
+// --- ACL Безпека ---
 function filterProcessesByAccess(tasks, currentUserName) {
   if (currentUserName === "Адмін") return tasks;
   if (["Галина Кузнєцова", "Павло Гриценко"].includes(currentUserName)) {
-    return tasks.filter(t =>
-      t.owner === currentUserName || (t.participants || []).some(part => part.includes(currentUserName))
-    );
+    return tasks.filter(t => t.owner === currentUserName || (t.participants || []).some(part => part.includes(currentUserName)));
   }
   return tasks.filter(t => t.username?.includes(currentUserName));
 }
 
-// --- Екстракт дат ---
-function expandMultiDayTasks(tasks) {
-  const events = [];
-  tasks.forEach(t => {
-    if (t.start && t.deadline) {
-      const startDate = new Date(t.start);
-      const endDate = new Date(t.deadline);
-      for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
-        events.push({
-          id: `${t.taskID}-${d.toISOString().split("T")[0]}`, 
-          taskTitle: t.taskTitle || t.title,
-          day: d.toISOString().split("T")[0],
-          role: t.role, status: t.statusTask || t.status, deadline: t.deadline, processTitle: t.title, username: t.username
-        });
-      }
-    }
-  });
-  return events;
-}
-
-// --- Автоплейсинг в тайм-сітку ---
-function autoPlaceTasks(tasks) {
-  const placed = [];
-  const daySlots = {};
+// --- Підготовка подій (БЕЗ автоплейсингу, зберігаємо точний час) ---
+function processEventsForCalendar(tasks) {
   const today = new Date(); today.setHours(0,0,0,0);
+  
+  return tasks.map(t => {
+    let startStr = t.start;
+    let endStr = t.deadline;
 
-  tasks.forEach(ev => {
-    const day = ev.day;
-    if (!daySlots[day]) daySlots[day] = [];
-    
-    // Починаємо з 08:00, крок 1 година
-    let hour = 8; 
-
-    const deadlineRaw = new Date(ev.deadline);
-    const deadline = new Date(deadlineRaw.getFullYear(), deadlineRaw.getMonth(), deadlineRaw.getDate());
+    // Якщо це стара задача лише з датою (без часу), даємо дефолтний 1-годинний слот на 08:00
+    if (startStr && startStr.length <= 10) startStr += "T08:00:00";
+    if (endStr && endStr.length <= 10) {
+      let tempDate = new Date(startStr);
+      tempDate.setHours(tempDate.getHours() + 1);
+      endStr = toLocalISOString(tempDate);
+    }
 
     let color;
-    const s = String(ev.status).toLowerCase().trim();
+    const s = String(t.statusTask || t.statusProc || "").toLowerCase().trim();
+    const taskDeadlineObj = new Date(endStr);
+
     if (["done", "виконано", "completed"].includes(s)) color = "#10b981"; 
-    else if (today > deadline) color = "#ef4444"; 
+    else if (today > taskDeadlineObj) color = "#ef4444"; 
     else if (["inprogress", "в процесі", "progress"].includes(s)) color = "#f59e0b"; 
     else if (["todo", "зробити"].includes(s)) color = "#3b82f6"; 
     else color = "#8b5cf6"; 
 
-    while (hour < 18) { // До 18:00
-      const slot = `${String(hour).padStart(2,"0")}:00`;
-      if (!daySlots[day].includes(slot)) {
-        ev.start = `${day}T${slot}:00`;
-        
-        // Тривалість 1 година
-        const endHour = hour + 1;
-        ev.end = `${day}T${String(endHour).padStart(2,"0")}:00`;
-
-        ev.title = `${ev.username || "невідомий"} — ${ev.taskTitle || ev.processTitle}`;
-        ev.backgroundColor = color;
-        ev.textColor = "#ffffff";
-
-        daySlots[day].push(slot); 
-        placed.push(ev); 
-        break;
-      }
-      hour++; // Крок 1 година
-    }
+    return {
+      id: t.taskID,
+      title: `${t.username || "невідомий"} — ${t.taskTitle || t.title}`,
+      start: startStr,
+      end: endStr,
+      backgroundColor: color,
+      textColor: "#ffffff",
+      extendedProps: { ...t }
+    };
   });
-  return placed;
 }
 
 function eventContent(arg) {
   const start = arg.event.start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-  const end = arg.event.end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  const end = arg.event.end ? arg.event.end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : "";
   return {
     html: `
       <div style="font-size:11px; font-weight:700; text-shadow:0 1px 2px rgba(0,0,0,0.2); line-height:1.2; overflow:hidden; text-overflow:ellipsis;">
-        ${start} - ${end} — ${arg.event.extendedProps.taskTitle || ""}
+        ${start} - ${end} — ${arg.event.extendedProps.taskTitle || arg.event.extendedProps.title || ""}
       </div>
       <div style="font-size:10px; opacity:0.9; font-weight:500; margin-top:2px;">
-        👤 ${arg.event.extendedProps.username || "невідомий"} (${arg.event.extendedProps.role || ""})
+        👤 ${arg.event.extendedProps.username || "невідомий"}
       </div>
     `
   };
 }
 
+// --- Оновлення часу (Перетягування та Розтягування) ---
+function updateTaskTime(calendarEvent) {
+  const task = globalTasks.find(t => String(t.taskID) === String(calendarEvent.id));
+  if (task) {
+    task.start = toLocalISOString(calendarEvent.start);
+    if (calendarEvent.end) {
+      task.deadline = toLocalISOString(calendarEvent.end);
+    } else {
+      // Якщо end чомусь пустий, робимо +1 годину від старту
+      let d = new Date(calendarEvent.start);
+      d.setHours(d.getHours() + 1);
+      task.deadline = toLocalISOString(d);
+    }
+  }
+}
+
+// --- Фільтри та UI ---
 function setupProcessSelector(tasks) {
   const selector = document.getElementById("processSelector");
-  const uniqueProcesses = [...new Set(tasks.map(t => t.title))];
+  const uniqueProcesses = [...new Set(tasks.map(t => t.title).filter(Boolean))];
   selector.innerHTML = `<option value="all">Всі процеси</option>` + uniqueProcesses.map(p => `<option value="${p}">${p}</option>`).join("");
   selector.addEventListener("change", applyCombinedFilters);
 }
 
-// 🆕 Наповнення селектора учасників (Лише для адмін-складу)
 function populateUserFilterSelector() {
   const filterSel = document.getElementById("userFilterSelector");
   filterSel.innerHTML = '<option value="all">Всі користувачі</option>';
   Object.entries(usersMap).forEach(([key, name]) => {
-    const opt = document.createElement("option"); opt.value = name; opt.textContent = name; filterSel.appendChild(opt);
+    filterSel.innerHTML += `<option value="${name}">${name}</option>`;
   });
   filterSel.addEventListener("change", applyCombinedFilters);
 }
 
-// 🔥 Розумна комбінована фільтрація подій в FullCalendar
 function applyCombinedFilters() {
   if (!currentCalendar) return;
-
   const selectedProcess = document.getElementById("processSelector").value;
   const selectedUser = document.getElementById("userFilterSelector").value;
 
   let filtered = globalTasks;
+  if (selectedProcess !== "all") filtered = filtered.filter(t => t.title === selectedProcess);
+  if (selectedUser && selectedUser !== "all") filtered = filtered.filter(t => t.username === selectedUser);
 
-  // 1. Фільтр за обраним процесом
-  if (selectedProcess !== "all") {
-    filtered = filtered.filter(t => t.title === selectedProcess);
-  }
-
-  // 2. Фільтр за обраною людиною (якщо селектор активний)
-  if (selectedUser && selectedUser !== "all") {
-    filtered = filtered.filter(t => t.username === selectedUser);
-  }
-
-  const expanded = expandMultiDayTasks(filtered);
-  const events = autoPlaceTasks(expanded);
-  
+  const events = processEventsForCalendar(filtered);
   currentCalendar.removeAllEvents();
   currentCalendar.addEventSource(events);
-  checkDayLoad(currentCalendar);
 }
 
-function checkDayLoad(calendar) {
-  const days = {};
-  document.querySelectorAll(".critical-load-label").forEach(l => l.remove());
+// ================== МОДАЛЬНІ ВІКНА (ЛОГІКА) ==================
 
-  calendar.getEvents().forEach(ev => {
-    if (!ev.startStr) return;
-    const day = ev.startStr.split("T")[0];
-    if (!days[day]) days[day] = 0; days[day] += 1;
-  });
-
-  Object.entries(days).forEach(([day, hours]) => {
-    if (hours > 5) {
-      const allDayCell = document.querySelector(`.fc-timegrid-col[data-date="${day}"] .fc-timegrid-day-frame`);
-      if (allDayCell) {
-        const label = document.createElement("div");
-        label.className = "critical-load-label"; label.innerText = "🚨 Критичне навантаження";
-        label.style.color = "#b91c1c"; label.style.fontWeight = "700"; label.style.fontSize = "11px"; label.style.marginTop = "6px"; label.style.padding = "4px";
-        allDayCell.appendChild(label);
-      }
-    }
-  });
+function openModal(modalId) {
+  document.getElementById(modalId).style.display = 'flex';
+}
+function closeModal(modalId) {
+  document.getElementById(modalId).style.display = 'none';
 }
 
-function updateTask(calendarEvent) {
-  const taskID = calendarEvent.id.split("-")[0];
-  const task = globalTasks.find(t => String(t.taskID) === String(taskID));
-  if (task) {
-    const newDayStr = calendarEvent.startStr.split("T")[0];
-    task.start = newDayStr; task.deadline = newDayStr; 
+// Відкриття вікна створення
+function handleDateSelect(info) {
+  tempEventStart = info.start;
+  tempEventEnd = info.end;
+
+  // Наповнюємо селекти
+  const pSelect = document.getElementById("modalProcess");
+  const uniqueProcesses = [...new Set(globalTasks.map(t => t.title).filter(Boolean))];
+  pSelect.innerHTML = uniqueProcesses.map(p => `<option value="${p}">${p}</option>`).join("");
+
+  const uSelect = document.getElementById("modalUser");
+  uSelect.innerHTML = Object.values(usersMap).map(u => `<option value="${u}">${u}</option>`).join("");
+  uSelect.value = usersMap[currentUser] || currentUser; // по дефолту поточний юзер
+
+  document.getElementById("modalTaskTitle").value = "";
+  openModal('createModal');
+}
+
+// Збереження нової задачі
+function saveNewTask() {
+  const process = document.getElementById("modalProcess").value;
+  const title = document.getElementById("modalTaskTitle").value || "Нова задача";
+  const user = document.getElementById("modalUser").value;
+  const newId = "TASK-" + Date.now();
+
+  const newTask = {
+    processID: "NEW", title: process, owner: usersMap[currentUser] || currentUser,
+    participants: [], statusProc: "В процесі", taskID: newId, taskTitle: title,
+    start: toLocalISOString(tempEventStart), deadline: toLocalISOString(tempEventEnd), 
+    role: "Виконавець", username: user, statusTask: "todo", chat: ""
+  };
+
+  globalTasks.push(newTask);
+  applyCombinedFilters(); // Оновлює календар
+  closeModal('createModal');
+}
+
+// Відкриття вікна дій (Клік по події)
+function handleEventClick(info) {
+  activeTaskId = info.event.id;
+  const task = globalTasks.find(t => String(t.taskID) === String(activeTaskId));
+  
+  if(task) {
+    document.getElementById("actionModalTitle").innerText = task.taskTitle || task.title;
+    document.getElementById("modalComment").value = task.chat || "";
+    openModal('actionModal');
+  }
+}
+
+function saveTaskComment() {
+  const task = globalTasks.find(t => String(t.taskID) === String(activeTaskId));
+  if(task) {
+    task.chat = document.getElementById("modalComment").value;
+    alert("Коментар збережено (локально). Натисніть 'Зберегти зміни' в шапці.");
+    closeModal('actionModal');
+  }
+}
+
+function deleteTask() {
+  if(confirm("Ви дійсно хочете видалити цю задачу?")) {
+    globalTasks = globalTasks.filter(t => String(t.taskID) !== String(activeTaskId));
+    applyCombinedFilters();
+    closeModal('actionModal');
+  }
+}
+
+function duplicateTask() {
+  const original = globalTasks.find(t => String(t.taskID) === String(activeTaskId));
+  if(original) {
+    const clone = JSON.parse(JSON.stringify(original));
+    clone.taskID = "TASK-" + Date.now();
+    
+    // Зсуваємо час на 1 годину вперед, щоб не накладалось
+    let startD = new Date(clone.start);
+    let endD = new Date(clone.deadline);
+    startD.setHours(startD.getHours() + 1);
+    endD.setHours(endD.getHours() + 1);
+    
+    clone.start = toLocalISOString(startD);
+    clone.deadline = toLocalISOString(endD);
+    clone.taskTitle = clone.taskTitle + " (Копія)";
+
+    globalTasks.push(clone);
+    applyCombinedFilters();
+    closeModal('actionModal');
   }
 }
 
@@ -445,13 +428,9 @@ document.addEventListener("DOMContentLoaded", async function() {
     let tasks = await loadProcesses();
     const currentName = usersMap[currentUser] || currentUser;
     
-    // Захист видимості даних
     tasks = filterProcessesByAccess(tasks, currentName);
     globalTasks = tasks; 
 
-    sessionStorage.setItem("dashboardData", JSON.stringify({ processes: tasks }));
-
-    // 🔑 Перевірка доступу до адмін-селектора
     const currentKey = normalizeUser(currentUser);
     if (["adminp", "gala", "pasha"].includes(currentKey)) {
       populateUserFilterSelector();
@@ -459,30 +438,36 @@ document.addEventListener("DOMContentLoaded", async function() {
       document.getElementById("userFilterSelector").style.display = "inline-block";
     }
 
-    const expandedTasks = expandMultiDayTasks(tasks);
-    const allEvents = autoPlaceTasks(expandedTasks);
-
+    const events = processEventsForCalendar(tasks);
     const calendarEl = document.getElementById("calendar");
+    
     currentCalendar = new FullCalendar.Calendar(calendarEl, {
       locale: "uk",
       initialView: "timeGridWeek",
       slotMinTime: "08:00:00", slotMaxTime: "18:00:00",
       hiddenDays: [0,6], 
+      
       editable: true,
-      eventDurationEditable: false, 
-      expandRows: true, height: "auto", slotDuration: "00:30:00",
+      eventDurationEditable: true, // ДОЗВОЛЯЄМО РОЗТЯГУВАТИ
+      selectable: true, // ДОЗВОЛЯЄМО ВИДІЛЯТИ ПУСТЕ МІСЦЕ
+      
+      expandRows: true, height: "auto", slotDuration: "01:00:00",
       slotLabelFormat: { hour: "2-digit", minute: "2-digit", hour12: false },
-      headerToolbar: { left: "prev,next today", center: "title", right: "timeGridDay,timeGridWeek,dayGridMonth,multiMonthYear" },
+      headerToolbar: { left: "prev,next today", center: "title", right: "timeGridDay,timeGridWeek,dayGridMonth" },
       eventContent: eventContent,
-      events: allEvents,
-      eventDrop: function(info) { updateTask(info.event); checkDayLoad(currentCalendar); }
+      events: events,
+      
+      // ОБРОБНИКИ ПОДІЙ
+      eventDrop: function(info) { updateTaskTime(info.event); },
+      eventResize: function(info) { updateTaskTime(info.event); },
+      select: function(info) { handleDateSelect(info); },
+      eventClick: function(info) { handleEventClick(info); }
     });
 
     currentCalendar.render();
-    checkDayLoad(currentCalendar);
     setupProcessSelector(tasks);
 
-    // Збереження
+    // Кнопка Збереження
     document.getElementById("saveBtn").addEventListener("click", () => {
       fetch(SCRIPT_URL, {
         method: "POST", mode: "no-cors", headers: {"Content-Type":"application/json"},
