@@ -180,7 +180,6 @@ function explodeTasks(rawTasks) {
   let exploded = [];
   let occupiedSlots = {};
 
-  // Знаходимо першу вільну годину для дня
   function getFreeHour(dayStr) {
     if (!occupiedSlots[dayStr]) occupiedSlots[dayStr] = [];
     let h = 8;
@@ -190,56 +189,40 @@ function explodeTasks(rawTasks) {
     return h;
   }
 
-  // Прохід 1: Фіксуємо вже зайняті точні години одноденних задач
   rawTasks.forEach(t => {
-    if (!t.start) return;
-    if (t.start.length > 10 && t.deadline && t.deadline.length > 10) {
-      let sD = t.start.split("T")[0];
-      let eD = t.deadline.split("T")[0];
-      if (sD === eD) { // Якщо задача в один день
-        let h = parseInt(t.start.split("T")[1].split(":")[0], 10);
-        if (!occupiedSlots[sD]) occupiedSlots[sD] = [];
-        occupiedSlots[sD].push(h);
-      }
+    // 🔥 КРИТИЧНА ПРАВКА: Якщо ID вже містить дату, значить задача вже розбита.
+    // Ми її не розбиваємо, просто додаємо як є.
+    const isAlreadyExploded = t.taskID.includes("_20"); 
+    
+    if (isAlreadyExploded || !t.start) {
+      exploded.push(t);
+      return;
     }
-  });
-
-  // Прохід 2: Розбиваємо багатоденні та розставляємо задачі без часу
-  rawTasks.forEach(t => {
-    if (!t.start) { exploded.push(t); return; }
 
     let sDate = new Date(t.start);
     let eDate = t.deadline ? new Date(t.deadline) : new Date(t.start);
 
-    // Коригування, якщо дедлайн стоїть на 00:00 наступного дня (баг перетягування)
     if (eDate.getHours() === 0 && eDate.getMinutes() === 0 && eDate.getTime() > sDate.getTime()) {
       eDate = new Date(eDate.getTime() - 1);
     }
 
     let currentDay = new Date(sDate.getFullYear(), sDate.getMonth(), sDate.getDate());
     let finalDay = new Date(eDate.getFullYear(), eDate.getMonth(), eDate.getDate());
-
     const isMultiDay = currentDay.getTime() !== finalDay.getTime();
 
     while (currentDay <= finalDay) {
       let clone = JSON.parse(JSON.stringify(t));
       const dayStr = toLocalISOString(currentDay).split("T")[0];
       
-      // Створюємо baseTaskID для Канбану/Ганта (щоб вони розуміли, що це частини однієї задачі)
-      clone.baseTaskID = clone.taskID.split("_")[0];
+      clone.baseTaskID = clone.taskID; // Зберігаємо оригінал як базу
+      
+      // Додаємо суфікс дати для унікальності фрагмента
+      clone.taskID = clone.taskID + "_" + dayStr;
 
-      if (isMultiDay) {
-        // Додаємо суфікс дати до ID
-        if (!clone.taskID.includes("_")) clone.taskID = clone.taskID + "_" + dayStr;
+      if (isMultiDay || clone.start.length <= 10) {
         let h = getFreeHour(dayStr);
         clone.start = `${dayStr}T${String(h).padStart(2,'0')}:00:00`;
         clone.deadline = `${dayStr}T${String(h+1).padStart(2,'0')}:00:00`;
-      } else {
-        if (clone.start.length <= 10) { // Одноденна, але без часу
-          let h = getFreeHour(dayStr);
-          clone.start = `${dayStr}T${String(h).padStart(2,'0')}:00:00`;
-          clone.deadline = `${dayStr}T${String(h+1).padStart(2,'0')}:00:00`;
-        }
       }
 
       exploded.push(clone);

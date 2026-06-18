@@ -463,22 +463,39 @@ document.getElementById("saveAndBackBtn").onclick = async () => {
 
 async function fetchDashboardData() {
   try {
-    const res = await fetch(Processes_SHEET_URL); const text = await res.text(); const json = JSON.parse(text.substr(47).slice(0, -2)); const rows = json.table.rows; const processes = {};
-    rows.forEach(r => {
-      const [processID, title, owner, participants, status, taskID, taskTitle, start, deadline, role, username, multiRole, dependency, priority, files, chat, taskStatus] = r.c.map(c => c ? c.v : "");
-      if (!processes[processID]) { processes[processID] = { processID, title, owner, participants: participants ? participants.split(", ") : [], status, rawTasks:[] }; }      
-      const parsedTask = {
-        id: taskID, title: taskTitle || "", start: start || "", deadline: deadline || "", role: role || "executor", username: username || "", multiRole: multiRole === "TRUE" || multiRole === true, dependencyTitle: dependency || null, priority: priority || "medium",
-        files: [], chat: chat ? chat.split(" || ").map(c => { const [user, text] = c.split(": "); return { user: user || "?", text: text || "" }; }) : [], status: taskStatus || "todo"
-      };
-      processes[processID].rawTasks.push(parsedTask);
-    });
+    const res = await fetch(Processes_SHEET_URL);
+    const text = await res.text();
+    const match = text.match(/google.visualization.Query.setResponse\(([\s\S]*)\);/);
+    if (!match) return { status: "error" };
     
-    Object.values(processes).forEach(p => { p.tasks = groupTasks(p.rawTasks); });
-    return { status:"ok", currentProcess: processes[processData.processID], processes:Object.values(processes) };
-  } catch(err) { return { status:"error", processes:[] }; }
-}
+    const json = JSON.parse(match[1]);
+    const processes = {};
 
+    json.table.rows.forEach(r => {
+      const c = r.c.map(cell => (cell && cell.v !== null ? String(cell.v) : ""));
+      const pID = c[0];
+      if (!processes[pID]) {
+        processes[pID] = { 
+          processID: pID, title: c[1], owner: c[2], 
+          participants: c[3] ? c[3].split(", ") : [], 
+          status: c[4], rawTasks: [] 
+        };
+      }
+      
+      processes[pID].rawTasks.push({
+        id: c[5], title: c[6], start: c[7], deadline: c[8], role: c[9], 
+        username: c[10], multiRole: c[11] === "TRUE", dependencyTitle: c[12], 
+        priority: c[13], files: [], chat: c[15] ? c[15].split(" || ").map(x => ({user: x.split(": ")[0], text: x.split(": ")[1]})) : [], 
+        status: c[16]
+      });
+    });
+
+    // Групуємо для кожного процесу
+    Object.values(processes).forEach(p => { p.tasks = groupTasks(p.rawTasks); });
+    
+    return { status: "ok", currentProcess: processes[processData.processID], processes: Object.values(processes) };
+  } catch(err) { console.error(err); return { status: "error" }; }
+}
 function renderKanban(tasks) {
   document.querySelector("#todoList .cards").innerHTML = ""; document.querySelector("#inProgressList .cards").innerHTML = ""; document.querySelector("#doneList .cards").innerHTML = "";
   tasks.forEach(t => {
