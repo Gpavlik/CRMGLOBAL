@@ -558,6 +558,58 @@ function renderGantt(tasks) {
 
   table.appendChild(tbody); wrapper.appendChild(table); gantt.appendChild(wrapper);
 }
+document.getElementById("saveAndBackBtn").addEventListener("click", async () => {
+  const btn = document.getElementById("saveAndBackBtn");
+  btn.innerText = "Зберігаю..."; // Індикація процесу
+  btn.disabled = true;
+
+  try {
+    // 1. Оновлюємо дані перед відправкою
+    syncTasks();
+
+    // 2. Формуємо об'єкт для відправки
+    const safeTasks = (processData.rawTasks || []).map(t => ({
+      id: t.id,
+      title: t.title || "",
+      start: t.start || "",
+      deadline: t.deadline || "",
+      role: t.role || "executor",
+      username: t.username || "",
+      multiRole: !!t.multiRole,
+      dependencyTitle: t.dependencyTitle || null,
+      priority: t.priority || "medium",
+      files: [],
+      chat: (t.chat || []).map(c => ({ user: c.user || "", text: c.text || "" })),
+      status: t.status || "todo"
+    }));
+
+    const safeProcess = {
+      processID: processData.processID,
+      title: processData.title,
+      owner: usersMap[currentUser] || currentUser,
+      participants: processData.participants || [],
+      status: processData.status || "new",
+      tasks: safeTasks
+    };
+
+    // 3. Відправка на бекенд
+    await fetch(SCRIPT_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ action: "updateProcess", process: safeProcess })
+    });
+
+    // 4. Повернення
+    window.location.href = "Dashboard.html";
+
+  } catch (err) {
+    console.error("Помилка при збереженні:", err);
+    alert("Сталася помилка при збереженні. Перевірте консоль.");
+    btn.innerText = "Зберегти і повернутися";
+    btn.disabled = false;
+  }
+});
 </script>
 </body>
 </html>
