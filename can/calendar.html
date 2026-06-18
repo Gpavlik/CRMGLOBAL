@@ -226,21 +226,58 @@ function filterProcessesByAccess(tasks, currentUserName) {
 }
 
 // --- Підготовка подій (БЕЗ автоплейсингу, зберігаємо точний час) ---
+// --- Підготовка подій (З розумним автоплейсингом для нових задач) ---
 function processEventsForCalendar(tasks) {
   const today = new Date(); today.setHours(0,0,0,0);
+  const occupiedSlots = {}; // Зберігає зайняті години для кожного дня
   
+  // Прохід 1: Записуємо всі години, які вже ЗАЙНЯТІ задачами з фіксованим часом
+  tasks.forEach(t => {
+    if (t.start && t.start.length > 10) {
+      const day = t.start.split("T")[0];
+      const hour = parseInt(t.start.split("T")[1].split(":")[0], 10);
+      if (!occupiedSlots[day]) occupiedSlots[day] = [];
+      occupiedSlots[day].push(hour);
+    }
+  });
+
   return tasks.map(t => {
     let startStr = t.start;
     let endStr = t.deadline;
 
-    // Якщо це стара задача лише з датою (без часу), даємо дефолтний 1-годинний слот на 08:00
-    if (startStr && startStr.length <= 10) startStr += "T08:00:00";
-    if (endStr && endStr.length <= 10) {
+    // Якщо задача має лише дату (наприклад "2026-06-18") без часу
+    if (startStr && startStr.length <= 10) {
+      const day = startStr;
+      if (!occupiedSlots[day]) occupiedSlots[day] = [];
+      
+      let assignedHour = 8; // Починаємо шукати з 08:00
+      
+      // Шукаємо перший вільний слот
+      while (occupiedSlots[day].includes(assignedHour) && assignedHour < 20) {
+        assignedHour++; 
+      }
+      if (assignedHour >= 20) assignedHour = 19; // Фолбек, якщо весь день забитий
+      
+      occupiedSlots[day].push(assignedHour); // Займаємо знайдений слот
+      
+      // Формуємо новий рядок дати з часом
+      startStr = `${day}T${String(assignedHour).padStart(2, '0')}:00:00`;
+      endStr = `${day}T${String(assignedHour + 1).padStart(2, '0')}:00:00`;
+
+      // ВАЖЛИВО: Оновлюємо глобальну задачу, щоб при кліку "Зберегти" 
+      // цей новий розрахований час зафіксувався назавжди і не "сповзав" при оновленні
+      t.start = startStr;
+      t.deadline = endStr;
+    } 
+    else if (endStr && endStr.length <= 10) {
+      // Підстраховка: якщо старт з часом є, а дедлайну немає
       let tempDate = new Date(startStr);
       tempDate.setHours(tempDate.getHours() + 1);
       endStr = toLocalISOString(tempDate);
+      t.deadline = endStr;
     }
 
+    // --- Логіка кольорів ---
     let color;
     const s = String(t.statusTask || t.statusProc || "").toLowerCase().trim();
     const taskDeadlineObj = new Date(endStr);
