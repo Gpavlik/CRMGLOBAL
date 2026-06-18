@@ -460,17 +460,46 @@ document.addEventListener("DOMContentLoaded", async function() {
     currentCalendar.render();
     setupProcessSelector();
 
-    // Збереження
     document.getElementById("saveBtn").addEventListener("click", () => {
-      // Важливо: бекенд має повністю перезаписувати дані або оновлювати їх за taskID
-      fetch(SCRIPT_URL, {
-        method: "POST", mode: "no-cors", headers: {"Content-Type":"application/json"},
-        body: JSON.stringify({ action: "updateCalendar", processes: globalTasks })
-      });
-      alert("Зміни успішно надіслані до Google Таблиці! 🚀");
-    });
+  // 1. ПЕРЕВІРКА: чи ми взагалі маємо що зберігати
+  if (!globalTasks || globalTasks.length === 0) {
+    console.error("globalTasks порожній!", globalTasks);
+    alert("Увага: дані порожні! Збереження скасовано, щоб не стерти базу.");
+    return;
+  }
 
-  } catch (err) { console.error("Помилка ініціалізації календаря:", err); }
+  // 2. Логування перед відправкою (відкрийте консоль F12, щоб бачити, що летить на сервер)
+  console.log("Відправляю на сервер задач:", globalTasks.length);
+// ... всередині document.getElementById("saveBtn").addEventListener ...
+  
+  // Очищаємо ID від суфіксів дати перед відправкою, 
+  // щоб у таблиці завжди лежав "базовий" ID
+  const tasksToSave = globalTasks.map(t => {
+      let cleanTask = JSON.parse(JSON.stringify(t));
+      if (cleanTask.baseTaskID) {
+          cleanTask.taskID = cleanTask.baseTaskID;
+      }
+      return cleanTask;
+  });
+
+  fetch(SCRIPT_URL, {
+    method: "POST", 
+    mode: "no-cors", 
+    headers: {"Content-Type":"application/json"},
+    body: JSON.stringify({ 
+      action: "updateCalendar", 
+      processes: tasksToSave // Відправляємо очищені задачі
+    })
+  })
+
+  .then(() => alert("Зміни успішно надіслані! 🚀"))
+  .catch(err => alert("Помилка при відправці: " + err));
+});
+
+  } catch (error) {
+    console.error("Помилка завантаження процесів:", error);
+    alert("Не вдалося завантажити процеси. Перевірте консоль для деталей.");
+  }
 });
 </script>
 </body>
