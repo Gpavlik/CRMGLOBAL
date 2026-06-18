@@ -388,78 +388,31 @@ function syncTasks() {
   const titles = [];
   
   document.querySelectorAll(".card").forEach(card => {
-    const title = card.querySelector(".titleInput")?.value || card.querySelector(".taskTitle").innerText; titles.push(title);
-    const start = card.querySelector(".startInput")?.value || "";
-    const deadline = card.querySelector(".deadlineInput")?.value || "";
-    const role = card.classList.contains("owner") ? "owner" : card.classList.contains("manager") ? "manager" : "executor";
-    const username = card.dataset.username || "";
-    const multiRole = card.querySelector(".approveInput")?.checked || false;
-    const depTitle = card.querySelector(".depSelect")?.value || null;
-    const priority = card.querySelector(".priorityInput")?.value || "medium";
-    const status = card.dataset.status || "todo";
-    const chat = card.chat || [];
+    const title = card.querySelector(".titleInput")?.value || card.querySelector(".taskTitle").innerText; 
+    titles.push(title);
     
-    newTasks.push({ id: card.dataset.taskId, title, start, deadline, role, username, multiRole, dependencyTitle: depTitle, priority, chat, status });
-  });
-
-  document.querySelectorAll(".depSelect").forEach(sel => {
-    const current = sel.value; sel.innerHTML = `<option value="">—</option>`;
-    titles.forEach(t => { const opt = document.createElement("option"); opt.value = t; opt.textContent = t; if (t === current) opt.selected = true; sel.appendChild(opt); });
-  });
-
-  // Переносимо зміни з Канбану у фрагменти Календаря
-  const newRawTasks = [];
-  newTasks.forEach(gt => {
-    const originalGroup = (processData.tasks || []).find(t => t.id === gt.id);
-    if (originalGroup && originalGroup.originalFragments && originalGroup.originalFragments.length > 0) {
-      if (gt.start !== originalGroup.start || gt.deadline !== originalGroup.deadline) {
-        // Якщо дати змінили в Канбані - злипаємо в один рядок (Календар його потім знову розіб'є)
-        const combined = JSON.parse(JSON.stringify(gt));
-        if(combined.start) combined.start += "T08:00:00";
-        if(combined.deadline) combined.deadline += "T18:00:00";
-        newRawTasks.push(combined);
-        gt.originalFragments = [JSON.parse(JSON.stringify(combined))]; 
-      } else {
-        // Дати ті самі - оновлюємо статус, чат, пріоритет для КОЖНОГО шматочка
-        originalGroup.originalFragments.forEach(frag => {
-          frag.title = gt.title; frag.role = gt.role; frag.username = gt.username;
-          frag.multiRole = gt.multiRole; frag.dependencyTitle = gt.dependencyTitle;
-          frag.priority = gt.priority; frag.status = gt.status; frag.chat = gt.chat;
-          newRawTasks.push(frag);
-        });
-        gt.originalFragments = originalGroup.originalFragments;
-      }
-    } else {
-      // Зовсім нова задача
-      const newTask = JSON.parse(JSON.stringify(gt));
-      if(newTask.start) newTask.start += "T08:00:00";
-      if(newTask.deadline) newTask.deadline += "T18:00:00";
-      newRawTasks.push(newTask);
-      gt.originalFragments = [JSON.parse(JSON.stringify(newTask))];
-    }
+    newTasks.push({ 
+      id: card.dataset.taskId, 
+      title: title, 
+      start: card.querySelector(".startInput")?.value || "", 
+      deadline: card.querySelector(".deadlineInput")?.value || "", 
+      role: card.classList.contains("owner") ? "owner" : card.classList.contains("manager") ? "manager" : "executor",
+      username: card.dataset.username || "",
+      multiRole: card.querySelector(".approveInput")?.checked || false,
+      dependencyTitle: card.querySelector(".depSelect")?.value || null,
+      priority: card.querySelector(".priorityInput")?.value || "medium",
+      status: card.dataset.status || "todo",
+      chat: card.chat || []
+    });
   });
 
   processData.tasks = newTasks;
-  processData.rawTasks = newRawTasks;
+  // ПРОСТО зберігаємо актуальний список задач як rawTasks. 
+  // Жодного розмноження фрагментів тут не має бути!
+  processData.rawTasks = JSON.parse(JSON.stringify(newTasks)); 
+  
   sessionStorage.setItem("currentProcess", JSON.stringify(processData));
 }
-
-document.getElementById("saveAndBackBtn").onclick = async () => {
-  try {
-    // ВІДПРАВЛЯЄМО rawTasks (тобто всі дрібні шматочки), щоб не зламати Календар
-    const safeTasks = (processData.rawTasks || []).map(t => ({
-      id: t.id, title: t.title || "", start: t.start || "", deadline: t.deadline || "", 
-      role: t.role || "executor", username: t.username || "", multiRole: !!t.multiRole, 
-      dependencyTitle: t.dependencyTitle || null, priority: t.priority || "medium",
-      files: [], chat: (t.chat || []).map(c => ({ user: c.user || "", text: c.text || "" })), status: t.status || "todo"
-    }));
-    const safeParticipants = (processData.participants || []).map(p => { if (p.includes("—")) { const [name, role] = p.split("—").map(s => s.trim()); return `${name} (${role})`; } return p; });
-    const safeProcess = { processID: processData.processID, title: processData.title, owner: usersMap[currentUser] || currentUser, participants: safeParticipants, status: processData.status || "new", tasks: safeTasks };
-
-    await fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", headers: { "Content-Type":"application/json" }, body: JSON.stringify({ action:"updateProcess", process: safeProcess }) });
-    window.location.href = "Dashboard.html";
-  } catch(err) { console.error("Помилка при збереженні:", err); }
-};
 
 async function fetchDashboardData() {
   try {
