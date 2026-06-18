@@ -460,40 +460,32 @@ document.addEventListener("DOMContentLoaded", async function() {
     currentCalendar.render();
     setupProcessSelector();
 
-    document.getElementById("saveBtn").addEventListener("click", () => {
-  // 1. ПЕРЕВІРКА: чи ми взагалі маємо що зберігати
-  if (!globalTasks || globalTasks.length === 0) {
-    console.error("globalTasks порожній!", globalTasks);
-    alert("Увага: дані порожні! Збереження скасовано, щоб не стерти базу.");
-    return;
+   document.getElementById("saveBtn").addEventListener("click", () => {
+  // 1. Попередній перегляд обсягу
+  console.log("=== ДАНІ ДЛЯ ЗБЕРЕЖЕННЯ ===");
+  console.log("Кількість задач у масиві:", globalTasks.length);
+  
+  // 2. Вивід детального масиву (тепер ви можете натиснути на нього в консолі та розгорнути)
+  console.dir(globalTasks); 
+
+  // 3. Перевірка перших трьох (щоб побачити структуру)
+  console.log("Перша задача (приклад):", globalTasks[0]);
+  
+  // 4. Перевірка на "нечисті" ID (часта причина помилок)
+  const invalidTasks = globalTasks.filter(t => !t.processID || t.processID === "undefined");
+  if (invalidTasks.length > 0) {
+    console.warn("УВАГА! Знайдено " + invalidTasks.length + " задач без ProcessID!", invalidTasks);
   }
 
-  // 2. Логування перед відправкою (відкрийте консоль F12, щоб бачити, що летить на сервер)
-  console.log("Відправляю на сервер задач:", globalTasks.length);
-// ... всередині document.getElementById("saveBtn").addEventListener ...
-  
-  // Очищаємо ID від суфіксів дати перед відправкою, 
-  // щоб у таблиці завжди лежав "базовий" ID
-  const tasksToSave = globalTasks.map(t => {
-      let cleanTask = JSON.parse(JSON.stringify(t));
-      if (cleanTask.baseTaskID) {
-          cleanTask.taskID = cleanTask.baseTaskID;
-      }
-      return cleanTask;
-  });
-
+  // Запит
   fetch(SCRIPT_URL, {
     method: "POST", 
     mode: "no-cors", 
     headers: {"Content-Type":"application/json"},
-    body: JSON.stringify({ 
-      action: "updateCalendar", 
-      processes: tasksToSave // Відправляємо очищені задачі
-    })
+    body: JSON.stringify({ action: "updateCalendar", processes: globalTasks })
   })
-
-  .then(() => alert("Зміни успішно надіслані! 🚀"))
-  .catch(err => alert("Помилка при відправці: " + err));
+  .then(() => alert("Зміни відправлено! Перевірте консоль (F12) для деталей."))
+  .catch(err => alert("Помилка: " + err));
 });
 
   } catch (error) {
