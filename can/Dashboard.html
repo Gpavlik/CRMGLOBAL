@@ -335,7 +335,13 @@
     }
   </style>
 </head>
-<body style="display:none;">
+<body>
+
+  <div id="loadingScreen" style="display: flex; flex: 1; justify-content: center; align-items: center; width: 100%; min-height: 100vh;">
+    <img src="./logo.svg" alt="logo" width="760">
+  </div>
+
+  <div id="appContent" style="display: none; width: 100%; flex-direction: column; align-items: center;">
 
   <header>
     <h1>Мої процеси</h1>
@@ -443,12 +449,12 @@
       </div>
     </div>
   </div>
-
+</div>
 <script>
 let allProcesses = [];
 let globalTaskCounters = {}; 
 
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxPD176FEJ87nuM-PkigWrmgRQYG5JjSQ8uZ1fnPT-YOgn1TcnJfAPygDn57OF5nWAN/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyFmdEUGShNRlu00IHAovHD2iuLxm5eM3D-zysD_-gT6y0rVmemuY6Z1-pHrOOg30TS/exec";
 const DASHBOARD_SHEET_URL = "https://docs.google.com/spreadsheets/d/1vjxURM8HlNTxdk-XGEh-99sYuHhtEgNKLf-39jRm8-Q/gviz/tq?tqx=out:json&sheet=Dashboard";
 const PROCESSES_SHEET_URL = "https://docs.google.com/spreadsheets/d/1vjxURM8HlNTxdk-XGEh-99sYuHhtEgNKLf-39jRm8-Q/gviz/tq?tqx=out:json&sheet=Processes";
 const currentUser = sessionStorage.getItem("currentUser") || "невідомий";
@@ -465,21 +471,37 @@ const usersMap = {
 };
 
 // Сесія авторизації та перевірки токена
+// Сесія авторизації та перевірки токена
 (function(){
   const u = sessionStorage.getItem("currentUser");
   const token = sessionStorage.getItem("sessionToken");
-  if (!u || !token) { window.location.href = "index.html"; return; }
+  
+  if (!u || !token) { 
+    window.location.href = "index.html"; 
+    return; 
+  }
 
   fetch("https://script.google.com/macros/s/AKfycbwV4A-TF_G1yCOoQY_wofk1hq1kf-KP3EerfEgYhqXh-aWB8Vc1evFaxJuv5FlQ6Wcr/exec?action=675&user=" + encodeURIComponent(u) + "&token=" + encodeURIComponent(token) + "&branch=can")
     .then(r => r.json())
     .then(data => {
       if (data.success && data.url) {
-        document.body.style.display = "flex";
+        // 1. Ховаємо екран завантаження з логотипом
+        document.getElementById("loadingScreen").style.display = "none";
+        
+        // 2. Показуємо основний інтерфейс додатку
+        document.getElementById("appContent").style.display = "flex";
+        
+        // 3. Ініціалізація даних користувача
         initUserInfoAndWeather(data.userName || data.fullName || "Павло Гриценко");
       } else {
-        sessionStorage.clear(); window.location.href = "index.html";
+        sessionStorage.clear(); 
+        window.location.href = "index.html";
       }
-    }).catch(() => { sessionStorage.clear(); window.location.href = "index.html"; });
+    }).catch(err => { 
+      console.error("Помилка авторизації:", err);
+      sessionStorage.clear(); 
+      window.location.href = "index.html"; 
+    });
 })();
 
 async function initUserInfoAndWeather(userName) {
