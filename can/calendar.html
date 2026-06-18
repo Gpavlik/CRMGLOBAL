@@ -137,21 +137,34 @@ async function loadProcesses() {
   const res = await fetch(PROCESSES_SHEET_URL);
   const text = await res.text();
   const match = text.match(/google.visualization.Query.setResponse\(([\s\S]*)\);/);
+  if (!match) return [];
   const json = JSON.parse(match[1]);
-  const rows = json.table.rows;
-  const tasksMap = {};
   
-  rows.forEach(r => {
-    const taskID = r.c[5]?.v;
-    if (!taskID) return;
-    tasksMap[taskID] = {
-      processID: r.c[0]?.v, title: r.c[1]?.v, owner: r.c[2]?.v, participants: r.c[3]?.v ? r.c[3].v.split(", ") : [],
-      statusProc: r.c[4]?.v, taskID: r.c[5]?.v, taskTitle: r.c[6]?.v, start: r.c[7]?.v, deadline: r.c[8]?.v, 
-      role: r.c[9]?.v, username: r.c[10]?.v, multiRole: r.c[11]?.v === "TRUE", dependency: r.c[12]?.v, 
-      priority: r.c[13]?.v, files: r.c[14]?.v, chat: r.c[15]?.v, statusTask: r.c[16]?.v
+  return json.table.rows.map(r => {
+    // r.c - це масив комірок. Кожна клітинка виглядає як {v: "значення", f: "формат"}
+    // Ми беремо .v (значення), а якщо клітинка порожня - ставимо ""
+    const c = r.c.map(cell => (cell && cell.v !== null ? cell.v : ""));
+    
+    return {
+      processID: String(c[0]), 
+      title: String(c[1]), 
+      owner: String(c[2]), 
+      participants: c[3] ? String(c[3]).split(", ") : [],
+      statusProc: String(c[4]), 
+      taskID: String(c[5]), // ID
+      taskTitle: String(c[6]), // Назва
+      start: String(c[7]), 
+      deadline: String(c[8]), 
+      role: String(c[9]), 
+      username: String(c[10]),
+      multiRole: String(c[11]) === "TRUE", 
+      dependency: String(c[12]), 
+      priority: String(c[13]),
+      files: String(c[14]), 
+      chat: String(c[15]), 
+      statusTask: String(c[16])
     };
-  });
-  return Object.values(tasksMap);
+  }).filter(t => t.taskID && t.taskID !== ""); // Фільтруємо пусті рядки
 }
 
 function filterProcessesByAccess(tasks, currentUserName) {
