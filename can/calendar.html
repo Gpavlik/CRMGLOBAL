@@ -46,7 +46,11 @@
     .btn-delete { background: #ef4444; color: white; border: none; padding: 8px 15px; border-radius: 6px; cursor: pointer; font-weight: 600;}
     .btn-duplicate { background: #3b82f6; color: white; border: none; padding: 8px 15px; border-radius: 6px; cursor: pointer; font-weight: 600;}
     @media screen and (max-width: 1024px) { header { flex-direction: column; gap: 12px; padding: 15px; text-align: center; } .header-controls { flex-direction: column; width: 100%; gap: 8px; } .header-controls select, header button { width: 100% !important; } #calendar { width: 98%; padding: 10px; margin: 15px auto; } }
-  </style>
+
+#savingOverlay {
+  transition: opacity 0.3s ease;
+}
+ </style>
 </head>
 <body>
 
@@ -131,7 +135,19 @@ function toLocalISOString(date) {
   const tzOffset = date.getTimezoneOffset() * 60000; 
   return (new Date(date.getTime() - tzOffset)).toISOString().slice(0, 19);
 }
+function showSavingLoader() {
+  const overlay = document.getElementById("savingOverlay");
+  overlay.style.display = "flex";
+  overlay.style.opacity = "0";
+  overlay.classList.add("fade-in");
+  overlay.style.opacity = "1";
+}
 
+function hideSavingLoader() {
+  const overlay = document.getElementById("savingOverlay");
+  overlay.classList.add("fade-out");
+  setTimeout(() => overlay.style.display = "none", 800);
+}
 // --- 1. ЗАВАНТАЖЕННЯ ---
 async function loadProcesses() {
   const res = await fetch(PROCESSES_SHEET_URL);
@@ -490,39 +506,54 @@ document.addEventListener("DOMContentLoaded", async function() {
     currentCalendar.render();
     setupProcessSelector();
 
-   document.getElementById("saveBtn").addEventListener("click", () => {
-  // 1. Попередній перегляд обсягу
+document.getElementById("saveBtn").addEventListener("click", () => {
+  // 1. Пошук кнопки та нашого оверлея
+  const btn = document.getElementById("saveBtn");
+  const overlay = document.getElementById("savingOverlay"); // Той самий div, що ми додали раніше
+  
+  // 2. Блокуємо кнопку та показуємо лоадер
+  btn.disabled = true;
+  btn.innerText = "Зберігаю...";
+  overlay.style.display = "flex"; // Показуємо "Зберігаємо дані..."
+  
   console.log("=== ДАНІ ДЛЯ ЗБЕРЕЖЕННЯ ===");
-  console.log("Кількість задач у масиві:", globalTasks.length);
+  console.log("Кількість задач:", globalTasks.length);
   
-  // 2. Вивід детального масиву (тепер ви можете натиснути на нього в консолі та розгорнути)
-  console.dir(globalTasks); 
-
-  // 3. Перевірка перших трьох (щоб побачити структуру)
-  console.log("Перша задача (приклад):", globalTasks[0]);
-  
-  // 4. Перевірка на "нечисті" ID (часта причина помилок)
   const invalidTasks = globalTasks.filter(t => !t.processID || t.processID === "undefined");
   if (invalidTasks.length > 0) {
-    console.warn("УВАГА! Знайдено " + invalidTasks.length + " задач без ProcessID!", invalidTasks);
+    console.warn("УВАГА! Знайдено задачі без ProcessID!", invalidTasks);
   }
 
-  // Запит
+  // 3. Запит
   fetch(SCRIPT_URL, {
     method: "POST", 
     mode: "no-cors", 
     headers: {"Content-Type":"application/json"},
     body: JSON.stringify({ action: "updateCalendar", processes: globalTasks })
   })
-  .then(() => alert("Зміни відправлено! Перевірте консоль (F12) для деталей."))
-  .catch(err => alert("Помилка: " + err));
+  .then(() => {
+    alert("Зміни успішно надіслані!");
+  })
+  .catch(err => {
+    console.error(err);
+    alert("Помилка при збереженні: " + err);
+  })
+  .finally(() => {
+    // 4. Повертаємо все як було у будь-якому випадку
+    btn.disabled = false;
+    btn.innerText = "Зберегти зміни";
+    overlay.style.display = "none";
+  });
 });
 
   } catch (error) {
-    console.error("Помилка завантаження процесів:", error);
-    alert("Не вдалося завантажити процеси. Перевірте консоль для деталей.");
+    console.error("Помилка при завантаженні даних:", error);
+    alert("Не вдалося завантажити дані. Спробуйте оновити сторінку.");
   }
 });
 </script>
+<div id="savingOverlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); backdrop-filter:blur(5px); z-index:20000; justify-content:center; align-items:center; color:white; font-size:24px; font-weight:bold;">
+  Зберігаємо дані...
+</div>
 </body>
 </html>
