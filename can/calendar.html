@@ -17,85 +17,35 @@
   <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/interaction@6.1.8/index.global.min.js"></script>
 
   <style> 
-    /* ================== ГЛОБАЛЬНІ СТИЛІ ================== */
-    body {
-      font-family: 'Segoe UI', Arial, sans-serif;
-      margin: 0; padding: 0;
-      background: linear-gradient(135deg, #009400, #004d00);
-      color: #fff; min-height: 100vh; display: flex; flex-direction: column; align-items: center;
-    }
-
-    /* ================== ШАПКА ================== */
-    header { 
-      background: #1e293b; color: white; padding: 15px 20px; 
-      display: flex; justify-content: space-between; align-items: center; 
-      width: 100%; box-sizing: border-box; box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    }
+    body { font-family: 'Segoe UI', Arial, sans-serif; margin: 0; padding: 0; background: linear-gradient(135deg, #009400, #004d00); color: #fff; min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
+    header { background: #1e293b; color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; width: 100%; box-sizing: border-box; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
     header h1 { margin: 0; font-size: 20px; font-weight: 700; }
-    header .user-info { 
-      font-size: 14px; font-weight: 600; background: rgba(255, 255, 255, 0.22); 
-      padding: 6px 14px; border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.25);
-      display: inline-flex; align-items: center; gap: 8px; backdrop-filter: blur(4px);
-    }
+    header .user-info { font-size: 14px; font-weight: 600; background: rgba(255, 255, 255, 0.22); padding: 6px 14px; border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.25); display: inline-flex; align-items: center; gap: 8px; backdrop-filter: blur(4px); }
     .header-controls { display: flex; align-items: center; gap: 12px; font-size: 13px; font-weight: 600; }
-    .header-controls select {
-      font-family: 'Segoe UI', Arial, sans-serif; font-size: 14px; padding: 8px 12px;
-      border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 6px; background-color: #f1f5f9;
-      color: #1e293b; transition: all 0.3s; width: 200px; font-weight: 600; outline: none;
-    }
-    header button { 
-      background: #3b82f6; color: white; border: none; padding: 8px 16px; 
-      border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.2s ease;
-    }
+    .header-controls select { font-family: 'Segoe UI', Arial, sans-serif; font-size: 14px; padding: 8px 12px; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 6px; background-color: #f1f5f9; color: #1e293b; transition: all 0.3s; width: 200px; font-weight: 600; outline: none; }
+    header button { background: #3b82f6; color: white; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.2s ease; }
     header button:hover { background: #2563eb; transform: translateY(-1px); }
     #saveBtn { background: #10b981; } #saveBtn:hover { background: #059669; }
     #dashboardBtn { background: #64748b; } #dashboardBtn:hover { background: #475569; }
-
-    /* ================== КАЛЕНДАР ================== */
-    #calendar {
-      width: 92%; margin: 30px auto; padding: 20px; border-radius: 16px; 
-      background: rgba(254, 254, 254, 0.92) !important; backdrop-filter: blur(10px);
-      box-shadow: 0 15px 35px rgba(0, 45, 0, 0.2); color: #1e293b !important; 
-    }
+    #calendar { width: 92%; margin: 30px auto; padding: 20px; border-radius: 16px; background: rgba(254, 254, 254, 0.92) !important; backdrop-filter: blur(10px); box-shadow: 0 15px 35px rgba(0, 45, 0, 0.2); color: #1e293b !important; }
     .fc { color: #1e293b !important; }
     .fc a { color: #1e293b !important; text-decoration: none; font-weight: 600; }
     .fc-theme-standard td, .fc-theme-standard th { border: 1px solid #cbd5e1 !important; }
     .fc-col-header-cell { background: #f8fafc; padding: 8px 0 !important; }
-    .fc-v-event {
-      border: 1px solid rgba(255,255,255,0.3) !important; border-radius: 6px !important;
-      padding: 4px !important; box-shadow: 0 4px 6px rgba(0,0,0,0.08) !important;
-    }
+    .fc-v-event { border: 1px solid rgba(255,255,255,0.3) !important; border-radius: 6px !important; padding: 4px !important; box-shadow: 0 4px 6px rgba(0,0,0,0.08) !important; }
     .fc-timegrid-slot { height: 35px !important; min-height: 35px !important; }
-
-    /* ================== МОДАЛЬНІ ВІКНА ================== */
-    .modal-overlay {
-      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.6); backdrop-filter: blur(5px);
-      display: none; justify-content: center; align-items: center; z-index: 9999;
-    }
-    .modal-box {
-      background: #ffffff; color: #1e293b; padding: 25px; border-radius: 12px;
-      width: 90%; max-width: 400px; box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-      display: flex; flex-direction: column; gap: 12px;
-    }
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); display: none; justify-content: center; align-items: center; z-index: 9999; }
+    .modal-box { background: #ffffff; color: #1e293b; padding: 25px; border-radius: 12px; width: 90%; max-width: 400px; box-shadow: 0 20px 40px rgba(0,0,0,0.3); display: flex; flex-direction: column; gap: 12px; }
     .modal-box h3 { margin: 0 0 10px 0; font-size: 18px; color: #004d00; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; }
     .modal-box label { font-size: 13px; font-weight: 700; color: #475569; margin-bottom: -8px; }
-    .modal-box input, .modal-box select, .modal-box textarea {
-      padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-family: inherit; font-size: 14px;
-    }
+    .modal-box input, .modal-box select, .modal-box textarea { padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-family: inherit; font-size: 14px; }
     .modal-box textarea { resize: vertical; min-height: 60px; }
     .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 10px; }
     .btn-cancel { background: #94a3b8; color: white; border: none; padding: 8px 15px; border-radius: 6px; cursor: pointer; font-weight: 600;}
     .btn-submit { background: #10b981; color: white; border: none; padding: 8px 15px; border-radius: 6px; cursor: pointer; font-weight: 600;}
     .btn-delete { background: #ef4444; color: white; border: none; padding: 8px 15px; border-radius: 6px; cursor: pointer; font-weight: 600;}
     .btn-duplicate { background: #3b82f6; color: white; border: none; padding: 8px 15px; border-radius: 6px; cursor: pointer; font-weight: 600;}
-
-    @media screen and (max-width: 1024px) {
-      header { flex-direction: column; gap: 12px; padding: 15px; text-align: center; }
-      .header-controls { flex-direction: column; width: 100%; gap: 8px; }
-      .header-controls select, header button { width: 100% !important; }
-      #calendar { width: 98%; padding: 10px; margin: 15px auto; }
-    }
+    @media screen and (max-width: 1024px) { header { flex-direction: column; gap: 12px; padding: 15px; text-align: center; } .header-controls { flex-direction: column; width: 100%; gap: 8px; } .header-controls select, header button { width: 100% !important; } #calendar { width: 98%; padding: 10px; margin: 15px auto; } }
   </style>
 </head>
 <body>
@@ -122,16 +72,12 @@
   <div id="createModal" class="modal-overlay">
     <div class="modal-box">
       <h3>Створити нову задачу</h3>
-      
       <label>Процес:</label>
       <select id="modalProcess"></select>
-      
       <label>Назва задачі:</label>
       <input type="text" id="modalTaskTitle" placeholder="Коротко про задачу...">
-      
       <label>Виконавець:</label>
       <select id="modalUser"></select>
-      
       <div class="modal-actions">
         <button class="btn-cancel" onclick="closeModal('createModal')">Скасувати</button>
         <button class="btn-submit" onclick="saveNewTask()">Створити</button>
@@ -142,13 +88,10 @@
   <div id="actionModal" class="modal-overlay">
     <div class="modal-box">
       <h3 id="actionModalTitle">Редагування задачі</h3>
-      
       <label>Коментар / Чат:</label>
       <textarea id="modalComment" placeholder="Додайте коментар..."></textarea>
       <button class="btn-submit" style="width: 100%;" onclick="saveTaskComment()">Зберегти коментар</button>
-
       <div style="border-top: 1px solid #e2e8f0; margin: 10px 0;"></div>
-      
       <div class="modal-actions" style="justify-content: space-between;">
         <button class="btn-delete" onclick="deleteTask()">🗑 Видалити</button>
         <div style="display: flex; gap: 10px;">
@@ -160,7 +103,7 @@
   </div>
 
 <script>
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyQWNkdxePA_JHU9l5yAr0TAgGIL6CSHSbqXKri1HF5FHFg4TGYBM4eAKLMCADbG4YO/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzYTeLnD5KZWPI7DM5PM6Od9Vf_NmraC9Y0PQspkxgTIbXYJi0HlPwFLunt63EqTek1/exec";
 const PROCESSES_SHEET_URL = "https://docs.google.com/spreadsheets/d/1vjxURM8HlNTxdk-XGEh-99sYuHhtEgNKLf-39jRm8-Q/gviz/tq?tqx=out:json&sheet=Processes";
 
 const currentUser = sessionStorage.getItem("currentUser") || "невідомий";
@@ -175,7 +118,6 @@ document.getElementById("userInfoTop").innerHTML = `<span>👤 Користув�
 let globalTasks = []; 
 let currentCalendar = null; 
 
-// Тимчасові змінні для модалок
 let tempEventStart = null;
 let tempEventEnd = null;
 let activeTaskId = null;
@@ -185,18 +127,16 @@ function normalizeUser(userKeyOrName) {
   return Object.keys(usersMap).find(k => usersMap[k] === userKeyOrName) || userKeyOrName;
 }
 
-// Конвертер локального часу для збереження без зсуву часових поясів
 function toLocalISOString(date) {
   const tzOffset = date.getTimezoneOffset() * 60000; 
   return (new Date(date.getTime() - tzOffset)).toISOString().slice(0, 19);
 }
 
-// --- Завантаження процесів ---
+// --- 1. ЗАВАНТАЖЕННЯ ---
 async function loadProcesses() {
   const res = await fetch(PROCESSES_SHEET_URL);
   const text = await res.text();
   const match = text.match(/google.visualization.Query.setResponse\(([\s\S]*)\);/);
-  if (!match) throw new Error("GViz формат змінився");
   const json = JSON.parse(match[1]);
   const rows = json.table.rows;
   const tasksMap = {};
@@ -205,18 +145,15 @@ async function loadProcesses() {
     const taskID = r.c[5]?.v;
     if (!taskID) return;
     tasksMap[taskID] = {
-      processID: r.c[0]?.v, title: r.c[1]?.v, owner: r.c[2]?.v,
-      participants: r.c[3]?.v ? r.c[3].v.split(", ") : [],
-      statusProc: r.c[4]?.v, taskID: r.c[5]?.v, taskTitle: r.c[6]?.v,
-      start: r.c[7]?.v, deadline: r.c[8]?.v, role: r.c[9]?.v, username: r.c[10]?.v,
-      multiRole: r.c[11]?.v === "TRUE", dependency: r.c[12]?.v, priority: r.c[13]?.v,
-      files: r.c[14]?.v, chat: r.c[15]?.v, statusTask: r.c[16]?.v
+      processID: r.c[0]?.v, title: r.c[1]?.v, owner: r.c[2]?.v, participants: r.c[3]?.v ? r.c[3].v.split(", ") : [],
+      statusProc: r.c[4]?.v, taskID: r.c[5]?.v, taskTitle: r.c[6]?.v, start: r.c[7]?.v, deadline: r.c[8]?.v, 
+      role: r.c[9]?.v, username: r.c[10]?.v, multiRole: r.c[11]?.v === "TRUE", dependency: r.c[12]?.v, 
+      priority: r.c[13]?.v, files: r.c[14]?.v, chat: r.c[15]?.v, statusTask: r.c[16]?.v
     };
   });
   return Object.values(tasksMap);
 }
 
-// --- ACL Безпека ---
 function filterProcessesByAccess(tasks, currentUserName) {
   if (currentUserName === "Адмін") return tasks;
   if (["Галина Кузнєцова", "Павло Гриценко"].includes(currentUserName)) {
@@ -225,62 +162,87 @@ function filterProcessesByAccess(tasks, currentUserName) {
   return tasks.filter(t => t.username?.includes(currentUserName));
 }
 
-// --- Підготовка подій (БЕЗ автоплейсингу, зберігаємо точний час) ---
-// --- Підготовка подій (З розумним автоплейсингом для нових задач) ---
-function processEventsForCalendar(tasks) {
-  const today = new Date(); today.setHours(0,0,0,0);
-  const occupiedSlots = {}; // Зберігає зайняті години для кожного дня
-  
-  // Прохід 1: Записуємо всі години, які вже ЗАЙНЯТІ задачами з фіксованим часом
-  tasks.forEach(t => {
-    if (t.start && t.start.length > 10) {
-      const day = t.start.split("T")[0];
-      const hour = parseInt(t.start.split("T")[1].split(":")[0], 10);
-      if (!occupiedSlots[day]) occupiedSlots[day] = [];
-      occupiedSlots[day].push(hour);
+// --- 2. ФІЗИЧНЕ РОЗБИТТЯ БАГАТОДЕННИХ ЗАДАЧ ТА АВТО-СЛОТИ ---
+function explodeTasks(rawTasks) {
+  let exploded = [];
+  let occupiedSlots = {};
+
+  // Знаходимо першу вільну годину для дня
+  function getFreeHour(dayStr) {
+    if (!occupiedSlots[dayStr]) occupiedSlots[dayStr] = [];
+    let h = 8;
+    while (occupiedSlots[dayStr].includes(h) && h < 20) h++;
+    if (h >= 20) h = 19;
+    occupiedSlots[dayStr].push(h);
+    return h;
+  }
+
+  // Прохід 1: Фіксуємо вже зайняті точні години одноденних задач
+  rawTasks.forEach(t => {
+    if (!t.start) return;
+    if (t.start.length > 10 && t.deadline && t.deadline.length > 10) {
+      let sD = t.start.split("T")[0];
+      let eD = t.deadline.split("T")[0];
+      if (sD === eD) { // Якщо задача в один день
+        let h = parseInt(t.start.split("T")[1].split(":")[0], 10);
+        if (!occupiedSlots[sD]) occupiedSlots[sD] = [];
+        occupiedSlots[sD].push(h);
+      }
     }
   });
 
-  return tasks.map(t => {
-    let startStr = t.start;
-    let endStr = t.deadline;
+  // Прохід 2: Розбиваємо багатоденні та розставляємо задачі без часу
+  rawTasks.forEach(t => {
+    if (!t.start) { exploded.push(t); return; }
 
-    // Якщо задача має лише дату (наприклад "2026-06-18") без часу
-    if (startStr && startStr.length <= 10) {
-      const day = startStr;
-      if (!occupiedSlots[day]) occupiedSlots[day] = [];
-      
-      let assignedHour = 8; // Починаємо шукати з 08:00
-      
-      // Шукаємо перший вільний слот
-      while (occupiedSlots[day].includes(assignedHour) && assignedHour < 20) {
-        assignedHour++; 
-      }
-      if (assignedHour >= 20) assignedHour = 19; // Фолбек, якщо весь день забитий
-      
-      occupiedSlots[day].push(assignedHour); // Займаємо знайдений слот
-      
-      // Формуємо новий рядок дати з часом
-      startStr = `${day}T${String(assignedHour).padStart(2, '0')}:00:00`;
-      endStr = `${day}T${String(assignedHour + 1).padStart(2, '0')}:00:00`;
+    let sDate = new Date(t.start);
+    let eDate = t.deadline ? new Date(t.deadline) : new Date(t.start);
 
-      // ВАЖЛИВО: Оновлюємо глобальну задачу, щоб при кліку "Зберегти" 
-      // цей новий розрахований час зафіксувався назавжди і не "сповзав" при оновленні
-      t.start = startStr;
-      t.deadline = endStr;
-    } 
-    else if (endStr && endStr.length <= 10) {
-      // Підстраховка: якщо старт з часом є, а дедлайну немає
-      let tempDate = new Date(startStr);
-      tempDate.setHours(tempDate.getHours() + 1);
-      endStr = toLocalISOString(tempDate);
-      t.deadline = endStr;
+    // Коригування, якщо дедлайн стоїть на 00:00 наступного дня (баг перетягування)
+    if (eDate.getHours() === 0 && eDate.getMinutes() === 0 && eDate.getTime() > sDate.getTime()) {
+      eDate = new Date(eDate.getTime() - 1);
     }
 
-    // --- Логіка кольорів ---
+    let currentDay = new Date(sDate.getFullYear(), sDate.getMonth(), sDate.getDate());
+    let finalDay = new Date(eDate.getFullYear(), eDate.getMonth(), eDate.getDate());
+
+    const isMultiDay = currentDay.getTime() !== finalDay.getTime();
+
+    while (currentDay <= finalDay) {
+      let clone = JSON.parse(JSON.stringify(t));
+      const dayStr = toLocalISOString(currentDay).split("T")[0];
+      
+      // Створюємо baseTaskID для Канбану/Ганта (щоб вони розуміли, що це частини однієї задачі)
+      clone.baseTaskID = clone.taskID.split("_")[0];
+
+      if (isMultiDay) {
+        // Додаємо суфікс дати до ID
+        if (!clone.taskID.includes("_")) clone.taskID = clone.taskID + "_" + dayStr;
+        let h = getFreeHour(dayStr);
+        clone.start = `${dayStr}T${String(h).padStart(2,'0')}:00:00`;
+        clone.deadline = `${dayStr}T${String(h+1).padStart(2,'0')}:00:00`;
+      } else {
+        if (clone.start.length <= 10) { // Одноденна, але без часу
+          let h = getFreeHour(dayStr);
+          clone.start = `${dayStr}T${String(h).padStart(2,'0')}:00:00`;
+          clone.deadline = `${dayStr}T${String(h+1).padStart(2,'0')}:00:00`;
+        }
+      }
+
+      exploded.push(clone);
+      currentDay.setDate(currentDay.getDate() + 1);
+    }
+  });
+  return exploded;
+}
+
+// --- 3. ПІДГОТОВКА ДЛЯ КАЛЕНДАРЯ (Тепер всі задачі одноденні) ---
+function processEventsForCalendar(tasks) {
+  const today = new Date(); today.setHours(0,0,0,0);
+  return tasks.map(t => {
     let color;
     const s = String(t.statusTask || t.statusProc || "").toLowerCase().trim();
-    const taskDeadlineObj = new Date(endStr);
+    const taskDeadlineObj = new Date(t.deadline);
 
     if (["done", "виконано", "completed"].includes(s)) color = "#10b981"; 
     else if (today > taskDeadlineObj) color = "#ef4444"; 
@@ -291,8 +253,8 @@ function processEventsForCalendar(tasks) {
     return {
       id: t.taskID,
       title: `${t.username || "невідомий"} — ${t.taskTitle || t.title}`,
-      start: startStr,
-      end: endStr,
+      start: t.start,
+      end: t.deadline,
       backgroundColor: color,
       textColor: "#ffffff",
       extendedProps: { ...t }
@@ -315,7 +277,7 @@ function eventContent(arg) {
   };
 }
 
-// --- Оновлення часу (Перетягування та Розтягування) ---
+// --- Оновлення часу (Після перетягування / розтягування) ---
 function updateTaskTime(calendarEvent) {
   const task = globalTasks.find(t => String(t.taskID) === String(calendarEvent.id));
   if (task) {
@@ -323,7 +285,6 @@ function updateTaskTime(calendarEvent) {
     if (calendarEvent.end) {
       task.deadline = toLocalISOString(calendarEvent.end);
     } else {
-      // Якщо end чомусь пустий, робимо +1 годину від старту
       let d = new Date(calendarEvent.start);
       d.setHours(d.getHours() + 1);
       task.deadline = toLocalISOString(d);
@@ -331,10 +292,10 @@ function updateTaskTime(calendarEvent) {
   }
 }
 
-// --- Фільтри та UI ---
-function setupProcessSelector(tasks) {
+// --- Фільтри ---
+function setupProcessSelector() {
   const selector = document.getElementById("processSelector");
-  const uniqueProcesses = [...new Set(tasks.map(t => t.title).filter(Boolean))];
+  const uniqueProcesses = [...new Set(globalTasks.map(t => t.title).filter(Boolean))];
   selector.innerHTML = `<option value="all">Всі процеси</option>` + uniqueProcesses.map(p => `<option value="${p}">${p}</option>`).join("");
   selector.addEventListener("change", applyCombinedFilters);
 }
@@ -362,53 +323,51 @@ function applyCombinedFilters() {
   currentCalendar.addEventSource(events);
 }
 
-// ================== МОДАЛЬНІ ВІКНА (ЛОГІКА) ==================
+// ================== МОДАЛЬНІ ВІКНА ==================
 
-function openModal(modalId) {
-  document.getElementById(modalId).style.display = 'flex';
-}
-function closeModal(modalId) {
-  document.getElementById(modalId).style.display = 'none';
-}
+function openModal(modalId) { document.getElementById(modalId).style.display = 'flex'; }
+function closeModal(modalId) { document.getElementById(modalId).style.display = 'none'; }
 
-// Відкриття вікна створення
+// Клік по порожньому місцю (Створення)
 function handleDateSelect(info) {
   tempEventStart = info.start;
   tempEventEnd = info.end;
 
-  // Наповнюємо селекти
   const pSelect = document.getElementById("modalProcess");
   const uniqueProcesses = [...new Set(globalTasks.map(t => t.title).filter(Boolean))];
   pSelect.innerHTML = uniqueProcesses.map(p => `<option value="${p}">${p}</option>`).join("");
 
   const uSelect = document.getElementById("modalUser");
   uSelect.innerHTML = Object.values(usersMap).map(u => `<option value="${u}">${u}</option>`).join("");
-  uSelect.value = usersMap[currentUser] || currentUser; // по дефолту поточний юзер
+  uSelect.value = usersMap[currentUser] || currentUser; 
 
   document.getElementById("modalTaskTitle").value = "";
   openModal('createModal');
 }
 
-// Збереження нової задачі
+// Збереження нової задачі (з розбиттям, якщо вибрано кілька днів)
 function saveNewTask() {
   const process = document.getElementById("modalProcess").value;
   const title = document.getElementById("modalTaskTitle").value || "Нова задача";
   const user = document.getElementById("modalUser").value;
-  const newId = "TASK-" + Date.now();
+  const baseId = "TASK-" + Date.now();
 
   const newTask = {
     processID: "NEW", title: process, owner: usersMap[currentUser] || currentUser,
-    participants: [], statusProc: "В процесі", taskID: newId, taskTitle: title,
+    participants: [], statusProc: "В процесі", taskID: baseId, taskTitle: title,
     start: toLocalISOString(tempEventStart), deadline: toLocalISOString(tempEventEnd), 
     role: "Виконавець", username: user, statusTask: "todo", chat: ""
   };
 
+  // Додаємо і одразу проганяємо через explodeTasks, щоб розбити і знайти місце
   globalTasks.push(newTask);
-  applyCombinedFilters(); // Оновлює календар
+  globalTasks = explodeTasks(globalTasks);
+  
+  applyCombinedFilters();
   closeModal('createModal');
 }
 
-// Відкриття вікна дій (Клік по події)
+// Клік по існуючій події
 function handleEventClick(info) {
   activeTaskId = info.event.id;
   const task = globalTasks.find(t => String(t.taskID) === String(activeTaskId));
@@ -424,7 +383,7 @@ function saveTaskComment() {
   const task = globalTasks.find(t => String(t.taskID) === String(activeTaskId));
   if(task) {
     task.chat = document.getElementById("modalComment").value;
-    alert("Коментар збережено (локально). Натисніть 'Зберегти зміни' в шапці.");
+    alert("Коментар збережено локально. Натисніть 'Зберегти зміни' в шапці.");
     closeModal('actionModal');
   }
 }
@@ -441,9 +400,9 @@ function duplicateTask() {
   const original = globalTasks.find(t => String(t.taskID) === String(activeTaskId));
   if(original) {
     const clone = JSON.parse(JSON.stringify(original));
-    clone.taskID = "TASK-" + Date.now();
+    clone.taskID = "TASK-" + Date.now() + "_" + clone.start.split("T")[0]; // Унікальний ID
     
-    // Зсуваємо час на 1 годину вперед, щоб не накладалось
+    // Зсуваємо на 1 годину вперед
     let startD = new Date(clone.start);
     let endD = new Date(clone.deadline);
     startD.setHours(startD.getHours() + 1);
@@ -462,11 +421,13 @@ function duplicateTask() {
 // --- Головний старт ---
 document.addEventListener("DOMContentLoaded", async function() {
   try {
-    let tasks = await loadProcesses();
+    let rawTasks = await loadProcesses();
     const currentName = usersMap[currentUser] || currentUser;
     
-    tasks = filterProcessesByAccess(tasks, currentName);
-    globalTasks = tasks; 
+    rawTasks = filterProcessesByAccess(rawTasks, currentName);
+    
+    // ОДРАЗУ РОЗБИВАЄМО БАГАТОДЕННІ НА ОКРЕМІ ДНІ
+    globalTasks = explodeTasks(rawTasks); 
 
     const currentKey = normalizeUser(currentUser);
     if (["adminp", "gala", "pasha"].includes(currentKey)) {
@@ -475,7 +436,7 @@ document.addEventListener("DOMContentLoaded", async function() {
       document.getElementById("userFilterSelector").style.display = "inline-block";
     }
 
-    const events = processEventsForCalendar(tasks);
+    const events = processEventsForCalendar(globalTasks);
     const calendarEl = document.getElementById("calendar");
     
     currentCalendar = new FullCalendar.Calendar(calendarEl, {
@@ -485,8 +446,8 @@ document.addEventListener("DOMContentLoaded", async function() {
       hiddenDays: [0,6], 
       
       editable: true,
-      eventDurationEditable: true, // ДОЗВОЛЯЄМО РОЗТЯГУВАТИ
-      selectable: true, // ДОЗВОЛЯЄМО ВИДІЛЯТИ ПУСТЕ МІСЦЕ
+      eventDurationEditable: true, 
+      selectable: true, 
       
       expandRows: true, height: "auto", slotDuration: "00:30:00",
       slotLabelFormat: { hour: "2-digit", minute: "2-digit", hour12: false },
@@ -494,7 +455,6 @@ document.addEventListener("DOMContentLoaded", async function() {
       eventContent: eventContent,
       events: events,
       
-      // ОБРОБНИКИ ПОДІЙ
       eventDrop: function(info) { updateTaskTime(info.event); },
       eventResize: function(info) { updateTaskTime(info.event); },
       select: function(info) { handleDateSelect(info); },
@@ -502,10 +462,11 @@ document.addEventListener("DOMContentLoaded", async function() {
     });
 
     currentCalendar.render();
-    setupProcessSelector(tasks);
+    setupProcessSelector();
 
-    // Кнопка Збереження
+    // Збереження
     document.getElementById("saveBtn").addEventListener("click", () => {
+      // Важливо: бекенд має повністю перезаписувати дані або оновлювати їх за taskID
       fetch(SCRIPT_URL, {
         method: "POST", mode: "no-cors", headers: {"Content-Type":"application/json"},
         body: JSON.stringify({ action: "updateCalendar", processes: globalTasks })

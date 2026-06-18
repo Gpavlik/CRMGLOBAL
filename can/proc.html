@@ -4,211 +4,40 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <title>Управління процесом</title>
   <link rel="icon" type="image/jpg" href="bol.jpg">
   <style>
-    /* ==========================================================================
-       1. ГЛОБАЛЬНІ СТИЛІ ТА БЕКГРАУНД
-       ========================================================================== */
-    body {
-      font-family: 'Segoe UI', Arial, sans-serif;
-      margin: 0; 
-      padding: 0;
-      background: linear-gradient(135deg, #009400, #004d00);
-      color: #fff;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    /* ==========================================================================
-       2. ШАПКА В СТИЛІ GLASSMORPHISM + MOBILE FIX
-       ========================================================================== */
-    header { 
-      background: #1e293b; 
-      color: white; 
-      padding: 15px 20px; 
-      display: flex; 
-      justify-content: space-between; 
-      align-items: center; 
-      width: 100%;
-      box-sizing: border-box;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    }
+    /* ГЛОБАЛЬНІ СТИЛІ */
+    body { font-family: 'Segoe UI', Arial, sans-serif; margin: 0; padding: 0; background: linear-gradient(135deg, #009400, #004d00); color: #fff; min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
+    header { background: #1e293b; color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; width: 100%; box-sizing: border-box; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
     header h1 { margin: 0; font-size: 20px; font-weight: 700; }
     header p { margin: 0; font-size: 14px; font-weight: 600; }
-
-    .header-controls {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    header button { 
-      background: #3b82f6; 
-      color: white; 
-      border: none; 
-      padding: 8px 16px; 
-      border-radius: 8px; 
-      cursor: pointer; 
-      font-weight: 600;
-      transition: all 0.2s ease;
-    }
+    .header-controls { display: flex; align-items: center; gap: 12px; }
+    header button { background: #3b82f6; color: white; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.2s ease; }
     header button:hover { background: #2563eb; transform: translateY(-1px); }
-    #saveAndBackBtn { background: #10b981; }
-    #saveAndBackBtn:hover { background: #059669; }
-
-    @media screen and (max-width: 768px) {
-      header { flex-direction: column; gap: 12px; text-align: center; padding: 15px; }
-      header h1 { font-size: 18px; }
-      .header-controls { flex-direction: column; width: 100%; gap: 8px; }
-      .header-controls p, .header-controls button { width: 100%; }
-    }
-
-    /* ==========================================================================
-       3. СТРУКТУРА КОНТЕЙНЕРА ТА УЧАСНИКИ
-       ========================================================================== */
-    .container { 
-      display: flex; 
-      gap: 20px; 
-      padding: 20px; 
-      width: 100%; 
-      box-sizing: border-box; 
-      align-items: flex-start;
-    }
-
-    .participants { 
-      width: 240px; 
-      background: rgba(255, 255, 255, 0.08); 
-      padding: 15px; 
-      border-radius: 16px;
-      backdrop-filter: blur(5px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      box-sizing: border-box;
-    }
-    
-    .participants h3 {
-      margin: 0 0 12px 0;
-      font-size: 14px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      color: #cbd5e1;
-      text-align: center;
-    }
-
-    .participant { 
-      background: #3b82f6; 
-      color: white; 
-      padding: 10px 12px; 
-      margin: 8px 0; 
-      border-radius: 8px; 
-      cursor: grab; 
-      font-weight: 600;
-      font-size: 13px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-      transition: transform 0.2s, background 0.2s;
-    }
+    #saveAndBackBtn { background: #10b981; } #saveAndBackBtn:hover { background: #059669; }
+    @media screen and (max-width: 768px) { header { flex-direction: column; gap: 12px; text-align: center; padding: 15px; } header h1 { font-size: 18px; } .header-controls { flex-direction: column; width: 100%; gap: 8px; } .header-controls p, .header-controls button { width: 100%; } }
+    .container { display: flex; gap: 20px; padding: 20px; width: 100%; box-sizing: border-box; align-items: flex-start; }
+    .participants { width: 240px; background: rgba(255, 255, 255, 0.08); padding: 15px; border-radius: 16px; backdrop-filter: blur(5px); border: 1px solid rgba(255, 255, 255, 0.1); box-sizing: border-box; }
+    .participants h3 { margin: 0 0 12px 0; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; color: #cbd5e1; text-align: center; }
+    .participant { background: #3b82f6; color: white; padding: 10px 12px; margin: 8px 0; border-radius: 8px; cursor: grab; font-weight: 600; font-size: 13px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: transform 0.2s, background 0.2s; }
     .participant:hover { background: #2563eb; transform: scale(1.02); }
     .participant:active { cursor: grabbing; }
-
-    /* ==========================================================================
-       4. КАНБАН ДОШКА (Скляні стовпчики)
-       ========================================================================== */
-    .board { 
-      flex: 1; 
-      display: flex; 
-      gap: 16px; 
-    }
-
-    .list { 
-      background: rgba(255, 255, 255, 0.05); 
-      flex: 1; 
-      padding: 12px; 
-      border-radius: 16px; 
-      min-height: 450px; 
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      backdrop-filter: blur(5px);
-      box-sizing: border-box;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .list h2 { 
-      text-align: center; 
-      font-size: 15px;
-      text-transform: uppercase;
-      margin: 4px 0 12px 0;
-      letter-spacing: 0.5px;
-      font-weight: 700;
-      padding: 8px;
-      background: rgba(255,255,255,0.1);
-      border-radius: 8px;
-    }
-    
+    .board { flex: 1; display: flex; gap: 16px; }
+    .list { background: rgba(255, 255, 255, 0.05); flex: 1; padding: 12px; border-radius: 16px; min-height: 450px; border: 1px solid rgba(255, 255, 255, 0.08); backdrop-filter: blur(5px); box-sizing: border-box; display: flex; flex-direction: column; }
+    .list h2 { text-align: center; font-size: 15px; text-transform: uppercase; margin: 4px 0 12px 0; letter-spacing: 0.5px; font-weight: 700; padding: 8px; background: rgba(255,255,255,0.1); border-radius: 8px; }
     .cards { display: flex; flex-direction: column; gap: 12px; flex: 1; }
-
-    /* ==========================================================================
-       5. СУЧАСНА КАРТКА ЗАДАЧІ (Ефект водяного пакетика)
-       ========================================================================== */
-    .card { 
-      margin: 0; 
-      border-radius: 12px !important; 
-      padding: 12px;
-      box-sizing: border-box;
-      background: rgba(234, 244, 254, 0.42) !important; 
-      backdrop-filter: blur(14px) !important;
-      -webkit-backdrop-filter: blur(14px) !important;
-      border: 1px solid rgba(255, 255, 255, 0.5) !important; 
-      box-shadow: 
-        0 6px 15px rgba(0, 45, 0, 0.1),
-        inset 2px 2px 4px rgba(255, 255, 255, 0.85) !important;
-      color: #1e293b !important;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-    
+    .card { margin: 0; border-radius: 12px !important; padding: 12px; box-sizing: border-box; background: rgba(234, 244, 254, 0.42) !important; backdrop-filter: blur(14px) !important; -webkit-backdrop-filter: blur(14px) !important; border: 1px solid rgba(255, 255, 255, 0.5) !important; box-shadow: 0 6px 15px rgba(0, 45, 0, 0.1), inset 2px 2px 4px rgba(255, 255, 255, 0.85) !important; color: #1e293b !important; transition: transform 0.2s ease, box-shadow 0.2s ease; }
     .card:hover { transform: translateY(-2px); background: rgba(234, 244, 254, 0.52) !important; }
-
     .spoiler summary { font-weight: 700; cursor: pointer; padding: 0 0 4px 0; font-size: 14px; color: #0f172a; outline: none; display: flex; justify-content: space-between; align-items: center; }
     .spoiler div { padding: 8px 0 0 0; border-top: 1px solid rgba(0, 0, 0, 0.08); display: flex; flex-direction: column; gap: 6px; }
     .spoiler label { font-size: 12px; font-weight: 600; color: #334155; }
-    
-    .spoiler input[type="text"], .spoiler input[type="date"], .spoiler select {
-      width: 100%; box-sizing: border-box; padding: 5px 8px; border: 1px solid #cbd5e1; border-radius: 6px; background: #f8fafc; font-size: 12px; color: #1e293b; margin-top: 2px;
-    }
-
-    /* Оновлений бейдж: вільніший падінг, щоб довгі імена не тиснули */
-    .taskUser { 
-      display: inline-block; 
-      font-size: 11px; 
-      font-weight: 700; 
-      padding: 4px 10px; /* Збільшили відступи, щоб текст дихав */
-      border-radius: 6px; 
-      color: white !important; 
-      white-space: nowrap; 
-    }
-    .card.owner .taskUser { background: #3b82f6; }
-    .card.manager .taskUser { background: #10b981; }
-    .card.executor .taskUser { background: #8b5cf6; }
-
-    /* ==========================================================================
-       6. СУВОРІ СТАТУСИ ТА СТИЛЬ ЗАТВЕРДЖЕННЯ
-       ========================================================================== */
-    .newTasks, .card.newTasks { border: 2px solid #3b82f6 !important; }
-    .urgent, .card.indigo-border { border: 2px solid #8b5cf6 !important; } 
-    .completed, .card.completed { border: 2px solid #10b981 !important; } 
-    .overdue, .card.overdue { border: 4px solid #ef4444 !important; background: rgba(254, 242, 242, 0.55) !important; }
-    
-    /* 🔥 НОВИЙ КЛАС: Червона рамка для задач, що потребують затвердження */
-    .card.requires-approval {
-      border: 3px solid #ef4444 !important;
-      box-shadow: 0 0 12px rgba(239, 68, 68, 0.25), inset 2px 2px 4px rgba(255, 255, 255, 0.85) !important;
-    }
-
-    /* ==========================================================================
-       7. ВНУТРІШНІЙ ЧАТ КАРТКИ
-       ========================================================================== */
+    .spoiler input[type="text"], .spoiler input[type="date"], .spoiler select { width: 100%; box-sizing: border-box; padding: 5px 8px; border: 1px solid #cbd5e1; border-radius: 6px; background: #f8fafc; font-size: 12px; color: #1e293b; margin-top: 2px; }
+    .taskUser { display: inline-block; font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 6px; color: white !important; white-space: nowrap; }
+    .card.owner .taskUser { background: #3b82f6; } .card.manager .taskUser { background: #10b981; } .card.executor .taskUser { background: #8b5cf6; }
+    .newTasks, .card.newTasks { border: 2px solid #3b82f6 !important; } .urgent, .card.indigo-border { border: 2px solid #8b5cf6 !important; } .completed, .card.completed { border: 2px solid #10b981 !important; } .overdue, .card.overdue { border: 4px solid #ef4444 !important; background: rgba(254, 242, 242, 0.55) !important; }
+    .card.requires-approval { border: 3px solid #ef4444 !important; box-shadow: 0 0 12px rgba(239, 68, 68, 0.25), inset 2px 2px 4px rgba(255, 255, 255, 0.85) !important; }
     .chatBox { background: rgba(255, 255, 255, 0.6) !important; border: 1px solid #cbd5e1; border-radius: 8px; padding: 8px; margin-top: 10px; }
     .messages { max-height: 90px; overflow-y: auto; font-size: 11px; line-height: 1.4; color: #1e293b; margin-bottom: 6px; display: flex; flex-direction: column; gap: 3px; }
     .messages div { background: rgba(255,255,255,0.8); padding: 3px 6px; border-radius: 4px; border-left: 3px solid #64748b; }
@@ -216,235 +45,22 @@
     .sendBtn { width: 28%; padding: 4px; font-size: 11px; font-weight: 600; background: #475569; color: white; border: none; border-radius: 4px; cursor: pointer; }
     .sendBtn:hover { background: #334155; }
     .chatPreview { font-size: 10px; color: #475569; margin-top: 6px; border-top: 1px dashed rgba(0,0,0,0.1); padding-top: 4px; }
-
-    /* ==========================================================================
-       8. ДІАГРАМА ГАНТА (ФІКС ШИРИНИ ТА ТЕКСТУ ПЛАШОК)
-       ========================================================================== */
-    .gboard {
-      position: relative;
-      background: rgba(255, 255, 255, 0.96) !important;
-      border: 1px solid rgba(255, 255, 255, 0.5);
-      border-radius: 16px;
-      margin: 0;
-      padding: 24px;
-      width: 100%;  
-      box-shadow: 0 20px 40px rgba(0, 45, 0, 0.18);
-      color: #1e293b !important;
-      box-sizing: border-box;
-    }
+    .gboard { position: relative; background: rgba(255, 255, 255, 0.96) !important; border: 1px solid rgba(255, 255, 255, 0.5); border-radius: 16px; margin: 0; padding: 24px; width: 100%; box-shadow: 0 20px 40px rgba(0, 45, 0, 0.18); color: #1e293b !important; box-sizing: border-box; }
     .gboard h2 {font-size: 16px; text-transform: uppercase; color: #0f172a; font-weight: 700; letter-spacing: 0.5px; }
-
-    .gantt-wrapper {
-      width: 100%;
-      overflow-x: auto; 
-      border-radius: 10px;
-      border: 1px solid #cbd5e1;
-      background: #f8fafc;
-    }
-
-    #ganttChart {
-      position: relative;
-      background: #f8fafc;
-      width: 100%; /* 🔥 Завжди на всю ширину */
-      min-height: 300px;
-    }
-
-    .gantt-date {
-      position: absolute;
-      top: 0; height: 22px; text-align: center; font-size: 10px; font-weight: 700;
-      border-bottom: 1px solid #cbd5e1; border-right: 1px solid #e2e8f0;
-      background: #e2e8f0; color: #1e293b; z-index: 5; line-height: 22px; box-sizing: border-box;
-    }
-
-    .gantt-weekday {
-      position: absolute;
-      top: 22px; height: 22px; text-align: center; font-size: 10px; font-weight: 600;
-      color: #475569; background: #f1f5f9; border-bottom: 1px solid #cbd5e1; border-right: 1px solid #e2e8f0;
-      z-index: 5; line-height: 22px; box-sizing: border-box;
-    }
-
-    .gantt-label-column {
-      position: absolute;
-      left: 0; top: 44px; width: 160px; height: calc(100% - 44px);
-      background: #1e293b; 
-      border-right: 2px solid #0f172a; z-index: 6; box-shadow: 4px 0 10px rgba(0,0,0,0.1);
-    }
-
-    .gantt-user-label {
-      position: absolute; left: 0; width: 100%; height: 60px;
-      padding: 0 12px; display: flex; align-items: center; justify-content: flex-start;
-      color: #f1f5f9; font-size: 12px; font-weight: 700; border-bottom: 1px solid #334155;
-      box-sizing: border-box; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-    }
-
-    .gantt-row-line { position: absolute; left: 0; width: 100%; height: 1px; background: #cbd5e1; z-index: 1; }
-    .gantt-vertical-line { position: absolute; top: 44px; width: 1px; height: calc(100% - 44px); background: rgba(203, 213, 225, 0.6); z-index: 1; }
-    .gantt-today-line { position: absolute; top: 0; height: 100%; background: rgba(245, 158, 11, 0.08); border-left: 2px dashed #f59e0b; border-right: 2px dashed #f59e0b; pointer-events: none; z-index: 4; }
-
-    /* 🔥 ОНОВЛЕНА ПЛАШКА: Авто-висота, захист від вилізання тексту */
-    .task {
-      position: absolute; 
-      min-height: 32px; 
-      height: auto; /* Дозволяємо адаптивно розширюватися вниз */
-      border-radius: 8px; 
-      color: white; 
-      padding: 4px 10px;
-      font-size: 11px; 
-      font-weight: 600; 
-      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-      box-sizing: border-box; 
-      display: flex; 
-      align-items: center; 
-      z-index: 3;
-      text-shadow: 0 1px 2px rgba(0,0,0,0.4); 
-      cursor: help;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-      
-      /* Захист тексту */
-      white-space: normal; /* Дозволяємо перенос, якщо плашка довга */
-      word-break: break-word;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .task:hover { transform: translateY(-1px) scale(1.01); box-shadow: 0 6px 14px rgba(0,0,0,0.25); opacity: 1 !important; }
-    
-    @media screen and (max-width: 1024px) {
-      .container { flex-direction: column; }
-      .participants { width: 100%; }
-      .board { flex-direction: column; width: 100%; }
-    }
-
-    /* ==========================================================================
-   ОНОВЛЕНИЙ ГАНТ (СІТКА ЯК В EXCEL)
-   ========================================================================== */
-.gantt-grid-wrapper {
-  width: 100%;
-  overflow-x: auto;
-  border-radius: 8px;
-  border: 1px solid #cbd5e1;
-  background: white;
-}
-
-.gantt-table {
-  border-collapse: collapse;
-  width: 100%;
-  font-size: 11px;
-  color: #1e293b;
-  min-width: 800px;
-}
-
-.gantt-table th, .gantt-table td {
-  border: 1px solid #cbd5e1;
-  padding: 6px 8px;
-  text-align: center;
-  white-space: nowrap;
-}
-
-/* Темна шапка для основних колонок */
-.gantt-table th.main-header {
-  background: #1e293b;
-  color: white;
-  position: sticky;
-  top: 0;
-  z-index: 10;
-}
-
-/* Світла шапка для дат */
-.gantt-table th.date-header {
-  background: #e2e8f0;
-  color: #1e293b;
-  font-weight: 700;
-}
-
-/* "Прилипання" перших двох колонок при скролі */
-.gantt-table td.sticky-col, .gantt-table th.sticky-col {
-  position: sticky;
-  left: 0;
-  background: #f8fafc;
-  z-index: 5;
-  text-align: left;
-  font-weight: 600;
-  box-shadow: 2px 0 5px rgba(0,0,0,0.05);
-}
-.gantt-table td.sticky-col-2, .gantt-table th.sticky-col-2 {
-  position: sticky;
-  left: 180px; /* Приблизна ширина першої колонки */
-  background: #f8fafc;
-  z-index: 5;
-  box-shadow: 2px 0 5px rgba(0,0,0,0.05);
-}
-
-/* Кольори статусів у сітці */
-.cell-done { background-color: #10b981; color: white; font-weight: bold; }
-.cell-inprogress { background-color: #f59e0b; color: white; font-weight: bold; }
-.cell-todo { background-color: #3b82f6; color: white; font-weight: bold; }
-.cell-empty { background-color: #f8fafc; }
-/* ==========================================================================
-   МІНІ-КНОПКИ ЕКСПОРТУ НА ДІАГРАМІ
-   ========================================================================== */
-.export-mini-btns {
-  display: flex;
-  gap: 8px;
-  justify-content: flex-end;
-  align-items: center;
-}
-
-.export-mini-btns button {
-  width: 34px;
-  height: 34px;
-  padding: 0;
-  border: none;
-  border-radius: 8px;
-  background: rgba(30, 41, 59, 0.1); /* Напівпрозорий фон */
-  font-size: 18px; /* Розмір іконки */
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s ease;
-  backdrop-filter: blur(4px); /* Ефект скла */
-}
-
-.export-mini-btns button:hover {
-  background: rgba(30, 41, 59, 0.25); /* При наведенні стає трохи темнішим */
-  transform: scale(1.1); /* Легке збільшення */
-}
-.unit {  
-      height: 140px;
-      width: 250px;
-      /* 💧 Ефект матового аквамаринового скла */
-      background: rgba(255, 255, 255, 0.9) !important;
-      backdrop-filter: blur(12px) !important;
-      -webkit-backdrop-filter: blur(12px) !important;
-      
-      /* Елегантний тонкий білий бордюр */
-      border: 1px solid rgba(255, 255, 255, 0.25) !important;
-      border-radius: 24px !important;
-      padding: 0;
-      margin: 0;
-      box-sizing: border-box;
-      overflow: hidden;
-      cursor: pointer;
-      
-      /* Внутрішнє глянцеве свічення */
-      box-shadow: 
-        0 10px 25px rgba(0, 45, 0, 0.15),
-        inset 2px 2px 5px rgba(255, 255, 255, 0.2) !important;
-        
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease, border-color 0.3s ease;
-    }
-
-    /* Стилізація твоїх картинок-логотипів */
-    .unit img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover; /* Ідеально вписує картинку без деформацій */
-      border-radius: 23px; /* Трохи менше за unit, щоб не вилазило */
-      transition: transform 0.3s ease, opacity 0.3s ease;
-    }
+    .gantt-grid-wrapper { width: 100%; overflow-x: auto; border-radius: 8px; border: 1px solid #cbd5e1; background: white; }
+    .gantt-table { border-collapse: collapse; width: 100%; font-size: 11px; color: #1e293b; min-width: 800px; }
+    .gantt-table th, .gantt-table td { border: 1px solid #cbd5e1; padding: 6px 8px; text-align: center; white-space: nowrap; }
+    .gantt-table th.main-header { background: #1e293b; color: white; position: sticky; top: 0; z-index: 10; }
+    .gantt-table th.date-header { background: #e2e8f0; color: #1e293b; font-weight: 700; }
+    .gantt-table td.sticky-col, .gantt-table th.sticky-col { position: sticky; left: 0; background: #f8fafc; z-index: 5; text-align: left; font-weight: 600; box-shadow: 2px 0 5px rgba(0,0,0,0.05); }
+    .gantt-table td.sticky-col-2, .gantt-table th.sticky-col-2 { position: sticky; left: 180px; background: #f8fafc; z-index: 5; box-shadow: 2px 0 5px rgba(0,0,0,0.05); }
+    .cell-done { background-color: #10b981; color: white; font-weight: bold; } .cell-inprogress { background-color: #f59e0b; color: white; font-weight: bold; } .cell-todo { background-color: #3b82f6; color: white; font-weight: bold; } .cell-empty { background-color: #f8fafc; }
+    .export-mini-btns { display: flex; gap: 8px; justify-content: flex-end; align-items: center; }
+    .export-mini-btns button { width: 34px; height: 34px; padding: 0; border: none; border-radius: 8px; background: rgba(30, 41, 59, 0.1); font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; backdrop-filter: blur(4px); }
+    .export-mini-btns button:hover { background: rgba(30, 41, 59, 0.25); transform: scale(1.1); }
+    @media screen and (max-width: 1024px) { .container { flex-direction: column; } .participants { width: 100%; } .board { flex-direction: column; width: 100%; } }
+    .unit { height: 140px; width: 250px; background: rgba(255, 255, 255, 0.9) !important; backdrop-filter: blur(12px) !important; border: 1px solid rgba(255, 255, 255, 0.25) !important; border-radius: 24px !important; padding: 0; margin: 0; box-sizing: border-box; overflow: hidden; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 25px rgba(0, 45, 0, 0.15), inset 2px 2px 5px rgba(255, 255, 255, 0.2) !important; }
+    .unit img { width: 100%; height: 100%; object-fit: cover; border-radius: 23px; }
   </style>
 </head>
 <body>
@@ -455,7 +71,7 @@
     <p id="userInfoTop"></p>
     <button id="toggleViewBtn" onclick="toggleView()">Вигляд діаграми</button>
     <button id="saveAndBackBtn">Зберегти і повернутися</button>
-      </div>
+  </div>
 </header>
 
 <img src="./logo.svg" alt="logo" width="260" style="margin-top: 25px;">
@@ -482,46 +98,65 @@
   </div>
 
   <div id="ganttView" class="gboard" style="display:none;">
-        <div class="export-mini-btns">
-          <h2>📊 Діаграма Ганта процесу</h2>
-          <button onclick="exportGantt()" title="Зберегти як картинку (JPG)">🖼️</button>
-          <button onclick="exportExcel()" title="Експортувати в Excel">📗</button>
-      </div>
+    <div class="export-mini-btns">
+      <h2>📊 Діаграма Ганта процесу</h2>
+      <button onclick="exportGantt()" title="Зберегти як картинку (JPG)">🖼️</button>
+      <button onclick="exportExcel()" title="Експортувати в Excel">📗</button>
+    </div>
     <div class="gantt-wrapper">
-      <div class="gantt" id="ganttChart"></div>   </div>
-  </div>
+      <div class="gantt" id="ganttChart"></div>   
+    </div>
   </div>
 </div>
 
-<svg style="position:absolute;width:0;height:0;">
-  <defs>
-    <marker id="arrowhead" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
-      <polygon points="0 0, 6 3, 0 6" fill="#333" />
-    </marker>
-  </defs>
-</svg>
-
-<div class="unit"><img  src="./H2.png" alt="logo" width="260"></div>
+<div class="unit"><img src="./H2.png" alt="logo" width="260"></div>
 
 <script>
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyQWNkdxePA_JHU9l5yAr0TAgGIL6CSHSbqXKri1HF5FHFg4TGYBM4eAKLMCADbG4YO/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzYTeLnD5KZWPI7DM5PM6Od9Vf_NmraC9Y0PQspkxgTIbXYJi0HlPwFLunt63EqTek1/exec";
 const Processes_SHEET_URL = "https://docs.google.com/spreadsheets/d/1vjxURM8HlNTxdk-XGEh-99sYuHhtEgNKLf-39jRm8-Q/gviz/tq?tqx=out:json&sheet=Processes";
 const currentUser = sessionStorage.getItem("currentUser") || "невідомий";
 let processData = JSON.parse(sessionStorage.getItem("currentProcess")) || {
-  processID: Date.now().toString(), title: "Без назви", owner: currentUser, participants: [], tasks: []
+  processID: Date.now().toString(), title: "Без назви", owner: currentUser, participants: [], tasks: [], rawTasks: []
 };
-let allTasks = [];
 let dragged;
 
 const usersMap = {
   gala: "Галина Кузнєцова", olenka: "Олена Поліщук", dima: "Дмитро Приходько", serega: "Сергій Комашко", sasha: "Олександр Волянюк", pasha: "Павло Гриценко", anya: "Ганна Мойсеєнко", tetiana: "Тетяна Яковець", adminp: "Адмін"
 };
 
+// --- ФУНКЦІЯ ГРУПУВАННЯ (Зліплює шматочки календаря в одну задачу) ---
+function groupTasks(rawTasks) {
+  const map = {};
+  rawTasks.forEach(t => {
+    if(!t.id) return;
+    const baseId = t.id.split("_")[0]; // Отримуємо TASK-123 з TASK-123_2026-06-18
+    if (!map[baseId]) {
+      map[baseId] = JSON.parse(JSON.stringify(t));
+      map[baseId].id = baseId;
+      map[baseId].originalFragments = [JSON.parse(JSON.stringify(t))];
+      // Очищаємо час, залишаємо тільки дати YYYY-MM-DD для Kanban
+      if (map[baseId].start && map[baseId].start.includes("T")) map[baseId].start = map[baseId].start.split("T")[0];
+      if (map[baseId].deadline && map[baseId].deadline.includes("T")) map[baseId].deadline = map[baseId].deadline.split("T")[0];
+    } else {
+      map[baseId].originalFragments.push(JSON.parse(JSON.stringify(t)));
+      if(!t.start) return;
+      const gStart = new Date(map[baseId].start);
+      const gEnd = new Date(map[baseId].deadline || map[baseId].start);
+      
+      let tStartStr = t.start.split("T")[0];
+      let tEndStr = t.deadline ? t.deadline.split("T")[0] : tStartStr;
+      
+      if (new Date(tStartStr) < gStart) map[baseId].start = tStartStr;
+      if (new Date(tEndStr) > gEnd) map[baseId].deadline = tEndStr;
+    }
+  });
+  return Object.values(map);
+}
+
 window.addEventListener("DOMContentLoaded", initProcess);
 
 async function initProcess() {
   document.getElementById("processTitle").innerText = processData.title;
-
   const userInfo = document.getElementById("userInfoTop");
   if (userInfo) {
     const displayName = usersMap[currentUser] || currentUser;
@@ -536,9 +171,17 @@ async function initProcess() {
     participantsDiv.appendChild(div);
   });
 
-  if (processData.tasks && processData.tasks.length) {
-    renderKanban(processData.tasks);
+  // Захист при старті: якщо rawTasks ще немає, створюємо їх
+  if (!processData.rawTasks || processData.rawTasks.length === 0) {
+      if (processData.tasks && processData.tasks.length > 0) {
+          processData.rawTasks = JSON.parse(JSON.stringify(processData.tasks));
+      } else {
+          processData.rawTasks = [];
+      }
   }
+  processData.tasks = groupTasks(processData.rawTasks);
+  
+  if (processData.tasks && processData.tasks.length) renderKanban(processData.tasks);
 
   try {
     const data = await fetchDashboardData();
@@ -550,16 +193,11 @@ async function initProcess() {
   } catch(err) { console.error("Помилка при підтягуванні з бекенду:", err); }
 }
 
-
-// 🔥 ОНОВЛЕНИЙ ЕКСПОРТ КАРТИНКИ (ХОВАЄМО КНОПКИ ПЕРЕД СКРІНШОТОМ)
 function exportGantt() {
   const btns = document.querySelector(".export-mini-btns");
-  btns.style.display = "none"; // Ховаємо кнопки, щоб їх не було на картинці
-
-  const ganttElement = document.getElementById("ganttView");
-  html2canvas(ganttElement, { scale: 2 }).then(canvas => {
-    btns.style.display = "flex"; // Повертаємо кнопки назад
-
+  btns.style.display = "none"; 
+  html2canvas(document.getElementById("ganttView"), { scale: 2 }).then(canvas => {
+    btns.style.display = "flex"; 
     const link = document.createElement("a");
     link.download = `Gantt_${processData.title}.jpg`;
     link.href = canvas.toDataURL("image/jpeg");
@@ -567,131 +205,63 @@ function exportGantt() {
   });
 }
 
-
-// 🔥 ФУНКЦІЯ ЕКСПОРТУ В EXCEL З ВІЗУАЛЬНИМ ГАНТОМ
 function exportExcel() {
-  if (!processData.tasks || processData.tasks.length === 0) {
-    alert("Немає задач для експорту.");
-    return;
-  }
-
-  // 1. Збираємо всі дати для шкали
+  if (!processData.tasks || processData.tasks.length === 0) { alert("Немає задач для експорту."); return; }
   const starts = processData.tasks.map(t => new Date(t.start)).filter(d => !isNaN(d));
   const ends = processData.tasks.map(t => new Date(t.deadline)).filter(d => !isNaN(d));
-  
-  if (starts.length === 0 || ends.length === 0) {
-      alert("Задачі не мають коректних дат.");
-      return;
-  }
+  if (starts.length === 0 || ends.length === 0) { alert("Задачі не мають коректних дат."); return; }
 
   const minDate = new Date(Math.min(...starts));
   const maxDate = new Date(Math.max(...ends));
-  // Додаємо буфер в 2 дні
   maxDate.setDate(maxDate.getDate() + 2);
   
   const diffDays = Math.ceil((maxDate - minDate)/(1000*60*60*24)) + 1;
   const dateList = [];
-  for (let i = 0; i < diffDays; i++) {
-    const d = new Date(minDate);
-    d.setDate(minDate.getDate() + i);
-    dateList.push(d);
-  }
+  for (let i = 0; i < diffDays; i++) { const d = new Date(minDate); d.setDate(minDate.getDate() + i); dateList.push(d); }
 
-  // 2. Створюємо приховану HTML таблицю для форматування
   const table = document.createElement("table");
-  
-  // Рядок заголовків
   const trHead = document.createElement("tr");
-  const headers = ['Задача', 'Виконавець', 'Початок', 'Дедлайн', 'Статус'];
-  
-  headers.forEach(h => {
-    const th = document.createElement("th");
-    th.innerText = h;
-    th.style.backgroundColor = "#1e293b";
-    th.style.color = "#ffffff";
-    th.style.fontWeight = "bold";
-    trHead.appendChild(th);
+  ['Задача', 'Виконавець', 'Початок', 'Дедлайн', 'Статус'].forEach(h => {
+    const th = document.createElement("th"); th.innerText = h; th.style.backgroundColor = "#1e293b"; th.style.color = "#ffffff"; th.style.fontWeight = "bold"; trHead.appendChild(th);
   });
-
-  // Додаємо дати в заголовок
   dateList.forEach(d => {
-    const th = document.createElement("th");
-    th.innerText = d.toLocaleDateString("uk-UA", { day:"2-digit", month:"2-digit" });
-    th.style.backgroundColor = "#e2e8f0";
-    trHead.appendChild(th);
+    const th = document.createElement("th"); th.innerText = d.toLocaleDateString("uk-UA", { day:"2-digit", month:"2-digit" }); th.style.backgroundColor = "#e2e8f0"; trHead.appendChild(th);
   });
   table.appendChild(trHead);
 
-  // 3. Заповнюємо рядки задач
   processData.tasks.forEach(t => {
     const tr = document.createElement("tr");
-    
-    // Базові дані
     const tdTask = document.createElement("td"); tdTask.innerText = t.title || ""; tr.appendChild(tdTask);
     const tdUser = document.createElement("td"); tdUser.innerText = t.username || ""; tr.appendChild(tdUser);
     const tdStart = document.createElement("td"); tdStart.innerText = t.start || ""; tr.appendChild(tdStart);
     const tdEnd = document.createElement("td"); tdEnd.innerText = t.deadline || ""; tr.appendChild(tdEnd);
     
-    // Переклад статусу
-    let statusText = "В черзі";
-    if (t.status === 'done') statusText = "Виконано";
-    else if (t.status === 'inprogress') statusText = "В процесі";
+    let statusText = t.status === 'done' ? "Виконано" : t.status === 'inprogress' ? "В процесі" : "В черзі";
     const tdStatus = document.createElement("td"); tdStatus.innerText = statusText; tr.appendChild(tdStatus);
 
-    // Логіка Ганта (замальовуємо клітинки)
-    const taskStart = new Date(t.start);
-    const taskEnd = new Date(t.deadline);
-    
+    const taskStart = new Date(t.start); const taskEnd = new Date(t.deadline || t.start);
     dateList.forEach(currentDate => {
       const tdGantt = document.createElement("td");
-      
-      // Скидаємо час для точного порівняння дат
       const dCurrent = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate());
       const dStart = new Date(taskStart.getFullYear(), taskStart.getMonth(), taskStart.getDate());
       const dEnd = new Date(taskEnd.getFullYear(), taskEnd.getMonth(), taskEnd.getDate());
 
       if (dCurrent >= dStart && dCurrent <= dEnd) {
-        // Колір залежить від статусу
-        if (t.status === 'done') {
-            tdGantt.style.backgroundColor = "#10b981"; // Зелений
-            tdGantt.innerText = "✓";
-        } else if (t.status === 'inprogress') {
-            tdGantt.style.backgroundColor = "#f59e0b"; // Оранжевий
-            tdGantt.innerText = "▶";
-        } else {
-            tdGantt.style.backgroundColor = "#3b82f6"; // Синій
-            tdGantt.innerText = "○";
-        }
-        tdGantt.style.color = "#ffffff";
-        tdGantt.style.textAlign = "center";
+        if (t.status === 'done') { tdGantt.style.backgroundColor = "#10b981"; tdGantt.innerText = "✓"; }
+        else if (t.status === 'inprogress') { tdGantt.style.backgroundColor = "#f59e0b"; tdGantt.innerText = "▶"; }
+        else { tdGantt.style.backgroundColor = "#3b82f6"; tdGantt.innerText = "○"; }
+        tdGantt.style.color = "#ffffff"; tdGantt.style.textAlign = "center";
       }
       tr.appendChild(tdGantt);
     });
-    
     table.appendChild(tr);
   });
 
-  // 4. Конвертуємо HTML таблицю в Excel за допомогою SheetJS
   const wb = XLSX.utils.table_to_book(table, { sheet: "Gantt" });
-  
-  // Налаштування ширини стовпців для кращого вигляду (опціонально)
-  if(wb.Sheets["Gantt"]["!cols"]) {
-     wb.Sheets["Gantt"]["!cols"][0] = { wch: 40 }; // Ширина для 'Задача'
-     wb.Sheets["Gantt"]["!cols"][1] = { wch: 20 }; // Ширина для 'Виконавець'
-  } else {
-      wb.Sheets["Gantt"]["!cols"] = [
-          { wch: 40 }, // Задача
-          { wch: 20 }, // Виконавець
-          { wch: 12 }, // Початок
-          { wch: 12 }, // Дедлайн
-          { wch: 15 }  // Статус
-      ];
-  }
-
+  wb.Sheets["Gantt"]["!cols"] = [{ wch: 40 }, { wch: 20 }, { wch: 12 }, { wch: 12 }, { wch: 15 }];
   XLSX.writeFile(wb, `Gantt_${processData.title}.xlsx`);
 }
 
-// 🔥 ОНОВЛЕНА ФУНКЦІЯ TOGGLEVIEW (без старих кнопок)
 function toggleView() {
   const kanban = document.getElementById("kanbanView");
   const gantt = document.getElementById("ganttView");
@@ -699,15 +269,11 @@ function toggleView() {
   const participants = document.querySelector(".participants");
 
   if (kanban.style.display === "none") {
-    kanban.style.display = "flex"; 
-    gantt.style.display = "none";
-    btn.innerText = "Вигляд діаграми"; 
-    participants.style.display = "block";
+    kanban.style.display = "flex"; gantt.style.display = "none";
+    btn.innerText = "Вигляд діаграми"; participants.style.display = "block";
   } else {
-    kanban.style.display = "none"; 
-    gantt.style.display = "block";
-    participants.style.display = "none"; 
-    btn.innerText = "Вигляд канбану";
+    kanban.style.display = "none"; gantt.style.display = "block";
+    participants.style.display = "none"; btn.innerText = "Вигляд канбану";
     renderGantt(processData.tasks || []);
   }
 }
@@ -723,18 +289,9 @@ function drop(ev) {
 
   if (dragged.classList.contains("card")) {
     targetList.querySelector(".cards").appendChild(dragged);
-    let newStatus = "todo";
-    if (targetList.id === "inProgressList") newStatus = "inprogress";
-    else if (targetList.id === "doneList") newStatus = "done";
-
+    let newStatus = targetList.id === "inProgressList" ? "inprogress" : targetList.id === "doneList" ? "done" : "todo";
     dragged.dataset.status = newStatus;
     applyStatusClass(dragged, newStatus);
-
-    const taskId = dragged.dataset.taskId;
-    const idx = processData.tasks.findIndex(t => t.id === taskId);
-    if (idx >= 0) processData.tasks[idx].status = newStatus;
-
-    sessionStorage.setItem("currentProcess", JSON.stringify(processData));
     syncTasks(); dragged = null;
   }
 }
@@ -767,13 +324,12 @@ function createTaskCard(ev, dragged) {
   if (editable) { card.setAttribute("draggable","true"); card.ondragstart = drag; }
 
   card.dataset.username = userName; card.dataset.role = roleClass;
-  const taskId = Date.now().toString(); card.dataset.taskId = taskId; card.dataset.status = "todo";
+  const taskId = "TASK-" + Date.now().toString(); card.dataset.taskId = taskId; card.dataset.status = "todo";
 
-  // 🔥 Важливий момент: Нові картки теж створюємо ЗГОРНУТИМИ за замовчуванням (без open)
   card.innerHTML = `
     <details class="spoiler">
       <summary>
-        <span class="taskTitle">${userName} — нова таска</span>
+        <span class="taskTitle">${userName} — нова задача</span>
         <div class="taskUser">${userName}</div>
       </summary>
       <div>
@@ -783,42 +339,30 @@ function createTaskCard(ev, dragged) {
         <label>Залежність: <select class="depSelect"><option value="">—</option></select></label>
         <label style="flex-direction:row; gap:6px; margin-top:4px;"><input type="checkbox" class="approveInput"> Потребує затвердження</label>
         <label>Пріоритет:
-          <select class="priorityInput">
-            <option value="high">Високий</option> <option value="medium" selected>Середній</option> <option value="low">Низький</option>
-          </select>
+          <select class="priorityInput"><option value="high">Високий</option><option value="medium" selected>Середній</option><option value="low">Низький</option></select>
         </label>
-        <label>Файли: <input type="file" multiple style="font-size:11px;"></label>
       </div>
     </details>
   `;
   document.querySelector("#todoList .cards").appendChild(card);
   attachChat(card); applyStatusClass(card, "todo");
 
-  card.querySelectorAll("input,select").forEach(inp => {
-    inp.disabled = !editable; if (editable) inp.addEventListener("change", syncTasks);
-  });
-  card.querySelector(".titleInput").addEventListener("input", e => {
-    card.querySelector(".taskTitle").innerText = e.target.value || `${userName} — нова таска`; syncTasks();
-  });
+  card.querySelectorAll("input,select").forEach(inp => { inp.disabled = !editable; if (editable) inp.addEventListener("change", syncTasks); });
+  card.querySelector(".titleInput").addEventListener("input", e => { card.querySelector(".taskTitle").innerText = e.target.value || `${userName} — нова задача`; syncTasks(); });
 
   if (!processData.tasks) processData.tasks = [];
-  processData.tasks.push({ id: taskId, title: `${userName} — нова таска`, start: "", deadline: "", role: roleClass, username: userName, multiRole: false, dependencyTitle: null, priority: "medium", files: [], chat: [], status: "todo" });
-  sessionStorage.setItem("currentProcess", JSON.stringify(processData)); syncTasks();
+  processData.tasks.push({ id: taskId, title: `${userName} — нова задача`, start: "", deadline: "", role: roleClass, username: userName, multiRole: false, dependencyTitle: null, priority: "medium", files: [], chat: [], status: "todo", originalFragments: [] });
+  syncTasks();
 }
 
 function applyStatusClass(card, status) {
   card.classList.remove("newTasks","urgent","completed","overdue", "requires-approval");
-
-  // Спочатку задаємо базовий колір за станом колонки
   if (status === "inprogress") card.classList.add("urgent");
   else if (status === "done") card.classList.add("completed");
   else card.classList.add("newTasks");
 
-  // 🔥 Перевірка на потребу затвердження (якщо чекбокс активний — перебиваємо червоною рамкою)
   const approveInput = card.querySelector(".approveInput");
-  if (approveInput && approveInput.checked) {
-    card.classList.add("requires-approval");
-  }
+  if (approveInput && approveInput.checked) card.classList.add("requires-approval");
 }
 
 function attachChat(card) {
@@ -832,15 +376,17 @@ function attachChat(card) {
       const msgObj = { user: usersMap[currentUser] || currentUser, text: input.value.trim() };
       const msgDiv = document.createElement("div"); msgDiv.innerText = `${msgObj.user}: ${msgObj.text}`; messages.appendChild(msgDiv);
       if (!card.chat) card.chat = []; card.chat.push(msgObj);
-      const idx = processData.tasks.findIndex(x => x.id === card.dataset.taskId); if (idx >= 0) processData.tasks[idx].chat = card.chat;
-      sessionStorage.setItem("currentProcess", JSON.stringify(processData)); input.value = "";
+      syncTasks(); input.value = "";
     }
   };
   chatBox.appendChild(messages); chatBox.appendChild(input); chatBox.appendChild(sendBtn); card.appendChild(chatBox);
 }
 
+// 🔥 ОНОВЛЕНА СИНХРОНІЗАЦІЯ (Оновлює статуси у ВСІХ шматочках задачі)
 function syncTasks() {
-  allTasks = []; const titles = [];
+  const newTasks = []; 
+  const titles = [];
+  
   document.querySelectorAll(".card").forEach(card => {
     const title = card.querySelector(".titleInput")?.value || card.querySelector(".taskTitle").innerText; titles.push(title);
     const start = card.querySelector(".startInput")?.value || "";
@@ -851,24 +397,61 @@ function syncTasks() {
     const depTitle = card.querySelector(".depSelect")?.value || null;
     const priority = card.querySelector(".priorityInput")?.value || "medium";
     const status = card.dataset.status || "todo";
-    const fileInput = card.querySelector("input[type=file]");
-    const files = fileInput && fileInput.files.length > 0 ? Array.from(fileInput.files).map(f => ({ name: f.name, url: "" })) : (card.files || []);
     const chat = card.chat || [];
-    allTasks.push({ id: card.dataset.taskId || Date.now().toString(), title, start, deadline, role, username, multiRole, dependencyTitle: depTitle, priority, files, chat, status });
+    
+    newTasks.push({ id: card.dataset.taskId, title, start, deadline, role, username, multiRole, dependencyTitle: depTitle, priority, chat, status });
   });
 
   document.querySelectorAll(".depSelect").forEach(sel => {
     const current = sel.value; sel.innerHTML = `<option value="">—</option>`;
     titles.forEach(t => { const opt = document.createElement("option"); opt.value = t; opt.textContent = t; if (t === current) opt.selected = true; sel.appendChild(opt); });
   });
-  processData.tasks = allTasks; sessionStorage.setItem("currentProcess", JSON.stringify(processData));
+
+  // Переносимо зміни з Канбану у фрагменти Календаря
+  const newRawTasks = [];
+  newTasks.forEach(gt => {
+    const originalGroup = (processData.tasks || []).find(t => t.id === gt.id);
+    if (originalGroup && originalGroup.originalFragments && originalGroup.originalFragments.length > 0) {
+      if (gt.start !== originalGroup.start || gt.deadline !== originalGroup.deadline) {
+        // Якщо дати змінили в Канбані - злипаємо в один рядок (Календар його потім знову розіб'є)
+        const combined = JSON.parse(JSON.stringify(gt));
+        if(combined.start) combined.start += "T08:00:00";
+        if(combined.deadline) combined.deadline += "T18:00:00";
+        newRawTasks.push(combined);
+        gt.originalFragments = [JSON.parse(JSON.stringify(combined))]; 
+      } else {
+        // Дати ті самі - оновлюємо статус, чат, пріоритет для КОЖНОГО шматочка
+        originalGroup.originalFragments.forEach(frag => {
+          frag.title = gt.title; frag.role = gt.role; frag.username = gt.username;
+          frag.multiRole = gt.multiRole; frag.dependencyTitle = gt.dependencyTitle;
+          frag.priority = gt.priority; frag.status = gt.status; frag.chat = gt.chat;
+          newRawTasks.push(frag);
+        });
+        gt.originalFragments = originalGroup.originalFragments;
+      }
+    } else {
+      // Зовсім нова задача
+      const newTask = JSON.parse(JSON.stringify(gt));
+      if(newTask.start) newTask.start += "T08:00:00";
+      if(newTask.deadline) newTask.deadline += "T18:00:00";
+      newRawTasks.push(newTask);
+      gt.originalFragments = [JSON.parse(JSON.stringify(newTask))];
+    }
+  });
+
+  processData.tasks = newTasks;
+  processData.rawTasks = newRawTasks;
+  sessionStorage.setItem("currentProcess", JSON.stringify(processData));
 }
 
 document.getElementById("saveAndBackBtn").onclick = async () => {
   try {
-    const safeTasks = (processData.tasks || []).map(t => ({
-      id: t.id, title: t.title || "", start: t.start || "", deadline: t.deadline || "", role: t.role || "executor", username: t.username || "", multiRole: !!t.multiRole, dependencyTitle: t.dependencyTitle || null, priority: t.priority || "medium",
-      files: (t.files || []).map(f => ({ name: f.name, url: f.url || "", deleteUrl: f.deleteUrl || "" })), chat: (t.chat || []).map(c => ({ user: c.user || "", text: c.text || "" })), status: t.status || "todo"
+    // ВІДПРАВЛЯЄМО rawTasks (тобто всі дрібні шматочки), щоб не зламати Календар
+    const safeTasks = (processData.rawTasks || []).map(t => ({
+      id: t.id, title: t.title || "", start: t.start || "", deadline: t.deadline || "", 
+      role: t.role || "executor", username: t.username || "", multiRole: !!t.multiRole, 
+      dependencyTitle: t.dependencyTitle || null, priority: t.priority || "medium",
+      files: [], chat: (t.chat || []).map(c => ({ user: c.user || "", text: c.text || "" })), status: t.status || "todo"
     }));
     const safeParticipants = (processData.participants || []).map(p => { if (p.includes("—")) { const [name, role] = p.split("—").map(s => s.trim()); return `${name} (${role})`; } return p; });
     const safeProcess = { processID: processData.processID, title: processData.title, owner: usersMap[currentUser] || currentUser, participants: safeParticipants, status: processData.status || "new", tasks: safeTasks };
@@ -883,37 +466,30 @@ async function fetchDashboardData() {
     const res = await fetch(Processes_SHEET_URL); const text = await res.text(); const json = JSON.parse(text.substr(47).slice(0, -2)); const rows = json.table.rows; const processes = {};
     rows.forEach(r => {
       const [processID, title, owner, participants, status, taskID, taskTitle, start, deadline, role, username, multiRole, dependency, priority, files, chat, taskStatus] = r.c.map(c => c ? c.v : "");
-      if (!processes[processID]) { processes[processID] = { processID, title, owner, participants: participants ? participants.split(", ") : [], status, tasks:[] }; }      
+      if (!processes[processID]) { processes[processID] = { processID, title, owner, participants: participants ? participants.split(", ") : [], status, rawTasks:[] }; }      
       const parsedTask = {
         id: taskID, title: taskTitle || "", start: start || "", deadline: deadline || "", role: role || "executor", username: username || "", multiRole: multiRole === "TRUE" || multiRole === true, dependencyTitle: dependency || null, priority: priority || "medium",
-        files: files ? files.split(", ").map(f => { const [name, url, deleteUrl] = f.split("::"); return { name: name || "", url: url || "", deleteUrl: deleteUrl || "" }; }) : [],
-        chat: chat ? chat.split(" || ").map(c => { const [user, text] = c.split(": "); return { user: user || "?", text: text || "" }; }) : [], status: taskStatus || "todo"
+        files: [], chat: chat ? chat.split(" || ").map(c => { const [user, text] = c.split(": "); return { user: user || "?", text: text || "" }; }) : [], status: taskStatus || "todo"
       };
-      const existingIdx = processes[processID].tasks.findIndex(t => t.id === taskID); if (existingIdx >= 0) processes[processID].tasks[existingIdx] = parsedTask; else processes[processID].tasks.push(parsedTask);
+      processes[processID].rawTasks.push(parsedTask);
     });
+    
+    Object.values(processes).forEach(p => { p.tasks = groupTasks(p.rawTasks); });
     return { status:"ok", currentProcess: processes[processData.processID], processes:Object.values(processes) };
   } catch(err) { return { status:"error", processes:[] }; }
 }
 
-// 🔥 ВЕРСІЯ З КАРТКАМИ, ЗГОРНУТИМИ ЗА ЗАМОВЧУВАННЯМ (Прибрали атрибут open)
 function renderKanban(tasks) {
-  document.querySelector("#todoList .cards").innerHTML = "";
-  document.querySelector("#inProgressList .cards").innerHTML = "";
-  document.querySelector("#doneList .cards").innerHTML = "";
-
+  document.querySelector("#todoList .cards").innerHTML = ""; document.querySelector("#inProgressList .cards").innerHTML = ""; document.querySelector("#doneList .cards").innerHTML = "";
   tasks.forEach(t => {
     const card = document.createElement("div");
     card.className = `card ${t.role}`; card.dataset.taskId = t.id; card.dataset.username = t.username; card.dataset.status = t.status;
     const editable = canEditTask(t, processData, currentUser);
     if (editable) { card.setAttribute("draggable","true"); card.ondragstart = drag; }
 
-    // Тег <details class="spoiler"> без слова open тепер завжди згорнутий при першому рендері
     card.innerHTML = `
       <details class="spoiler">
-        <summary>
-          <span class="taskTitle">${t.title}</span>
-          <div class="taskUser">${t.username || "—"}</div>
-        </summary>
+        <summary><span class="taskTitle">${t.title}</span><div class="taskUser">${t.username || "—"}</div></summary>
         <div>
           <label>Назва: <input type="text" class="titleInput" value="${t.title}"></label>
           <label>Початок: <input type="date" class="startInput" value="${t.start || ""}"></label>
@@ -927,11 +503,7 @@ function renderKanban(tasks) {
               <option value="low" ${t.priority==="low"?"selected":""}>Низький</option>
             </select>
           </label>
-          <div class="chatBox">
-            <div class="messages"></div>
-            <input type="text" class="chatInput" placeholder="Коментар...">
-            <button class="sendBtn">ОК</button>
-          </div>
+          <div class="chatBox"><div class="messages"></div><input type="text" class="chatInput" placeholder="Коментар..."><button class="sendBtn">ОК</button></div>
         </div>
       </details>
     `;
@@ -940,32 +512,21 @@ function renderKanban(tasks) {
     const messagesDiv = card.querySelector(".messages");
     card.chat.forEach(c => { const m = document.createElement("div"); m.innerText = `${c.user}: ${c.text}`; messagesDiv.appendChild(m); });
 
-    const chatPreview = document.createElement("div");
-    chatPreview.className = "chatPreview";
-    chatPreview.innerHTML = card.chat.map(c => `<div>${c.user}: ${c.text}</div>`).join("");
-    card.appendChild(chatPreview);
+    const chatPreview = document.createElement("div"); chatPreview.className = "chatPreview";
+    chatPreview.innerHTML = card.chat.map(c => `<div>${c.user}: ${c.text}</div>`).join(""); card.appendChild(chatPreview);
 
     const sendBtn = card.querySelector(".sendBtn"); const chatInput = card.querySelector(".chatInput");
     sendBtn.onclick = () => {
       if (chatInput.value.trim() !== "") {
-        const msgObj = { user: usersMap[currentUser] || currentUser, text: chatInput.value.trim() };
-        card.chat.push(msgObj);
+        const msgObj = { user: usersMap[currentUser] || currentUser, text: chatInput.value.trim() }; card.chat.push(msgObj);
         const m = document.createElement("div"); m.innerText = `${msgObj.user}: ${msgObj.text}`; messagesDiv.appendChild(m);
         chatPreview.innerHTML += `<div>${msgObj.user}: ${msgObj.text}</div>`; chatInput.value = "";
-        const idx = processData.tasks.findIndex(x => x.id === card.dataset.taskId); if (idx >= 0) processData.tasks[idx].chat = card.chat;
-        sessionStorage.setItem("currentProcess", JSON.stringify(processData)); syncTasks();
+        syncTasks();
       }
     };
 
     applyStatusClass(card, t.status);
-
-    const approveInp = card.querySelector(".approveInput");
-    if (approveInp) {
-      approveInp.addEventListener("change", () => {
-        applyStatusClass(card, card.dataset.status);
-        syncTasks();
-      });
-    }
+    const approveInp = card.querySelector(".approveInput"); if (approveInp) approveInp.addEventListener("change", () => { applyStatusClass(card, card.dataset.status); syncTasks(); });
     card.querySelectorAll("input,select").forEach(inp => { if (inp.classList.contains("chatInput")) return; if (!editable) inp.disabled = true; else inp.addEventListener("change", syncTasks); });
     card.querySelector(".titleInput").addEventListener("input", e => { if (editable) { card.querySelector(".taskTitle").innerText = e.target.value || `${card.dataset.username} — нова задача`; syncTasks(); } });
 
@@ -975,122 +536,57 @@ function renderKanban(tasks) {
   });
 }
 
-// 🔥 СВІЖА ПРАВКА СІТКИ: ВИГЛЯД ЯК У EXCEL ПЛАНУВАЛЬНИКУ
 function renderGantt(tasks) {
   const gantt = document.getElementById("ganttChart");
   gantt.innerHTML = ""; 
-  
-  if (!tasks || tasks.length === 0) {
-    gantt.innerHTML = "<p style='padding: 20px; text-align: center;'>Немає задач для відображення</p>";
-    return;
-  }
+  if (!tasks || tasks.length === 0) { gantt.innerHTML = "<p style='padding: 20px; text-align: center;'>Немає задач для відображення</p>"; return; }
 
-  // 1. Рахуємо дати
   tasks.sort((a,b) => new Date(a.start) - new Date(b.start));
   const starts = tasks.map(t => new Date(t.start)).filter(d => !isNaN(d));
-  const ends = tasks.map(t => new Date(t.deadline)).filter(d => !isNaN(d));
+  const ends = tasks.map(t => new Date(t.deadline || t.start)).filter(d => !isNaN(d));
   
   const minDate = new Date(Math.min(...starts));
-  const maxDate = new Date(Math.max(...ends));
-  maxDate.setDate(maxDate.getDate() + 2); // Додаємо 2 дні буферу справа
+  const maxDate = new Date(Math.max(...ends)); maxDate.setDate(maxDate.getDate() + 2); 
 
   const diffDays = Math.ceil((maxDate - minDate)/(1000*60*60*24)) + 1;
   const dateList = [];
-  for (let i = 0; i < diffDays; i++) {
-    const d = new Date(minDate);
-    d.setDate(minDate.getDate() + i);
-    dateList.push(d);
-  }
+  for (let i = 0; i < diffDays; i++) { const d = new Date(minDate); d.setDate(minDate.getDate() + i); dateList.push(d); }
 
-  // 2. Створюємо контейнер та таблицю
-  const wrapper = document.createElement("div");
-  wrapper.className = "gantt-grid-wrapper";
-  
-  const table = document.createElement("table");
-  table.className = "gantt-table";
+  const wrapper = document.createElement("div"); wrapper.className = "gantt-grid-wrapper";
+  const table = document.createElement("table"); table.className = "gantt-table";
+  const thead = document.createElement("thead"); const trHead = document.createElement("tr");
 
-  // 3. ШАПКА ТАБЛИЦІ
-  const thead = document.createElement("thead");
-  const trHead = document.createElement("tr");
-
-  const headers = [
-    { text: "Задача", class: "sticky-col", width: "180px" },
-    { text: "Виконавець", class: "sticky-col-2", width: "100px" },
-    { text: "Початок" },
-    { text: "Дедлайн" },
-    { text: "Статус" }
-  ];
-
-  headers.forEach(h => {
-    const th = document.createElement("th");
-    th.innerText = h.text;
-    th.className = "main-header " + (h.class || "");
-    if (h.width) th.style.minWidth = h.width;
-    trHead.appendChild(th);
+  [{ text: "Задача", class: "sticky-col", width: "180px" }, { text: "Виконавець", class: "sticky-col-2", width: "100px" }, { text: "Початок" }, { text: "Дедлайн" }, { text: "Статус" }].forEach(h => {
+    const th = document.createElement("th"); th.innerText = h.text; th.className = "main-header " + (h.class || ""); if (h.width) th.style.minWidth = h.width; trHead.appendChild(th);
   });
 
-  // Додаємо дати в шапку
-  dateList.forEach(d => {
-    const th = document.createElement("th");
-    th.innerText = d.toLocaleDateString("uk-UA", { day:"2-digit", month:"2-digit" });
-    th.className = "date-header";
-    trHead.appendChild(th);
-  });
-  
-  thead.appendChild(trHead);
-  table.appendChild(thead);
+  dateList.forEach(d => { const th = document.createElement("th"); th.innerText = d.toLocaleDateString("uk-UA", { day:"2-digit", month:"2-digit" }); th.className = "date-header"; trHead.appendChild(th); });
+  thead.appendChild(trHead); table.appendChild(thead);
 
-  // 4. ТІЛО ТАБЛИЦІ (Рядки з задачами)
   const tbody = document.createElement("tbody");
-
   tasks.forEach(t => {
     const tr = document.createElement("tr");
-    
-    // Переклад статусу
-    let statusText = "В черзі";
-    let statusClass = "cell-todo";
-    let icon = "○";
-    
+    let statusText = "В черзі", statusClass = "cell-todo", icon = "○";
     if (t.status === 'done') { statusText = "Виконано"; statusClass = "cell-done"; icon = "✓"; }
     else if (t.status === 'inprogress') { statusText = "В процесі"; statusClass = "cell-inprogress"; icon = "▶"; }
 
-    // Базові колонки (ліва частина)
-    tr.innerHTML = `
-      <td class="sticky-col">${t.title || "—"}</td>
-      <td class="sticky-col-2">${t.username || "—"}</td>
-      <td>${t.start || "—"}</td>
-      <td>${t.deadline || "—"}</td>
-      <td><strong>${statusText}</strong></td>
-    `;
+    tr.innerHTML = `<td class="sticky-col">${t.title || "—"}</td><td class="sticky-col-2">${t.username || "—"}</td><td>${t.start || "—"}</td><td>${t.deadline || "—"}</td><td><strong>${statusText}</strong></td>`;
 
-    // Логіка клітинок Ганта (права частина)
-    const taskStart = new Date(t.start);
-    const taskEnd = new Date(t.deadline);
-    
+    const taskStart = new Date(t.start); const taskEnd = new Date(t.deadline || t.start);
     dateList.forEach(currentDate => {
       const td = document.createElement("td");
-      
-      // Скидаємо години для точного порівняння по днях
       const dCurrent = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate());
       const dStart = new Date(taskStart.getFullYear(), taskStart.getMonth(), taskStart.getDate());
       const dEnd = new Date(taskEnd.getFullYear(), taskEnd.getMonth(), taskEnd.getDate());
 
-      if (dCurrent >= dStart && dCurrent <= dEnd) {
-        td.className = statusClass;
-        td.innerText = icon;
-      } else {
-        td.className = "cell-empty";
-      }
-      
+      if (dCurrent >= dStart && dCurrent <= dEnd) { td.className = statusClass; td.innerText = icon; } 
+      else { td.className = "cell-empty"; }
       tr.appendChild(td);
     });
-    
     tbody.appendChild(tr);
   });
 
-  table.appendChild(tbody);
-  wrapper.appendChild(table);
-  gantt.appendChild(wrapper);
+  table.appendChild(tbody); wrapper.appendChild(table); gantt.appendChild(wrapper);
 }
 </script>
 </body>
