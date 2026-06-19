@@ -443,18 +443,19 @@ function syncTasks() {
   Object.keys(cardDataMap).forEach(baseId => {
     if (!processedCards.has(baseId)) {
       const card = cardDataMap[baseId];
-      const today = new Date().toISOString().split('T')[0]; // Тільки дата
+      
+      // ВСТАНОВЛЮЄМО СЬОГОДНІШНЮ ДАТУ ЯК ДЕФОЛТНУ
+      const today = new Date().toISOString().split('T')[0]; 
       
       updatedRawTasks.push({
         id: baseId,
         ...card,
-        // Для нових ставимо дефолтний час, якщо користувач не вибрав інший
-        start: card.start ? card.start + "T08:00:00" : today + "T08:00:00",
-        deadline: card.deadline ? card.deadline + "T18:00:00" : today + "T18:00:00"
+        // Якщо в інпуті порожньо, беремо сьогоднішню дату + дефолтний час
+        start: (card.start && card.start !== "") ? card.start : (today + "T09:00:00"),
+        deadline: (card.deadline && card.deadline !== "") ? card.deadline : (today + "T18:00:00")
       });
     }
   });
-
   // 4. Перезаписуємо базу даних і пам'ять
   processData.rawTasks = updatedRawTasks;
   sessionStorage.setItem("currentProcess", JSON.stringify(processData));
@@ -640,7 +641,7 @@ document.getElementById("saveAndBackBtn").addEventListener("click", async () => 
       status: processData.status || "new",
       tasks: safeTasks
     };
-
+    console.log("Дивись на дати перед відправкою:", safeTasks[0]);
     // 3. Відправка
     await fetch(SCRIPT_URL, {
       method: "POST",
