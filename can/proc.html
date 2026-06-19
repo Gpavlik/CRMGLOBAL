@@ -392,10 +392,14 @@ function syncTasks() {
   // 1. Збираємо всі дані з карток, які зараз є на дошці Канбану
   document.querySelectorAll(".card").forEach(card => {
     const taskId = card.dataset.taskId; // Це базовий ID (наприклад, TASK-123)
+    const startVal = card.querySelector(".startInput")?.value;
+  
+  // Додай цей лог:
+  console.log(`Картка ${taskId} має startInput: ${startVal}`);
     cardDataMap[taskId] = {
       title: card.querySelector(".titleInput")?.value || card.querySelector(".taskTitle").innerText,
       // Зберігаємо дати з карток ТІЛЬКИ на випадок, якщо це абсолютно нова задача
-      start: card.querySelector(".startInput")?.value || "",
+      start: startVal || "",
       deadline: card.querySelector(".deadlineInput")?.value || "",
       role: card.dataset.role,
       username: card.dataset.username,
