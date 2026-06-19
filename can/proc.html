@@ -418,10 +418,12 @@ function syncTasks() {
     if (baseId && cardDataMap[baseId]) {
       const cardInfo = cardDataMap[baseId];
       
-      // ВАЖЛИВО: Беремо оригінальний фрагмент (...frag) з його унікальним ID і точним часом, 
-      // і оновлюємо ТІЛЬКИ статуси, текст та відповідальних. Час залишається недоторканим!
+      // БЕРЕМО ДАТИ З ОРИГІНАЛЬНОГО ФРАГМЕНТА, А НЕ З КАРТКИ
+      // frag.start та frag.deadline вже містять час, встановлений в Календарі.
+      // Ми їх НЕ змінюємо, навіть якщо в Канбані інший input.
+      
       updatedRawTasks.push({
-        ...frag, 
+        ...frag, // Тут зберігається весь час (HH:mm:ss) з Календаря
         title: cardInfo.title,
         role: cardInfo.role,
         username: cardInfo.username,
@@ -429,19 +431,26 @@ function syncTasks() {
         dependencyTitle: cardInfo.dependencyTitle,
         priority: cardInfo.priority,
         status: cardInfo.status,
-        chat: cardInfo.chat
+        chat: cardInfo.chat,
+        // start та deadline лишаються тими, що були в frag
       });
       
       processedCards.add(baseId);
     }
   });
 
-  // 3. Додаємо повністю НОВІ задачі (які щойно створили в Канбані і яких ще немає в базі)
+  // 3. Додаємо повністю НОВІ задачі
   Object.keys(cardDataMap).forEach(baseId => {
     if (!processedCards.has(baseId)) {
+      const card = cardDataMap[baseId];
+      const today = new Date().toISOString().split('T')[0]; // Тільки дата
+      
       updatedRawTasks.push({
         id: baseId,
-        ...cardDataMap[baseId]
+        ...card,
+        // Для нових ставимо дефолтний час, якщо користувач не вибрав інший
+        start: card.start ? card.start + "T08:00:00" : today + "T08:00:00",
+        deadline: card.deadline ? card.deadline + "T18:00:00" : today + "T18:00:00"
       });
     }
   });
