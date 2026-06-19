@@ -640,71 +640,69 @@ async function fetchTaskCounters() {
     const text = await res.text();
     const json = JSON.parse(text.substr(47).slice(0, -2));
     const today = new Date(); today.setHours(0, 0, 0, 0);
-    const latestTasks = {};
+    
+    // Структура для збору даних: procID -> { taskID -> { status, deadline, ... } }
+    const procData = {};
 
     json.table.rows.slice(1).forEach(r => {
       if (!r || !r.c) return;
-      const id = r.c[5]?.v ? String(r.c[5].v).trim() : ""; 
-      if (id) latestTasks[id] = r;
-    });
+      
+      const procID = String(r.c[0]?.v || "").trim();
+      // Беремо базовий TaskID (до підкреслення), щоб ігнорувати фрагменти Календаря
+      const fullTaskID = String(r.c[5]?.v || "").trim();
+      const baseTaskID = fullTaskID.split('_')[0]; 
+      
+      if (!procID || !baseTaskID) return;
 
-    const procAnalysis = {};
-    Object.values(latestTasks).forEach(r => {
-      const procID = r.c[0]?.v ? String(r.c[0].v).trim() : "";
-      if (!procID) return;
-
-      if (!procAnalysis[procID]) {
-        procAnalysis[procID] = { todo: 0, progress: 0, done: 0, totalTasks: 0, hasOverdueExecutor: false, hasUrgentNormal: false, hasUrgentOverdue: false, hasDeadlineClose: false, hasNewToday: false };
-      }
-      const info = procAnalysis[procID];
-      info.totalTasks++;
-
-      const taskStatus = r.c[16]?.v ? String(r.c[16].v).toLowerCase().trim() : "";
-      if (["done", "виконано", "completed"].includes(taskStatus)) info.done++;
-      else if (["inprogress", "в процесі", "progress"].includes(taskStatus)) info.progress++;
-      else info.todo++;
-
-      const startStr = r.c[7]?.v ? String(r.c[7].v).trim() : "";
-      const deadlineStr = r.c[8]?.v ? String(r.c[8].v).trim() : "";
-      const isMultiRole = r.c[11]?.v ? String(r.c[11].v).toUpperCase().trim() === "TRUE" : false;
-
-      let dDeadline = deadlineStr ? new Date(deadlineStr) : null;
-      let dStart = startStr ? new Date(startStr) : null;
-      if (dDeadline && !isNaN(dDeadline.getTime())) dDeadline.setHours(0,0,0,0); else dDeadline = null;
-      if (dStart && !isNaN(dStart.getTime())) dStart.setHours(0,0,0,0); else dStart = null;
-
-      const isDone = ["done", "виконано", "completed"].includes(taskStatus);
-      if (isDone) {
-        if (isMultiRole && dDeadline && today > dDeadline) info.hasUrgentOverdue = true;
-        else if (isMultiRole) info.hasUrgentNormal = true;
-      } else {
-        if (dDeadline && today > dDeadline) info.hasOverdueExecutor = true;
-      }
-
-      if (!isDone && dStart && dDeadline && today <= dDeadline) {
-        const dur = dDeadline.getTime() - dStart.getTime();
-        const spent = today.getTime() - dStart.getTime();
-        if (dur > 0 && (spent / dur) * 100 >= 80) info.hasDeadlineClose = true;
-      }
-      if (dStart && dStart.getTime() === today.getTime()) info.hasNewToday = true;
+      if (!procData[procID]) procData[procID] = {};
+      
+      // Зберігаємо тільки ОСТАННІЙ відомий статус задачі (щоб не рахувати дублі фрагментів)
+      const taskStatus = String(r.c[16]?.v || "").toLowerCase().trim();
+      const deadlineStr = r.c[8]?.v || "";
+      
+      procData[procID][baseTaskID] = {
+        status: taskStatus,
+        deadline: deadlineStr ? new Date(deadlineStr) : null
+      };
     });
 
     const finalCounters = {};
-    Object.entries(procAnalysis).forEach(([procID, info]) => {
-      let calculatedStatus = "active";
-      let visualModifier = "";
-      if (info.totalTasks === 0) calculatedStatus = "new";
-      else if (info.hasOverdueExecutor) calculatedStatus = "overdue";
-      else if (info.hasUrgentOverdue) { calculatedStatus = "urgent"; visualModifier = "manager-overdue"; }
-      else if (info.hasUrgentNormal) calculatedStatus = "urgent";
-      else if (info.hasDeadlineClose) calculatedStatus = "deadline";
-      else if (info.hasNewToday) calculatedStatus = "newTasks";
-      else if (info.done === info.totalTasks) calculatedStatus = "completed";
+    
+    // Тепер рахуємо по унікальних задачах у кожному процесі
+    Object.entries(procData).forEach(([procID, tasks]) => {
+      let counts = { todo: 0, progress: 0, done: 0, total: 0 };
+      let hasOverdue = false;
 
-      finalCounters[procID] = { todo: info.todo, progress: info.progress, done: info.done, autoStatus: calculatedStatus, visualModifier: visualModifier };
+      Object.values(tasks).forEach(t => {
+        counts.total++;
+        if (["done", "виконано", "completed"].includes(t.status)) counts.done++;
+        else if (["inprogress", "в процесі", "progress"].includes(t.status)) counts.progress++;
+        else counts.todo++;
+
+        if (t.deadline && t.deadline < today && !["done", "виконано", "completed"].includes(t.status)) {
+          hasOverdue = true;
+        }
+      });
+
+      // Визначаємо статус для Канбану
+      let autoStatus = "active";
+      if (counts.total === 0) autoStatus = "new";
+      else if (hasOverdue) autoStatus = "overdue";
+      else if (counts.done === counts.total) autoStatus = "completed";
+
+      finalCounters[procID] = { 
+        todo: counts.todo, 
+        progress: counts.progress, 
+        done: counts.done, 
+        autoStatus: autoStatus 
+      };
     });
+
     return finalCounters;
-  } catch (e) { console.error(e); return {}; }
+  } catch (e) { 
+    console.error("Помилка лічильників:", e); 
+    return {}; 
+  }
 }
 
 async function fetchDashboardData() {
@@ -728,16 +726,27 @@ function renderDashboard(dashboardData, taskCounters = {}) {
     columns['new'].innerHTML = "<p style='color: #fff; text-align:center; font-size:13px;'>Процесів не знайдено</p>"; return;
   }
 
-  dashboardData.processes.forEach(proc => {
+ dashboardData.processes.forEach(proc => {
     const div = document.createElement("div");
-    const pCounts = taskCounters[proc.processID] || { todo: 0, progress: 0, done: 0, autoStatus: "new", visualModifier: "" };
+    // Отримуємо результати з нашої нової логіки
+    const pCounts = taskCounters[proc.processID] || { 
+        todo: 0, 
+        progress: 0, 
+        done: 0, 
+        autoStatus: "new" 
+    };
+    
+    // Тут важливо: статус беремо саме той, що розрахував лічильник
     const status = pCounts.autoStatus;
     
-    let borderClass = ["urgent","deadline","newTasks","overdue","completed"].includes(status) ? status : "";
+    // Визначаємо клас для CSS
+    let borderClass = ["urgent", "deadline", "newTasks", "overdue", "completed"].includes(status) ? status : "";
+    
+    // Якщо треба додатковий візуальний акцент
     if (pCounts.visualModifier === "manager-overdue") borderClass += " manager-fire"; 
 
     div.className = `process-card ${borderClass}`;
-    div.dataset.status = status;
+    div.dataset.status = status; // Це важливо для JS-фільтрації
     div.dataset.processId = proc.processID || "";
 
     const ownerName = usersMap[proc.owner] || proc.owner;
