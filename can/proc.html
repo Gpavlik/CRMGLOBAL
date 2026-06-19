@@ -38,6 +38,8 @@
     .card.owner .taskUser { background: #3b82f6; } .card.manager .taskUser { background: #10b981; } .card.executor .taskUser { background: #8b5cf6; }
     .newTasks, .card.newTasks { border: 2px solid #3b82f6 !important; } .urgent, .card.indigo-border { border: 2px solid #8b5cf6 !important; } .completed, .card.completed { border: 2px solid #10b981 !important; } .overdue, .card.overdue { border: 4px solid #ef4444 !important; background: rgba(254, 242, 242, 0.55) !important; }
     .card.requires-approval { border: 3px solid #ef4444 !important; box-shadow: 0 0 12px rgba(239, 68, 68, 0.25), inset 2px 2px 4px rgba(255, 255, 255, 0.85) !important; }
+    
+    /* ЧАТ ТА ФАЙЛИ */
     .chatBox { background: rgba(255, 255, 255, 0.6) !important; border: 1px solid #cbd5e1; border-radius: 8px; padding: 8px; margin-top: 10px; }
     .messages { max-height: 90px; overflow-y: auto; font-size: 11px; line-height: 1.4; color: #1e293b; margin-bottom: 6px; display: flex; flex-direction: column; gap: 3px; }
     .messages div { background: rgba(255,255,255,0.8); padding: 3px 6px; border-radius: 4px; border-left: 3px solid #64748b; }
@@ -45,25 +47,32 @@
     .sendBtn { width: 28%; padding: 4px; font-size: 11px; font-weight: 600; background: #475569; color: white; border: none; border-radius: 4px; cursor: pointer; }
     .sendBtn:hover { background: #334155; }
     .chatPreview { font-size: 10px; color: #475569; margin-top: 6px; border-top: 1px dashed rgba(0,0,0,0.1); padding-top: 4px; }
+    
+    .filesBox { margin-top: 8px; font-size: 11px; }
+    .fileLink { display: block; background: rgba(59, 130, 246, 0.1); padding: 4px 8px; border-radius: 4px; color: #2563eb; text-decoration: none; font-weight: 600; margin-bottom: 4px; border: 1px solid rgba(59, 130, 246, 0.2); transition: background 0.2s; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .fileLink:hover { background: rgba(59, 130, 246, 0.2); text-decoration: underline; }
+    .fileUploadLabel { cursor: pointer; display: inline-block; padding: 4px 8px; background: #e2e8f0; border-radius: 4px; font-weight: 600; color: #1e293b; transition: background 0.2s; border: 1px solid #cbd5e1; }
+    .fileUploadLabel:hover { background: #cbd5e1; }
+
+    /* ГАНТ */
     .gboard { position: relative; background: rgba(255, 255, 255, 0.96) !important; border: 1px solid rgba(255, 255, 255, 0.5); border-radius: 16px; margin: 0; padding: 24px; width: 100%; box-shadow: 0 20px 40px rgba(0, 45, 0, 0.18); color: #1e293b !important; box-sizing: border-box; }
     .gboard h2 {font-size: 16px; text-transform: uppercase; color: #0f172a; font-weight: 700; letter-spacing: 0.5px; }
-    .gantt-grid-wrapper { width: 100%; overflow-x: auto; border-radius: 8px; border: 1px solid #cbd5e1; background: white; }
-    .gantt-table { border-collapse: collapse; width: 100%; font-size: 11px; color: #1e293b; min-width: 800px; }
+    .gantt-grid-wrapper { position: relative; width: 100%; overflow-x: auto; overflow-y: hidden; border-radius: 8px; border: 1px solid #cbd5e1; background: white; min-height: 200px; }
+    .gantt-table { border-collapse: collapse; width: 100%; font-size: 11px; color: #1e293b; min-width: 800px; position: relative; z-index: 2; }
     .gantt-table th, .gantt-table td { border: 1px solid #cbd5e1; padding: 6px 8px; text-align: center; white-space: nowrap; }
     .gantt-table th.main-header { background: #1e293b; color: white; position: sticky; top: 0; z-index: 10; }
     .gantt-table th.date-header { background: #e2e8f0; color: #1e293b; font-weight: 700; }
     .gantt-table td.sticky-col, .gantt-table th.sticky-col { position: sticky; left: 0; background: #f8fafc; z-index: 5; text-align: left; font-weight: 600; box-shadow: 2px 0 5px rgba(0,0,0,0.05); }
     .gantt-table td.sticky-col-2, .gantt-table th.sticky-col-2 { position: sticky; left: 180px; background: #f8fafc; z-index: 5; box-shadow: 2px 0 5px rgba(0,0,0,0.05); }
     .cell-done { background-color: #10b981; color: white; font-weight: bold; } .cell-inprogress { background-color: #f59e0b; color: white; font-weight: bold; } .cell-todo { background-color: #3b82f6; color: white; font-weight: bold; } .cell-empty { background-color: #f8fafc; }
+    
     .export-mini-btns { display: flex; gap: 8px; justify-content: flex-end; align-items: center; }
     .export-mini-btns button { width: 34px; height: 34px; padding: 0; border: none; border-radius: 8px; background: rgba(30, 41, 59, 0.1); font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; backdrop-filter: blur(4px); }
     .export-mini-btns button:hover { background: rgba(30, 41, 59, 0.25); transform: scale(1.1); }
     @media screen and (max-width: 1024px) { .container { flex-direction: column; } .participants { width: 100%; } .board { flex-direction: column; width: 100%; } }
     .unit { height: 140px; width: 250px; background: rgba(255, 255, 255, 0.9) !important; backdrop-filter: blur(12px) !important; border: 1px solid rgba(255, 255, 255, 0.25) !important; border-radius: 24px !important; padding: 0; margin: 0; box-sizing: border-box; overflow: hidden; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 25px rgba(0, 45, 0, 0.15), inset 2px 2px 5px rgba(255, 255, 255, 0.2) !important; }
     .unit img { width: 100%; height: 100%; object-fit: cover; border-radius: 23px; }
-  #savingOverlay {
-  transition: opacity 0.3s ease;
-}
+    #savingOverlay { transition: opacity 0.3s ease; }
   </style>
 </head>
 <body>
@@ -106,8 +115,8 @@
       <button onclick="exportGantt()" title="Зберегти як картинку (JPG)">🖼️</button>
       <button onclick="exportExcel()" title="Експортувати в Excel">📗</button>
     </div>
-    <div class="gantt-wrapper">
-      <div class="gantt" id="ganttChart"></div>   
+    <div class="gantt-wrapper" id="ganttChart">
+      <!-- Сюди генерується таблиця -->
     </div>
   </div>
 </div>
@@ -127,17 +136,16 @@ const usersMap = {
   gala: "Галина Кузнєцова", olenka: "Олена Поліщук", dima: "Дмитро Приходько", serega: "Сергій Комашко", sasha: "Олександр Волянюк", pasha: "Павло Гриценко", anya: "Ганна Мойсеєнко", tetiana: "Тетяна Яковець", adminp: "Адмін"
 };
 
-// --- ФУНКЦІЯ ГРУПУВАННЯ (Зліплює шматочки календаря в одну задачу) ---
+// --- ФУНКЦІЯ ГРУПУВАННЯ ---
 function groupTasks(rawTasks) {
   const map = {};
   rawTasks.forEach(t => {
     if(!t.id) return;
-    const baseId = t.id.split("_")[0]; // Отримуємо TASK-123 з TASK-123_2026-06-18
+    const baseId = t.id.split("_")[0]; 
     if (!map[baseId]) {
       map[baseId] = JSON.parse(JSON.stringify(t));
       map[baseId].id = baseId;
       map[baseId].originalFragments = [JSON.parse(JSON.stringify(t))];
-      // Очищаємо час, залишаємо тільки дати YYYY-MM-DD для Kanban
       if (map[baseId].start && map[baseId].start.includes("T")) map[baseId].start = map[baseId].start.split("T")[0];
       if (map[baseId].deadline && map[baseId].deadline.includes("T")) map[baseId].deadline = map[baseId].deadline.split("T")[0];
     } else {
@@ -174,7 +182,6 @@ async function initProcess() {
     participantsDiv.appendChild(div);
   });
 
-  // Захист при старті: якщо rawTasks ще немає, створюємо їх
   if (!processData.rawTasks || processData.rawTasks.length === 0) {
       if (processData.tasks && processData.tasks.length > 0) {
           processData.rawTasks = JSON.parse(JSON.stringify(processData.tasks));
@@ -193,7 +200,7 @@ async function initProcess() {
       sessionStorage.setItem("currentProcess", JSON.stringify(processData));
       renderKanban(processData.tasks || []);
     }
-  } catch(err) { console.error("Помилка при підтягуванні з бекенду:", err); }
+  } catch(err) { console.error("Помилка підтягування:", err); }
 }
 
 function exportGantt() {
@@ -209,10 +216,10 @@ function exportGantt() {
 }
 
 function exportExcel() {
-  if (!processData.tasks || processData.tasks.length === 0) { alert("Немає задач для експорту."); return; }
+  if (!processData.tasks || processData.tasks.length === 0) { alert("Немає задач."); return; }
   const starts = processData.tasks.map(t => new Date(t.start)).filter(d => !isNaN(d));
   const ends = processData.tasks.map(t => new Date(t.deadline)).filter(d => !isNaN(d));
-  if (starts.length === 0 || ends.length === 0) { alert("Задачі не мають коректних дат."); return; }
+  if (starts.length === 0 || ends.length === 0) { alert("Задачі не мають дат."); return; }
 
   const minDate = new Date(Math.min(...starts));
   const maxDate = new Date(Math.max(...ends));
@@ -328,6 +335,10 @@ function createTaskCard(ev, dragged) {
 
   card.dataset.username = userName; card.dataset.role = roleClass;
   const taskId = "TASK-" + Date.now().toString(); card.dataset.taskId = taskId; card.dataset.status = "todo";
+  card.files = [];
+
+  const allTitles = (processData.tasks || []).map(x => x.title).filter(x => x);
+  const depOptions = `<option value="">—</option>` + allTitles.map(t => `<option value="${t}">${t}</option>`).join("");
 
   card.innerHTML = `
     <details class="spoiler">
@@ -339,7 +350,7 @@ function createTaskCard(ev, dragged) {
         <label>Назва: <input type="text" class="titleInput"></label>
         <label>Початок: <input type="date" class="startInput"></label>
         <label>Дедлайн: <input type="date" class="deadlineInput"></label>
-        <label>Залежність: <select class="depSelect"><option value="">—</option></select></label>
+        <label>Залежність: <select class="depSelect">${depOptions}</select></label>
         <label style="flex-direction:row; gap:6px; margin-top:4px;"><input type="checkbox" class="approveInput"> Потребує затвердження</label>
         <label>Пріоритет:
           <select class="priorityInput"><option value="high">Високий</option><option value="medium" selected>Середній</option><option value="low">Низький</option></select>
@@ -348,9 +359,10 @@ function createTaskCard(ev, dragged) {
     </details>
   `;
   document.querySelector("#todoList .cards").appendChild(card);
-  attachChat(card); applyStatusClass(card, "todo");
+  attachChatAndFiles(card, {files: [], chat: []}, editable); 
+  applyStatusClass(card, "todo");
 
-  card.querySelectorAll("input,select").forEach(inp => { inp.disabled = !editable; if (editable) inp.addEventListener("change", syncTasks); });
+  card.querySelectorAll("input,select").forEach(inp => { if(inp.type !== "file") { inp.disabled = !editable; if (editable) inp.addEventListener("change", syncTasks); }});
   card.querySelector(".titleInput").addEventListener("input", e => { card.querySelector(".taskTitle").innerText = e.target.value || `${userName} — нова задача`; syncTasks(); });
 
   if (!processData.tasks) processData.tasks = [];
@@ -368,37 +380,109 @@ function applyStatusClass(card, status) {
   if (approveInput && approveInput.checked) card.classList.add("requires-approval");
 }
 
-function attachChat(card) {
+function attachChatAndFiles(card, taskData, editable) {
+  // ФАЙЛИ
+  card.files = taskData.files || [];
+  const spoilerDiv = card.querySelector(".spoiler > div");
+  
+  const filesBox = document.createElement("div"); 
+  filesBox.className = "filesBox";
+  
+  const fileList = document.createElement("div"); 
+  fileList.className = "fileList";
+  
+  const uploadLabel = document.createElement("label");
+  uploadLabel.className = "fileUploadLabel";
+  uploadLabel.innerHTML = `<span class="uploadText">📎 Прикріпити файл</span><input type="file" class="fileInput" style="display:none;">`;
+  
+  if(!editable) uploadLabel.style.display = "none";
+
+  filesBox.appendChild(fileList);
+  filesBox.appendChild(uploadLabel);
+  spoilerDiv.appendChild(filesBox);
+
+  const renderFiles = () => {
+    fileList.innerHTML = card.files.map(f => `<a href="${f.url}" target="_blank" class="fileLink">📄 ${f.name}</a>`).join("");
+  };
+  renderFiles();
+
+  const fileInput = uploadLabel.querySelector(".fileInput");
+  const uploadText = uploadLabel.querySelector(".uploadText");
+  
+  fileInput.addEventListener("change", async (e) => {
+    const file = e.target.files[0];
+    if(!file) return;
+
+    uploadText.innerText = "⏳ Завантаження...";
+    try {
+      const reader = new FileReader();
+      reader.onload = async function(evt) {
+        const arrayBuffer = evt.target.result;
+        const url = `${SCRIPT_URL}?action=uploadFile&filename=${encodeURIComponent(file.name)}`;
+        
+        const res = await fetch(url, {
+          method: "POST",
+          body: arrayBuffer
+        });
+        
+        if(!res.ok) throw new Error("HTTP Error " + res.status);
+        const data = await res.json();
+        
+        if(data.status === "ok") {
+          card.files.push({ name: file.name, url: data.url });
+          renderFiles();
+          syncTasks();
+          uploadText.innerText = "📎 Прикріпити файл";
+        } else {
+          throw new Error(data.message || "Помилка");
+        }
+      };
+      reader.readAsArrayBuffer(file);
+    } catch(err) {
+      console.error(err);
+      alert("Помилка завантаження файлу");
+      uploadText.innerText = "📎 Прикріпити файл";
+    }
+  });
+
+  // ЧАТ
   const chatBox = document.createElement("div"); chatBox.className = "chatBox";
   const messages = document.createElement("div"); messages.className = "messages";
   const input = document.createElement("input"); input.type = "text"; input.className = "chatInput"; input.placeholder = "Коментар...";
   const sendBtn = document.createElement("button"); sendBtn.className = "sendBtn"; sendBtn.innerText = "ОК";
 
+  card.chat = taskData.chat || [];
+  card.chat.forEach(c => { const m = document.createElement("div"); m.innerText = `${c.user}: ${c.text}`; messages.appendChild(m); });
+
+  const chatPreview = document.createElement("div"); chatPreview.className = "chatPreview";
+  chatPreview.innerHTML = card.chat.map(c => `<div>${c.user}: ${c.text}</div>`).join(""); 
+  card.appendChild(chatPreview);
+
   sendBtn.onclick = () => {
     if (input.value.trim() !== "") {
       const msgObj = { user: usersMap[currentUser] || currentUser, text: input.value.trim() };
       const msgDiv = document.createElement("div"); msgDiv.innerText = `${msgObj.user}: ${msgObj.text}`; messages.appendChild(msgDiv);
-      if (!card.chat) card.chat = []; card.chat.push(msgObj);
+      card.chat.push(msgObj);
+      chatPreview.innerHTML += `<div>${msgObj.user}: ${msgObj.text}</div>`;
       syncTasks(); input.value = "";
     }
   };
-  chatBox.appendChild(messages); chatBox.appendChild(input); chatBox.appendChild(sendBtn); card.appendChild(chatBox);
+  
+  if(!editable) { input.disabled = true; sendBtn.disabled = true; }
+  
+  chatBox.appendChild(messages); chatBox.appendChild(input); chatBox.appendChild(sendBtn); 
+  spoilerDiv.appendChild(chatBox);
 }
 
-// 🔥 ОНОВЛЕНА СИНХРОНІЗАЦІЯ (Оновлює статуси у ВСІХ шматочках задачі)
 function syncTasks() {
   const cardDataMap = {};
   
-  // 1. Збираємо всі дані з карток, які зараз є на дошці Канбану
   document.querySelectorAll(".card").forEach(card => {
-    const taskId = card.dataset.taskId; // Це базовий ID (наприклад, TASK-123)
+    const taskId = card.dataset.taskId;
     const startVal = card.querySelector(".startInput")?.value;
   
-  // Додай цей лог:
-  console.log(`Картка ${taskId} має startInput: ${startVal}`);
     cardDataMap[taskId] = {
       title: card.querySelector(".titleInput")?.value || card.querySelector(".taskTitle").innerText,
-      // Зберігаємо дати з карток ТІЛЬКИ на випадок, якщо це абсолютно нова задача
       start: startVal || "",
       deadline: card.querySelector(".deadlineInput")?.value || "",
       role: card.dataset.role,
@@ -407,27 +491,21 @@ function syncTasks() {
       dependencyTitle: card.querySelector(".depSelect")?.value || null,
       priority: card.querySelector(".priorityInput")?.value || "medium",
       status: card.dataset.status || "todo",
-      chat: card.chat || []
+      chat: card.chat || [],
+      files: card.files || []
     };
   });
 
   const updatedRawTasks = [];
   const processedCards = new Set();
 
-  // 2. Оновлюємо ІСНУЮЧІ фрагменти (щоб не втратити час, встановлений в Календарі)
   (processData.rawTasks || []).forEach(frag => {
-    // Відрізаємо суфікс дати, щоб знайти відповідну картку (TASK-123_2026-06-15 -> TASK-123)
     const baseId = frag.id ? frag.id.split("_")[0] : null; 
     
     if (baseId && cardDataMap[baseId]) {
       const cardInfo = cardDataMap[baseId];
-      
-      // БЕРЕМО ДАТИ З ОРИГІНАЛЬНОГО ФРАГМЕНТА, А НЕ З КАРТКИ
-      // frag.start та frag.deadline вже містять час, встановлений в Календарі.
-      // Ми їх НЕ змінюємо, навіть якщо в Канбані інший input.
-      
       updatedRawTasks.push({
-        ...frag, // Тут зберігається весь час (HH:mm:ss) з Календаря
+        ...frag, 
         title: cardInfo.title,
         role: cardInfo.role,
         username: cardInfo.username,
@@ -436,34 +514,30 @@ function syncTasks() {
         priority: cardInfo.priority,
         status: cardInfo.status,
         chat: cardInfo.chat,
-        // start та deadline лишаються тими, що були в frag
+        files: cardInfo.files
       });
-      
       processedCards.add(baseId);
     }
   });
 
-  // 3. Додаємо повністю НОВІ задачі
   Object.keys(cardDataMap).forEach(baseId => {
     if (!processedCards.has(baseId)) {
       const card = cardDataMap[baseId];
-      
-      // ВСТАНОВЛЮЄМО СЬОГОДНІШНЮ ДАТУ ЯК ДЕФОЛТНУ
       const today = new Date().toISOString().split('T')[0]; 
       
       updatedRawTasks.push({
         id: baseId,
         ...card,
-        // Якщо в інпуті порожньо, беремо сьогоднішню дату + дефолтний час
         start: (card.start && card.start !== "") ? card.start : (today + "T09:00:00"),
         deadline: (card.deadline && card.deadline !== "") ? card.deadline : (today + "T18:00:00")
       });
     }
   });
-  // 4. Перезаписуємо базу даних і пам'ять
+  
   processData.rawTasks = updatedRawTasks;
   sessionStorage.setItem("currentProcess", JSON.stringify(processData));
 }
+
 async function fetchDashboardData() {
   try {
     const res = await fetch(Processes_SHEET_URL);
@@ -485,27 +559,39 @@ async function fetchDashboardData() {
         };
       }
       
+      const parsedFiles = c[14] ? c[14].split(", ").map(f => {
+          const parts = f.split("::");
+          return {name: parts[0], url: parts[1] || ""};
+      }) : [];
+
       processes[pID].rawTasks.push({
         id: c[5], title: c[6], start: c[7], deadline: c[8], role: c[9], 
         username: c[10], multiRole: c[11] === "TRUE", dependencyTitle: c[12], 
-        priority: c[13], files: [], chat: c[15] ? c[15].split(" || ").map(x => ({user: x.split(": ")[0], text: x.split(": ")[1]})) : [], 
+        priority: c[13], files: parsedFiles, chat: c[15] ? c[15].split(" || ").map(x => ({user: x.split(": ")[0], text: x.split(": ")[1]})) : [], 
         status: c[16]
       });
     });
 
-    // Групуємо для кожного процесу
     Object.values(processes).forEach(p => { p.tasks = groupTasks(p.rawTasks); });
     
     return { status: "ok", currentProcess: processes[processData.processID], processes: Object.values(processes) };
   } catch(err) { console.error(err); return { status: "error" }; }
 }
+
 function renderKanban(tasks) {
   document.querySelector("#todoList .cards").innerHTML = ""; document.querySelector("#inProgressList .cards").innerHTML = ""; document.querySelector("#doneList .cards").innerHTML = "";
+  
+  const allTitles = tasks.map(x => x.title).filter(x => x);
+
   tasks.forEach(t => {
     const card = document.createElement("div");
     card.className = `card ${t.role}`; card.dataset.taskId = t.id; card.dataset.username = t.username; card.dataset.status = t.status;
     const editable = canEditTask(t, processData, currentUser);
     if (editable) { card.setAttribute("draggable","true"); card.ondragstart = drag; }
+
+    const depOptions = `<option value="">—</option>` + allTitles.map(title => 
+        `<option value="${title}" ${title === t.dependencyTitle ? "selected" : ""}>${title}</option>`
+    ).join("");
 
     card.innerHTML = `
       <details class="spoiler">
@@ -514,7 +600,7 @@ function renderKanban(tasks) {
           <label>Назва: <input type="text" class="titleInput" value="${t.title}"></label>
           <label>Початок: <input type="date" class="startInput" value="${t.start || ""}"></label>
           <label>Дедлайн: <input type="date" class="deadlineInput" value="${t.deadline || ""}"></label>
-          <label>Залежність: <select class="depSelect"><option value="">—</option></select></label>
+          <label>Залежність: <select class="depSelect">${depOptions}</select></label>
           <label style="flex-direction:row; gap:6px; margin-top:4px;"><input type="checkbox" class="approveInput" ${t.multiRole ? "checked":""}> Потребує затвердження</label>
           <label>Пріоритет:
             <select class="priorityInput">
@@ -523,31 +609,15 @@ function renderKanban(tasks) {
               <option value="low" ${t.priority==="low"?"selected":""}>Низький</option>
             </select>
           </label>
-          <div class="chatBox"><div class="messages"></div><input type="text" class="chatInput" placeholder="Коментар..."><button class="sendBtn">ОК</button></div>
         </div>
       </details>
     `;
 
-    card.chat = t.chat || [];
-    const messagesDiv = card.querySelector(".messages");
-    card.chat.forEach(c => { const m = document.createElement("div"); m.innerText = `${c.user}: ${c.text}`; messagesDiv.appendChild(m); });
-
-    const chatPreview = document.createElement("div"); chatPreview.className = "chatPreview";
-    chatPreview.innerHTML = card.chat.map(c => `<div>${c.user}: ${c.text}</div>`).join(""); card.appendChild(chatPreview);
-
-    const sendBtn = card.querySelector(".sendBtn"); const chatInput = card.querySelector(".chatInput");
-    sendBtn.onclick = () => {
-      if (chatInput.value.trim() !== "") {
-        const msgObj = { user: usersMap[currentUser] || currentUser, text: chatInput.value.trim() }; card.chat.push(msgObj);
-        const m = document.createElement("div"); m.innerText = `${msgObj.user}: ${msgObj.text}`; messagesDiv.appendChild(m);
-        chatPreview.innerHTML += `<div>${msgObj.user}: ${msgObj.text}</div>`; chatInput.value = "";
-        syncTasks();
-      }
-    };
-
+    attachChatAndFiles(card, t, editable);
     applyStatusClass(card, t.status);
+    
     const approveInp = card.querySelector(".approveInput"); if (approveInp) approveInp.addEventListener("change", () => { applyStatusClass(card, card.dataset.status); syncTasks(); });
-    card.querySelectorAll("input,select").forEach(inp => { if (inp.classList.contains("chatInput")) return; if (!editable) inp.disabled = true; else inp.addEventListener("change", syncTasks); });
+    card.querySelectorAll("input,select").forEach(inp => { if (inp.classList.contains("chatInput") || inp.classList.contains("fileInput")) return; if (!editable) inp.disabled = true; else inp.addEventListener("change", syncTasks); });
     card.querySelector(".titleInput").addEventListener("input", e => { if (editable) { card.querySelector(".taskTitle").innerText = e.target.value || `${card.dataset.username} — нова задача`; syncTasks(); } });
 
     if (t.status === "inprogress") document.querySelector("#inProgressList .cards").appendChild(card);
@@ -584,6 +654,7 @@ function renderGantt(tasks) {
   thead.appendChild(trHead); table.appendChild(thead);
 
   const tbody = document.createElement("tbody");
+  
   tasks.forEach(t => {
     const tr = document.createElement("tr");
     let statusText = "В черзі", statusClass = "cell-todo", icon = "○";
@@ -593,33 +664,96 @@ function renderGantt(tasks) {
     tr.innerHTML = `<td class="sticky-col">${t.title || "—"}</td><td class="sticky-col-2">${t.username || "—"}</td><td>${t.start || "—"}</td><td>${t.deadline || "—"}</td><td><strong>${statusText}</strong></td>`;
 
     const taskStart = new Date(t.start); const taskEnd = new Date(t.deadline || t.start);
+    
+    let firstMatchTd = null;
+    let lastMatchTd = null;
+
     dateList.forEach(currentDate => {
       const td = document.createElement("td");
       const dCurrent = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate());
       const dStart = new Date(taskStart.getFullYear(), taskStart.getMonth(), taskStart.getDate());
       const dEnd = new Date(taskEnd.getFullYear(), taskEnd.getMonth(), taskEnd.getDate());
 
-      if (dCurrent >= dStart && dCurrent <= dEnd) { td.className = statusClass; td.innerText = icon; } 
-      else { td.className = "cell-empty"; }
+      if (dCurrent >= dStart && dCurrent <= dEnd) { 
+        td.className = statusClass; td.innerText = icon; 
+        if(!firstMatchTd) firstMatchTd = td;
+        lastMatchTd = td;
+      } else { 
+        td.className = "cell-empty"; 
+      }
       tr.appendChild(td);
     });
+    
+    if(firstMatchTd) firstMatchTd.id = `cell-${t.id}-start`;
+    if(lastMatchTd) lastMatchTd.id = `cell-${t.id}-end`;
+
     tbody.appendChild(tr);
   });
 
   table.appendChild(tbody); wrapper.appendChild(table); gantt.appendChild(wrapper);
+
+  // Додавання стрілочок залежностей через SVG поверх таблиці
+  const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  svg.style.position = "absolute"; svg.style.top = "0"; svg.style.left = "0";
+  svg.style.width = "100%"; svg.style.height = "100%";
+  svg.style.pointerEvents = "none"; svg.style.zIndex = "10";
+  svg.innerHTML = `
+    <defs>
+      <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#ef4444" />
+      </marker>
+    </defs>
+  `;
+  wrapper.appendChild(svg);
+
+  // Розрахунок позицій після рендеру
+  setTimeout(() => {
+    tasks.forEach(t => {
+      if (t.dependencyTitle) {
+        const depTask = tasks.find(x => x.title === t.dependencyTitle);
+        if (depTask) {
+          const sourceCell = document.getElementById(`cell-${depTask.id}-end`);
+          const targetCell = document.getElementById(`cell-${t.id}-start`);
+          
+          if(sourceCell && targetCell) {
+            const wrapperRect = wrapper.getBoundingClientRect();
+            const sRect = sourceCell.getBoundingClientRect();
+            const tRect = targetCell.getBoundingClientRect();
+            
+            const startX = sRect.right - wrapperRect.left + wrapper.scrollLeft;
+            const startY = sRect.top + (sRect.height/2) - wrapperRect.top + wrapper.scrollTop;
+            const endX = tRect.left - wrapperRect.left + wrapper.scrollLeft;
+            const endY = tRect.top + (tRect.height/2) - wrapperRect.top + wrapper.scrollTop;
+            
+            const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+            let d = "";
+            if (endX >= startX) {
+                d = `M ${startX} ${startY} L ${startX + 12} ${startY} L ${startX + 12} ${endY} L ${endX - 4} ${endY}`;
+            } else {
+                d = `M ${startX} ${startY} L ${startX + 12} ${startY} L ${startX + 12} ${startY + 14} L ${endX - 12} ${startY + 14} L ${endX - 12} ${endY} L ${endX - 4} ${endY}`;
+            }
+            path.setAttribute("d", d);
+            path.setAttribute("fill", "transparent");
+            path.setAttribute("stroke", "#ef4444");
+            path.setAttribute("stroke-width", "2");
+            path.setAttribute("marker-end", "url(#arrowhead)");
+            svg.appendChild(path);
+          }
+        }
+      }
+    });
+  }, 200);
 }
+
 document.getElementById("saveAndBackBtn").addEventListener("click", async () => {
   const btn = document.getElementById("saveAndBackBtn");
   const overlay = document.getElementById("savingOverlay");
 
-  // 1. Початок: показуємо оверлей і блокуємо кнопку
   overlay.style.display = "flex"; 
-  overlay.classList.add("fade-in");
   btn.innerText = "Зберігаю..."; 
   btn.disabled = true;
 
   try {
-    // 2. Синхронізація та підготовка даних
     syncTasks();
 
     const safeTasks = (processData.rawTasks || []).map(t => ({
@@ -632,7 +766,7 @@ document.getElementById("saveAndBackBtn").addEventListener("click", async () => 
       multiRole: !!t.multiRole,
       dependencyTitle: t.dependencyTitle || null,
       priority: t.priority || "medium",
-      files: [],
+      files: (t.files || []).map(f => ({ name: f.name || "", url: f.url || "" })),
       chat: (t.chat || []).map(c => ({ user: c.user || "", text: c.text || "" })),
       status: t.status || "todo"
     }));
@@ -645,8 +779,7 @@ document.getElementById("saveAndBackBtn").addEventListener("click", async () => 
       status: processData.status || "new",
       tasks: safeTasks
     };
-    console.log("Дивись на дати перед відправкою:", safeTasks[0]);
-    // 3. Відправка
+    
     await fetch(SCRIPT_URL, {
       method: "POST",
       mode: "no-cors",
@@ -654,14 +787,10 @@ document.getElementById("saveAndBackBtn").addEventListener("click", async () => 
       body: JSON.stringify({ action: "updateProcess", process: safeProcess })
     });
 
-    // 4. Перенаправлення (якщо все ок, оверлей залишиться до моменту завантаження Dashboard.html)
     window.location.href = "Dashboard.html";
-
   } catch (err) {
     console.error("Помилка при збереженні:", err);
     alert("Сталася помилка при збереженні. Перевірте консоль.");
-    
-    // 5. Відкат стану кнопки та оверлея у разі помилки
     overlay.style.display = "none";
     btn.innerText = "Зберегти і повернутися";
     btn.disabled = false;
