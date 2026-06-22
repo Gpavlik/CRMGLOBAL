@@ -76,7 +76,16 @@
     .unit { height: 140px; width: 250px; background: rgba(255, 255, 255, 0.9) !important; backdrop-filter: blur(12px) !important; border: 1px solid rgba(255, 255, 255, 0.25) !important; border-radius: 24px !important; padding: 0; margin: 0; box-sizing: border-box; overflow: hidden; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 25px rgba(0, 45, 0, 0.15), inset 2px 2px 5px rgba(255, 255, 255, 0.2) !important; }
     .unit img { width: 100%; height: 100%; object-fit: cover; border-radius: 23px; }
     #savingOverlay { transition: opacity 0.3s ease; }
-    
+    /* Вертикальна лінія "Сьогодні" */
+.today-line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background-color: #ef4444; /* Яскраво-червоний маркер */
+  z-index: 8; /* Щоб була вище фону, але нижче стрілок */
+  box-shadow: 0 0 8px rgba(239, 68, 68, 0.5);
+}
   </style>
 </head>
 <body>
@@ -777,7 +786,27 @@ function renderGantt(tasks) {
     tbody.appendChild(tr);
   });
 
-  table.appendChild(tbody); wrapper.appendChild(table); gantt.appendChild(wrapper);
+  table.appendChild(tbody); 
+  wrapper.appendChild(table); 
+  gantt.appendChild(wrapper);
+
+  // --- МАРКЕР СЬОГОДНІШНЬОГО ДНЯ ---
+  const todayIndex = dateList.findIndex(d => 
+    d.getFullYear() === today.getFullYear() && 
+    d.getMonth() === today.getMonth() && 
+    d.getDate() === today.getDate()
+  );
+
+  if (todayIndex !== -1) {
+    const headerCells = table.querySelectorAll('.date-header');
+    const todayHeader = headerCells[todayIndex];
+    
+    const line = document.createElement("div");
+    line.className = "today-line";
+    // Позиція: ліва межа заголовка дати + половина ширини колонки
+    line.style.left = (todayHeader.offsetLeft + todayHeader.offsetWidth / 2) + "px";
+    wrapper.appendChild(line);
+  }
 
   // Додавання стрілочок залежностей через SVG поверх таблиці
   const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
@@ -831,7 +860,6 @@ function renderGantt(tasks) {
     });
   }, 200);
 }
-
 document.getElementById("saveAndBackBtn").addEventListener("click", async () => {
   const btn = document.getElementById("saveAndBackBtn");
   const overlay = document.getElementById("savingOverlay");
