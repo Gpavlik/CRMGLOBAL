@@ -251,15 +251,33 @@ function exportExcel() {
   if (starts.length === 0 || ends.length === 0) { alert("Задачі не мають дат."); return; }
 
   const minDate = new Date(Math.min(...starts));
+  minDate.setHours(0,0,0,0);
   const maxDate = new Date(Math.max(...ends));
+  maxDate.setHours(0,0,0,0);
   maxDate.setDate(maxDate.getDate() + 2);
   
   const diffDays = Math.ceil((maxDate - minDate)/(1000*60*60*24)) + 1;
   const dateList = [];
-  for (let i = 0; i < diffDays; i++) { const d = new Date(minDate); d.setDate(minDate.getDate() + i); dateList.push(d); }
+  for (let i = 0; i < diffDays; i++) { 
+      const d = new Date(minDate); 
+      d.setDate(minDate.getDate() + i); 
+      dateList.push(d); 
+  }
 
   const today = new Date();
   today.setHours(0,0,0,0);
+
+  // --- Хелпер для конвертації HSL в HEX (Excel любить тільки HEX) ---
+  function hslToHex(h, s, l) {
+    l /= 100;
+    const a = s * Math.min(l, 1 - l) / 100;
+    const f = n => {
+      const k = (n + h / 30) % 12;
+      const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+      return Math.round(255 * color).toString(16).padStart(2, '0');
+    };
+    return `#${f(0)}${f(8)}${f(4)}`;
+  }
 
   const table = document.createElement("table");
   table.style.borderCollapse = "collapse";
@@ -268,7 +286,7 @@ function exportExcel() {
   
   const trHead = document.createElement("tr");
   
-  // 1. ДОДАЛИ КОЛОНКУ "ЗАЛЕЖНІСТЬ"
+  // 1. СТВОРЮЄМО БАЗОВІ КОЛОНКИ
   ['Задача', 'Виконавець', 'Початок', 'Дедлайн', 'Днів', '%', 'Залежність', 'Статус'].forEach(h => {
     const th = document.createElement("th"); 
     th.innerText = h; 
@@ -280,21 +298,31 @@ function exportExcel() {
     trHead.appendChild(th);
   });
   
+  // 2. СТВОРЮЄМО ДНІ В ХЕДЕРІ
   dateList.forEach((d, index) => {
     const th = document.createElement("th"); 
     th.innerText = d.toLocaleDateString("uk-UA", { day:"2-digit", month:"2-digit" }); 
     
-    let hue = 120;
-    if (diffDays > 1) hue = 120 - Math.floor((index / (diffDays - 1)) * 120);
+    const isToday = d.toDateString() === today.toDateString();
     
-    th.style.backgroundColor = `hsl(${hue}, 80%, 85%)`;
-    th.style.color = "#1e293b";
-    th.style.border = "1px solid #d1d5db";
+    // Якщо сьогодні - жорстко виділяємо жовтим
+    if (isToday) {
+        th.style.backgroundColor = "#fbbf24"; 
+        th.style.color = "#000000";
+        th.style.border = "2px solid #d97706";
+    } else {
+        let hue = 120;
+        if (diffDays > 1) hue = 120 - Math.floor((index / (diffDays - 1)) * 120);
+        th.style.backgroundColor = hslToHex(hue, 80, 85); // Конвертуємо для Excel
+        th.style.color = "#1e293b";
+        th.style.border = "1px solid #d1d5db";
+    }
     th.style.padding = "8px";
     trHead.appendChild(th);
   });
   table.appendChild(trHead);
 
+  // 3. ЗАПОВНЮЄМО ЗАДАЧІ
   processData.tasks.forEach(t => {
     const tr = document.createElement("tr");
     
@@ -314,7 +342,6 @@ function exportExcel() {
         }
     }
 
-    // 2. ДОДАЄМО ЗНАЧЕННЯ ЗАЛЕЖНОСТІ ДО РЯДКА ЕКСПОРТУ
     const tdData = [
         t.title || "",
         t.username || "",
@@ -322,7 +349,7 @@ function exportExcel() {
         t.deadline || "",
         durationDays,
         percent + "%",
-        t.dependencyTitle || "—", // <--- Відобразить назву задачі, від якої залежить ця, або прочерк
+        t.dependencyTitle || "—",
         t.status === 'done' ? "Виконано" : t.status === 'inprogress' ? "В процесі" : "В черзі"
     ];
 
@@ -334,23 +361,41 @@ function exportExcel() {
         tr.appendChild(td);
     });
 
+    // 4. ГРАФІК ГАНТА
     dateList.forEach((currentDate, index) => {
       const tdGantt = document.createElement("td");
       tdGantt.style.border = "1px solid #d1d5db";
       tdGantt.style.textAlign = "center";
       tdGantt.style.verticalAlign = "middle";
 
-      let hue = 120;
-      if (diffDays > 1) hue = 120 - Math.floor((index / (diffDays - 1)) * 120);
+      const isToday = currentDate.toDateString() === today.toDateString();
 
       if (currentDate >= taskStart && currentDate <= taskEnd) {
-        if (t.status === 'done') { tdGantt.style.backgroundColor = "#10b981"; tdGantt.innerText = "✓"; }
-        else if (t.status === 'inprogress') { tdGantt.style.backgroundColor = "#f59e0b"; tdGantt.innerText = "▶"; }
-        else { tdGantt.style.backgroundColor = "#3b82f6"; tdGantt.innerText = "○"; }
+        if (t.status === 'done') { 
+            tdGantt.style.backgroundColor = "#10b981"; 
+            tdGantt.innerHTML = "&#10003;"; // Безпечна галочка
+        }
+        else if (t.status === 'inprogress') { 
+            tdGantt.style.backgroundColor = "#f59e0b"; 
+            tdGantt.innerHTML = "&#9654;"; // Безпечний трикутник
+        }
+        else { 
+            tdGantt.style.backgroundColor = "#3b82f6"; 
+            tdGantt.innerHTML = "&#9675;"; // Безпечне коло
+        }
         tdGantt.style.color = "#ffffff"; 
       } else {
-         tdGantt.style.backgroundColor = `hsl(${hue}, 80%, 96%)`;
+         let hue = 120;
+         if (diffDays > 1) hue = 120 - Math.floor((index / (diffDays - 1)) * 120);
+         tdGantt.style.backgroundColor = hslToHex(hue, 80, 96); // Конвертуємо пустоти
       }
+      
+      // Виділення стовпчика "Сьогодні" в самому тілі таблиці
+      if (isToday) {
+          tdGantt.style.borderLeft = "2px solid #d97706";
+          tdGantt.style.borderRight = "2px solid #d97706";
+      }
+
       tr.appendChild(tdGantt);
     });
     table.appendChild(tr);
@@ -365,7 +410,8 @@ function exportExcel() {
     </html>
   `;
 
-  const blob = new Blob([html], { type: "application/vnd.ms-excel" });
+  // Додаємо мітку BOM (\uFEFF) щоб Excel примусово читав кодування UTF-8
+  const blob = new Blob(["\uFEFF" + html], { type: "application/vnd.ms-excel;charset=utf-8" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   
