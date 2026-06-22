@@ -862,19 +862,18 @@ function renderGantt(tasks) {
   const nowHour = today.getHours() + (today.getMinutes() / 60);
   const dayProgress = nowHour / 24;
 
-  // --- НОВА СИСТЕМА ОБГОРТОК ДЛЯ ПРАВИЛЬНОГО СКРОЛУ ---
   const scrollWrapper = document.createElement("div"); 
   scrollWrapper.className = "gantt-scroll-wrapper";
   
   const innerWrapper = document.createElement("div"); 
   innerWrapper.className = "gantt-inner-wrapper";
   innerWrapper.style.position = "relative";
-  innerWrapper.style.width = "max-content"; // МАГІЯ: Контейнер точно по ширині таблиці!
+  innerWrapper.style.width = "max-content"; 
 
   const table = document.createElement("table"); table.className = "gantt-table";
   const thead = document.createElement("thead"); const trHead = document.createElement("tr");
 
-  // Додали клас hide-mobile до колонок, які дублюють інформацію на малих екранах
+  // Колонки з адаптивним приховуванням для мобільних
   [
    { text: "Задача", class: "sticky-col", width: "180px" }, 
    { text: "Виконавець", class: "sticky-col-2", width: "100px" }, 
@@ -936,7 +935,6 @@ function renderGantt(tasks) {
         }
     }
 
-    // Додано hide-mobile до відповідних `td`
     tr.innerHTML = `<td class="sticky-col">${t.title || "—"}</td>
                     <td class="sticky-col-2">${t.username || "—"}</td>
                     <td class="hide-mobile">${t.start || "—"}</td>
@@ -974,9 +972,10 @@ function renderGantt(tasks) {
   });
 
   table.appendChild(tbody); 
-  innerWrapper.appendChild(table); // Кладемо таблицю у внутрішню обгортку
+  innerWrapper.appendChild(table); 
 
-  // --- ЛІНІЯ "СЬОГОДНІ" В ІННЕР-ВРАПЕРІ ---
+  // Створюємо саму лінію заздалегідь
+  let line = null;
   const todayIndex = dateList.findIndex(d => 
     d.getFullYear() === today.getFullYear() && 
     d.getMonth() === today.getMonth() && 
@@ -984,21 +983,12 @@ function renderGantt(tasks) {
   );
 
   if (todayIndex !== -1) {
-    const headerCells = table.querySelectorAll('.date-header');
-    const todayHeader = headerCells[todayIndex];
-    let hue = 120;
-    if (diffDays > 1) hue = 120 - Math.floor((todayIndex / (diffDays - 1)) * 120);
-    
-    const line = document.createElement("div");
+    line = document.createElement("div");
     line.className = "today-line";
-    const offsetLeft = todayHeader.offsetLeft + (todayHeader.offsetWidth * dayProgress);
-    line.style.left = offsetLeft + "px";
-    line.style.borderLeft = `2px solid hsl(${hue}, 100%, 40%)`;
-    
-    innerWrapper.appendChild(line); // Лінія прив'язана до внутрішнього контейнера
+    innerWrapper.appendChild(line);
   }
 
-  // --- СТРІЛКИ В ІННЕР-ВРАПЕРІ ---
+  // Стрілочки залежностей (SVG)
   const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
   svg.style.position = "absolute"; svg.style.top = "0"; svg.style.left = "0";
   svg.style.width = "100%"; svg.style.height = "100%";
@@ -1010,14 +1000,30 @@ function renderGantt(tasks) {
       </marker>
     </defs>
   `;
-  innerWrapper.appendChild(svg); // Стрілки прив'язані до таблиці
+  innerWrapper.appendChild(svg);
 
-  // Фінальна збірка HTML
+  // Фінальний вивід в DOM
   scrollWrapper.appendChild(innerWrapper);
   gantt.appendChild(scrollWrapper);
 
-  // Малюємо стрілки з урахуванням нових координат
+  // --- МАГІЯ ТАЙМАУТУ: Рахуємо всі координати після того, як браузер повністю намалював таблицю ---
   setTimeout(() => {
+    // 1. Позиціонуємо лінію сьогодні
+    if (line && todayIndex !== -1) {
+      const headerCells = table.querySelectorAll('.date-header');
+      const todayHeader = headerCells[todayIndex];
+      if (todayHeader) {
+        let hue = 120;
+        if (diffDays > 1) hue = 120 - Math.floor((todayIndex / (diffDays - 1)) * 120);
+        
+        // Тепер позиція порахується ідеально
+        const offsetLeft = todayHeader.offsetLeft + (todayHeader.offsetWidth * dayProgress);
+        line.style.left = offsetLeft + "px";
+        line.style.borderLeft = `2px solid hsl(${hue}, 100%, 40%)`;
+      }
+    }
+
+    // 2. Позиціонуємо стрілочки
     tasks.forEach(t => {
       if (t.dependencyTitle) {
         const depTask = tasks.find(x => x.title === t.dependencyTitle);
@@ -1026,11 +1032,10 @@ function renderGantt(tasks) {
           const targetCell = document.getElementById(`cell-${t.id}-start`);
           
           if(sourceCell && targetCell) {
-            const iRect = innerWrapper.getBoundingClientRect(); // Беремо координати самої таблиці
+            const iRect = innerWrapper.getBoundingClientRect(); 
             const sRect = sourceCell.getBoundingClientRect();
             const tRect = targetCell.getBoundingClientRect();
             
-            // Розрахунок позиції БЕЗ прив'язки до скролу (бо SVG скролиться разом з таблицею)
             const startX = sRect.right - iRect.left;
             const startY = sRect.top + (sRect.height/2) - iRect.top;
             const endX = tRect.left - iRect.left;
