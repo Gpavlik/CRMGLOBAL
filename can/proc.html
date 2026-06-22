@@ -683,40 +683,90 @@ function renderGantt(tasks) {
   const table = document.createElement("table"); table.className = "gantt-table";
   const thead = document.createElement("thead"); const trHead = document.createElement("tr");
 
-  [{ text: "Задача", class: "sticky-col", width: "180px" }, { text: "Виконавець", class: "sticky-col-2", width: "100px" }, { text: "Початок" }, { text: "Дедлайн" }, { text: "Статус" }].forEach(h => {
+  // Додані нові колонки "Днів" та "%"
+  [{ text: "Задача", class: "sticky-col", width: "180px" }, 
+   { text: "Виконавець", class: "sticky-col-2", width: "100px" }, 
+   { text: "Початок" }, { text: "Дедлайн" }, { text: "Днів" }, { text: "%" }, { text: "Статус" }].forEach(h => {
     const th = document.createElement("th"); th.innerText = h.text; th.className = "main-header " + (h.class || ""); if (h.width) th.style.minWidth = h.width; trHead.appendChild(th);
   });
 
-  dateList.forEach(d => { const th = document.createElement("th"); th.innerText = d.toLocaleDateString("uk-UA", { day:"2-digit", month:"2-digit" }); th.className = "date-header"; trHead.appendChild(th); });
+  // Заливка стовпчиків дат (заголовки)
+  dateList.forEach((d, index) => { 
+    const th = document.createElement("th"); 
+    th.innerText = d.toLocaleDateString("uk-UA", { day:"2-digit", month:"2-digit" }); 
+    th.className = "date-header"; 
+    
+    // Розрахунок кольору: 120 = зелений, 0 = червоний
+    let hue = 120;
+    if (diffDays > 1) hue = 120 - Math.floor((index / (diffDays - 1)) * 120);
+    
+    // Задаємо фоновий колір для заголовку дати
+    th.style.backgroundColor = `hsl(${hue}, 80%, 85%)`;
+    th.style.color = "#1e293b";
+    th.style.borderBottom = `2px solid hsl(${hue}, 80%, 60%)`;
+
+    trHead.appendChild(th); 
+  });
   thead.appendChild(trHead); table.appendChild(thead);
 
   const tbody = document.createElement("tbody");
   
+  // Для розрахунку відсотків беремо поточну дату
+  const today = new Date();
+  today.setHours(0,0,0,0);
+
   tasks.forEach(t => {
     const tr = document.createElement("tr");
     let statusText = "В черзі", statusClass = "cell-todo", icon = "○";
     if (t.status === 'done') { statusText = "Виконано"; statusClass = "cell-done"; icon = "✓"; }
     else if (t.status === 'inprogress') { statusText = "В процесі"; statusClass = "cell-inprogress"; icon = "▶"; }
 
-    tr.innerHTML = `<td class="sticky-col">${t.title || "—"}</td><td class="sticky-col-2">${t.username || "—"}</td><td>${t.start || "—"}</td><td>${t.deadline || "—"}</td><td><strong>${statusText}</strong></td>`;
-
-    const taskStart = new Date(t.start); const taskEnd = new Date(t.deadline || t.start);
+    const taskStart = new Date(t.start); taskStart.setHours(0,0,0,0);
+    const taskEnd = new Date(t.deadline || t.start); taskEnd.setHours(0,0,0,0);
     
+    // Розрахунок кількості днів
+    const durationDays = Math.ceil((taskEnd - taskStart) / (1000 * 60 * 60 * 24)) + 1;
+    
+    // Розрахунок відсотка виконання
+    let percent = 0;
+    if (t.status === 'done') {
+        percent = 100;
+    } else if (t.status === 'inprogress') {
+        if (today < taskStart) percent = 0;
+        else if (today > taskEnd) percent = 100;
+        else {
+            const passedDays = Math.ceil((today - taskStart) / (1000 * 60 * 60 * 24)) + 1;
+            percent = Math.round((passedDays / durationDays) * 100);
+        }
+    }
+
+    tr.innerHTML = `<td class="sticky-col">${t.title || "—"}</td>
+                    <td class="sticky-col-2">${t.username || "—"}</td>
+                    <td>${t.start || "—"}</td>
+                    <td>${t.deadline || "—"}</td>
+                    <td><strong>${durationDays}</strong></td>
+                    <td><strong>${percent}%</strong></td>
+                    <td><strong>${statusText}</strong></td>`;
+
     let firstMatchTd = null;
     let lastMatchTd = null;
 
-    dateList.forEach(currentDate => {
+    dateList.forEach((currentDate, index) => {
       const td = document.createElement("td");
       const dCurrent = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate());
-      const dStart = new Date(taskStart.getFullYear(), taskStart.getMonth(), taskStart.getDate());
-      const dEnd = new Date(taskEnd.getFullYear(), taskEnd.getMonth(), taskEnd.getDate());
+      
+      // Розрахунок кольору колонки для пустої клітинки
+      let hue = 120;
+      if (diffDays > 1) hue = 120 - Math.floor((index / (diffDays - 1)) * 120);
 
-      if (dCurrent >= dStart && dCurrent <= dEnd) { 
+      if (dCurrent >= taskStart && dCurrent <= taskEnd) { 
         td.className = statusClass; td.innerText = icon; 
         if(!firstMatchTd) firstMatchTd = td;
         lastMatchTd = td;
       } else { 
         td.className = "cell-empty"; 
+        // Легка заливка для стовпчика дат, якщо клітинка порожня (світліша за заголовок)
+        td.style.backgroundColor = `hsl(${hue}, 50%, 96%)`;
       }
       tr.appendChild(td);
     });
