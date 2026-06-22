@@ -81,10 +81,8 @@
   position: absolute;
   top: 0;
   bottom: 0;
-  width: 2px;
-  background-color: #ef4444; /* Яскраво-червоний маркер */
-  z-index: 8; /* Щоб була вище фону, але нижче стрілок */
-  box-shadow: 0 0 8px rgba(239, 68, 68, 0.5);
+  z-index: 8;
+  pointer-events: none; /* Щоб лінія не заважала клікати на таблицю */
 }
 .is-today {
   outline: 2px solid #000; /* або інший колір, що виділяє контраст */
@@ -708,9 +706,12 @@ function renderGantt(tasks) {
   const daysUA = ["нд", "пн", "вт", "ср", "чт", "пт", "сб"];
   const today = new Date();
   const nowHour = today.getHours() + (today.getMinutes() / 60);
-  const dayProgress = nowHour / 24; // відсоток пройденого дня
+  const dayProgress = nowHour / 24; // Відсоток пройденого дня (від 0 до 1)
 
   const wrapper = document.createElement("div"); wrapper.className = "gantt-grid-wrapper";
+  // Важливо для правильного позиціонування лінії:
+  wrapper.style.position = "relative"; 
+  
   const table = document.createElement("table"); table.className = "gantt-table";
   const thead = document.createElement("thead"); const trHead = document.createElement("tr");
 
@@ -733,9 +734,8 @@ function renderGantt(tasks) {
     if (diffDays > 1) hue = 120 - Math.floor((index / (diffDays - 1)) * 120);
     
     const isToday = d.toDateString() === today.toDateString();
-    const lightness = isToday ? 65 : 85; // Сьогоднішній заголовок контрастніший
     
-    th.style.backgroundColor = `hsl(${hue}, 80%, ${lightness}%)`;
+    th.style.backgroundColor = `hsl(${hue}, 80%, 85%)`;
     th.style.color = "#1e293b";
     th.style.borderBottom = `2px solid hsl(${hue}, 80%, 50%)`;
     if (isToday) th.style.fontWeight = "bold";
@@ -745,8 +745,6 @@ function renderGantt(tasks) {
   thead.appendChild(trHead); table.appendChild(thead);
 
   const tbody = document.createElement("tbody");
-  
-  // Для точного розрахунку відкидаємо години у 'today'
   const todayDateOnly = new Date(today);
   todayDateOnly.setHours(0,0,0,0);
 
@@ -787,34 +785,19 @@ function renderGantt(tasks) {
     dateList.forEach((currentDate, index) => {
       const td = document.createElement("td");
       const dCurrent = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate());
-      const isToday = dCurrent.toDateString() === today.toDateString();
       
       let hue = 120;
       if (diffDays > 1) hue = 120 - Math.floor((index / (diffDays - 1)) * 120);
 
       if (dCurrent >= taskStart && dCurrent <= taskEnd) { 
         td.className = statusClass; 
-        // Обгортаємо іконку в span, щоб повзунок часу не затер її
         td.innerHTML = `<span style="position:relative; z-index:10;">${icon}</span>`; 
         if(!firstMatchTd) firstMatchTd = td;
         lastMatchTd = td;
       } else { 
         td.className = "cell-empty"; 
-        const lightness = isToday ? 80 : 96; // Порожня комірка "сьогодні" контрастніша
-        td.style.backgroundColor = `hsl(${hue}, 80%, ${lightness}%)`;
+        td.style.backgroundColor = `hsl(${hue}, 80%, 96%)`; // Тільки легка заливка, ніяких блоків "сьогодні"
       }
-
-      // Додаємо класи та повзунок для поточного дня
-      if (isToday) {
-        td.classList.add("today-cell");
-        td.classList.add("is-today");
-        
-        const progress = document.createElement("div");
-        progress.className = "today-progress";
-        progress.style.width = (dayProgress * 100) + "%";
-        td.appendChild(progress);
-      }
-
       tr.appendChild(td);
     });
     
@@ -827,6 +810,34 @@ function renderGantt(tasks) {
   table.appendChild(tbody); 
   wrapper.appendChild(table); 
   gantt.appendChild(wrapper);
+
+  // --- МІНІМАЛІСТИЧНА ЛІНІЯ "СЬОГОДНІ" ---
+  const todayIndex = dateList.findIndex(d => 
+    d.getFullYear() === today.getFullYear() && 
+    d.getMonth() === today.getMonth() && 
+    d.getDate() === today.getDate()
+  );
+
+  if (todayIndex !== -1) {
+    const headerCells = table.querySelectorAll('.date-header');
+    const todayHeader = headerCells[todayIndex];
+    
+    // Розраховуємо колір лінії (такий же, як у ячейки, але темніший/контрастніший)
+    let hue = 120;
+    if (diffDays > 1) hue = 120 - Math.floor((todayIndex / (diffDays - 1)) * 120);
+    
+    const line = document.createElement("div");
+    line.className = "today-line";
+    
+    // Позиція: лівий край колонки + відсоток дня * ширину колонки
+    const offsetLeft = todayHeader.offsetLeft + (todayHeader.offsetWidth * dayProgress);
+    line.style.left = offsetLeft + "px";
+    
+    // Тоненька лінія кольору поточної ячейки (100% насиченість, 40% яскравість для контрасту)
+    line.style.borderLeft = `2px solid hsl(${hue}, 100%, 40%)`;
+    
+    wrapper.appendChild(line);
+  }
 
   // Стрілочки залежностей (SVG)
   const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
