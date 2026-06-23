@@ -978,16 +978,21 @@ function initProcessReport(processId) {
   showReportModal(reportHTML, currentProcess);
 }
 
-// 1. ГЕНЕРАЦІЯ HTML-ВМІСТУ ЗВІТУ
+// 1. ІНІЦІАЛІЗАЦІЯ ЗВІТУ
 window.initProcessReport = function(processId) {
   const currentProcess = allProcesses.find(p => p.processID === processId);
   if (!currentProcess) { alert("Дані процесу не знайдені."); return; }
 
-  // Беремо лічильники задач з твого глобального об'єкту
+  // Беремо лічильники задач
   const counts = globalTaskCounters[processId] || { todo: 0, progress: 0, done: 0, total: 0 };
   const total = counts.todo + counts.progress + counts.done;
   const percent = total > 0 ? Math.round((counts.done / total) * 100) : 0;
-  const ownerName = usersMap[normalizeUser(currentProcess.owner)] || currentProcess.owner;
+  
+  // Визначаємо ім'я власника з usersMap
+  let ownerName = currentProcess.owner;
+  if (typeof usersMap !== 'undefined' && typeof normalizeUser === 'function') {
+      ownerName = usersMap[normalizeUser(currentProcess.owner)] || currentProcess.owner;
+  }
 
   const htmlContent = `
     <div id="print-report-area" style="font-family: Arial, sans-serif; color: #1e293b; line-height: 1.5; padding: 10px;">
@@ -1015,7 +1020,7 @@ window.initProcessReport = function(processId) {
 
       <h4 style="margin: 10px 0 5px 0; color: #1e293b;">👥 Залучена команда:</h4>
       <ul style="margin-top: 0; padding-left: 20px; font-size: 13px;">
-        ${currentProcess.participants.map(p => `<li>${p}</li>`).join('')}
+        ${(currentProcess.participants || []).map(p => `<li>${p}</li>`).join('')}
       </ul>
 
       <p style="font-size: 11px; color: #64748b; margin-top: 15px; text-align: center;">
@@ -1025,27 +1030,70 @@ window.initProcessReport = function(processId) {
     </div>
   `;
 
-  showReportModal(htmlContent, currentProcess);
+  window.showReportModal(htmlContent, currentProcess);
 };
 
+// 2. ВІДОБРАЖЕННЯ МОДАЛЬНОГО ВІКНА
+window.showReportModal = function(htmlContent, proc) {
+  const oldModal = document.getElementById("reportModal");
+  if (oldModal) oldModal.remove();
+
+  const modal = document.createElement("div");
+  modal.id = "reportModal";
+  modal.className = "report-modal-overlay";
+
+  modal.innerHTML = `
+    <div class="report-modal-window">
+      <div class="report-modal-header">
+        <h3>Прев'ю звіту</h3>
+        <button class="report-modal-close" onclick="document.getElementById('reportModal').remove()">&times;</button>
+      </div>
+      <div class="report-modal-actions">
+        <button onclick="window.copyReportToClipboard()">📋 Копіювати текст</button>
+        <button onclick="window.exportReportToWord('${proc.title || 'Проект'}')">📝 Завантажити Word</button>
+        <button onclick="window.sendReportByEmail('${proc.title || 'Проект'}')">✉️ Надіслати поштою</button>
+      </div>
+      <div class="report-modal-body">
+        ${htmlContent}
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(modal);
+};
+
+// 3. КОПІЮВАННЯ ТЕКСТУ
 window.copyReportToClipboard = function() {
   const area = document.getElementById("print-report-area");
-  navigator.clipboard.writeText(area.innerText).then(() => alert("Скопійовано!")).catch(err => alert("Помилка: " + err));
+  if (!area) return;
+  navigator.clipboard.writeText(area.innerText)
+    .then(() => alert("Текст звіту успішно скопійовано!"))
+    .catch(err => alert("Помилка копіювання: " + err));
 };
 
+// 4. ЕКСПОРТ В WORD
 window.exportReportToWord = function(filename) {
   const area = document.getElementById("print-report-area");
+  if (!area) return;
   const html = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="utf-8"></head><body>${area.innerHTML}</body></html>`;
   const blob = new Blob(['\uFEFF' + html], { type: 'application/msword' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
-  a.href = url; a.download = `Звіт_${filename}.doc`;
-  document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
+  a.href = url; 
+  a.download = `Звіт_${filename.replace(/[/\\?%*:|"<>\s]/g, '_')}.doc`;
+  document.body.appendChild(a); 
+  a.click(); 
+  document.body.removeChild(a); 
+  URL.revokeObjectURL(url);
 };
 
+// 5. ВІДПРАВКА НА ПОШТУ
 window.sendReportByEmail = function(filename) {
   const area = document.getElementById("print-report-area");
-  window.location.href = `mailto:?subject=${encodeURIComponent('Звіт: ' + filename)}&body=${encodeURIComponent(area.innerText)}`;
+  if (!area) return;
+  const subject = encodeURIComponent(`Звіт по процесу: ${filename}`);
+  const body = encodeURIComponent(area.innerText);
+  window.location.href = `mailto:?subject=${subject}&body=${body}`;
 };
 </script>
 </body>
