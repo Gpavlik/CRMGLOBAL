@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Мої процеси</title>
   <link rel="icon" type="image/jpg" href="bol.jpg">
+    <link rel="stylesheet" href="style.css" />
   <style>
     /* ==========================================================================
        1. ГЛОБАЛЬНІ СТИЛІ ТА БЕКГРАУНД
@@ -439,7 +440,7 @@
       <div class="form-buttons">
         <button id="saveBtn" onclick="createBoard()" style="background: #10b981; color: white;">Створити</button>
         <button type="button" onclick="toggleForm()" style="background: #94a3b8; color: white;">Скасувати</button>
-      </div>
+            </div>
     </div>
   </div>
 
@@ -458,10 +459,12 @@
       <div class="form-buttons">
         <button id="saveEditBtn" style="background: #10b981; color: white;">Зберегти зміни</button>
         <button type="button" onclick="document.getElementById('editProcessModal').style.display='none'" style="background: #94a3b8; color: white;">Скасувати</button>
+        <button class="btn-report-card" onclick="initProcessReport('${proc.id}')">📊 Звіт по процесу</button>
       </div>
     </div>
   </div>
 </div>
+<script src="report.js"></script>
 <script>
 let allProcesses = [];
 let globalTaskCounters = {}; 
