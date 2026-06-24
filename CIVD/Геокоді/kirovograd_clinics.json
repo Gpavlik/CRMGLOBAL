@@ -1,0 +1,23 @@
+[
+  {
+    "city": "kirovograd",
+    "name": "Медичний центр «ОН Клінік» в Кропивницькому",
+    "address": "б-р. Студентський 6/5",
+    "specializations": "Алергологія,, Гастроентерологія,, Гінекологія,, Дерматологія,, Дієтологія,, Мамологія",
+    "link": "https://doc.ua/ua/klinika/kirovograd/medicinskij-centr-doktorpro-g-kropiivnickij/medicinskij-centr-doktorpro-g-kropiivnickij"
+  },
+  {
+    "city": "kirovograd",
+    "name": "CentroLab лікувально-діагностичний центр на\tвул. Велика Перспективна",
+    "address": "вул. Велика Перспективна, 12",
+    "specializations": "Функціональна діагностика,, Лабораторна діагностика",
+    "link": "https://doc.ua/ua/klinika/kirovograd/centrolab-likuvalno-diagnostichnij-centr-kropivnickij/centrolab-likuvalno-diagnostichnij-centr-navul-velika-perspektivna"
+  },
+  {
+    "city": "kirovograd",
+    "name": "СВОБОДА в Кропивницькому",
+    "address": "вул. Ярошенко, 12",
+    "specializations": "Наркологія,, Психіатрія",
+    "link": "https://doc.ua/ua/klinika/kirovograd/svoboda-v-kropivnickom/svoboda-v-kropivnickom"
+  }
+]

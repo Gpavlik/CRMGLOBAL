@@ -1,0 +1,1486 @@
+[
+  {
+    "city": "lviv",
+    "name": "Дельта Мед",
+    "address": null,
+    "specializations": "Інфектологія,, Вакцинація,, Гастроентерологія,, Гематологія,, Гінекологія,, Денний стаціонар",
+    "link": "https://doc.ua/ua/klinika/lviv/delta-med"
+  },
+  {
+    "city": "lviv",
+    "name": null,
+    "address": "ул. Караджича, 29 Б",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "lviv",
+    "name": null,
+    "address": "вул.Личаківська 129",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "lviv",
+    "name": "Симбіотика (Symbiotyka) у Львові",
+    "address": "вул. Володимира Великого, 2",
+    "specializations": "Гінекологія,, Кардіологія,, Кардіохірургія,, Ортопедія,, Оториноларингологія,, Хірургія",
+    "link": "https://doc.ua/ua/klinika/lviv/simbiotika-symbiotyka-u-lvovi/smbotka-symbiotyka-vo-lvove"
+  },
+  {
+    "city": "lviv",
+    "name": "Центр сучаcної медицини для дорослих та дітей Veselka",
+    "address": null,
+    "specializations": "Імунологія,, Акушерство,, Алергологія,, Вакцинація,, Гастроентерологія,, Гематологія",
+    "link": "https://doc.ua/ua/klinika/lviv/veselka-privatna-dityacha-poliklinika"
+  },
+  {
+    "city": "lviv",
+    "name": null,
+    "address": "пр. Червоної Калини, 68",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "lviv",
+    "name": null,
+    "address": "вул. Щирецька, 36 (поблизу СК Олімп)",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "lviv",
+    "name": null,
+    "address": "пр. Чорновола, 43а",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "lviv",
+    "name": null,
+    "address": "вул Професора Ковалика, 1а",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "lviv",
+    "name": null,
+    "address": "Львів, вул. Широка, 68 а",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "lviv",
+    "name": "Шпиталь Шептицького",
+    "address": "вул. Озаркевича, 4",
+    "specializations": "Гастроентерологія,, Гінекологія,, Дерматологія,, Кардіологія,, Масаж,, Неврологія",
+    "link": "https://doc.ua/ua/klinika/lviv/shpital-imeni-mitropolita-andreya-shptickogo/shpital-imeni-mitropolita-andreya-shptickogo"
+  },
+  {
+    "city": "lviv",
+    "name": "Med Space (Мед Спейс)",
+    "address": "вул. Івана-Теодозія Куровця, 10",
+    "specializations": "Алергологія,, Гастроентерологія,, Гематологія,, Гінекологія,, Дерматологія,, Дієтологія",
+    "link": "https://doc.ua/ua/klinika/lviv/med-space-med-spejs/med-space-med-spejs"
+  },
+  {
+    "city": "lviv",
+    "name": "Медичний центр «Мати та дитина»",
+    "address": "вул. Замарстинівська, 85А",
+    "specializations": "Акушерство,, Гінекологія,, Репродуктологія,, УЗ-діагностика,, Урологія",
+    "link": "https://doc.ua/ua/klinika/lviv/medichnij-centr-mati-ta-ditina/medichnij-centr-mati-ta-ditina"
+  },
+  {
+    "city": "lviv",
+    "name": "Медичний центр Up",
+    "address": "вулиця Шевченка, 62",
+    "specializations": "Гінекологія,, Дерматологія,, Кардіологія,, Офтальмологія,, Педіатрія,, Терапія",
+    "link": "https://doc.ua/ua/klinika/lviv/detskij-medicinskij-centr-up/detskij-medicinskij-centr-up"
+  },
+  {
+    "city": "lviv",
+    "name": "Багатопрофільна клініка «Лев Медікал»",
+    "address": "вул. Луганська, 18 М",
+    "specializations": "Гастроентерологія,, Гінекологія,, Дерматологія,, Кардіологія,, Косметологія,, Мамологія",
+    "link": "https://doc.ua/ua/klinika/lviv/lev-medikal-bagatoprofilna-klinika/lev-medikal-bagatoprofilna-klinika"
+  },
+  {
+    "city": "lviv",
+    "name": "Медікавер",
+    "address": null,
+    "specializations": "Гастроентерологія,, Гінекологія,, Дерматологія,, Ендокринологія,, Кардіологія,, Косметологія",
+    "link": "https://doc.ua/ua/klinika/lviv/medikaver-grup"
+  },
+  {
+    "city": "lviv",
+    "name": null,
+    "address": "вул. Антоновича, 102 / вул. Героїв УПА 73",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "lviv",
+    "name": null,
+    "address": "вул. Стрийська, 204",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "lviv",
+    "name": null,
+    "address": "вул. Гетьмана Мазепи, 25-Б",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "lviv",
+    "name": "Медичний центр Медіальт",
+    "address": null,
+    "specializations": "Вакцинація,, Ведення вагітності,, Гінекологія,, Дієтологія,, Ендокринологія,, Кардіологія",
+    "link": "https://doc.ua/ua/klinika/lviv/medichnij-centr-medialt"
+  },
+  {
+    "city": "lviv",
+    "name": null,
+    "address": "вул. Угорська, 12",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "lviv",
+    "name": null,
+    "address": "вул. Пасічна, 166",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "lviv",
+    "name": "Інститут вертебрології та реабілітації",
+    "address": null,
+    "specializations": "Вертебрологія,, Мануальна терапія,, Масаж,, Неврологія,, Ортопедія,, Реабілітологія",
+    "link": "https://doc.ua/ua/klinika/lviv/institut-vertebrologii-i-reabilitacii"
+  },
+  {
+    "city": "lviv",
+    "name": null,
+    "address": "вул. Кульпарківська, 99-б",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "lviv",
+    "name": null,
+    "address": "пр. Червоної Калини, 72",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "lviv",
+    "name": "Медичний центр «Новодерм»",
+    "address": "вул. Сахарова, 82",
+    "specializations": "Гінекологія,, Дерматологія,, Косметологія,, Психотерапія,, Терапія,, Трихологія",
+    "link": "https://doc.ua/ua/klinika/lviv/medichnij-centr-novoderm/medichnij-centr-novoderm"
+  },
+  {
+    "city": "lviv",
+    "name": "«VeroMed»",
+    "address": "вул. Генерала Юнаківа,9",
+    "specializations": "Акушерство,, Алергологія,, Венерологія,, Гастроентерологія,, Гінекологія,, Дерматологія",
+    "link": "https://doc.ua/ua/klinika/lviv/veromed/veromed"
+  },
+  {
+    "city": "lviv",
+    "name": "Паренс-Україна, центр репродукції",
+    "address": "вул. Кості Левицького 55-А",
+    "specializations": "Акушерство,, Андрологія,, Венерологія,, Гематологія,, Гінекологія,, Дерматологія",
+    "link": "https://doc.ua/ua/klinika/lviv/parens-ukrana-centr-reprodukci/parens-ukrana-centr-reprodukci"
+  },
+  {
+    "city": "lviv",
+    "name": "Клініка Реабілітації Норімед",
+    "address": "вул. Залізнична 7",
+    "specializations": "Дієтологія,, Кардіологія,, Неврологія,, Ортопедія,, Психотерапія,, Пульмонологія",
+    "link": "https://doc.ua/ua/klinika/lviv/norimed-plyus/norimed-plyus"
+  },
+  {
+    "city": "lviv",
+    "name": "Медичний центр «Леодерм»",
+    "address": "пр-т. Червоної Калини, 29А",
+    "specializations": "Дерматологія,, Косметологія,, Дерматовенерологія,, Дерматоонкологія",
+    "link": "https://doc.ua/ua/klinika/lviv/medichnij-centr-leoderm/medichnij-centr-leoderm"
+  },
+  {
+    "city": "lviv",
+    "name": "Візіум – клініка зору у м. Львів",
+    "address": "вул Залізнична, б.7, 2-й поверх",
+    "specializations": "Офтальмологія",
+    "link": "https://doc.ua/ua/klinika/lviv/vizium-klinika-zreniya-v-g-lvov/vizium-klinika-zreniya-v-g-lvov"
+  },
+  {
+    "city": "lviv",
+    "name": "Центр подології FOOTpraktik",
+    "address": "вул. Зелена, 37",
+    "specializations": "Подологія",
+    "link": "https://doc.ua/ua/klinika/lviv/centr-podologi-footpraktik/centr-podologi-footpraktik"
+  },
+  {
+    "city": "lviv",
+    "name": "Клініка репродукції людини “Альтернатива”",
+    "address": "вул. Героїв УПА, 73",
+    "specializations": "Акушерство,, Гінекологія,, Репродуктологія,, УЗ-діагностика,, Урологія",
+    "link": "https://doc.ua/ua/klinika/lviv/alternativa-klinika-reprodukci-lyudini/alternativa-klinika-reprodukci-lyudini"
+  },
+  {
+    "city": "lviv",
+    "name": "Подо-Люкс, подологічний центр",
+    "address": "вул. Костя Левицького, 22",
+    "specializations": "Подологія",
+    "link": "https://doc.ua/ua/klinika/lviv/podo-lyuks-podologicheskij-centr/podo-lyuks-podologicheskij-centr"
+  },
+  {
+    "city": "lviv",
+    "name": "Клініка естетичної медицини Мирослави Новосільської у Львові",
+    "address": "пл. Данила Галицького, 2",
+    "specializations": "Дерматологія,, Косметологія,, Трихологія,, Подологія",
+    "link": "https://doc.ua/ua/klinika/lviv/klinika-esteticheskoj-mediciny-miroslavy-novoselskoj-lvov/klnka-estetcheskoj-medcny-mroslavy-novoselskoj-vo-lvove"
+  },
+  {
+    "city": "lviv",
+    "name": "Клініка гастроентерології та дієтології «Gastrolife»",
+    "address": null,
+    "specializations": "Гастроентерологія,, Дієтологія",
+    "link": "https://doc.ua/ua/klinika/lviv/klinika-gastroenterologii-i-dietologii-gastrolife"
+  },
+  {
+    "city": "lviv",
+    "name": null,
+    "address": "вул. Замарстинівська, 55-ж",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "lviv",
+    "name": null,
+    "address": "вул. Варшавська 193",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "lviv",
+    "name": "Приватний кабінет лікаря Меленя Андрія Петровича",
+    "address": "вул. Миколайчука 9",
+    "specializations": "Флебологія,, Хірургія",
+    "link": "https://doc.ua/ua/klinika/lviv/privatnij-kabinet-likarya-melenya-andriya-petrovicha/chastnyj-kabnet-vracha-melenya-andreya-petrovcha"
+  },
+  {
+    "city": "lviv",
+    "name": "Центр апаратної подології та естетики EOSC у Львові",
+    "address": "просп. Червоної Калини, 97",
+    "specializations": "Подологія",
+    "link": "https://doc.ua/ua/klinika/lviv/centr-apparatnoj-podologii-i-estetiki-eosc-vo-lvove/centr-apparatnoj-podologii-i-estetiki-eosc-vo-lvove"
+  },
+  {
+    "city": "lviv",
+    "name": "Приватний кабінет лікаря Онищак З.М.",
+    "address": "вул. Пантелеймона Куліша, 25/1",
+    "specializations": "Дерматологія",
+    "link": "https://doc.ua/ua/klinika/lviv/chastnyj-kabinet-vracha-onishak-zm/chastnyj-kabinet-vracha-onishak-zm"
+  },
+  {
+    "city": "lviv",
+    "name": "Стоматологічна клініка Олени Юрчак",
+    "address": "вул. Олени Степанівни, 35А",
+    "specializations": "Стоматологія",
+    "link": "https://doc.ua/ua/klinika/lviv/stomatologichna-klinika-oleni-yurchak/stomatologichna-klinika-oleni-yurchak"
+  },
+  {
+    "city": "lviv",
+    "name": "SanMed",
+    "address": "вул. Під Голоском 24",
+    "specializations": "Неврологія,, Оториноларингологія,, Рефлексотерапія",
+    "link": "https://doc.ua/ua/klinika/lviv/sanmed/sanmed"
+  },
+  {
+    "city": "lviv",
+    "name": "Центр подології «Твоя Стопа»",
+    "address": null,
+    "specializations": "Подологія",
+    "link": "https://doc.ua/ua/klinika/lviv/centr-podologii-tvoya-stopa"
+  },
+  {
+    "city": "lviv",
+    "name": null,
+    "address": "вул. Мазепи, 25 (А,Д)",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "lviv",
+    "name": null,
+    "address": "вул. Юрія Руфа, 4",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "lviv",
+    "name": "FemiLux (ФеміЛюкс)",
+    "address": "вул. Туган-Барановського 9",
+    "specializations": "Акушерство,, Гастроентерологія,, Гінекологія,, Дієтологія,, УЗ-діагностика,, Урологія",
+    "link": "https://doc.ua/ua/klinika/lviv/femilux/femilux-femlyuks"
+  },
+  {
+    "city": "lviv",
+    "name": "Стоматологія Вознюк І.С",
+    "address": "вул. Петра Панча, 5",
+    "specializations": "Стоматологія",
+    "link": "https://doc.ua/ua/klinika/lviv/privatnij-kabinet-voznyuk-i-s/privatnij-kabinet-voznyuk-s"
+  },
+  {
+    "city": "lviv",
+    "name": "VIDNOVA Clinic Стоматологія. Косметологія. Пластична хірургія у Львові (Клініка Віднова)",
+    "address": "вул. Куровця, 10",
+    "specializations": "Косметологія,, Пластична хірургія,, Стоматологія",
+    "link": "https://doc.ua/ua/klinika/lviv/vidnova-clinic-stomatologiya-kosmetologiya-plasticheskaya-hirurgiya-vo-lvove-klinika-vidnova/vidnova-clinic-stomatologiya-kosmetologiya-plasticheskaya-hirurgiya-vo-lvove-klinika-vidnova"
+  },
+  {
+    "city": "lviv",
+    "name": "Медауріс",
+    "address": "вул. Дорошенка, 71",
+    "specializations": "Оториноларингологія,, Сурдологія",
+    "link": "https://doc.ua/ua/klinika/lviv/medauris/medauris"
+  },
+  {
+    "city": "lviv",
+    "name": "Стоматологічна клініка Овчара",
+    "address": "вул. Водна, 3/1",
+    "specializations": "Стоматологія,, Ортодонтія",
+    "link": "https://doc.ua/ua/klinika/lviv/stomatologichna-klinika-ovchara/stomatologichna-klinika-ovchara"
+  },
+  {
+    "city": "lviv",
+    "name": "Вілла Луїза (Villa Louisa), стоматологічна клініка",
+    "address": "вул. Пекарська, 55",
+    "specializations": "Стоматологія,, Ортодонтія,, Пародонтологія",
+    "link": "https://doc.ua/ua/klinika/lviv/villa-louisa/villa-louisa"
+  },
+  {
+    "city": "lviv",
+    "name": "Стоматолог і Я",
+    "address": "вул. Залізнична, 25",
+    "specializations": "Стоматологія",
+    "link": "https://doc.ua/ua/klinika/lviv/1143-stomatologiya/stomatologiya1"
+  },
+  {
+    "city": "lviv",
+    "name": "Приватний кабінет психотерапевта Середяк Х.В.",
+    "address": "вул. Кульпарківська 93",
+    "specializations": "Психотерапія",
+    "link": "https://doc.ua/ua/klinika/lviv/privatnij-kabinet-psihoterapevta-seredyak-hv/privatnij-kabinet-psihoterapevta-seredyak-hv"
+  },
+  {
+    "city": "lviv",
+    "name": "Клініка Пульс у Львові",
+    "address": "вул. Малоголосківська, буд. 32",
+    "specializations": "Оториноларингологія,, Педіатрія,, Терапія,, УЗ-діагностика,, Фізіотерапія,, Сімейна медицина",
+    "link": "https://doc.ua/ua/klinika/lviv/oshad-klinika/oshad-klinika"
+  },
+  {
+    "city": "lviv",
+    "name": "Клініка професора Стефана Хміля у Львові",
+    "address": "вул. Липова Алея, 13",
+    "specializations": "Гінекологія,, Косметологія,, Мамологія,, Неврологія,, Педіатрія,, Ревматологія",
+    "link": "https://doc.ua/ua/klinika/lviv/klinika-profesora-stefana-hmilya-u-lvovi/klinika-profesora-stefana-hmilya-u-lvovi"
+  },
+  {
+    "city": "lviv",
+    "name": "Клініка терапії та реабілітації суглобів і хребта OrtoSano",
+    "address": null,
+    "specializations": "Неврологія,, Ортопедія,, Реабілітологія",
+    "link": "https://doc.ua/ua/klinika/lviv/klinika-terapi-ta-reabilitaci-suglobiv-i-hrebta-ortosano"
+  },
+  {
+    "city": "lviv",
+    "name": null,
+    "address": "вул. Городоцька 213",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "lviv",
+    "name": null,
+    "address": "вул. Наукова, 12 А",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "lviv",
+    "name": "Медичний центр доктора Чередника «Cherednyk medical»",
+    "address": "вул. Зелена, 204 Б",
+    "specializations": "Мануальна терапія,, Ортопедія,, Рефлексотерапія,, Функціональна діагностика,, Нетрадиційна медицина,, Вертебрологія",
+    "link": "https://doc.ua/ua/klinika/lviv/medicinskij-centr-doktora-cherednika-cherednykmedical/medicinskij-centr-doktora-cherednika-cherednykmedical"
+  },
+  {
+    "city": "lviv",
+    "name": "Центр зору Глобал Віжн (Global Vision)",
+    "address": "вул. Смотрицького, 2",
+    "specializations": "Офтальмологія",
+    "link": "https://doc.ua/ua/klinika/lviv/centr-zreniya-global-vizion-global-vision/centr-zreniya-global-vizion-global-vision"
+  },
+  {
+    "city": "lviv",
+    "name": "Центр діагностики Святої Марії",
+    "address": null,
+    "specializations": "КТ і МРТ",
+    "link": "https://doc.ua/ua/klinika/lviv/centr-diagnostiki-svyato-mari"
+  },
+  {
+    "city": "lviv",
+    "name": null,
+    "address": "вул. Кульпарківська, 95",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "lviv",
+    "name": null,
+    "address": "вул. Кульпарківська, 35",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "lviv",
+    "name": null,
+    "address": "вул. Зелена, 477 (в Центрі легеневого здоров’я)",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "lviv",
+    "name": "ЕхоПульс у Львові",
+    "address": "проспект Червоної калини 68",
+    "specializations": "Кардіологія,, УЗ-діагностика,, Флебологія,, Сімейна медицина",
+    "link": "https://doc.ua/ua/klinika/lviv/ehopuls-u-lvovi/ehopuls-vo-lvove"
+  },
+  {
+    "city": "lviv",
+    "name": "Нейромед, Центр МРТ діагностики та реабілітації",
+    "address": "просп. Червоної Калини, 56",
+    "specializations": "Неврологія,, УЗ-діагностика,, Реабілітологія,, КТ і МРТ",
+    "link": "https://doc.ua/ua/klinika/lviv/nejromed-centr-mrt-diagnostiki-ta-reabilitaci/nejromed-centr-mrt-diagnostiki-ta-reabilitaci"
+  },
+  {
+    "city": "lviv",
+    "name": "Формула Життя",
+    "address": "вул. Малоголосківська ,16б",
+    "specializations": "Гінекологія,, Кардіологія,, УЗ-діагностика,, Ендокринологія,, Сімейна медицина",
+    "link": "https://doc.ua/ua/klinika/lviv/formula-zhittya/formula-zhzn"
+  },
+  {
+    "city": "lviv",
+    "name": "МеДіС, діагностичний центр",
+    "address": "вул. Юрія Руфа, 35/В",
+    "specializations": "Терапія,, УЗ-діагностика,, Урологія,, Флебологія",
+    "link": "https://doc.ua/ua/klinika/lviv/medis/medis-diagnosticheskij-centr"
+  },
+  {
+    "city": "lviv",
+    "name": "Центр Відновлення зору Анатолія Совви у Львові",
+    "address": "вул. Панча, 5",
+    "specializations": "Офтальмологія",
+    "link": "https://doc.ua/ua/klinika/lviv/centr-vidnovlennya-zoru-anatoliya-sovvi-v-chernivcyah/centr-vidnovlennya-zoru-anatoliya-sovvi-u-lvovi"
+  },
+  {
+    "city": "lviv",
+    "name": "Клініка академіка Грищенка у м. Львів",
+    "address": "вул. Шевченка, 21",
+    "specializations": "Акушерство,, Гінекологія,, Репродуктологія,, УЗ-діагностика",
+    "link": "https://doc.ua/ua/klinika/lviv/implant-klinika-reproduktivnoj-mediciny-imeni-akademika-vi-grishenko/klinika-akademika-grishenko-v-g-lvov"
+  },
+  {
+    "city": "lviv",
+    "name": "Медцентр «Біомед»",
+    "address": null,
+    "specializations": "Вакцинація,, Гастроентерологія,, Гінекологія,, Ендокринологія,, Кардіологія,, Лабораторна діагностика",
+    "link": "https://doc.ua/ua/klinika/lviv/biomed"
+  },
+  {
+    "city": "lviv",
+    "name": null,
+    "address": "вул. Драгана, 4 б",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "lviv",
+    "name": null,
+    "address": "вул. Коциловського, 32",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "lviv",
+    "name": "«Джерело»",
+    "address": "вул. Джерельна, 16а, кв. 6",
+    "specializations": "Акушерство,, Гінекологія",
+    "link": "https://doc.ua/ua/klinika/lviv/dzherelo/dzherelo"
+  },
+  {
+    "city": "lviv",
+    "name": "ДВ, медичний центр",
+    "address": "вул. Дорошенка, 65",
+    "specializations": "Акушерство,, Венерологія,, Гастроентерологія,, Гінекологія,, Дерматологія,, Мамологія",
+    "link": "https://doc.ua/ua/klinika/lviv/dv-medichnij-centr/dv-medicinskij-centr"
+  },
+  {
+    "city": "lviv",
+    "name": "Медичний центр «Венера»",
+    "address": "вул. Кос-Анатольського, 4",
+    "specializations": "Акушерство,, Алергологія,, Андрологія,, Венерологія,, Гінекологія,, Дерматологія",
+    "link": "https://doc.ua/ua/klinika/lviv/venera/venera"
+  },
+  {
+    "city": "lviv",
+    "name": "Ехокор",
+    "address": "вул. Угорська, 17",
+    "specializations": "Дієтологія,, Кардіологія,, Неврологія,, Ревматологія,, Терапія,, Функціональна діагностика",
+    "link": "https://doc.ua/ua/klinika/lviv/ehokor/ehokor-na-ugorskij"
+  },
+  {
+    "city": "lviv",
+    "name": "Стоматологічна клініка ЕКСПЕРТ",
+    "address": null,
+    "specializations": "Дитяча стоматологія,, Ортодонтія,, Ортопедична стоматологія,, Стоматологія,, Хірургічна стоматологія",
+    "link": "https://doc.ua/ua/klinika/lviv/ekspert"
+  },
+  {
+    "city": "lviv",
+    "name": null,
+    "address": "вул. Окружна, 94 А",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "lviv",
+    "name": null,
+    "address": "вул. Володимира Великого, 10 Б",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "lviv",
+    "name": "Медичний центр «Sanolife»",
+    "address": "вул. Володимира Великого, 10",
+    "specializations": "Гінекологія,, Дерматологія,, Кардіологія,, Неврологія,, Психіатрія,, Психотерапія",
+    "link": "https://doc.ua/ua/klinika/lviv/medicinskij-centr-sanolife/medichnij-centr-sanolife"
+  },
+  {
+    "city": "lviv",
+    "name": "Подологічний центр Наталії Гринчишин",
+    "address": "вул. Стрийська 33",
+    "specializations": "Подологія",
+    "link": "https://doc.ua/ua/klinika/lviv/estetiko-podologicheskaya-studiya-natali-grinchishin/estetiko-podologicheskaya-studiya-natali-grinchishin"
+  },
+  {
+    "city": "lviv",
+    "name": "IQMED",
+    "address": "вул. Липова Алея, 15",
+    "specializations": "Акушерство,, Гінекологія,, Кардіологія,, Неврологія,, Психіатрія,, УЗ-діагностика",
+    "link": "https://doc.ua/ua/klinika/lviv/iqmed/iqmed"
+  },
+  {
+    "city": "lviv",
+    "name": "ЛОР-центр та Центр слуху БЕТТЕРТОН Львів",
+    "address": null,
+    "specializations": "Оториноларингологія,, Сурдологія",
+    "link": "https://doc.ua/ua/klinika/lviv/centr-sluhu-betterton-lviv"
+  },
+  {
+    "city": "lviv",
+    "name": null,
+    "address": "вул. Городоцька, 81",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "lviv",
+    "name": null,
+    "address": "вул. Стрийська, 45Д",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "lviv",
+    "name": "Лікарня ЕКСПЕРТ",
+    "address": null,
+    "specializations": "Алергологія,, Гастроентерологія,, Гінекологія,, Дерматологія,, Ендокринологія,, Кардіологія",
+    "link": "https://doc.ua/ua/klinika/lviv/likarnya-ekspert"
+  },
+  {
+    "city": "lviv",
+    "name": null,
+    "address": "вул. Шолом-Алейхема, 11",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "lviv",
+    "name": null,
+    "address": "вул. Червоної Калини, 56 А",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "lviv",
+    "name": null,
+    "address": "вул. Кульпарківська, 64 А",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "lviv",
+    "name": "Приватний кабінет клінічного психолога Андрія Вороняка",
+    "address": "вул. Водогінна, 2 (офісцентр), каб. 118",
+    "specializations": "Психологія,, Психотерапія",
+    "link": "https://doc.ua/ua/klinika/lviv/privatnij-kabinet-klinichnogo-psihologa-andriya-voronyaka/privatnij-kabinet-klinichnogo-psihologa-andriya-voronyaka"
+  },
+  {
+    "city": "lviv",
+    "name": "«RIKOTA»",
+    "address": null,
+    "specializations": "Ортодонтія,, Стоматологія,, Хірургія",
+    "link": "https://doc.ua/ua/klinika/lviv/rikota1"
+  },
+  {
+    "city": "lviv",
+    "name": null,
+    "address": "вул. Шевченка 17",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "lviv",
+    "name": null,
+    "address": "вул. Зелена, 184 (навпроти McDonald's)",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "lviv",
+    "name": null,
+    "address": "вул. Стрийська, 45ж ( біля ТЦ \"FABRIK\" )",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "lviv",
+    "name": null,
+    "address": "вул. Замарстинівська, 55в (ЖК \"Avalon\")",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "lviv",
+    "name": "Медичний центр громадського здоров’я «Інновація»",
+    "address": "вул. С. Петлюри, 34",
+    "specializations": "Наркологія,, Психіатрія,, Психотерапія",
+    "link": "https://doc.ua/ua/klinika/lviv/medichnij-centr-gromadskogo-zdorovya-innovaciya/medichnij-centr-gromadskogo-zdorovya-innovaciya"
+  },
+  {
+    "city": "lviv",
+    "name": "Львівська обласна клінічна лікарня",
+    "address": "вул. Чернігівська, 7",
+    "specializations": "",
+    "link": "https://doc.ua/ua/klinika/lviv/lvivska-oblasna-klinichna-likarnya/lvivska-oblasna-klinichna-likarnya"
+  },
+  {
+    "city": "lviv",
+    "name": "Клініка \"Чоловіче здоров’я +\"",
+    "address": "вул. Кості Левицького, буд. 97",
+    "specializations": "Акушерство,, Андрологія,, Гінекологія,, Психотерапія,, Сексологія,, Сексопатологія",
+    "link": "https://doc.ua/ua/klinika/lviv/klinika-choloviche-zdorovya/klinika-choloviche-zdorovya"
+  },
+  {
+    "city": "lviv",
+    "name": "Симетрія, медичний центр у Львові",
+    "address": "ул. Шевченко, 31",
+    "specializations": "Масаж,, Неврологія,, Ортопедія,, Травматологія,, Реабілітологія,, Кінезітерапія",
+    "link": "https://doc.ua/ua/klinika/lviv/centr-reabilitacii-bubnovskogo/centr-reabilitacii-bubnovskogo"
+  },
+  {
+    "city": "lviv",
+    "name": "Центр вилікуваних захворювань",
+    "address": "вул. акад. Сахарова, 44/65",
+    "specializations": "Неврологія,, Нейрохірургія,, Хірургія",
+    "link": "https://doc.ua/ua/klinika/lviv/mizhnarodnij-likuvalno-ozdorovcho-navchalnij-centr-viktoriya/viktoriya-mizhnarodnij-likuvalno-ozdorovcho-navchalnij-centr"
+  },
+  {
+    "city": "lviv",
+    "name": "Приватний кабінет психолога Шевчук Олесі",
+    "address": "вул. Володимира Великого, 18 каб.1104",
+    "specializations": "Психологія,, Психотерапія",
+    "link": "https://doc.ua/ua/klinika/lviv/privatnij-kabinet-psihologa-shevchuk-olesi/privatnij-kabinet-psihologa-shevchuk-olesi"
+  },
+  {
+    "city": "lviv",
+    "name": "Hereta Dental",
+    "address": "вул. Шафарика, 1",
+    "specializations": "Стоматологія",
+    "link": "https://doc.ua/ua/klinika/lviv/hereta-dental/hereta-dental"
+  },
+  {
+    "city": "lviv",
+    "name": "«ЦЕНТР СЛУХУ» Львів",
+    "address": "вул. Личаківська, 33",
+    "specializations": "Сурдологія",
+    "link": "https://doc.ua/ua/klinika/lviv/2456-centr-sluha/centr-sluha-lvov"
+  },
+  {
+    "city": "lviv",
+    "name": "Євроклінік",
+    "address": null,
+    "specializations": "КТ і МРТ,, Ревматологія,, Рентгенологія",
+    "link": "https://doc.ua/ua/klinika/lviv/evroklinik"
+  },
+  {
+    "city": "lviv",
+    "name": null,
+    "address": "вул. Миколайчука І., будинок 9",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "lviv",
+    "name": null,
+    "address": "вул. Юрія Руфа, буд. 4",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "lviv",
+    "name": "Психолог Анастасія Ковальчук",
+    "address": "м. Львів",
+    "specializations": "Психологія",
+    "link": "https://doc.ua/ua/klinika/lviv/psiholog-anastasiya-kovalchuk/psiholog-anastasiya-kovalchuk"
+  },
+  {
+    "city": "lviv",
+    "name": "Кабінет клінічного психолога Хім’як Катерини Михайлівни",
+    "address": "вул. Головацького, 23 Г",
+    "specializations": "",
+    "link": "https://doc.ua/ua/klinika/lviv/kabinet-klinichnogo-psihologa-himyak-katerini-mihajlivni/kabinet-klinichnogo-psihologa-himyak-katerini-mihajlivni"
+  },
+  {
+    "city": "lviv",
+    "name": "Реабілітаційний центр \"Відновлення\"",
+    "address": "вул. Княгині Ольги, 5Л",
+    "specializations": "Фізіотерапія,, Реабілітологія",
+    "link": "https://doc.ua/ua/klinika/lviv/reabilitacionnyj-centr-vosstanovlenie/reabilitacionnyj-centr-vosstanovlenie"
+  },
+  {
+    "city": "lviv",
+    "name": "РелаксДент (RelaxDent), стоматологічна клініка",
+    "address": "вул. Городницька, 9",
+    "specializations": "Стоматологія,, Дитяча стоматологія,, Ортопедична стоматологія,, Хірургічна стоматологія,, Стоматологічна імплантологія",
+    "link": "https://doc.ua/ua/klinika/lviv/relaksdent-relaxdent-stomatologicheskaya-klinika/relaksdent-relaxdent-stomatologicheskaya-klinika"
+  },
+  {
+    "city": "lviv",
+    "name": "White&White Dental Studio Lviv",
+    "address": "вул. Шевченка, 80б (ЖК Шоколад)",
+    "specializations": "Стоматологія,, Ортодонтія,, Дитяча стоматологія,, Ортопедична стоматологія,, Хірургічна стоматологія,, Стоматологічна імплантологія",
+    "link": "https://doc.ua/ua/klinika/lviv/whitewhite-dental-studio-lviv/whitewhite-dental-studio-lviv"
+  },
+  {
+    "city": "lviv",
+    "name": "Дентіко",
+    "address": "вул. Шолом-Алейхема, 10",
+    "specializations": "Стоматологія,, Ортодонтія,, Ортопедична стоматологія,, Хірургічна стоматологія,, Стоматологічна імплантологія",
+    "link": "https://doc.ua/ua/klinika/lviv/dentiko/dentko"
+  },
+  {
+    "city": "lviv",
+    "name": "Медичний центр Astra Dent Львів",
+    "address": "проспект Шевченка, 7",
+    "specializations": "Стоматологія,, Ортодонтія,, Ендодонтія,, Ортопедична стоматологія,, Хірургічна стоматологія,, Стоматологічна імплантологія",
+    "link": "https://doc.ua/ua/klinika/lviv/medichnij-centr-astra-dent-lviv/medichnij-centr-astra-dent-lviv"
+  },
+  {
+    "city": "lviv",
+    "name": "Мережа стоматологічних центрів «МістоДент» Львів",
+    "address": "вулиця Шевченка, 111 А",
+    "specializations": "Стоматологія,, Ортодонтія,, Дитяча стоматологія,, Ортопедична стоматологія,, Хірургічна стоматологія,, Стоматологічна імплантологія",
+    "link": "https://doc.ua/ua/klinika/lviv/set-stomatologicheskih-centrov-mistodent-lvov/set-stomatologicheskih-centrov-mistodent-lvov"
+  },
+  {
+    "city": "lviv",
+    "name": "Медичний центр «Горизонти»",
+    "address": "вул. Пекарська, 65 Б",
+    "specializations": "Гінекологія,, Дерматологія,, Косметологія,, Пластична хірургія,, Проктологія,, Трихологія",
+    "link": "https://doc.ua/ua/klinika/lviv/medicinskij-centr-gorizonti/medicinskij-centr-gorizonti"
+  },
+  {
+    "city": "lviv",
+    "name": "Трихологічний кабінет Євгенії Попович",
+    "address": "вул. Шевченка, 60. Корпус 18",
+    "specializations": "Трихологія",
+    "link": "https://doc.ua/ua/klinika/lviv/trihologichnij-kabinet-vgeni-popovich/trihologichnij-kabinet-vgeni-popovich"
+  },
+  {
+    "city": "lviv",
+    "name": "Novo (Ново)",
+    "address": "вул. Пилипа Орлика, 4",
+    "specializations": "Акушерство,, Гінекологія,, Кардіологія,, Мамологія,, Неврологія,, Неонатологія",
+    "link": "https://doc.ua/ua/klinika/lviv/novo/novo-novo"
+  },
+  {
+    "city": "lviv",
+    "name": "INNOVO (ІННОВО)",
+    "address": "вул. В. Стуса, 37",
+    "specializations": "Мануальна терапія,, Неврологія,, Ортопедія,, Педіатрія,, Психологія,, Ревматологія",
+    "link": "https://doc.ua/ua/klinika/lviv/innovo-innovo/innovo-innovo"
+  },
+  {
+    "city": "lviv",
+    "name": "Інтерсоно Медікавер груп",
+    "address": "вул. Антоновича, 102",
+    "specializations": "Акушерство,, Андрологія,, Анестезіологія,, Венерологія,, Гастроентерологія,, Генетика",
+    "link": "https://doc.ua/ua/klinika/lviv/intersono-medicover-group/ntersono-medicover-group"
+  },
+  {
+    "city": "lviv",
+    "name": "Офтальмологічний кабінет «Люксоптика»",
+    "address": null,
+    "specializations": "Офтальмологія",
+    "link": "https://doc.ua/ua/klinika/lviv/luxoptica"
+  },
+  {
+    "city": "lviv",
+    "name": null,
+    "address": "пр. Тараса Шевченка, 3",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "lviv",
+    "name": null,
+    "address": "ул. Під Дубом, 7-Б (ТРЦ FORUM LVIV)",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "lviv",
+    "name": null,
+    "address": "вул. Огієнко, 29",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "lviv",
+    "name": "Здорова стопа, центр подології",
+    "address": "вул. Щирецька, 36",
+    "specializations": "Подологія",
+    "link": "https://doc.ua/ua/klinika/lviv/zdorova-stopa-centr-podologi/zdorova-stopa-centr-podologi"
+  },
+  {
+    "city": "lviv",
+    "name": "Хірургічна клініка «Корона»",
+    "address": "ул. Снопковская, 18",
+    "specializations": "Гастроентерологія,, Дієтологія,, Кардіологія,, Неврологія,, Онкологія,, Ортопедія",
+    "link": "https://doc.ua/ua/klinika/lviv/hirurgichna-klinika-korona/hirurgichna-klinika-korona"
+  },
+  {
+    "city": "lviv",
+    "name": "Сенс, приватний психологічний центр",
+    "address": null,
+    "specializations": "Психологія,, Психотерапія",
+    "link": "https://doc.ua/ua/klinika/lviv/sens-psihologichnij-centr"
+  },
+  {
+    "city": "lviv",
+    "name": null,
+    "address": "вул. Наливайка, 5",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "lviv",
+    "name": null,
+    "address": "вул. Лемківська 9а, офіс 31",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "lviv",
+    "name": "Клініка реабілітації OsNova",
+    "address": "вул. Виговського, 5Б",
+    "specializations": "Мануальна терапія,, Неврологія,, Ортопедія,, Рефлексотерапія,, Фізіотерапія,, Реабілітологія",
+    "link": "https://doc.ua/ua/klinika/lviv/klinika-reabilitaci-osnova/klnka-reabltac-osnova"
+  },
+  {
+    "city": "lviv",
+    "name": "Оксфорд Медікал Львів",
+    "address": null,
+    "specializations": "Гастроентерологія,, Гінекологія,, Денний стаціонар,, Дерматологія,, КТ і МРТ,, Кардіологія",
+    "link": "https://doc.ua/ua/klinika/lviv/oksford-medikal-lvov"
+  },
+  {
+    "city": "lviv",
+    "name": null,
+    "address": "пр. В. Чорновола, 45А, корпус 9",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "lviv",
+    "name": null,
+    "address": "вул. Зубрівська, 21",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "lviv",
+    "name": null,
+    "address": "вул. Раппапорта, 2",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "lviv",
+    "name": "Стоматологічна клініка доктора Буня",
+    "address": "вул. Шевська, 1",
+    "specializations": "Стоматологія",
+    "link": "https://doc.ua/ua/klinika/lviv/stomatologichna-klinika-doktora-bunya/stomatologichna-klinika-doktora-bunya"
+  },
+  {
+    "city": "lviv",
+    "name": "Стоматологічна клініка «Стоматпрофі»",
+    "address": "вул. Петра Дорошенка, 31",
+    "specializations": "Стоматологія,, Ортодонтія",
+    "link": "https://doc.ua/ua/klinika/lviv/blakit/blakit"
+  },
+  {
+    "city": "lviv",
+    "name": "ЛАЗЕР Плюс",
+    "address": "вул. Миколайчука, 9",
+    "specializations": "Офтальмологія",
+    "link": "https://doc.ua/ua/klinika/lviv/lazer-plyus/lazer-plyus"
+  },
+  {
+    "city": "lviv",
+    "name": "Улюблений доктор",
+    "address": "вул. Личаківська, 98",
+    "specializations": "Стоматологія",
+    "link": "https://doc.ua/ua/klinika/lviv/ulyublenij-doktor/ulyublenij-doktor"
+  },
+  {
+    "city": "lviv",
+    "name": "American Medical Centers",
+    "address": "вул. Богомольця, 3",
+    "specializations": "Алергологія,, Венерологія,, Гастроентерологія,, Гематологія,, Гінекологія,, Дерматологія",
+    "link": "https://doc.ua/ua/klinika/lviv/amerikanskij-medichnij-centr/amerikanskij-medichnij-centr"
+  },
+  {
+    "city": "lviv",
+    "name": "Центр стоматології та краси SMILE&BEAUTY",
+    "address": "площа Князя Святослава, 5",
+    "specializations": "Косметологія,, Стоматологія",
+    "link": "https://doc.ua/ua/klinika/lviv/centr-stomatologi-ta-krasi-smilebeauty/centr-stomatologi-ta-krasi-smilebeauty"
+  },
+  {
+    "city": "lviv",
+    "name": "Версаль, центр апаратної косметології",
+    "address": "вул. Дорошенка, 71",
+    "specializations": "Косметологія",
+    "link": "https://doc.ua/ua/klinika/lviv/versal-centr-aparatno-kosmetologi/versal-centr-aparatno-kosmetologi"
+  },
+  {
+    "city": "lviv",
+    "name": "Авторська стоматологія Мар'яни Мельничук",
+    "address": "вул. І. Франка, 23/43",
+    "specializations": "Стоматологія,, Ортодонтія",
+    "link": "https://doc.ua/ua/klinika/lviv/avtorska-stomatologiya-maryani-melnichuk/avtorska-stomatologiya-maryani-melnichuk"
+  },
+  {
+    "city": "lviv",
+    "name": "Приватний кабінет Гаталяка О.В. у стоматологічній клініці \"Монада\"",
+    "address": "вул. Яна Райніса, 9",
+    "specializations": "Стоматологія",
+    "link": "https://doc.ua/ua/klinika/lviv/privatnij-kabinet-gatalyaka-ov-u-stomatologichnij-klinici-monada/privatnij-kabinet-gatalyaka-ov-u-stomatologichnij-klinici-monada"
+  },
+  {
+    "city": "lviv",
+    "name": "Притула Дентал Студіо",
+    "address": "вул. Виговського, 5Б",
+    "specializations": "Ортопедія,, Стоматологія,, Терапія,, Хірургія,, Ортодонтія",
+    "link": "https://doc.ua/ua/klinika/lviv/prytula-dental-studio/prytula-dental-studio"
+  },
+  {
+    "city": "lviv",
+    "name": "Олдент",
+    "address": "вул. Лесі Українки 35 / 10а",
+    "specializations": "Стоматологія",
+    "link": "https://doc.ua/ua/klinika/lviv/oldent/oldent"
+  },
+  {
+    "city": "lviv",
+    "name": "Центр здоров'я родини",
+    "address": "вул. О. Кониського, 9/2А",
+    "specializations": "Акушерство,, Гінекологія,, УЗ-діагностика",
+    "link": "https://doc.ua/ua/klinika/lviv/centr-zdorovya-rodini/centr-zdorovya-rodini"
+  },
+  {
+    "city": "lviv",
+    "name": "Центр фізичної терапії ReLife",
+    "address": "вул. Виговського, 5-Б",
+    "specializations": "Неврологія,, Ортопедія,, Травматологія,, Фізіотерапія,, Вертебрологія",
+    "link": "https://doc.ua/ua/klinika/lviv/centr-fizichno-terapi-relife/centr-fizichno-terapi-relife"
+  },
+  {
+    "city": "lviv",
+    "name": "Медичний центр Giorno",
+    "address": "вул. Шевченка 60, корп 18 (ЖК Семицвіт)",
+    "specializations": "Алергологія,, Гастроентерологія,, Гінекологія,, Дерматологія,, Кардіологія,, Неврологія",
+    "link": "https://doc.ua/ua/klinika/lviv/medicinskij-centr-giorno/medichnij-centr-giorno"
+  },
+  {
+    "city": "lviv",
+    "name": "Акварель, студія стоматології та ортодонтії",
+    "address": "вул. Дністерська 27, 4 поверх, каб. 405",
+    "specializations": "Стоматологія,, Ортодонтія",
+    "link": "https://doc.ua/ua/klinika/lviv/akvarel-studiya-stomatologi-ta-ortodonti/akvarel-studiya-stomatologi-ta-ortodonti"
+  },
+  {
+    "city": "lviv",
+    "name": "Ультра-Соно, кабінет ультразвукової діагностики Олесі Гайдучок",
+    "address": "вул. Братів Міхновських, 23",
+    "specializations": "УЗ-діагностика",
+    "link": "https://doc.ua/ua/klinika/lviv/ultra-sono-kabinet-ultrazvukovo-diagnostiki-olesi-gajduchok/ultra-sono-kabinet-ultrazvukovo-diagnostiki-olesi-gajduchok"
+  },
+  {
+    "city": "lviv",
+    "name": "Медичний центр «Усмішка»",
+    "address": "вул. Виговського, 20 б",
+    "specializations": "Стоматологія,, Ортодонтія",
+    "link": "https://doc.ua/ua/klinika/lviv/medichnij-centr-usmishka/medichnij-centr-usmishka"
+  },
+  {
+    "city": "lviv",
+    "name": "Реабілітаційний центр «Твоє здоров'я»",
+    "address": "вул. Уляни Кравченко, 8",
+    "specializations": "Масаж,, Неврологія,, Ортопедія,, Травматологія,, Реабілітологія,, Кінезітерапія",
+    "link": "https://doc.ua/ua/klinika/lviv/reabilitacijnij-centr-tvo-zdorovya/reabilitacijnij-centr-tvo-zdorovya"
+  },
+  {
+    "city": "lviv",
+    "name": "АртДент",
+    "address": "м. Львів, пр. Червоної Калини, 35 В",
+    "specializations": "Ортопедія,, Стоматологія,, Хірургія,, Ортодонтія",
+    "link": "https://doc.ua/ua/klinika/lviv/artdent/artdent"
+  },
+  {
+    "city": "lviv",
+    "name": "Стоматологічна клініка Харченка",
+    "address": null,
+    "specializations": "Дитяча стоматологія,, Ендодонтія,, Ортодонтія,, Ортопедична стоматологія,, Пародонтологія,, Стоматологічна імплантологія",
+    "link": "https://doc.ua/ua/klinika/lviv/stomatologicheskaya-klinika-harchenka"
+  },
+  {
+    "city": "lviv",
+    "name": null,
+    "address": "вул. Липинського В. 28/107, ЖК «Парус»",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "lviv",
+    "name": null,
+    "address": "м. Львів, вул. Залізнична,7",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "lviv",
+    "name": "Гіруда-Віта",
+    "address": "вул. Короленка, 4, оф. 4",
+    "specializations": "Рефлексотерапія,, Гірудотерапія,, Нетрадиційна медицина",
+    "link": "https://doc.ua/ua/klinika/lviv/giruda-vita/giruda-vita"
+  },
+  {
+    "city": "lviv",
+    "name": "СВІТ Дитя, центр свідомого батьківства",
+    "address": "вул. Стуса, 4",
+    "specializations": "Масаж,, Психологія,, Психотерапія",
+    "link": "https://doc.ua/ua/klinika/lviv/sweet-ditya-centr-svidomogo-batkivstva/sweet-ditya-centr-svidomogo-batkivstva"
+  },
+  {
+    "city": "lviv",
+    "name": "Приватний кабінет стоматолога Гордієнко С.Ю.",
+    "address": "вул. Шевченка, 46",
+    "specializations": "Стоматологія",
+    "link": "https://doc.ua/ua/klinika/lviv/privatnij-kabinet-stomatologa-gordinko-syu/privatnij-kabinet-stomatologa-gordinko-syu"
+  },
+  {
+    "city": "lviv",
+    "name": "Люменіс, центр лазерної епіляції",
+    "address": "пр. В'ячеслава Чорновола, 63",
+    "specializations": "Косметологія",
+    "link": "https://doc.ua/ua/klinika/lviv/lyumenis-centr-lazerno-epilyaci/lyumenis-centr-lazerno-epilyaci"
+  },
+  {
+    "city": "lviv",
+    "name": "Аура Дент",
+    "address": "вул. Нечуя-Левицького, 13",
+    "specializations": "Стоматологія,, Ортодонтія",
+    "link": "https://doc.ua/ua/klinika/lviv/aura-dent/aura-dent"
+  },
+  {
+    "city": "lviv",
+    "name": "Приватний стоматологічний кабінет Муренець Анжели Вікторівни",
+    "address": "вул. І.Франка, 83",
+    "specializations": "Стоматологія",
+    "link": "https://doc.ua/ua/klinika/lviv/privatnij-stomatologichnij-kabinet-murenec-anzheli-viktorivni/privatnij-stomatologichnij-kabinet-murenec-anzheli-viktorivni"
+  },
+  {
+    "city": "lviv",
+    "name": "Клінічна лікарня Львівської залізниці",
+    "address": "вул. Огієнка, 5",
+    "specializations": "Гінекологія,, Нейрохірургія,, Терапія,, УЗ-діагностика,, Ендоскопія",
+    "link": "https://doc.ua/ua/klinika/lviv/klinichna-likarnya-lvivsko-zaliznici-lvivska-klinichna-likarnya-na-zaliznichnomu-transporti/klinichna-likarnya-lvivsko-zaliznici"
+  },
+  {
+    "city": "lviv",
+    "name": "«Family Dentist», стоматологічна клініка",
+    "address": "вул. Караджича, 29Г",
+    "specializations": "Стоматологія",
+    "link": "https://doc.ua/ua/klinika/lviv/family-dentist-stomatologichna-klinika/family-dentist-stomatologichna-klinika"
+  },
+  {
+    "city": "lviv",
+    "name": "Медичний коворкінг Kabimed у м. Львів",
+    "address": "вул. Зелена, 204Б, ЖК Avalon Zelena Street",
+    "specializations": "Гінекологія,, Дерматологія,, Кардіологія,, Оториноларингологія,, Педіатрія,, Терапія",
+    "link": "https://doc.ua/ua/klinika/lviv/medichnij-kovorking-kabimed-u-m-lviv/medicinskij-kovorking-kabimed-v-g-lvov"
+  },
+  {
+    "city": "lviv",
+    "name": "Центр естетичної медицини IDEMRIC",
+    "address": null,
+    "specializations": "Гінекологія,, Дерматологія,, Косметологія,, Масаж",
+    "link": "https://doc.ua/ua/klinika/lviv/centr-estetichno-medicini-idemric"
+  },
+  {
+    "city": "lviv",
+    "name": null,
+    "address": "вул. Cтрийська 108",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "lviv",
+    "name": null,
+    "address": "вул. Мельника 18",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "lviv",
+    "name": null,
+    "address": "вул. Замарстинівська 55 є",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "lviv",
+    "name": "Центр літотрипсії",
+    "address": "вул.Огієнка, 3",
+    "specializations": "Акушерство,, Гінекологія,, УЗ-діагностика,, Урологія",
+    "link": "https://doc.ua/ua/klinika/lviv/centr-litotripsi/centr-litotripsi"
+  },
+  {
+    "city": "lviv",
+    "name": "Тріомед",
+    "address": "вул. К. Левицького, 43а/2",
+    "specializations": "Гематологія,, Кардіологія,, Кардіохірургія,, Неврологія,, Ревматологія,, УЗ-діагностика",
+    "link": "https://doc.ua/ua/klinika/lviv/triomed/triomed"
+  },
+  {
+    "city": "lviv",
+    "name": "Біокурс",
+    "address": "вул. Олекси Новаківського, 8/1",
+    "specializations": "Акушерство,, Алергологія,, Андрологія,, Венерологія,, Гастроентерологія,, Дерматологія",
+    "link": "https://doc.ua/ua/klinika/lviv/biokurs/biokurs"
+  },
+  {
+    "city": "lviv",
+    "name": "Медичний центр «Інлор»",
+    "address": "м. Львів, пр. В. Чорновола, 16в",
+    "specializations": "Неврологія,, Оториноларингологія,, Педіатрія,, Пластична хірургія",
+    "link": "https://doc.ua/ua/klinika/lviv/medichnij-centr-inlor/medichnij-centr-inlor"
+  },
+  {
+    "city": "lviv",
+    "name": "Медичний Центр «Платинум»",
+    "address": "вул. Гетьмана Мазепи, 25а",
+    "specializations": "Стоматологія,, Ортодонтія",
+    "link": "https://doc.ua/ua/klinika/lviv/medichnij-centr-platinum/medichnij-centr-platinum"
+  },
+  {
+    "city": "lviv",
+    "name": "Львівська клінічна лікарня філії «ЦОЗ» ПАТ «Укрзалізниця»  (Поліклінічне відділення)",
+    "address": "вул. Огієнка, 3 (2-й поверх)",
+    "specializations": "Гінекологія,, Кардіологія,, Неврологія,, Стоматологія,, Хірургія",
+    "link": "https://doc.ua/ua/klinika/lviv/lvivska-klinichna-likarnya-fili-coz-pat-ukrzaliznicya/lvivska-klinichna-likarnya-fili-coz-pat-ukrzaliznicya"
+  },
+  {
+    "city": "lviv",
+    "name": "Центр подології і нігтьової естетики Олени Бочкарьової",
+    "address": "вул. О. Новаківського, 12",
+    "specializations": "Подологія",
+    "link": "https://doc.ua/ua/klinika/lviv/centr-podologi/centr-podologi-i-nigtovo-estetiki-oleni-bochkarovo"
+  },
+  {
+    "city": "lviv",
+    "name": "Приватна консультація хірурга",
+    "address": "вул. Фар'яна, 5",
+    "specializations": "Хірургія",
+    "link": "https://doc.ua/ua/klinika/lviv/privatna-konsultaciya-hirurga/privatna-konsultaciya-hirurga"
+  },
+  {
+    "city": "lviv",
+    "name": "Дента-Супер",
+    "address": "вул. Фурманська, 12/1",
+    "specializations": "Стоматологія",
+    "link": "https://doc.ua/ua/klinika/lviv/denta-super/denta-super"
+  },
+  {
+    "city": "lviv",
+    "name": "Медичний центр венозної і серцево-судинної діагностики CEDRUS  (Цедрус)",
+    "address": "вул. Некрасова 5 а",
+    "specializations": "Кардіологія,, Неврологія,, УЗ-діагностика,, Флебологія,, Хірургія",
+    "link": "https://doc.ua/ua/klinika/lviv/medichnij-centr-venozno-i-sercevo-sudinno-diagnostiki-cedrus/medichnij-centr-venozno-i-sercevo-sudinno-diagnostiki-cedrus-sedrus"
+  },
+  {
+    "city": "lviv",
+    "name": "Лабораторія практичної психології",
+    "address": "вул. Зелена, 25, 1поверх",
+    "specializations": "Психологія",
+    "link": "https://doc.ua/ua/klinika/lviv/laboratoriya-praktichno-psihologi/laboratoriya-praktichno-psihologi"
+  },
+  {
+    "city": "lviv",
+    "name": "СаВаМед",
+    "address": "вул. Донцова, 20/2а",
+    "specializations": "Акушерство,, Гінекологія,, Оториноларингологія,, УЗ-діагностика",
+    "link": "https://doc.ua/ua/klinika/lviv/savamed/savamed"
+  },
+  {
+    "city": "lviv",
+    "name": "Індивідуальне психологічне консультування",
+    "address": "вул. Василя Стуса, 2, каб. 5",
+    "specializations": "Психологія,, Психотерапія",
+    "link": "https://doc.ua/ua/klinika/lviv/individualne-psihologichne-konsultuvannya/individualne-psihologichne-konsultuvannya"
+  },
+  {
+    "city": "lviv",
+    "name": "БлагоДар в м. Львів",
+    "address": "вул. Богдана Хмельницького, 176",
+    "specializations": "Наркологія,, Психологія,, Психотерапія",
+    "link": "https://doc.ua/ua/klinika/lviv/blagodar/blagodar-u-m-lviv"
+  },
+  {
+    "city": "lviv",
+    "name": "Dental Care стоматологічна клініка",
+    "address": "Вул. Жовківська 14",
+    "specializations": "Стоматологія",
+    "link": "https://doc.ua/ua/klinika/lviv/dental-care-stomatologichna-klinika/dental-care-stomatologichna-klinika"
+  },
+  {
+    "city": "lviv",
+    "name": "Легкий рух, медичний центр",
+    "address": "м. Львів Вул. Симоненка, 4, каб 133, приміщення  2 міської поліклініки",
+    "specializations": "Неврологія,, Ортопедія,, Ревматологія,, Травматологія,, Вертебрологія",
+    "link": "https://doc.ua/ua/klinika/lviv/legkij-ruh-medichnij-centr/legkij-ruh-medichnij-centr"
+  },
+  {
+    "city": "lviv",
+    "name": "Формула руху, центр фізичної реабілітації",
+    "address": null,
+    "specializations": "Неврологія,, Ортопедія,, Педіатрія,, Пульмонологія,, Реабілітологія,, Ревматологія",
+    "link": "https://doc.ua/ua/klinika/lviv/centr-fizichno-reabilitaci-formula-ruhu"
+  },
+  {
+    "city": "lviv",
+    "name": null,
+    "address": "вул. Стрийська, 28",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "lviv",
+    "name": null,
+    "address": "вул. Литвиненка, 3",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "lviv",
+    "name": "Екстрадент",
+    "address": "пр. Червоної калини, 117",
+    "specializations": "Стоматологія,, Ортодонтія",
+    "link": "https://doc.ua/ua/klinika/lviv/ekstradent/ekstradent"
+  },
+  {
+    "city": "lviv",
+    "name": "Стоматологія Ухач Р.Т.",
+    "address": "пл. Маланюка, 2",
+    "specializations": "Стоматологія,, Ортодонтія",
+    "link": "https://doc.ua/ua/klinika/lviv/stomatologiya-uhacha-rt/stomatologiya-uhacha-rt"
+  },
+  {
+    "city": "lviv",
+    "name": "Медична клініка сестер Похмурськіх",
+    "address": "вул. Здоров'я, 6",
+    "specializations": "Косметологія,, Мануальна терапія,, Педіатрія,, Психотерапія,, Терапія,, Сімейна медицина",
+    "link": "https://doc.ua/ua/klinika/lviv/medichna-klinika-sester-pohmurskih/medichna-klinika-sester-pohmurskih"
+  },
+  {
+    "city": "lviv",
+    "name": "Академія-Грація, Міжнародний Центр корекції постави Оксани Слінько",
+    "address": "вул. Вернадського, 6",
+    "specializations": "Масаж,, Реабілітологія,, Нетрадиційна медицина",
+    "link": "https://doc.ua/ua/klinika/lviv/akademiya-graciya-mizhnarodnij-centr-korekci-postavi-oksani-slinko/akademiya-graciya-mizhnarodnij-centr-korekci-postavi-oksani-slinko"
+  },
+  {
+    "city": "lviv",
+    "name": "Клініка Юрія Тітовця (Медичний центр «Простір»)",
+    "address": "пр-т Свободи, 33",
+    "specializations": "Акушерство,, Гінекологія,, Дерматологія,, Косметологія,, Мамологія,, Репродуктологія",
+    "link": "https://doc.ua/ua/klinika/lviv/klinika-yuriya-titovcya-medichnij-centr-prostir/klinika-yuriya-titovcya-medichnij-centr-prostir"
+  },
+  {
+    "city": "lviv",
+    "name": "«VAV dental clinic»",
+    "address": "вул. Дністерська, 16А",
+    "specializations": "Ортопедія,, Стоматологія,, Терапія,, Хірургія,, Ортодонтія",
+    "link": "https://doc.ua/ua/klinika/lviv/vav-dental-clinic/vav-dental-clinic"
+  },
+  {
+    "city": "lviv",
+    "name": "Клініка естетичної стоматології Ірини Бугій «КЕСБІ»",
+    "address": "вул. Єфремова, 75",
+    "specializations": "Стоматологія,, Ортодонтія",
+    "link": "https://doc.ua/ua/klinika/lviv/klinika-estetichno-stomatologi-irini-bugij-kesbi/klinika-estetichno-stomatologi-rini-bugij-kesb"
+  },
+  {
+    "city": "lviv",
+    "name": "Дентал-арт-студіо, клініка стоматологічної імплантації",
+    "address": "",
+    "specializations": "",
+    "link": "https://doc.ua/ua/klinika/lviv/551-dental-art-studio-klinika-stomatologicheskoj-implantacii/dental-art-studo-klnka-stomatologcheskoj-mplantac"
+  },
+  {
+    "city": "lviv",
+    "name": "Мануфактура релаксу і здоров'я, оздоровчий центр",
+    "address": "вул. Коперника, 19",
+    "specializations": "Масаж",
+    "link": "https://doc.ua/ua/klinika/lviv/privatnij-kabinet-masazhista-zavalko/privatnij-kabinet-masazhista-zavalko"
+  },
+  {
+    "city": "lviv",
+    "name": "Офтальмологічний кабінет Люксоптика",
+    "address": "",
+    "specializations": "",
+    "link": "https://doc.ua/ua/klinika/lviv/luxoptica-lvov/oftalmolgichnij-kabinet-lyuksoptika"
+  },
+  {
+    "city": "lviv",
+    "name": "CT-Meд",
+    "address": "ул. Ивасюка, 31",
+    "specializations": "КТ і МРТ",
+    "link": "https://doc.ua/ua/klinika/lviv/ct-med/diagnosis-diagnostichnij-medichnij-centr"
+  },
+  {
+    "city": "lviv",
+    "name": "Приватний кабінет стоматолога І.О. Пшик-Тітко",
+    "address": "Вул. Мартовича, 5/1",
+    "specializations": "Стоматологія",
+    "link": "https://doc.ua/ua/klinika/lviv/privatnij-kabinet-stomatologa-io-pshik-titko/privatnij-kabinet-stomatologa-o-pshik-titko"
+  },
+  {
+    "city": "lviv",
+    "name": "Центр Медичної 3D Діагностики",
+    "address": "вул. Чернігівська, 18",
+    "specializations": "Рентгенологія",
+    "link": "https://doc.ua/ua/klinika/lviv/centr-medichno-3d-diagnostiki/centr-medichno-3d-diagnostiki"
+  },
+  {
+    "city": "lviv",
+    "name": "Приватний кабінет психолога Ольги Климентович",
+    "address": "вул. Романчука, 14",
+    "specializations": "Психологія,, Психотерапія",
+    "link": "https://doc.ua/ua/klinika/lviv/privatnij-kabinet-psihologa-olgi-klimentovich/privatnij-kabinet-psihologa-olgi-klimentovich"
+  },
+  {
+    "city": "lviv",
+    "name": "Стоматологія «Medicover»",
+    "address": "вул. Антоновича, 102",
+    "specializations": "Стоматологія",
+    "link": "https://doc.ua/ua/klinika/lviv/stomatologiya-medicover/stomatologiya-medicover"
+  },
+  {
+    "city": "lviv",
+    "name": "СВОБОДА у Львові",
+    "address": "вул. Панаса Мирного, 33",
+    "specializations": "Наркологія,, Психіатрія",
+    "link": "https://doc.ua/ua/klinika/lviv/svoboda-vo-lvove/svoboda-vo-lvove"
+  },
+  {
+    "city": "lviv",
+    "name": "МЦ «Клініка доктора Онутчака»",
+    "address": "вул. Декарта, 6",
+    "specializations": "Ортопедія,, Оториноларингологія,, Пластична хірургія,, Стоматологія,, Травматологія",
+    "link": "https://doc.ua/ua/klinika/lviv/mc-klinika-doktora-onutchaka/mc-klinika-doktora-onutchaka"
+  },
+  {
+    "city": "lviv",
+    "name": "Центр реабілітації хребта та стопи «Актив Центр» Львів",
+    "address": "вул. Городоцька, 213",
+    "specializations": "Дієтологія,, Реабілітологія",
+    "link": "https://doc.ua/ua/klinika/lviv/centr-reabilitacii-pozvonochnika-i-stopy-aktiv-centr-lvov/centr-reabilitacii-pozvonochnika-i-stopy-aktiv-centr-lvov"
+  },
+  {
+    "city": "lviv",
+    "name": "Центр психологічних та освітніх послуг «Моя пташка»",
+    "address": "вул. Політехнічна, 4",
+    "specializations": "Психологія,, Психотерапія",
+    "link": "https://doc.ua/ua/klinika/lviv/centr-psihologicheskih-i-obrazovatelnyh-uslug-moya-ptichka/centr-psihologicheskih-i-obrazovatelnyh-uslug-moya-ptichka"
+  },
+  {
+    "city": "lviv",
+    "name": "Німецько-український центр літотрипсії",
+    "address": "вул. Снопківська, 18",
+    "specializations": "Урологія",
+    "link": "https://doc.ua/ua/klinika/lviv/nemecko-ukrainskij-centr-litotripsii/nemecko-ukranskj-centr-ltotrps"
+  },
+  {
+    "city": "lviv",
+    "name": "Ferents",
+    "address": "вул. Петлюри, 36",
+    "specializations": "Ортопедія,, Стоматологія,, Хірургія,, Ортодонтія",
+    "link": "https://doc.ua/ua/klinika/lviv/ferents/ferents"
+  },
+  {
+    "city": "lviv",
+    "name": "Черепанич (Cherepanych), стоматологічна клініка для молоді",
+    "address": "вул. Дорога Кривчицька, 19",
+    "specializations": "Стоматологія,, Ортодонтія",
+    "link": "https://doc.ua/ua/klinika/lviv/cherepanych-cherepanych-stomatologicheskaya-klinika-dlya-molodezhi/cherepanych-cherepanych-stomatologicheskaya-klinika-dlya-molodezhi"
+  },
+  {
+    "city": "lviv",
+    "name": "«Perio Center — центр пародонтології» у м. Львів",
+    "address": "вул. Городоцька, 287",
+    "specializations": "Стоматологія,, Пародонтологія",
+    "link": "https://doc.ua/ua/klinika/lviv/perio-center-centr-parodontologii-v-g-lvov/perio-center-centr-parodontologi-u-m-lviv"
+  }
+]

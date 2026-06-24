@@ -1,0 +1,366 @@
+[
+  {
+    "city": "ternopol",
+    "name": "Медичний центр Оксфорд Медікал Тернопіль",
+    "address": null,
+    "specializations": "Акушерство,, Вертебрологія,, Гастроентерологія,, Гінекологія,, Денний стаціонар,, Дерматологія",
+    "link": "https://doc.ua/ua/klinika/ternopol/medichnij-centr-oksford-medikal-ternopil"
+  },
+  {
+    "city": "ternopol",
+    "name": null,
+    "address": "вул. Качали, 5",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "ternopol",
+    "name": null,
+    "address": "просп. С. Бандери, 41",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "ternopol",
+    "name": null,
+    "address": "вул. Руська, 17",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "ternopol",
+    "name": null,
+    "address": "вул.Сергія Короля, 10",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "ternopol",
+    "name": "Шпиталь Шептицького в Тернополі",
+    "address": "вул. Б. Хмельницького, 23",
+    "specializations": "Гастроентерологія,, Гінекологія,, Дерматологія,, Кардіологія,, Косметологія,, Мамологія",
+    "link": "https://doc.ua/ua/klinika/ternopol/gospital-sheptickogo-v-ternopole/gosptal-sheptckogo-v-ternopole"
+  },
+  {
+    "city": "ternopol",
+    "name": "Нейроклініка «Меморія»",
+    "address": null,
+    "specializations": "Гастроентерологія,, Ендокринологія,, Кардіологія,, Логопедія,, Неврологія,, Нейрохірургія",
+    "link": "https://doc.ua/ua/klinika/ternopol/nejroklinika-memoriya-na-stepana-bandery-detskoe-otdelenie"
+  },
+  {
+    "city": "ternopol",
+    "name": null,
+    "address": "просп. Степана Бандери, 96",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "ternopol",
+    "name": null,
+    "address": "вул. Родини Барвінських, 13",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "ternopol",
+    "name": "Нейромед, Центр МРТ діагностики та неврології в Тернополі",
+    "address": "вул. Руська, 5",
+    "specializations": "Неврологія,, УЗ-діагностика,, КТ і МРТ",
+    "link": "https://doc.ua/ua/klinika/ternopol/nejromed-centr-mrt-diagnostiki-ta-nevrologi-u-ternopoli/nejromed-centr-mrt-diagnostiki-ta-nevrologi-v-ternopoli"
+  },
+  {
+    "city": "ternopol",
+    "name": "Приватний кабінет психіатра, нарколога Тєрьошиної І.Ф.",
+    "address": "площа Героїв Євромайдану 7. Каб. 20",
+    "specializations": "Наркологія,, Психіатрія,, Психологія,, Психотерапія",
+    "link": "https://doc.ua/ua/klinika/ternopol/privatnij-kabinet-psihiatra-narkologa-troshino-if/privatnij-kabinet-psihiatra-narkologa-troshino-if"
+  },
+  {
+    "city": "ternopol",
+    "name": "Центр відновлення зору Анатолія Cовви в Тернополі",
+    "address": "вул. Сергія Короля (Бережанська), 53",
+    "specializations": "Офтальмологія",
+    "link": "https://doc.ua/ua/klinika/ternopol/centr-vidnovlennya-zoru-anatoliya-sovvi-v-chernivcyah/centr-vosstanovleniya-zreniya-anatoliya-sovvy-v-ternopole"
+  },
+  {
+    "city": "ternopol",
+    "name": "Центр збереження зору «Ваша Оптика» на Руській",
+    "address": "вул. Руська, 24",
+    "specializations": "Офтальмологія",
+    "link": "https://doc.ua/ua/klinika/ternopol/vasha-optika-merezha-saloniv/centr-zberezhennya-zoru-vasha-optika-na-ruskij"
+  },
+  {
+    "city": "ternopol",
+    "name": "ДІЄВО (DIEVO), центр хірургічних рішень в Тернополі",
+    "address": "вул. Текстильна, 8 А",
+    "specializations": "Гінекологія,, Мамологія,, Нейрохірургія,, Онкологія,, Ортопедія,, Пластична хірургія",
+    "link": "https://doc.ua/ua/klinika/ternopol/divo-dievo-centr-hirurgichnih-rishen-v-ternopoli/dievo-dievo-centr-hirurgicheskih-reshenij-v-ternopole"
+  },
+  {
+    "city": "ternopol",
+    "name": "Приватна проктологія",
+    "address": "проспект Злуки, 41",
+    "specializations": "Проктологія,, Флебологія",
+    "link": "https://doc.ua/ua/klinika/ternopol/privatnaya-proktologiya/prvatna-proktologiya"
+  },
+  {
+    "city": "ternopol",
+    "name": "Гемо Медика Тернопіль",
+    "address": "вул. Тролейбусна, 14",
+    "specializations": "Гінекологія,, КТ і МРТ",
+    "link": "https://doc.ua/ua/klinika/ternopol/logotip-hemo-medika-ternopil/hemo-medika-ternopil"
+  },
+  {
+    "city": "ternopol",
+    "name": "ЛОР-центр СЛУХУ",
+    "address": "вул. Злуки, 8/155",
+    "specializations": "Оториноларингологія",
+    "link": "https://doc.ua/ua/klinika/ternopol/lor-centr-sluhu/lor-centr-sluhu"
+  },
+  {
+    "city": "ternopol",
+    "name": "Медичний центр Лорімед",
+    "address": null,
+    "specializations": "Оториноларингологія,, Педіатрія,, Терапія",
+    "link": "https://doc.ua/ua/klinika/ternopol/likar-otolaringolog-horuzhij-igor-volodimirovich"
+  },
+  {
+    "city": "ternopol",
+    "name": null,
+    "address": "вул. М. Тарнавського, 2а",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "ternopol",
+    "name": null,
+    "address": "просп. Злуки, 45",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "ternopol",
+    "name": "Медгарант плюс",
+    "address": "вул. Шептицького, 1",
+    "specializations": "Ортопедія,, Стоматологія,, Терапія,, Хірургія,, Функціональна діагностика,, Ортодонтія",
+    "link": "https://doc.ua/ua/klinika/ternopol/medgarant-plyus/medgarant-plyus"
+  },
+  {
+    "city": "ternopol",
+    "name": "Медичний центр «Мій лікар»",
+    "address": "вул. Євгена Коновальця, 21",
+    "specializations": "Акушерство,, Гінекологія,, Кардіологія,, Косметологія,, Неврологія,, Онкологія",
+    "link": "https://doc.ua/ua/klinika/ternopol/medichnij-centr-mij-likar/medichnij-centr-mij-likar"
+  },
+  {
+    "city": "ternopol",
+    "name": "Медичний центр «Венера плюс Аполон»",
+    "address": "вул. Січових Стрільців, 8В",
+    "specializations": "Гінекологія,, Дерматологія,, Імунологія,, Косметологія,, УЗ-діагностика,, Лабораторна діагностика",
+    "link": "https://doc.ua/ua/klinika/ternopol/medichnij-centr-venera-plyus-apolon-medivit/medichnij-centr-venera-plyus-apolon"
+  },
+  {
+    "city": "ternopol",
+    "name": "ПП Клініка професора С. Хміля",
+    "address": null,
+    "specializations": "Акушерство,, Гінекологія,, Дерматологія,, Косметологія,, Лабораторна діагностика,, Мамологія",
+    "link": "https://doc.ua/ua/klinika/ternopol/pp-klinika-profesora-s-hmilya"
+  },
+  {
+    "city": "ternopol",
+    "name": null,
+    "address": "вул. Шептицького, 1Б",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "ternopol",
+    "name": null,
+    "address": "вул. Стадникової, 9",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "ternopol",
+    "name": "Амбулаторна медична допомога",
+    "address": "вул. Ломоносова, 41",
+    "specializations": "Гастроентерологія,, Гінекологія,, Мануальна терапія,, Рефлексотерапія,, Вертебрологія",
+    "link": "https://doc.ua/ua/klinika/ternopol/ambulatorna-medichna-dopomoga/ambulatorna-medichna-dopomoga"
+  },
+  {
+    "city": "ternopol",
+    "name": "Окулюс клініка Новицького",
+    "address": "вул. С. Бандери",
+    "specializations": "Офтальмологія,, Хірургія",
+    "link": "https://doc.ua/ua/klinika/ternopol/centr-vminova/okulyus-klinika-novickogo"
+  },
+  {
+    "city": "ternopol",
+    "name": "Приватний кабінет гінеколога Рутецької Лади Анатоліївни",
+    "address": "вул. Глиняна, 19",
+    "specializations": "Гінекологія,, Онкологія,, УЗ-діагностика",
+    "link": "https://doc.ua/ua/klinika/ternopol/ginekolog-rutecka-lada-anatolivna/privatnij-kabinet-ginekologa-rutecko-ladi-anatolivni"
+  },
+  {
+    "city": "ternopol",
+    "name": "Кабінет медичної косметології",
+    "address": "вул. А.Брюкнера, 3 офис 3",
+    "specializations": "Косметологія,, Масаж",
+    "link": "https://doc.ua/ua/klinika/ternopol/kabinet-medichno-kosmetologi/kabinet-medichno-kosmetologi"
+  },
+  {
+    "city": "ternopol",
+    "name": "Лікувально-діагностичний центр «Румед-Т»",
+    "address": null,
+    "specializations": "Гінекологія,, Ендокринологія,, Кардіологія,, Неврологія,, Педіатрія,, Терапія",
+    "link": "https://doc.ua/ua/klinika/ternopol/likuvalno-diagnostichnij-centr-rumed-t"
+  },
+  {
+    "city": "ternopol",
+    "name": null,
+    "address": "вул. Вишневецького, 1/53",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "ternopol",
+    "name": null,
+    "address": "вул. Шашкевича, 3",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "ternopol",
+    "name": null,
+    "address": "вул.Р.Купчинського, №14, поліклініка №2",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "ternopol",
+    "name": "Медичний центр «Здоров'я»",
+    "address": "вул. Чайковського, 40",
+    "specializations": "Акушерство,, Гінекологія,, Масаж,, Педіатрія,, Стоматологія",
+    "link": "https://doc.ua/ua/klinika/ternopol/medichnij-centr-zdorovya-https20uatrkrasotazdoroveklinikimeditsinskiy-tsentr-zdorovehtml/medichnij-centr-zdorovya"
+  },
+  {
+    "city": "ternopol",
+    "name": "Центр хірургії одного дня",
+    "address": "вул. Купчинського, 10",
+    "specializations": "Проктологія,, Флебологія,, Хірургія",
+    "link": "https://doc.ua/ua/klinika/ternopol/centr-hirurgi-odnogo-dnya/centr-hirurgi-odnogo-dnya"
+  },
+  {
+    "city": "ternopol",
+    "name": "Тернопільський обласний перинатальний комунальний центр «Мати і дитина»",
+    "address": "вул. Замкова, 10",
+    "specializations": "Акушерство,, Гінекологія,, Неонатологія,, Педіатрія",
+    "link": "https://doc.ua/ua/klinika/ternopol/ernopilskij-oblasnij-perinatalnij-komunalnij-centr-mati-i-ditina/ternopilskij-oblasnij-perinatalnij-komunalnij-centr-mati-i-ditina"
+  },
+  {
+    "city": "ternopol",
+    "name": "Барвінок, медичний центр нетрадиційної медицини",
+    "address": "вул. Замкова, 14,",
+    "specializations": "Нетрадиційна медицина",
+    "link": "https://doc.ua/ua/klinika/ternopol/barvinok-medichnij-centr-netradicijno-medicini/barvinok-medichnij-centr-netradicijno-medicini"
+  },
+  {
+    "city": "ternopol",
+    "name": "Чіткий зір",
+    "address": "вул. Злуки, 8",
+    "specializations": "Офтальмологія",
+    "link": "https://doc.ua/ua/klinika/ternopol/chitkij-zir/chitkij-zir"
+  },
+  {
+    "city": "ternopol",
+    "name": "Стоматологічна клініка «Діамант»",
+    "address": "вул. Київська 6а/19",
+    "specializations": "Стоматологія,, Хірургія,, Ортодонтія",
+    "link": "https://doc.ua/ua/klinika/ternopol/stomatologichna-klinika-diamant/stomatologichna-klinika-diamant"
+  },
+  {
+    "city": "ternopol",
+    "name": "Інзома, стоматологія",
+    "address": "проспект Бандери, 80",
+    "specializations": "Стоматологія,, Ортодонтія",
+    "link": "https://doc.ua/ua/klinika/ternopol/inzoma-stomatologiya/nzoma-stomatologiya"
+  },
+  {
+    "city": "ternopol",
+    "name": "Медичний центр «Астра МІА»",
+    "address": "вул. Малишка, 2",
+    "specializations": "Психіатрія",
+    "link": "https://doc.ua/ua/klinika/ternopol/medichnij-centr-astra-mia/medichnij-centr-astra-ma"
+  },
+  {
+    "city": "ternopol",
+    "name": "МЦ «Паракліт»",
+    "address": "вул. Купчинського, 14",
+    "specializations": "Гастроентерологія,, Кардіологія,, Неврологія,, Ортопедія,, УЗ-діагностика,, Урологія",
+    "link": "https://doc.ua/ua/klinika/ternopol/mc-paraklit/mc-paraklit"
+  },
+  {
+    "city": "ternopol",
+    "name": "Офтальмологічний кабінет «Оптика Барвінок»",
+    "address": "вул. Шептицького, 5А (3 поверх)",
+    "specializations": "Офтальмологія",
+    "link": "https://doc.ua/ua/klinika/ternopol/oftalmologichnij-kabinet-optika-barvinok-https20uatrkrasotazdoroveklinikioftalmologicheskiy-kabinet-optika-barvinokht/oftalmologichnij-kabinet-optika-barvinok"
+  },
+  {
+    "city": "ternopol",
+    "name": "Медичний центр вертебрології",
+    "address": "вул. Князя Острозького, 29",
+    "specializations": "Вертебрологія",
+    "link": "https://doc.ua/ua/klinika/ternopol/medichnij-centr-vertebrologi/medichnij-centr-vertebrologi"
+  },
+  {
+    "city": "ternopol",
+    "name": "Медичний центр Агапіт",
+    "address": "вул. Симоненка, 7",
+    "specializations": "Терапія",
+    "link": "https://doc.ua/ua/klinika/ternopol/meagapit/medichnij-centr-agapit"
+  },
+  {
+    "city": "ternopol",
+    "name": "Медична клініка на колесах",
+    "address": "вул. Рєпіна, 11",
+    "specializations": "Кардіологія,, Стоматологія,, Терапія",
+    "link": "https://doc.ua/ua/klinika/ternopol/medichna-klinika-na-kolesah/medichna-klinika-na-kolesah"
+  },
+  {
+    "city": "ternopol",
+    "name": "Косметичний кабінет Олімп",
+    "address": "вул. Руська, 21",
+    "specializations": "Косметологія",
+    "link": "https://doc.ua/ua/klinika/ternopol/kosmetichnij-kabinet/kosmetichnij-kabinet-olimp"
+  },
+  {
+    "city": "ternopol",
+    "name": "Клініка жіночого и сімейного здоров'я",
+    "address": "вул.Просвіти, 10/93",
+    "specializations": "Акушерство,, Гінекологія",
+    "link": "https://doc.ua/ua/klinika/ternopol/klinika-zhinochogo-i-simejnogo-zdorovya/klinika-zhinochogo-i-simejnogo-zdorovya"
+  },
+  {
+    "city": "ternopol",
+    "name": "Медичний центр «Кюрі»",
+    "address": "вул. Київська, 5/1А",
+    "specializations": "Дерматологія,, Стоматологія,, УЗ-діагностика,, Урологія,, Вертебрологія",
+    "link": "https://doc.ua/ua/klinika/ternopol/medichnij-centr-kyuri/medichnij-centr-kyuri"
+  },
+  {
+    "city": "ternopol",
+    "name": "Leo Dental",
+    "address": "вул. Наливайка, 1А, оф. 130",
+    "specializations": "Стоматологія",
+    "link": "https://doc.ua/ua/klinika/ternopol/stomatologiya-leo-dental/stomatologiya-leo-dental"
+  },
+  {
+    "city": "ternopol",
+    "name": "СВОБОДА у Тернополі",
+    "address": "вул. Тролейбусна, 14",
+    "specializations": "Наркологія,, Психіатрія",
+    "link": "https://doc.ua/ua/klinika/ternopol/svoboda-v-ternopole/svoboda-v-ternopole"
+  }
+]

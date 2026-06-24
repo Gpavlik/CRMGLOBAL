@@ -1,0 +1,639 @@
+[
+  {
+    "city": "zaporozhe",
+    "name": "Оксфорд Медікал Запоріжжя",
+    "address": "вул. М. Гончаренко, 7",
+    "specializations": "Гастроентерологія,, Гінекологія,, Дерматологія,, Кардіологія,, Мамологія,, Масаж",
+    "link": "https://doc.ua/ua/klinika/zaporozhe/oksford-medikal-zaporizhzhya/oksford-medikal-zaporozhe"
+  },
+  {
+    "city": "zaporozhe",
+    "name": "UniClinic (Інноваційна Клініка майбутнього)",
+    "address": "вул. Покровська, 8",
+    "specializations": "Кардіологія,, Кардіохірургія,, Онкологія,, Оториноларингологія,, Урологія,, Хірургія",
+    "link": "https://doc.ua/ua/klinika/zaporozhe/uniclinic-innovacionnaya-klinika-budushego/uniclinic-innovacionnaya-klinika-budushego"
+  },
+  {
+    "city": "zaporozhe",
+    "name": "Запорізька обласна клінічна лікарня",
+    "address": "Оріхівське шосе, 10",
+    "specializations": "Алергологія,, Анестезіологія,, Гастроентерологія,, Гематологія,, Гінекологія,, Дерматологія",
+    "link": "https://doc.ua/ua/klinika/zaporozhe/zaporozhskaya-oblastnaya-klinicheskaya-bolnica/zaporizka-oblasna-klinichna-likarnya"
+  },
+  {
+    "city": "zaporozhe",
+    "name": "Медичний центр «‎TopMedical»",
+    "address": "проспект Соборний, 129",
+    "specializations": "Офтальмологія",
+    "link": "https://doc.ua/ua/klinika/zaporozhe/4327-medicinskij-centr/medcnskj-centr-topmedical"
+  },
+  {
+    "city": "zaporozhe",
+    "name": "Медичний центр «36.6»",
+    "address": "пр. Соборний, 232",
+    "specializations": "Гастроентерологія,, Гінекологія,, Неврологія,, Ортопедія,, Терапія,, Травматологія",
+    "link": "https://doc.ua/ua/klinika/zaporozhe/medicinskij-centr-366/medicinskij-centr-366"
+  },
+  {
+    "city": "zaporozhe",
+    "name": "Уролог Запоріжжя Горбатий Святослав Миколайович",
+    "address": "вул. Лобановського 10",
+    "specializations": "Андрологія,, Сексопатологія,, Урологія",
+    "link": "https://doc.ua/ua/klinika/zaporozhe/urolog-zaporizhzhya-gorbatij-svyatoslav-mikolajovich/urolog-zaporizhzhya-gorbatij-svyatoslav-mikolajovich"
+  },
+  {
+    "city": "zaporozhe",
+    "name": "Клініка академіка Грищенко (Імплант) в г. Запоріжжя",
+    "address": "просп. Соборний, 60",
+    "specializations": "Акушерство,, Генетика,, Гінекологія,, Репродуктологія,, Урологія",
+    "link": "https://doc.ua/ua/klinika/zaporozhe/klinika-akademika-grishenko-implant-v-g-zaporozhe/klinika-akademika-grishenko-implant-v-g-zaporozhe"
+  },
+  {
+    "city": "zaporozhe",
+    "name": "VIDNOVA Clinic у Запоріжжі (Клініка Віднова)",
+    "address": "вул. Михайла Гончаренка, 26",
+    "specializations": "Дерматологія,, Косметологія,, Пластична хірургія,, Стоматологія,, Трихологія",
+    "link": "https://doc.ua/ua/klinika/zaporozhe/vidnova-clinic-v-zaporozhe-klinika-vidnova/vidnova-clinic-v-zaporozhe-klinika-vidnova"
+  },
+  {
+    "city": "zaporozhe",
+    "name": "Приватний психотерапевтичний кабінет Максима Білоусенко",
+    "address": "вул. Перемоги, 129, оф.300 б",
+    "specializations": "Психіатрія,, Психологія,, Психотерапія",
+    "link": "https://doc.ua/ua/klinika/zaporozhe/chastnyj-psihoterapevticheskij-kabinet-maksima-bilousenko/chastnyj-pshoterapevtcheskj-kabnet-maksma-bilousenko"
+  },
+  {
+    "city": "zaporozhe",
+    "name": "Медичний центр «Елітклініка»",
+    "address": "вул. Лобановського, 10",
+    "specializations": "Урологія",
+    "link": "https://doc.ua/ua/klinika/zaporozhe/medicinskij-centr-elitklinika/medicinskij-centr-elitklinika"
+  },
+  {
+    "city": "zaporozhe",
+    "name": "Приватний кабінет психолога Ремпель Жанни Олександрівни",
+    "address": "вул. Незалежної України, 40, під'їзд №1, оф. 2",
+    "specializations": "Психологія,, Психотерапія",
+    "link": "https://doc.ua/ua/klinika/zaporozhe/chastnyj-kabinet-psihologa-rempel-zhanny-aleksandrovny/chastnyj-kabinet-psihologa-rempel-zhanny-aleksandrovny"
+  },
+  {
+    "city": "zaporozhe",
+    "name": "Приватний кабінет психотерапевта Мосьпак І.А.",
+    "address": "пр. Металургів, 23",
+    "specializations": "Психологія,, Психотерапія",
+    "link": "https://doc.ua/ua/klinika/zaporozhe/chk-psihoterapevta-mospak/chastnyj-kabnet-pshoterapevta-mospak-ia"
+  },
+  {
+    "city": "zaporozhe",
+    "name": "Кабінет акредитованого психотерапевта, лікаря-психіатра, психолога А.В. Карцева",
+    "address": "вул. Михайла Гончаренка 11",
+    "specializations": "Психіатрія,, Психологія,, Психотерапія",
+    "link": "https://doc.ua/ua/klinika/zaporozhe/kabinet-akkreditovannogo-psihoterapevta-vracha-psihiatra-psihologa-av-karceva/kabinet-akkreditovannogo-psihoterapevta-vracha-psihiatra-psihologa-av-karceva"
+  },
+  {
+    "city": "zaporozhe",
+    "name": "МІЙ ЛІКАР, медичний центр в Запоріжжі",
+    "address": "вул. Володимира Українця, 15 А",
+    "specializations": "Педіатрія,, Сімейна медицина",
+    "link": "https://doc.ua/ua/klinika/zaporozhe/mij-likar-medicinskij-centr-v-zaporozhe/mij-likar-medicinskij-centr-v-zaporozhe"
+  },
+  {
+    "city": "zaporozhe",
+    "name": "Приватний психотерапевтичний кабінет Андрєєвої Марини Віталіївни",
+    "address": "пр. Маяковського, б.7, кв.100",
+    "specializations": "Психотерапія",
+    "link": "https://doc.ua/ua/klinika/zaporozhe/chastnyj-psihoterapevticheskij-kabinet-andreevoj-mariny-vitalevny/chastnyj-psihoterapevticheskij-kabinet-andreevoj-mariny-vitalevny"
+  },
+  {
+    "city": "zaporozhe",
+    "name": "Медичний центр доктора Бубновського в Запоріжжі",
+    "address": "вул. Святого Миколая, 6",
+    "specializations": "Ортопедія,, Пульмонологія,, Ревматологія,, Реабілітологія,, Вертебрологія",
+    "link": "https://doc.ua/ua/klinika/zaporozhe/centr-reabilitacii-doktora-bubnovskogo/centr-reabilitacii-doktora-bubnovskogo"
+  },
+  {
+    "city": "zaporozhe",
+    "name": "Клініка ревматології професора Рекалова в Запоріжжі",
+    "address": "бульв. Центральний, 20, прим. 210",
+    "specializations": "Ревматологія,, УЗ-діагностика,, Функціональна діагностика,, Кінезітерапія",
+    "link": "https://doc.ua/ua/klinika/zaporozhe/klinika-revmatologi-profesora-rekalova-v-zaporizhzhi/klinika-revmatologi-profesora-rekalova-v-zaporizhzhi"
+  },
+  {
+    "city": "zaporozhe",
+    "name": "Медичний центр «Фреш Мед»",
+    "address": "пр. Соборний, 94",
+    "specializations": "Гастроентерологія,, Гінекологія,, Дерматологія,, Дієтологія,, Кардіологія,, Косметологія",
+    "link": "https://doc.ua/ua/klinika/zaporozhe/medicinskij-centr-fresh-med/medicinskij-centr-fresh-med"
+  },
+  {
+    "city": "zaporozhe",
+    "name": "Приватний кабінет «Урологія»",
+    "address": "Незалежної України, 68А",
+    "specializations": "Урологія",
+    "link": "https://doc.ua/ua/klinika/zaporozhe/chastnyj-kabinet-urologiya/chastnyj-kabinet-urologiya"
+  },
+  {
+    "city": "zaporozhe",
+    "name": "Клініка вертебрології Бохан",
+    "address": null,
+    "specializations": "Вертебрологія,, Масаж,, Неврологія,, Нейрохірургія,, Ортопедія,, Реабілітологія",
+    "link": "https://doc.ua/ua/klinika/zaporozhe/klinika-bohan-v-zaporozhe"
+  },
+  {
+    "city": "zaporozhe",
+    "name": null,
+    "address": "Запоріжжя, просп. Металургів, 21",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "zaporozhe",
+    "name": null,
+    "address": "вул. Перемоги 19",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "zaporozhe",
+    "name": "Медичний центр «NEURO»",
+    "address": "Вул. Незалежної України,  47",
+    "specializations": "Неврологія",
+    "link": "https://doc.ua/ua/klinika/zaporozhe/medichnij-centr-neuro/medcnskj-centr-neuro"
+  },
+  {
+    "city": "zaporozhe",
+    "name": "Відділення проктології зав. Постоленко М. Д.",
+    "address": "вул Щаслива,1",
+    "specializations": "Проктологія",
+    "link": "https://doc.ua/ua/klinika/zaporozhe/privatnij-kabinet-likarya-proktologa-postolenko-m-d/privatnij-kabinet-likarya-proktologa-postolenko-m-d"
+  },
+  {
+    "city": "zaporozhe",
+    "name": "Норма, медичний центр в Запоріжжі",
+    "address": "вул. Чумаченка, 3",
+    "specializations": "Психіатрія,, Психотерапія",
+    "link": "https://doc.ua/ua/klinika/zaporozhe/norma-medicinskij-centr-v-zaporozhe/norma-medicinskij-centr-v-zaporozhe"
+  },
+  {
+    "city": "zaporozhe",
+    "name": "Салон краси і здоров'я «Оберіг»",
+    "address": "просп. Соборний 135, готель Інтурист, 6 поверх, 620 каб.",
+    "specializations": "Масаж",
+    "link": "https://doc.ua/ua/klinika/zaporozhe/salon-krasoty-i-zdorovya-obereg/salon-krasoty-i-zdorovya-obereg"
+  },
+  {
+    "city": "zaporozhe",
+    "name": "Медичний діагностичний кабінет «Еластометр» (кабінет еластографії і мультипараметричної ультразвукової діагностики)",
+    "address": "бульвар Шевченка 32",
+    "specializations": "Гінекологія,, УЗ-діагностика,, Урологія,, Ендокринологія",
+    "link": "https://doc.ua/ua/klinika/zaporozhe/medicinskij-diagnosticheskij-kabinet-elastometr/medicinskij-diagnosticheskij-kabinet-elastometr"
+  },
+  {
+    "city": "zaporozhe",
+    "name": "Стоматологічна клініка Vitadent (Вітадент)",
+    "address": "вул. Базарна (Анголенко), 14-В",
+    "specializations": "Стоматологія",
+    "link": "https://doc.ua/ua/klinika/zaporozhe/vitadent/stomatologcheskaya-klnka-vitadent"
+  },
+  {
+    "city": "zaporozhe",
+    "name": "«Центр слуху» Запоріжжя",
+    "address": "проспект Соборний, 192",
+    "specializations": "Сурдологія",
+    "link": "https://doc.ua/ua/klinika/zaporozhe/centr-sluha-zaporozhe/centr-sluha-zaporozhe"
+  },
+  {
+    "city": "zaporozhe",
+    "name": "Соно (Sono)",
+    "address": "вул. Миру, 3",
+    "specializations": "Акушерство,, Гінекологія,, Мамологія,, УЗ-діагностика",
+    "link": "https://doc.ua/ua/klinika/zaporozhe/sono-sono/sono"
+  },
+  {
+    "city": "zaporozhe",
+    "name": "Кабінет психотерапевта Лебедєвої Тетяни",
+    "address": "вул. Південноукраїнська 11",
+    "specializations": "Психологія,, Психотерапія",
+    "link": "https://doc.ua/ua/klinika/zaporozhe/kabinet-psihoterapevta-lebedvo-tetyani/kabinet-psihoterapevta-lebedvo-tetyani"
+  },
+  {
+    "city": "zaporozhe",
+    "name": "Клініка терапії і реабілітації суглобів та хребта OrtoSano в м. Запоріжжя",
+    "address": "вул. Фортечна, 53",
+    "specializations": "Масаж,, Неврологія,, Ортопедія,, Фізіотерапія,, Реабілітологія",
+    "link": "https://doc.ua/ua/klinika/zaporozhe/klinika-terapii-i-reabilitacii-sustavov-i-pozvonochnika-ortosano-v-g-zaporozhe/klinika-terapii-i-reabilitacii-sustavov-i-pozvonochnika-ortosano-v-g-zaporozhe"
+  },
+  {
+    "city": "zaporozhe",
+    "name": "Здорові ніжки, подологічний центр",
+    "address": null,
+    "specializations": "Подологія",
+    "link": "https://doc.ua/ua/klinika/zaporozhe/zdorovi-nizhki-podologichnij-centr"
+  },
+  {
+    "city": "zaporozhe",
+    "name": null,
+    "address": "вул. Леоніда Жаботинського, 49",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "zaporozhe",
+    "name": null,
+    "address": "просп. Собориний, 177",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "zaporozhe",
+    "name": "Офтальмологічний кабінет «Люксоптика»",
+    "address": null,
+    "specializations": "Офтальмологія",
+    "link": "https://doc.ua/ua/klinika/zaporozhe/luxoptica"
+  },
+  {
+    "city": "zaporozhe",
+    "name": null,
+    "address": "пр. Леніна, 218",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "zaporozhe",
+    "name": null,
+    "address": "пр-т Соборний 149",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "zaporozhe",
+    "name": null,
+    "address": "вул. Запоріжська, 1-Б",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "zaporozhe",
+    "name": "МК, центр стоматології",
+    "address": null,
+    "specializations": "Стоматологія",
+    "link": "https://doc.ua/ua/klinika/zaporozhe/mk-centr-stomatologii"
+  },
+  {
+    "city": "zaporozhe",
+    "name": null,
+    "address": "пр. Леніна, 157",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "zaporozhe",
+    "name": null,
+    "address": "вул. Горького, 27/29",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "zaporozhe",
+    "name": null,
+    "address": "вул. Новокузнецька, 20а",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "zaporozhe",
+    "name": null,
+    "address": "вул. Миру, 20",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "zaporozhe",
+    "name": "Євроспайн, центр хребта (Запоріжжя)",
+    "address": "вул. Фортечна, 53",
+    "specializations": "Масаж,, Неврологія,, Ортопедія,, Реабілітологія,, Кінезітерапія,, Вертебрологія",
+    "link": "https://doc.ua/ua/klinika/zaporozhe/eurospine-centr-pozvonochnika-zp/eurospine-centr-pozvonochnika-zp"
+  },
+  {
+    "city": "zaporozhe",
+    "name": "Приватний кабінет гінеколога Амро І.Г. «Здоров'я жінки»",
+    "address": "пр. Соборний, 158, оф. №214",
+    "specializations": "Акушерство,, Гінекологія,, Онкологія,, УЗ-діагностика",
+    "link": "https://doc.ua/ua/klinika/zaporozhe/chastnyj-kabinet-ginekologa-amro-ig-zdorove-zhenshiny/chastnyj-kabinet-ginekologov-zhenskoe-zdorove"
+  },
+  {
+    "city": "zaporozhe",
+    "name": "Familia стоматологічна клініка",
+    "address": "вул. Леоніда Жаботинського 21",
+    "specializations": "Стоматологія",
+    "link": "https://doc.ua/ua/klinika/zaporozhe/1795-familia-stomatologicheskaya-klinika/familia-stomatologicheskaya-klinika1"
+  },
+  {
+    "city": "zaporozhe",
+    "name": "Студія краси та здоров'я доктора Врадій А.Г.",
+    "address": "вул. Бульвар Шевченка 8 к. 5",
+    "specializations": "Мануальна терапія,, Масаж,, Рефлексотерапія,, Гірудотерапія",
+    "link": "https://doc.ua/ua/klinika/zaporozhe/studiya-krasoty-i-zdorovya-doktora-vradij-ag/studiya-krasoty-i-zdorovya-doktora-vradij-ag"
+  },
+  {
+    "city": "zaporozhe",
+    "name": "Центр сучасної кінезітерапії «Медкорд» (Medcord)",
+    "address": "вул. Перемоги, 61",
+    "specializations": "Неврологія,, Ортопедія,, Реабілітологія,, Кінезітерапія",
+    "link": "https://doc.ua/ua/klinika/zaporozhe/centr-sovremennoj-kineziterapii-medkord-medcord/centr-sovremennoj-kineziterapii-medkord-medcord"
+  },
+  {
+    "city": "zaporozhe",
+    "name": "Маргодент",
+    "address": "вул. 40 років Рад. Україна 68/5",
+    "specializations": "Стоматологія,, Ортодонтія",
+    "link": "https://doc.ua/ua/klinika/zaporozhe/margodent/margodent"
+  },
+  {
+    "city": "zaporozhe",
+    "name": "Лекарь",
+    "address": "ул. Счастлива, 1",
+    "specializations": "Оториноларингологія",
+    "link": "https://doc.ua/ua/klinika/zaporozhe/lekar/lekar"
+  },
+  {
+    "city": "zaporozhe",
+    "name": "Приватний кабінет невролога Кудрі Д.",
+    "address": "вул. Троїцька, 27",
+    "specializations": "Неврологія",
+    "link": "https://doc.ua/ua/klinika/zaporozhe/chastnyj-kabinet-nevrologa-kudrya-d/chastnyj-kabinet-nevrologa-kudrya-d"
+  },
+  {
+    "city": "zaporozhe",
+    "name": "Приватний кабінет «УЗД – дітям»",
+    "address": "вул. Миру, 20",
+    "specializations": "УЗ-діагностика",
+    "link": "https://doc.ua/ua/klinika/zaporozhe/chastnyj-kabinet-uzi-detyam/chastnyj-kabinet-uzi-detyam"
+  },
+  {
+    "city": "zaporozhe",
+    "name": "Медичний центр «СОВТ»",
+    "address": "вул. Василя Сергієнко, 13",
+    "specializations": "Дерматологія,, Кардіологія,, Неврологія,, Нейрохірургія,, Терапія,, Фізіотерапія",
+    "link": "https://doc.ua/ua/klinika/zaporozhe/medicinskij-centr-sovt/medicinskij-centr-sovt"
+  },
+  {
+    "city": "zaporozhe",
+    "name": "Стоматологія 32",
+    "address": "пр-т Соборний, 198",
+    "specializations": "Стоматологія",
+    "link": "https://doc.ua/ua/klinika/zaporozhe/stomatologiya-32/stomatologiya-32"
+  },
+  {
+    "city": "zaporozhe",
+    "name": "Грефі, центр здоров'я",
+    "address": "Проїзд Леваневського, 10",
+    "specializations": "Андрологія,, Гастроентерологія,, Дієтологія,, Мануальна терапія,, Ортопедія,, Психологія",
+    "link": "https://doc.ua/ua/klinika/zaporozhe/grefi-centr-zdorovya/grefi-centr-zdorovya"
+  },
+  {
+    "city": "zaporozhe",
+    "name": "БлагоДар в м. Запоріжжя",
+    "address": "пр-т Соборний 150-а",
+    "specializations": "Наркологія,, Психологія,, Психотерапія",
+    "link": "https://doc.ua/ua/klinika/zaporozhe/blagodar/blagodar-v-g-zaporozhe"
+  },
+  {
+    "city": "zaporozhe",
+    "name": "Приватний кабінет пластичного хірурга Децик Дмитра Анатолійовича",
+    "address": "ул. Победы 131-В",
+    "specializations": "Пластична хірургія,, Флебологія,, Хірургія",
+    "link": "https://doc.ua/ua/klinika/zaporozhe/chastnyj-kabinet-plasticheskogo-hirurga-decyk-dmitriya-anatolevicha/chastnyj-kabinet-plasticheskogo-hirurga-decyk-dmitriya-anatolevicha"
+  },
+  {
+    "city": "zaporozhe",
+    "name": "Сано Роллер",
+    "address": "ул. Грязнова, 53",
+    "specializations": "Ортопедія",
+    "link": "https://doc.ua/ua/klinika/zaporozhe/sano-roller-lechenie-sustavov/sano-roller"
+  },
+  {
+    "city": "zaporozhe",
+    "name": "Уролог Тушевський Д.М.",
+    "address": "вул. Сєдова, 3",
+    "specializations": "Урологія",
+    "link": "https://doc.ua/ua/klinika/zaporozhe/chastnyj-kabinet-urologa-tushevskogo-dm/chastnyj-kabinet-urologa-tushevskogo-dm"
+  },
+  {
+    "city": "zaporozhe",
+    "name": "МІГІС, Міжрегіональний інститут гештальт-терапії та мистецтва",
+    "address": "вул. Гагаріна, 12, оф. 3",
+    "specializations": "Психологія",
+    "link": "https://doc.ua/ua/klinika/zaporozhe/migis-mezhregionalnyj-institut-geshtalt-terapii-i-iskusstva/migis-mezhregionalnyj-institut-geshtalt-terapii-i-iskusstva-zp"
+  },
+  {
+    "city": "zaporozhe",
+    "name": "Юліс",
+    "address": "вул. Леоніда Жаботинського, 32 (біля перинатального центру)",
+    "specializations": "Андрологія,, Гастроентерологія,, Гінекологія,, Кардіологія,, Мамологія,, Неврологія",
+    "link": "https://doc.ua/ua/klinika/zaporozhe/yulis/yulis"
+  },
+  {
+    "city": "zaporozhe",
+    "name": "Кабінет гінеколога Курило І.О.",
+    "address": "вул. Перемоги, 121 (зупинка транспорту \"5-а міська лікарня\")",
+    "specializations": "Гінекологія,, УЗ-діагностика",
+    "link": "https://doc.ua/ua/klinika/zaporozhe/kabinet-ginekologa-kurilo-ia/kabinet-ginekologa-kurilo-ia"
+  },
+  {
+    "city": "zaporozhe",
+    "name": "Nota Bene (Нота Бене)",
+    "address": "вул. Героїв Сталінграда, 16",
+    "specializations": "Стоматологія",
+    "link": "https://doc.ua/ua/klinika/zaporozhe/nota-bene-nota-bene/nota-bene-nota-bene"
+  },
+  {
+    "city": "zaporozhe",
+    "name": "Стоматологія доктора Дюльмезова",
+    "address": "вул. Автозаводська, 34",
+    "specializations": "Стоматологія",
+    "link": "https://doc.ua/ua/klinika/zaporozhe/stomatologiya-doktora-dyulmezova/stomatologiya-doktora-dyulmezova"
+  },
+  {
+    "city": "zaporozhe",
+    "name": "Інмедіко, ЛОР клініка",
+    "address": "вул. Лермонтова, 23, /Перемоги, 67",
+    "specializations": "Оториноларингологія",
+    "link": "https://doc.ua/ua/klinika/zaporozhe/inmediko-lor-klinika/inmediko-lor-klinika"
+  },
+  {
+    "city": "zaporozhe",
+    "name": "Офтальмологічний кабінет Люксоптика",
+    "address": "",
+    "specializations": "",
+    "link": "https://doc.ua/ua/klinika/zaporozhe/luxoptica-zaporozhe/oftalmologicheski-kabinet-lyuksoptika"
+  },
+  {
+    "city": "zaporozhe",
+    "name": "Запорізький офтальмологічний центр «Прозріння»",
+    "address": "ул. Шенвизская, 7с (бывшая Леженко)",
+    "specializations": "Офтальмологія",
+    "link": "https://doc.ua/ua/klinika/zaporozhe/829-oftalmologicheskij-centr-prozrenie1/zaporozhskij-oftalmologicheskij-centr-prozrenie"
+  },
+  {
+    "city": "zaporozhe",
+    "name": "АртДієт, дієтологічний центр",
+    "address": "бул. Шевченко, 32, ет.3",
+    "specializations": "Дієтологія,, Масаж",
+    "link": "https://doc.ua/ua/klinika/zaporozhe/artdiet/artdiet-dietologicheskij-centr"
+  },
+  {
+    "city": "zaporozhe",
+    "name": "Кабінет лікаря Каленського А.В.",
+    "address": "пр. Соборный 111 А",
+    "specializations": "Кардіологія,, Мануальна терапія,, Наркологія,, Неврологія,, Нефрологія,, Психологія",
+    "link": "https://doc.ua/ua/klinika/zaporozhe/kabinet-doktora-kalenskogo-av/kabinet-doktora-kalenskogo-av"
+  },
+  {
+    "city": "zaporozhe",
+    "name": "Приватний кабінет Алексєєнко Л. А.",
+    "address": "вул. Незалежної України, 39а",
+    "specializations": "Психологія,, Психотерапія",
+    "link": "https://doc.ua/ua/klinika/zaporozhe/chastnyj-kabinet/chastnyj-kabinet-alekseenko-l-a"
+  },
+  {
+    "city": "zaporozhe",
+    "name": "Приватний психоаналітичний центр Лагутіної Т.Г.",
+    "address": "вул, Незалежної України, 63-А",
+    "specializations": "Психологія,, Психотерапія",
+    "link": "https://doc.ua/ua/klinika/zaporozhe/chastnyj-kabinet-psihologa-psihoanalitika-lagutinoj-t-g/chastnyj-kabinet-psihologa-psihoanalitika-lagutinoj-t-g"
+  },
+  {
+    "city": "zaporozhe",
+    "name": "Метод Слов'янська клініка",
+    "address": "вул. Незалежної України, 40А",
+    "specializations": "Дієтологія",
+    "link": "https://doc.ua/ua/klinika/zaporozhe/metod-slavyanskaya-klinika-zp/metod-slavyanskaya-klinika-zp"
+  },
+  {
+    "city": "zaporozhe",
+    "name": "Лікувальний діагностичний центр Sanitas",
+    "address": "пр-т Маяковского, 18",
+    "specializations": "Ортопедія,, Травматологія",
+    "link": "https://doc.ua/ua/klinika/zaporozhe/lechebno-diagnosticheskij-centr-sanitas/lechebnyj-diagnosticheskij-centr-sanitas"
+  },
+  {
+    "city": "zaporozhe",
+    "name": "Стоматологічний центр «Лот»",
+    "address": "проспект Соборний, 216",
+    "specializations": "Оториноларингологія,, Стоматологія",
+    "link": "https://doc.ua/ua/klinika/zaporozhe/stomatologicheskij-centr-lot/stomatologicheskij-centr-lot"
+  },
+  {
+    "city": "zaporozhe",
+    "name": "Мотор Січ",
+    "address": "",
+    "specializations": "",
+    "link": "https://doc.ua/ua/klinika/zaporozhe/motor-sich/motor-sich"
+  },
+  {
+    "city": "zaporozhe",
+    "name": "Стоматологічна клініка Доктор Міла",
+    "address": "вул. Водограйна,18",
+    "specializations": "Стоматологія",
+    "link": "https://doc.ua/ua/klinika/zaporozhe/stomatologicheskaya-klinika-doktor-mila/stomatologicheskaya-klinika-doktor-mila"
+  },
+  {
+    "city": "zaporozhe",
+    "name": "МІГІС, Міжрегіональний інститут гештальт-терапії та мистецтва",
+    "address": "вул. Гагаріна, 12, оф. 3",
+    "specializations": "",
+    "link": "https://doc.ua/ua/klinika/zaporozhe/migis-mezhregionalnyj-institut-geshtalt-terapii-i-iskusstva-zp/migis-mezhregionalnyj-institut-geshtal-terapii-i-iskusstva"
+  },
+  {
+    "city": "zaporozhe",
+    "name": "Приватна психотерапевтична практика (Запоріжжя)",
+    "address": "вул. Жуковського, 82, офіс 34",
+    "specializations": "Психологія,, Психотерапія",
+    "link": "https://doc.ua/ua/klinika/zaporozhe/chastnaya-psihoterapevticheskaya-praktika/chastnaya-psihoterapevticheskaya-praktika-zaporozhye"
+  },
+  {
+    "city": "zaporozhe",
+    "name": "Центр естетичної ортопедії, артрології та спортивної травми",
+    "address": "вул. Седова, д.3",
+    "specializations": "Ортопедія,, Травматологія",
+    "link": "https://doc.ua/ua/klinika/zaporozhe/centr-esteticheskoj-ortopedii-artrologii-i-sportivnoj-travmy/centr-esteticheskoj-ortopedii-artrologii-i-sportivnoj-travmy"
+  },
+  {
+    "city": "zaporozhe",
+    "name": "Медичний центр «Медпрайм»",
+    "address": "г. Запорожье ул. Мира 20",
+    "specializations": "Андрологія,, Гінекологія,, УЗ-діагностика",
+    "link": "https://doc.ua/ua/klinika/zaporozhe/medicinskij-centr-medprajm/medicinskij-centr-medprajm"
+  },
+  {
+    "city": "zaporozhe",
+    "name": "Центр подології Тетяни Голікової в Запоріжжі",
+    "address": null,
+    "specializations": "Подологія",
+    "link": "https://doc.ua/ua/klinika/zaporozhe/chastnyj-kabinet-podologa-golikova"
+  },
+  {
+    "city": "zaporozhe",
+    "name": null,
+    "address": "вул. Новокузнецька, 12а",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "zaporozhe",
+    "name": null,
+    "address": "вул. Героїв 93 бригади, 18",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "zaporozhe",
+    "name": null,
+    "address": "вул. Іванова 81а",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "zaporozhe",
+    "name": null,
+    "address": "вул. Сталеварів 22",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "zaporozhe",
+    "name": "СВОБОДА в Запоріжжі",
+    "address": "вул. Українська, 57 А",
+    "specializations": "Наркологія,, Психіатрія",
+    "link": "https://doc.ua/ua/klinika/zaporozhe/svoboda-v-zaporozhe/svoboda-v-zaporozhe"
+  },
+  {
+    "city": "zaporozhe",
+    "name": "Приватний ЛОР-кабінет доктора Хролець О.В.",
+    "address": null,
+    "specializations": "Оториноларингологія",
+    "link": "https://doc.ua/ua/klinika/zaporozhe/chastnyj-lor-kabinet-doktora-hrolec-o-v"
+  },
+  {
+    "city": "zaporozhe",
+    "name": null,
+    "address": "пр-т Соборний, 11 пов. 1",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "zaporozhe",
+    "name": null,
+    "address": "пр-т Ювілейний, 24/1",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "zaporozhe",
+    "name": "Лавка життя",
+    "address": "вул. Українська, 57 А",
+    "specializations": "Гастроентерологія,, Дерматологія,, Кардіологія,, Масаж,, Неврологія,, Педіатрія",
+    "link": "https://doc.ua/ua/klinika/zaporozhe/lavka-zhizni/lavka-zhizni"
+  }
+]

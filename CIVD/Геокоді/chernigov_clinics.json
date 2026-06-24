@@ -1,0 +1,100 @@
+[
+  {
+    "city": "chernigov",
+    "name": "«ОН Клінік» в Чернігові",
+    "address": "вул.  Героїв Чорнобиля, 3",
+    "specializations": "Гастроентерологія,, Гінекологія,, Дерматологія,, Неврологія,, Проктологія,, Трихологія",
+    "link": "https://doc.ua/ua/klinika/chernigov/on-klinik-v-chernigove/on-klinik-v-chernigove"
+  },
+  {
+    "city": "chernigov",
+    "name": "Медичний Центр \"100% Життя\" у Чернігові",
+    "address": "вул. Київська 14",
+    "specializations": "Гінекологія,, Кардіологія,, Оториноларингологія,, Офтальмологія,, Педіатрія,, Терапія",
+    "link": "https://doc.ua/ua/klinika/chernigov/medichnij-centr-100-zhittya-chernigiv/medcnskj-centr-100-zhttya-cherngov"
+  },
+  {
+    "city": "chernigov",
+    "name": "«Центр слуху» Чернігів",
+    "address": "пр-т Миру, 49-А, оф. 205/1, 2 поверх",
+    "specializations": "Оториноларингологія,, Сурдологія",
+    "link": "https://doc.ua/ua/klinika/chernigov/centr-sluha-chernigov/centr-sluha-chernigov"
+  },
+  {
+    "city": "chernigov",
+    "name": "Центр подології та естетики «Твій подолог» в Чернігові",
+    "address": "вул. Любецька, 2 А",
+    "specializations": "Подологія",
+    "link": "https://doc.ua/ua/klinika/chernigov/centr-podologi-ta-estetiki-tvij-podolog-v-chernigovi/centr-podologi-ta-estetiki-tvij-podolog-v-chernigovi"
+  },
+  {
+    "city": "chernigov",
+    "name": "«МЕДИЧНА ЗІРКА», медичний центр в Чернігові",
+    "address": "вул. Любецька, 2а",
+    "specializations": "Педіатрія,, Терапія,, Сімейна медицина",
+    "link": "https://doc.ua/ua/klinika/chernigov/medichna-zirka-medicinskij-centr-v-chernigove/medichna-zirka-medcnskj-centr-v-cherngove"
+  },
+  {
+    "city": "chernigov",
+    "name": "Чернігівська центральна районна лікарня",
+    "address": "вул. Шевченка, 114",
+    "specializations": "Гінекологія",
+    "link": "https://doc.ua/ua/klinika/chernigov/chernigivska-centralna-rajonna-likarnya/chernigivska-centralna-rajonna-likarnya"
+  },
+  {
+    "city": "chernigov",
+    "name": "Медичний центр «АвангардМед»",
+    "address": "пр-т Перемоги, 119а",
+    "specializations": "Неврологія,, Ортопедія,, Реабілітологія,, Вертебрологія",
+    "link": "https://doc.ua/ua/klinika/chernigov/klinika-vertebrologii-i-ortopedii-avangardmed/klnka-vertebrolog-ortoped-avangardmed"
+  },
+  {
+    "city": "chernigov",
+    "name": "Медичний центр «Довіра» в м. Чернігів",
+    "address": "вул. Чорновола,10",
+    "specializations": "Ортопедія,, Травматологія,, Хірургія",
+    "link": "https://doc.ua/ua/klinika/chernigov/medichnij-centr-dovira-v-m-chernigiv/medichnij-centr-dovira-v-m-chernigiv"
+  },
+  {
+    "city": "chernigov",
+    "name": "Тесла, медичний центр",
+    "address": "вул. 1-го Травня, 166-Б",
+    "specializations": "Гастроентерологія,, Гепатологія,, Дерматологія,, Кардіологія,, Мамологія,, Неврологія",
+    "link": "https://doc.ua/ua/klinika/chernigov/tesla-medichnij-centr/tesla-medichnij-centr"
+  },
+  {
+    "city": "chernigov",
+    "name": "Стоматгарант",
+    "address": "вул. Софії Русової, б. 25, кв. 3",
+    "specializations": "Стоматологія",
+    "link": "https://doc.ua/ua/klinika/chernigov/stomatgarant/stomatgarant"
+  },
+  {
+    "city": "chernigov",
+    "name": "Стоматологічна клініка лікаря Вороніної",
+    "address": null,
+    "specializations": "Стоматологія",
+    "link": "https://doc.ua/ua/klinika/chernigov/stomatologichna-klinika-likarya-voroninoi"
+  },
+  {
+    "city": "chernigov",
+    "name": null,
+    "address": "вул. Полуботка, 20",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "chernigov",
+    "name": null,
+    "address": "вул. В`ячеслава Черновола (Войкова), 10",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "chernigov",
+    "name": "СВОБОДА у Чернігові",
+    "address": "вул. Івана Мазепи, 3",
+    "specializations": "Наркологія,, Психіатрія",
+    "link": "https://doc.ua/ua/klinika/chernigov/svoboda-v-chernigove/svoboda-v-chernigove"
+  }
+]

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>📅 Календар візитів</title>
+
+  <!-- FullCalendar -->
+  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+
+  <!-- Leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-draw/dist/leaflet.draw.css" />
+  <script src="https://unpkg.com/leaflet-draw/dist/leaflet.draw.js"></script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0; padding: 0;
+      background: linear-gradient(135deg, #006400, #004d00);
+      color: #ffffff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    h1 { margin-top: 30px; text-align: center; }
+
+    .dashboard {
+      max-width: 1000px;
+      width: 95%;
+      margin: 20px auto;
+      padding: 20px;
+      background: #008000;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.6);
+    }
+
+    #filterBar {
+      margin-bottom: 20px;
+      padding: 10px;
+      background: #004d00;
+      border-radius: 8px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    #filterBar label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    #filterBar button {
+      padding: 8px 12px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      background-color: #006400;
+      color: #ffffff;
+      font-size: 0.9rem;
+    }
+    #filterBar button:hover { background-color: #003300; }
+
+    #calendar {
+      background: #ffffff;
+      color: #000000;
+      border-radius: 8px;
+      padding: 10px;
+      box-shadow: 0 0 12px rgba(0,0,0,0.2);
+    }
+    .fc-event { cursor: pointer; border-radius: 4px; }
+
+    /* Меню візиту */
+    #visitMenu {
+      display: none;
+      position: fixed; left: 50%; top: 40%;
+      transform: translate(-50%, -40%) scale(0.95);
+      background: #008000; border: 1px solid #ccc;
+      padding: 15px; border-radius: 8px;
+      z-index: 10000; min-width: 320px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      color: #fff;
+    }
+    #visitMenu.show {
+      display: block;
+      opacity: 1;
+      transform: translate(-50%, -40%) scale(1);
+      pointer-events: auto;
+    }
+    #visitMenu .visit-menu-actions {
+      margin-top: 15px; display: flex; gap: 10px; flex-wrap: wrap;
+    }
+    #visitMenu button {
+      flex: 1;
+      padding: 8px;
+      border: none; border-radius: 6px;
+      cursor: pointer; color: #fff;
+    }
+    .btn-start { background: #4caf50; }
+    .btn-finish { background: #4caf50; }
+    .btn-cancel { background: #f44336; }
+    .btn-reschedule { background: #2196f3; }
+    .btn-edit { background: #ff9800; }
+    .btn-close { background: #777; }
+
+    /* Модальне вікно */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 20000;
+      left: 0; top: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0,0,0,0.5);
+    }
+    .modal-content {
+      background: #008000;
+      margin: 5% auto;
+      padding: 20px;
+      border-radius: 8px;
+      width: 90%; max-width: 900px;
+      color: #fff;
+    }
+    .close { float: right; font-size: 24px; cursor: pointer; }
+
+    #map {
+      height: 600px;
+      width: 100%;
+      margin-top: 20px;
+      border-radius: 8px;
+    }
+    .fc-timegrid-slot {
+  height: 58px !important;
+  min-height: 58px !important;
+    }
+  </style>
+</head>
+<body>
+  <img src="../logo.svg" alt="logo" width="220">
+  <h1>📅 Календар візитів</h1>
+
+  <div class="dashboard">
+    <div id="filterBar">
+      <label><input type="checkbox" id="filterPlanned" checked> Заплановано</label>
+      <label><input type="checkbox" id="filterInProgress" checked> В процесі</label>
+      <label><input type="checkbox" id="filterCancelled" checked> Відмінено</label>
+      <label><input type="checkbox" id="filterRescheduled" checked> Перенесено</label>
+      <label><input type="checkbox" id="filterDone" checked> Проведено</label>
+
+      <button onclick="rerenderCalendar()">🔄 Оновити</button>
+      <a href="../labcards/labs.html"><button type="button">🏥 Перейти до лабораторій</button></a>
+    </div>
+
+    <div style="text-align:right; margin-bottom:10px;">
+      <button id="buildRouteBtn" style="
+        padding:10px 15px;
+        background:#2196f3;
+        color:#fff;
+        border:none;
+        border-radius:5px;
+        cursor:pointer;
+        display:none;
+      ">
+        🚗 Побудувати маршрут
+      </button>
+    </div>
+
+    <div id="calendar"></div>
+    <div id="map"></div>
+  </div>
+
+  <!-- Меню візиту -->
+  <div id="visitMenu">
+    <div id="visitMenuInfo"></div>
+    <textarea id="visitReport" placeholder="Введіть звіт..."></textarea>
+    <div class="visit-menu-actions">
+      <button class="btn-start">▶️ Почати</button>
+      <button class="btn-cancel">❌ Скасувати</button>
+      <button class="btn-reschedule">📅 Перенести</button>
+      <button class="btn-edit">✏️ Редагувати лабораторію</button>
+      <button onclick="processVisitReport(currentVisitId, document.getElementById('visitReport').value)">
+        ✅ Завершити візит
+      </button>
+    </div>
+  </div>
+
+  <!-- Модальне вікно -->
+  <div id="visitModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeVisitModal()">&times;</span>
+      <h3>Візит</h3>
+      <div id="visitModalTabs"></div>
+      <button onclick="submitVisitData()">✅ Зберегти дані</button>
+    </div>
+  </div>
+
+  <!-- Підключення JS -->
+  <script src="../shared/visits.js"></script>
+  <script src="../shared/calendar.js"></script>
+  <script src="../labcards/labcards.js"></script>
+</body>
+</html>

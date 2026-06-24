@@ -1,0 +1,38 @@
+{
+  "deviceName": "CLreader300",
+
+  "reagents": [
+    {
+      "name": "CL10M",
+      "startup": 0,
+      "shutdown": 0,
+      "perTest": 1,
+      "packageSize": 100,
+      "price": 926.8
+    },
+    {
+      "name": "CL11M",
+      "startup": 0,
+      "shutdown": 0,
+      "perTest": 1,
+      "packageSize": 100,
+      "price": 993.5
+    },
+    {
+      "name": "CL10MAC",
+      "startup": 0,
+      "shutdown": 0,
+      "perTest": 1,
+      "packageSize": 100,
+      "price": 733.5
+    },
+    {
+      "name": "CL11K",
+      "startup": 0.05,
+      "shutdown": 0,
+      "perTest": 0,
+      "packageSize": 25,
+      "price": 212.7
+    }
+  ]
+}

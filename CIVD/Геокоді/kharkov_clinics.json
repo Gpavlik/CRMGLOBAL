@@ -1,0 +1,2207 @@
+[
+  {
+    "city": "kharkov",
+    "name": "Лінія життя, медичний центр",
+    "address": "вул. Нескорених (Героїв Праці), 14",
+    "specializations": "Акушерство,, Андрологія,, Гінекологія,, Дерматологія,, Кардіологія,, Косметологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/liniya-zhizni-medicinskij-centr/liniya-zhizni-medicinskij-centr"
+  },
+  {
+    "city": "kharkov",
+    "name": "Медичний центр «ОН Клінік Харків»",
+    "address": null,
+    "specializations": "Covid-19,, Інфектологія,, Алергологія,, Вакцинація,, Гастроентерологія,, Гінекологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/medicinskij-centr-on-klinik-harkov-detskoe-otdelenie"
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "проспект Героїв Харків, 257",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "пр-т Героїв Харкова 257",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "вул. Я. Мудрого, 30а",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "вул. Я. Мудрого, 30а",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "вул. Молочна, 48",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "вул. Молочна, 48",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": "Центр сучасної медицини ДОКАРТ (Клініка «Ок центр»)",
+    "address": "вул. Миколи Хвильового, 24",
+    "specializations": "Гастроентерологія,, Гінекологія,, Дерматологія,, Кардіологія,, Офтальмологія,, Проктологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/ok-centr/ok-centr"
+  },
+  {
+    "city": "kharkov",
+    "name": "Мілнер Медікал, багатопрофільний клініко-діагностичний центр",
+    "address": "вул. Григорія Сковороди, 28-Б (Пушкінська)",
+    "specializations": "Андрологія,, Венерологія,, Гастроентерологія,, Гепатологія,, Гінекологія,, Дерматологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/milner-medical/milner-medical-mnogoprofilnyj-kliniko-diagnosticheskij-centr"
+  },
+  {
+    "city": "kharkov",
+    "name": "Дерматологія плюс",
+    "address": "вул. Дарвіна, 9",
+    "specializations": "Дерматологія,, Косметологія,, Трихологія,, Дерматовенерологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/dermatologiya-plyus/dermatologiya-plyus"
+  },
+  {
+    "city": "kharkov",
+    "name": "Медичний центр наркологічної та психологічної допомоги «Харьковский нарколог»",
+    "address": "вул. Полтавский шлях 123",
+    "specializations": "Наркологія,, Психіатрія,, Психотерапія",
+    "link": "https://doc.ua/ua/klinika/kharkov/medicinskij-centr-narkologicheskoj-i-psihologicheskoj-pomoshi-harkovskij-narkolog/medicinskij-centr-narkologicheskoj-i-psihologicheskoj-pomoshi-harkovskij-narkolog"
+  },
+  {
+    "city": "kharkov",
+    "name": "Medical space XXI (Медікал спейс)",
+    "address": "вул. Ахсарова 4/6-А",
+    "specializations": "Кардіологія,, Сімейна медицина",
+    "link": "https://doc.ua/ua/klinika/kharkov/medical-space-xxi/medical-space-xxi-medkal-spejs"
+  },
+  {
+    "city": "kharkov",
+    "name": "Медичний центр Аналітика у Харкові",
+    "address": null,
+    "specializations": "Гастроентерологія,, Гінекологія,, Дерматологія,, Ендокринологія,, Кардіологія,, Лабораторна діагностика",
+    "link": "https://doc.ua/ua/klinika/kharkov/medicinskij-centr-analitika-v-harkove"
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "вул. Полтавський шлях, 155",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "просп. Науки, 3",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "просп. Незалежності, 17",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "пр. Перемоги, 61",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": "BABY LUCK",
+    "address": "пр. Героїв Харкова 162",
+    "specializations": "Акушерство,, Гастроентерологія,, Гінекологія,, Кардіологія,, Мамологія,, Масаж",
+    "link": "https://doc.ua/ua/klinika/kharkov/baby-luck/baby-luck"
+  },
+  {
+    "city": "kharkov",
+    "name": "Медичний центр Здоров'я",
+    "address": "Проспект Незалежності, 13",
+    "specializations": "Алергологія,, Гастроентерологія,, Гінекологія,, Дерматологія,, Дієтологія,, Імунологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/medicinskij-centr-zdorovya/medicinskij-centr-zdorovya"
+  },
+  {
+    "city": "kharkov",
+    "name": "Медичний центр «Беатріс»",
+    "address": "вул. Григорія Сковороди, 44, 2 поверх",
+    "specializations": "Дерматологія,, Косметологія,, Мамологія,, Мануальна терапія,, Масаж,, Онкологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/1419-klinika-plasticheskoj-hirurgii-i-esteticheskoj-kosmetologii-beatris/1889-klinika-plasticheskoj-hirurgii-i-esteticheskoj-kosmetologii-beatris"
+  },
+  {
+    "city": "kharkov",
+    "name": "Центр здоров'я лікаря Артемчука",
+    "address": "вул. Дмитра Коцюбайла (Державінська), 38",
+    "specializations": "Андрологія,, Гінекологія,, Косметологія,, Мануальна терапія,, Наркологія,, Педіатрія",
+    "link": "https://doc.ua/ua/klinika/kharkov/centr-zdorovya-doktora-artemchuka/centr-zdorovya-doktora-artemchuka"
+  },
+  {
+    "city": "kharkov",
+    "name": "«ГастроСіті», гастроентерологічна амбулаторія",
+    "address": "вул. Гуданова 9/11, поверх 1",
+    "specializations": "Гастроентерологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/gastrocity/gastrocity-gastroenterologicheskaya-ambulatoriya"
+  },
+  {
+    "city": "kharkov",
+    "name": "Поліклініка «Мамин Дім»",
+    "address": null,
+    "specializations": "Алергологія,, Вакцинація,, Гастроентерологія,, Гінекологія,, Дерматологія,, Ендокринологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/poliklinika-mamin-dim"
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "вул. Григорія Сковороди, 31",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "пр-т. Петра Григоренка, 5",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "Григорівське шосе, 57",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "вул. Гвардійців-Широнінців, 33",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": "НОРМА, медико-психологічний центр на пр. Гагарина",
+    "address": "пр. Гагаріна, 41/2, офіс 100, 2 поверх",
+    "specializations": "Мануальна терапія,, Психіатрія,, Психотерапія,, Рефлексотерапія",
+    "link": "https://doc.ua/ua/klinika/kharkov/chastnyj-kabinet-manualnoj-terapii-i-refleksoterapii-zhigajlo-vi/chastnyj-kabinet-manualnoj-terapii-i-refleksoterapii-zhigajlo-vi"
+  },
+  {
+    "city": "kharkov",
+    "name": "Мережа центрів ментального здоров’я Dr. Isaenko  на вул. Шевченка",
+    "address": "вул. Шевченка, 133",
+    "specializations": "Психіатрія,, Психотерапія",
+    "link": "https://doc.ua/ua/klinika/kharkov/klinika-mentalnogo-zdorovya-dr-isaenko/klinika-mentalnogo-zdorovya-dr-isaenko-na-shevchenka"
+  },
+  {
+    "city": "kharkov",
+    "name": "Кабінет лікаря акушера-гінеколога, лікаря з ультразвукової діагностики Костюк О.В.",
+    "address": "вул. Григорія Сковороди (колишня вул. Пушкінська), буд.79/1,  каб. 1",
+    "specializations": "Гінекологія,, УЗ-діагностика,, Ендокринологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/kabinet-vracha-akushera-ginekologa-vracha-po-ultrazvukovoj-diagnostike-kostyuk-av/kabinet-likarya-akushera-ginekologa-likarya-z-ultrazvukovo-diagnostiki-kostyuk-ov"
+  },
+  {
+    "city": "kharkov",
+    "name": "Медичний центр «Rimidy»",
+    "address": "вул. Євгенія Єніна, 9/13",
+    "specializations": "Психіатрія,, Психотерапія",
+    "link": "https://doc.ua/ua/klinika/kharkov/medicinskij-centr-rimidy/medicinskij-centr-rimidy"
+  },
+  {
+    "city": "kharkov",
+    "name": "Медичний центр Мікамед (Mikamed)",
+    "address": "вул. Роганська, 3",
+    "specializations": "Дерматологія,, Косметологія,, Неврологія,, Дерматовенерологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/medicinskij-centr-mikamed-mikamed/medichnij-centr-mikamed-mikamed"
+  },
+  {
+    "city": "kharkov",
+    "name": "ULife (Юлайф)",
+    "address": null,
+    "specializations": "Психологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/ulife"
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "Вул. Клочківська, 222",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "вул. Пушкінська, 43",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": "«АМГ клінік медікал лаб»",
+    "address": "вул. Юри Зойфера, 6",
+    "specializations": "Дерматологія,, Кардіологія,, Наркологія,, Неврологія,, Психіатрія,, Психологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/amg-klinik-medikal-lab/amg-klnk-medkal-lab"
+  },
+  {
+    "city": "kharkov",
+    "name": "АВС (Age and Beauty Control Clinic), Медичний центр інноваційних технологій",
+    "address": "вул. Космічна, 12А",
+    "specializations": "Гінекологія,, Кардіологія,, Косметологія,, Масаж,, Неврологія,, Терапія",
+    "link": "https://doc.ua/ua/klinika/kharkov/age-and-beauty-control-clinic/age-and-beauty-control-clinic"
+  },
+  {
+    "city": "kharkov",
+    "name": "Медицинський центр «Мій офтальмолог»",
+    "address": null,
+    "specializations": "Офтальмологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/medicinskij-centr-mij-oftalmolog"
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "вул. Олімпійська , 11",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "просп. Героїв Харкова, 272 Д",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "просп. Перемоги, 59",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "Ювілейний проспект, 67 Б",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": "Медичний центр Alef Clinic",
+    "address": "вул. Григорія Сковороди, 32, будівля 3",
+    "specializations": "Неврологія,, Ортопедія,, Оториноларингологія,, Терапія,, Травматологія,, Реабілітологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/lechebno-diagnosticheskij-centr-alef-clinic/lechebno-diagnosticheskij-centr-alef-clinic"
+  },
+  {
+    "city": "kharkov",
+    "name": "«МЕДИЧНА ЗІРКА», медичний центр у Харкові",
+    "address": null,
+    "specializations": "Педіатрія,, Сімейна медицина,, Терапія",
+    "link": "https://doc.ua/ua/klinika/kharkov/medichna-zirka-medicinskij-centr-v-harkove"
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "просп. Байрона, 7",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "просп. Героїв Харкова, 162",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "вул. Миру, 48/1",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": "Центр слуху (Харків)",
+    "address": "пр. Героїв Харкова 257, каб. 807",
+    "specializations": "Сурдологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/4305-centr-sluha/centr-sluha-harkov"
+  },
+  {
+    "city": "kharkov",
+    "name": "МедАРТ (MedART), психологічний центр",
+    "address": "вул. Дмитра Антоненко, 49, корпус 2",
+    "specializations": "Масаж,, Психологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/medart-medart-psihologichnij-centr/medart-medart-psihologichnij-centr"
+  },
+  {
+    "city": "kharkov",
+    "name": "Shape Dental Studio",
+    "address": "вул. Григорія Тарасенка 20А ( Плеханівська 20А)",
+    "specializations": "Стоматологія,, Ортодонтія,, Ендодонтія,, Ортопедична стоматологія,, Хірургічна стоматологія,, Стоматологічна імплантологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/shape-dental-studio/shape-dental-studio"
+  },
+  {
+    "city": "kharkov",
+    "name": "Правильна косметологія, центр естетичної медицини",
+    "address": "вул. Отакара Яроша, 24Б",
+    "specializations": "Дерматологія,, Косметологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/pravilnaya-kosmetologiya-centr-esteticheskoj-mediciny/pravilnaya-kosmetologiya-centr-esteticheskoj-mediciny"
+  },
+  {
+    "city": "kharkov",
+    "name": "Клініка лікаря Сотникова",
+    "address": "просп. Героїв Харкова, 270-В",
+    "specializations": "Генетика,, Кардіологія,, Терапія,, Ендокринологія,, Сімейна медицина",
+    "link": "https://doc.ua/ua/klinika/kharkov/klinika-doktora-sotnikova/klinika-doktora-sotnikova"
+  },
+  {
+    "city": "kharkov",
+    "name": "Кабінет уролога Чепенко А.В.",
+    "address": "вул. Георгія Тарасенка, 65",
+    "specializations": "Андрологія,, Урологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/kabinet-urologa-chepenko-av/kabinet-urologa-chepenko-av"
+  },
+  {
+    "city": "kharkov",
+    "name": "Клініка репродуктивної медицини імені академика В.І. Грищенка (Імплант)",
+    "address": null,
+    "specializations": "Акушерство,, Андрологія,, Гінекологія,, Репродуктологія,, Урологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/implant-klinika-reproduktivnoj-mediciny-imeni-akademika-vi-grishenko"
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "вул. Полтавський шлях, 34",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "вул. Благовіщинська, 25",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "вул. Благовіщенська, 25",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": "Медичний центр «DOCTOR»",
+    "address": null,
+    "specializations": "Венерологія,, Гінекологія,, Дерматовенерологія,, Ендокринологія,, Кардіологія,, Косметологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/medicinskij-centr-doctor"
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "Вул. Я.Мудрого (Петровського), 26/28В",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "вул. Сумська, 19",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": "Чоловіча консультація",
+    "address": "вул. Георгія Тарасенка (Плеханівська), 40",
+    "specializations": "Андрологія,, Репродуктологія,, УЗ-діагностика,, Урологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/muzhskaya-konsultaciya/muzhskaya-konsultaciya"
+  },
+  {
+    "city": "kharkov",
+    "name": "Сімейна консультація",
+    "address": "вул. Шевченка, 142",
+    "specializations": "Венерологія,, Гінекологія,, Дерматологія,, УЗ-діагностика,, Урологія,, Дерматовенерологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/semejnaya-konsultaciya/semejnaya-konsultaciya"
+  },
+  {
+    "city": "kharkov",
+    "name": "Офтальміка, міжнародний медичний центр",
+    "address": null,
+    "specializations": "Офтальмологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/oftalmika-mezhdunarodnyj-medicinskij-centr"
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "вул. Гончара, 5",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "вул. Отакара Яроша, 16-Г",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": "ДОКТОР ПРОФІ",
+    "address": "вул. Чоботарська, буд.23",
+    "specializations": "Андрологія,, Гастроентерологія,, Гінекологія,, Дерматологія,, Імунологія,, Кардіологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/doktor-profi/doktor-profi"
+  },
+  {
+    "city": "kharkov",
+    "name": "Психологічний центр Головко Т.І.",
+    "address": null,
+    "specializations": "Психологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/psihologicheskij-centr-golovko-ti"
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "Троїцький переулок,9В",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "проспект Науки, 56, офіс 450",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "Куликівський спуск, 9",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": "Приватний кабінет психолога Котенко Ю.І.",
+    "address": "вул. Каразіна, 6, підїзд №1",
+    "specializations": "Психологія,, Психотерапія",
+    "link": "https://doc.ua/ua/klinika/kharkov/chastnyj-kabinet-psihologa-kotenko-yui/chastnyj-kabinet-psihologa-kotenko-yui"
+  },
+  {
+    "city": "kharkov",
+    "name": "Лорідан на пр-ті Героїв Харкова",
+    "address": "пр-т Героїв Харкова, 137",
+    "specializations": "Гастроентерологія,, Гінекологія,, Оториноларингологія,, Офтальмологія,, Педіатрія,, Стоматологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/loridan/loridan-na-moskovskom-prospekte"
+  },
+  {
+    "city": "kharkov",
+    "name": "Центр хребта «Respine» (Харків)",
+    "address": null,
+    "specializations": "Вертебрологія,, Кінезітерапія,, Масаж,, Неврологія,, Ортопедія,, Реабілітологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/centr-pozvonochnika-respine-harkov"
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "вул. Благовіщенська, 2/15",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "проспект Героїв Харкова 96",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": "Медцентр «ОКО»",
+    "address": null,
+    "specializations": "Офтальмологія,, Хірургія",
+    "link": "https://doc.ua/ua/klinika/kharkov/medicinskij-centr-ambulatornoj-oftalmohirurgii-oko"
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "провулок Отакара Яроша, 12-А",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "пр.Московський, 278, 3 етаж, каб.308",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": "Гранд Стоматологія",
+    "address": null,
+    "specializations": "Стоматологічна імплантологія,, Стоматологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/grand-stomatologiya"
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "проспект Героїв Харкова, 10/12",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "проспект Людвіга Свободи, 31",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "вул. Гвардійців-Широнінців, 99",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "проспект Аерокосмічний, 48",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": "Кабінет психолога Канигіної Альони",
+    "address": "вул. Космічна, 26",
+    "specializations": "Психологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/kabinet-psihologa-kanyginoj-aleny/kabinet-psihologa-kanyginoj-eleny"
+  },
+  {
+    "city": "kharkov",
+    "name": "Стоматологічний кабінет White Smile",
+    "address": "майдан Захисників України, 7/8, офіс 53",
+    "specializations": "Стоматологія,, Ендодонтія,, Ортопедична стоматологія,, Пародонтологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/stomatologicheskij-kabinet-white-smile/stomatologichnij-kabinet-white-smile"
+  },
+  {
+    "city": "kharkov",
+    "name": "Life Park (Лайф Парк)",
+    "address": "вул. Олімпійська, 10",
+    "specializations": "Гінекологія,, Кардіологія,, Неврологія,, Ортопедія,, Рентгенологія,, Терапія",
+    "link": "https://doc.ua/ua/klinika/kharkov/lajf-park/lajf-park"
+  },
+  {
+    "city": "kharkov",
+    "name": "Люменіс, центр лазерної епіляції",
+    "address": null,
+    "specializations": "Дерматологія,, Косметологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/lyumenis-centr-lazernoj-epilyacii-kharkov"
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "пр. Леніна, 7",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "вул. Максиміліанівська, 4",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": "Реабілітаційний центр Право вибору",
+    "address": "вул. Киргизька 10",
+    "specializations": "Реабілітологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/pravo-vybora-reabilitacionnyj-centr/pravo-vybora-reabilitacionnyj-centr"
+  },
+  {
+    "city": "kharkov",
+    "name": "Приватний консультативний кабінет «Ваш Гінеколог Dr. Anna»",
+    "address": "​вул. Петра Болбочана, 6",
+    "specializations": "Гінекологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/chastnyj-konsultativnyj-kabinet-vash-ginekolog-dr-anna/chastnyj-konsultativnyj-kabinet-vash-ginekolog-dr-anna"
+  },
+  {
+    "city": "kharkov",
+    "name": "Центр остеопатії Арсентьєвої В.М",
+    "address": "вул. Бакуліна 33",
+    "specializations": "Гінекологія,, Масаж,, Ортопедія,, Травматологія,, Гірудотерапія",
+    "link": "https://doc.ua/ua/klinika/kharkov/centr-osteopati-arsentvo-vm/centr-osteopati-arsentevo-vm"
+  },
+  {
+    "city": "kharkov",
+    "name": "Правильний вибір +",
+    "address": "с. Манченки, вул.  Благодатна, 1",
+    "specializations": "Наркологія,, Психологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/pravilnyj-vybor/pravlnyj-vybor"
+  },
+  {
+    "city": "kharkov",
+    "name": "Приватний кабінет нутріціолога Олени Войно-Данчишеної",
+    "address": "вул. Шевченка, 146",
+    "specializations": "Дієтологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/chastnyj-kabinet-nutriciologa-aleny-vojno-danchishenoj/chastnyj-kabinet-nutriciologa-aleny-vojno-danchishenoj"
+  },
+  {
+    "city": "kharkov",
+    "name": "Приватна практика, кабінет психолога-сексолога Лутаєвой Марії",
+    "address": "вул. Шатілова дача 4, каб. 600",
+    "specializations": "Психологія,, Сексологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/chastna-praktika-kabinet-psihologa-seksologa-lutavoj-mari/chastnaya-praktka-kabnet-pshologa-seksologa-lutaevoj-mar"
+  },
+  {
+    "city": "kharkov",
+    "name": "Prime Dental Diagnostic (Прайм-Центр щелепно-лицевої діагностики)",
+    "address": "вул. Георгія Тарасенка, 40 (колишня Плеханівська)",
+    "specializations": "КТ і МРТ",
+    "link": "https://doc.ua/ua/klinika/kharkov/prime-dental-diagnostic-prajm-centr-shelepno-licevo-diagnostiki/prime-dental-diagnostic-prajm-centr-chelyustno-lcevoj-dagnostk"
+  },
+  {
+    "city": "kharkov",
+    "name": "Психологічний Центр Вячеслава Бердага",
+    "address": "пров. Кравцова, 11",
+    "specializations": "Психологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/psihologichnij-centr-vyacheslava-berdagi/psihologichnij-centr-vyacheslava-berdagi"
+  },
+  {
+    "city": "kharkov",
+    "name": "Кабінет ментального здоров'я Чуйний Лікар",
+    "address": "вул. Свободи, 8, приміщ. №26",
+    "specializations": "Психіатрія,, Психологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/privatnij-kabinet-psihiatra-borzenko-vr/privatnij-kabinet-psihiatra-borzenko-vr"
+  },
+  {
+    "city": "kharkov",
+    "name": "Кабінет психолога Деревянко Вікторії",
+    "address": "пров. Кравцова, 11",
+    "specializations": "Психологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/kabinet-psihologa-derevyanko-viktori/kabinet-psihologa-derevyanko-viktori"
+  },
+  {
+    "city": "kharkov",
+    "name": "Приватний кабінет психолога Погрібняк В. Ю.",
+    "address": "вул. Вартових Неба, 42, офіс 305",
+    "specializations": "Психологія,, Психотерапія",
+    "link": "https://doc.ua/ua/klinika/kharkov/hospital-chastnyj-kabinet-psihologa/privatnij-kabinet-psihologa-pogribnyak-v-yu"
+  },
+  {
+    "city": "kharkov",
+    "name": "Інтермед на Барабашова",
+    "address": "вул. Барабашова, 6 а (Будівля адміністрації ТП №3 (колишня будівля обленерго))",
+    "specializations": "Акушерство,, Гінекологія,, Кардіологія,, Масаж,, Неврологія,, Оториноларингологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/intermed/intermed"
+  },
+  {
+    "city": "kharkov",
+    "name": "Інститут вен",
+    "address": "вул. Ярослава Мудрого, 37",
+    "specializations": "Дерматологія,, УЗ-діагностика,, Флебологія,, Хірургія",
+    "link": "https://doc.ua/ua/klinika/kharkov/institut-ven/institut-ven"
+  },
+  {
+    "city": "kharkov",
+    "name": "ЦМЕІ, лікувально-діагностичний центр",
+    "address": null,
+    "specializations": "Гастроентерологія,, Ендокринологія,, Ендоскопія,, Неврологія,, Оториноларингологія,, Проктологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/cmei-lechebno-diagnosticheskij-centr"
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "вул. Академіка Павлова, 162 г",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "ул. Дружбы Народов, 238 А",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": "Пульс Медика",
+    "address": "ул. 23 Августа, 34",
+    "specializations": "Гастроентерологія,, Гінекологія,, Дерматологія,, Кардіологія,, Оториноларингологія,, Педіатрія",
+    "link": "https://doc.ua/ua/klinika/kharkov/puls-medika/puls-medika"
+  },
+  {
+    "city": "kharkov",
+    "name": "Медичний центр Еввіва",
+    "address": "вул. Сумська, 90",
+    "specializations": "Алергологія,, Венерологія,, Гастроентерологія,, Гематологія,, Дерматологія,, Дієтологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/medicinskij-centr-evviva/medicinskij-centr-evviva"
+  },
+  {
+    "city": "kharkov",
+    "name": "Оксфорд Медікал Харків",
+    "address": "провулок Петрівський, 30 а",
+    "specializations": "Косметологія,, Флебологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/oksford-medikal-oxford-medical/oksford-medikal-harkov"
+  },
+  {
+    "city": "kharkov",
+    "name": "Офтальмологічний кабінет «Люксоптика»",
+    "address": null,
+    "specializations": "Офтальмологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/luxoptica"
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "пр.Гагаріна, 177",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "вул. Полтавський шлях, 148/2",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "вул. Данилевського, 16",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "пр. Науки 41/43",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "вул. Героїв праці, 9",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "пр. Тракторобудівників, 56/59",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "вул. Академіка Павлова, 44-Б (ТРЦ «Французький Бульвар»)",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "вул. Петровського, 33-А",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "вул. Пушкінська, 26",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "пл.  Павловська, 8 (пл. Р. Люксембург, 8)",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "пр. Московський, 190/1",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "вул. Сумська, 3",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "вул.  Героїв праці, 7",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "вул. Сумська, 60",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "вул.  Героїв Сталінграда, 134/3",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "вул.  Кільцевій шлях, 4-А",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "пр. Леніна, 19",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": "Марія",
+    "address": "вул. Черепанових, 7",
+    "specializations": "Гінекологія,, УЗ-діагностика,, Хірургія",
+    "link": "https://doc.ua/ua/klinika/kharkov/mariya/mariya"
+  },
+  {
+    "city": "kharkov",
+    "name": "SVDent (Есві дент)",
+    "address": null,
+    "specializations": "Ортодонтія,, Стоматологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/sv-dent"
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "Салтівське шосе, 244",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "пр-т П. Григоренка, 3",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "пр-т. Петра Григоренко, 7",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": "Йо Бейбі (Your Baby), дитячий медичний центр",
+    "address": "вул. Кооперативна, 28 а",
+    "specializations": "Педіатрія",
+    "link": "https://doc.ua/ua/klinika/kharkov/e-baby-detskij-medicinskij-centr/e-baby-detskij-medicinskij-centr"
+  },
+  {
+    "city": "kharkov",
+    "name": "Європейська стоматологія",
+    "address": "пр-т. Науки, 41/43",
+    "specializations": "Стоматологія,, Ортодонтія",
+    "link": "https://doc.ua/ua/klinika/kharkov/evropejskaya-stomatologiya/evropejskaya-stomatologiya"
+  },
+  {
+    "city": "kharkov",
+    "name": "Лорітом, лікувально-діагностичний центр",
+    "address": null,
+    "specializations": "Денний стаціонар,, Ендокринологія,, Кардіологія,, Масаж,, Неврологія,, Офтальмологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/loritom-lechebno-diagnosticheskij-centr"
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "вул. Москалівська, 76",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "с. Бірки, вул. Шкільна 22, Зміївський район, Харківська область",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": "Рішон, медичний центр",
+    "address": "Вул. Піщана, 11",
+    "specializations": "Алергологія,, Гінекологія,, Дерматологія,, Кардіологія,, Мамологія,, Неврологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/rishon-medicinskij-centr/rishon-medicinskij-centr"
+  },
+  {
+    "city": "kharkov",
+    "name": "Приватний кабінет стоматолога Христенко Ю.О.",
+    "address": "вул. Пушкінська, 36",
+    "specializations": "Стоматологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/chastnyj-kabinet-stomatologa-hristenko-yua/chastnyj-kabinet-stomatologa-hristenko-yua"
+  },
+  {
+    "city": "kharkov",
+    "name": "Медичний центр лікаря Бубновського",
+    "address": null,
+    "specializations": "Вертебрологія,, Кінезітерапія,, Масаж,, Неврологія,, Нетрадиційна медицина,, Ортопедія",
+    "link": "https://doc.ua/ua/klinika/kharkov/medicinskij-centr-doktora-bubnovskogo-kharkiv"
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "вул. Академіка Павлова, 271",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "вул. Новгородська, 11",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": "Institute Hyalual (Інститут Гіалуаль), клініка ин'єкційної косметології",
+    "address": "вул. Дарвіна, 33",
+    "specializations": "Дерматологія,, Косметологія,, Трихологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/institute-hyalual-institut-gialual-klinika-inekcionnoj-kosmetologii/institute-hyalual-institut-gialual-klinika-inekcionnoj-kosmetologii"
+  },
+  {
+    "city": "kharkov",
+    "name": "Віта, медичний центр",
+    "address": "пр. Гагаріна, 43",
+    "specializations": "Стоматологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/vita-medicinskij-centr/vita-vita-medicinskij-centr"
+  },
+  {
+    "city": "kharkov",
+    "name": "Медичний центр  «Діагностика плюс»",
+    "address": null,
+    "specializations": "Венерологія,, Генетика,, Гінекологія,, Дерматологія,, Лабораторна діагностика,, Сімейна медицина",
+    "link": "https://doc.ua/ua/klinika/kharkov/medicinskij-centr-diagnostika-plyus"
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "вул. Максиміліанівська, 10",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "площа Захисників України, 15",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": "Спортивно-реабілітаційний центр Рефіт",
+    "address": "просп. Науки, 9д",
+    "specializations": "Реабілітологія,, Кінезітерапія,, Вертебрологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/sportivno-reabilitacionnyj-centr-refit/sportivno-reabilitacionnyj-centr-refit"
+  },
+  {
+    "city": "kharkov",
+    "name": "Приватний кабінет кардіолога і терапевта Нагорної",
+    "address": "вул. Плехановська, 65",
+    "specializations": "Кардіологія,, Терапія",
+    "link": "https://doc.ua/ua/klinika/kharkov/chastnyj-kabinet-kardiologa-i-terapevta-nagornoj-vg/chastnyj-kabinet-kardiologa-i-terapevta-nagornoj"
+  },
+  {
+    "city": "kharkov",
+    "name": "ДУ «Інститут загальної та невідкладної хірургії ім. В.Т. Зайцева НАМН України»",
+    "address": "въезд Балакирева, 1",
+    "specializations": "Проктологія,, Хірургія",
+    "link": "https://doc.ua/ua/klinika/kharkov/gu-institut-obshej-i-neotlozhnoj-hirurgii-im-vtzajceva-namn-ukrainy/gu-institut-obshej-i-neotlozhnoj-hirurgii-im-vtzajceva-namn-ukrainy"
+  },
+  {
+    "city": "kharkov",
+    "name": "Медичний центр «СЕЛЛІ»",
+    "address": "вул.Пушкінська, 43",
+    "specializations": "Акушерство,, Гастроентерологія,, Гінекологія,, Кардіологія,, Мамологія,, Неврологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/medicinskij-centr-selli/medcnskj-centr-selli"
+  },
+  {
+    "city": "kharkov",
+    "name": "Сілк (Silk), стоматологічна клініка",
+    "address": "вул. Культури, 26",
+    "specializations": "Стоматологія,, Ортодонтія",
+    "link": "https://doc.ua/ua/klinika/kharkov/silk-stomatologicheskaya-klinika/silk-stomatologicheskaya-klinika"
+  },
+  {
+    "city": "kharkov",
+    "name": "Новий зір, медичний центр в Харкові",
+    "address": "вул. Максиміліановська, 14",
+    "specializations": "Офтальмологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/novij-zir-medicinskij-centr-kharkiv/novij-zir-medicinskij-centr-kharkiv"
+  },
+  {
+    "city": "kharkov",
+    "name": "Харьківській Інститут Гештальт та психодрами",
+    "address": "Куликівський узвіз 9",
+    "specializations": "Психологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/institut-geshtalta-i-psihodramy/institut-geshtalta-i-psihodramy"
+  },
+  {
+    "city": "kharkov",
+    "name": "Стоматологія «Вівастом»",
+    "address": "вул. Кооперативна, 5",
+    "specializations": "Стоматологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/stomatologiya-vivastom/stomatologiya-vivastom"
+  },
+  {
+    "city": "kharkov",
+    "name": "Перша приватна поліклініка",
+    "address": null,
+    "specializations": "Гастроентерологія,, Педіатрія,, Сімейна медицина,, Терапія",
+    "link": "https://doc.ua/ua/klinika/kharkov/pervaya-privatnaya-poliklinika"
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "вул. Миру, 48\\1",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "вул. Героїв Сталінграда, 7",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "Пр.-т. Московський, 214/2",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": "Lalio (Лаліо)",
+    "address": "пр. Гагаріна, 4",
+    "specializations": "Логопедія,, Психологія,, Сурдологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/lalio/lalio"
+  },
+  {
+    "city": "kharkov",
+    "name": "Приватний кабінет дієтолога Буткевич І.М.",
+    "address": "вул. Василя Стуса, 4 а, оф. №314",
+    "specializations": "Дієтологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/chastnyj-kabinet-dietologa-butkevich-in/chastnyj-kabinet-dietologa-butkevich-in"
+  },
+  {
+    "city": "kharkov",
+    "name": "Медичний Центр Ортопедичної Реабілітації і Профілактики «Кінезіо»",
+    "address": "вул. Плеханівська, 92-А",
+    "specializations": "Масаж,, Неврологія,, Ортопедія,, Терапія,, Травматологія,, Фізіотерапія",
+    "link": "https://doc.ua/ua/klinika/kharkov/medicinskij-centr-ortopedicheskoj-reabilitacii-i-profilaktiki-kinezio/medicinskij-centr-ortopedicheskoj-reabilitacii-i-profilaktiki-kinezio"
+  },
+  {
+    "city": "kharkov",
+    "name": "Да-Вінчі",
+    "address": "вул. Дарвіна 8/10",
+    "specializations": "Гінекологія,, Мамологія,, Ортопедія,, Пластична хірургія,, Психотерапія,, Травматологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/da-vinchi/da-vinchi"
+  },
+  {
+    "city": "kharkov",
+    "name": "Медичний центр «Інстинкт Сонця»",
+    "address": "вул. Римарська, 26",
+    "specializations": "Гінекологія,, Кардіологія,, Терапія,, УЗ-діагностика,, Урологія,, Дерматовенерологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/medicinskij-centr-instinkt-solnca/medicinskij-centr-instinkt-solnca"
+  },
+  {
+    "city": "kharkov",
+    "name": "Наркологічний спеціалізований медичний центр",
+    "address": "вул. Максиміліанівська, 16",
+    "specializations": "Наркологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/narkologicheskij-specializirovannyj-medicinskij-centr/narkologicheskij-specializirovannyj-medicinskij-centr"
+  },
+  {
+    "city": "kharkov",
+    "name": "Авіцена",
+    "address": "пер. Лопанський, 6",
+    "specializations": "Наркологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/avicenna/avicenna"
+  },
+  {
+    "city": "kharkov",
+    "name": "Регіональний медичний центр",
+    "address": "вул. Полтавський шлях, 152",
+    "specializations": "Алергологія,, Андрологія,, Гастроентерологія,, Гінекологія,, Дерматологія,, Кардіологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/regionalnyj-medicinskij-centr/regionalnyj-medicinskij-centr"
+  },
+  {
+    "city": "kharkov",
+    "name": "A-Medical",
+    "address": "вул. Клочківська, 3, домофон 5, поверх 5",
+    "specializations": "Гінекологія,, Косметологія,, Проктологія,, Ендоскопія",
+    "link": "https://doc.ua/ua/klinika/kharkov/a-medicaal/a-medicaal"
+  },
+  {
+    "city": "kharkov",
+    "name": "«Медичний центр» для дорослих та дітей",
+    "address": "вул. Амосова, б. 52, офiс 157",
+    "specializations": "Андрологія,, Сексопатологія,, Урологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/hospital-medicinskij-centr-dlya-vzroslyh-i-detej/medcnskj-centr-dlya-vzroslyh-detej"
+  },
+  {
+    "city": "kharkov",
+    "name": "Борденталь, гільдія зубних лікарів",
+    "address": "вул. Анрі Барбюса 3а",
+    "specializations": "Стоматологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/bordental/bordental-gildiya-zubnyh-lekarej"
+  },
+  {
+    "city": "kharkov",
+    "name": "Стоматологічний кабінет Ковтуненко",
+    "address": "вул. Клочківська, 111 а",
+    "specializations": "Стоматологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/stomatologicheskij-kabinet-kovtunenko/stomatologicheskij-kabinet-kovtunenko"
+  },
+  {
+    "city": "kharkov",
+    "name": "Центр ортопедії і травматології",
+    "address": "ул. Пушкинская, 80",
+    "specializations": "Ортопедія",
+    "link": "https://doc.ua/ua/klinika/kharkov/centr-ortopedii-i-travmatologii/centr-ortopedii-i-travmatologii1"
+  },
+  {
+    "city": "kharkov",
+    "name": "Дом Оптики Харків",
+    "address": null,
+    "specializations": "Офтальмологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/dom-optiki-harkov"
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "вул. Пушкінська, 42",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "вул. Університетска, 31",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "пр. Гагаріна,181, ТРЦ «SUN MALL»",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "пр. Незалежності, 17",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": "Симфонія, стоматологічна клініка",
+    "address": "вул. Чайковського, 6",
+    "specializations": "Стоматологія,, Ортодонтія",
+    "link": "https://doc.ua/ua/klinika/kharkov/simfoniya-stomatologicheskaya-klinika/simfoniya-stomatologicheskaya-klinika"
+  },
+  {
+    "city": "kharkov",
+    "name": "Мак, салон тайського масажу",
+    "address": "пр. Леніна, 56",
+    "specializations": "Масаж",
+    "link": "https://doc.ua/ua/klinika/kharkov/mak-salon-tajskogo-massazha/mak-salon-tajskogo-massazha"
+  },
+  {
+    "city": "kharkov",
+    "name": "Лота +",
+    "address": "ул. Гамарника, 7/9",
+    "specializations": "Мануальна терапія,, Масаж,, Ортопедія,, Травматологія,, Вертебрологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/lota/lota"
+  },
+  {
+    "city": "kharkov",
+    "name": "Моя Планета, центр нестандартної психології",
+    "address": "вул. Кооперативна, 22",
+    "specializations": "Логопедія,, Психологія,, Психотерапія",
+    "link": "https://doc.ua/ua/klinika/kharkov/moya-planeta-centr-nestandartnoj-psihologii/moya-planeta-centr-nestandartnoj-psihologii"
+  },
+  {
+    "city": "kharkov",
+    "name": "Харківська міська косметологічна лікарня",
+    "address": "вул. Москалівська 61",
+    "specializations": "Дерматологія,, Косметологія,, Масаж,, Пластична хірургія",
+    "link": "https://doc.ua/ua/klinika/kharkov/harkovskaya-gorodskaya-kosmetologicheskaya-bolnica/harkovskaya-gorodskaya-kosmetologicheskaya-bolnica"
+  },
+  {
+    "city": "kharkov",
+    "name": "Приватний кабінет гінеколога Юлії Ковальової",
+    "address": "ул. Ярославская 2/1, метро Центральный рынок.",
+    "specializations": "Акушерство,, Гінекологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/1515-chastnyj-kabinet/chastnyj-kabinet-ginekologa-yulii-kovalevoj"
+  },
+  {
+    "city": "kharkov",
+    "name": "Доктор Харків Кідс, дитячий медичний центр",
+    "address": "вул. Данилевського, 26",
+    "specializations": "Гастроентерологія,, Дієтологія,, Логопедія,, Неврологія,, Ортопедія,, Оториноларингологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/doktor-harkov-kids-detskij-medicinskij-centr/doktor-harkov-kids-detskij-medicinskij-centr"
+  },
+  {
+    "city": "kharkov",
+    "name": "Стоматологічний кабінет Чернова",
+    "address": "вул. Пушкінська, 67",
+    "specializations": "Стоматологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/stomatologicheskij-kabinet-chernova/stomatologicheskij-kabinet-chernova"
+  },
+  {
+    "city": "kharkov",
+    "name": "ГлемСмайл (GlamSmile)",
+    "address": "пров. Банний, 1",
+    "specializations": "Стоматологія,, Ортодонтія",
+    "link": "https://doc.ua/ua/klinika/kharkov/glamsmile/glamsmile"
+  },
+  {
+    "city": "kharkov",
+    "name": "Бебі-доктор (BabyDoctor)",
+    "address": "вул. 23 Серпня, 34",
+    "specializations": "Педіатрія",
+    "link": "https://doc.ua/ua/klinika/kharkov/bebi-doktor-babydoctor/bebi-doktor-babydoctor"
+  },
+  {
+    "city": "kharkov",
+    "name": "Інститут сімейної психології та консультування",
+    "address": "пл. Конституції, 1",
+    "specializations": "Психологія,, Психотерапія",
+    "link": "https://doc.ua/ua/klinika/kharkov/institut-semejnoj-psihologii-i-konsultirovaniya/institut-semejnoj-psihologii-i-konsultirovaniya"
+  },
+  {
+    "city": "kharkov",
+    "name": "Елітдентал",
+    "address": "вул. Ахсарова, 18",
+    "specializations": "Стоматологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/elitdental/elitdental"
+  },
+  {
+    "city": "kharkov",
+    "name": "Масажний кабінет «Konstantin Ivanov»",
+    "address": "Університетська вулица, 31",
+    "specializations": "Мануальна терапія,, Масаж,, Вертебрологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/massazhnyj-kabinet-konstantin-ivanov/massazhnyj-kabinet-konstantin-ivanov"
+  },
+  {
+    "city": "kharkov",
+    "name": "Ваш психолог",
+    "address": "вул. Шатилова Дача, 4",
+    "specializations": "Психологія,, Психотерапія",
+    "link": "https://doc.ua/ua/klinika/kharkov/chastnyj-kabinet-vash-psiholog/chastnyj-kabinet-vash-psiholog"
+  },
+  {
+    "city": "kharkov",
+    "name": "Gelfer, реабілітаційний центр хребта і суглобів",
+    "address": "вул. Нетеченська набережна, 8Б",
+    "specializations": "Ортопедія,, Травматологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/gelfer-reabilitacionnyj-centr-pozvonochnika-i-sustavov/gelfer-reabilitacionnyj-centr-pozvonochnika-i-sustavov"
+  },
+  {
+    "city": "kharkov",
+    "name": "Професійна стоматологія Лемента",
+    "address": "вул. Гвардійців Широнінців 50/29",
+    "specializations": "Стоматологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/professionalnaya-stomatologiya-lementa/professionalnaya-stomatologiya-lementa"
+  },
+  {
+    "city": "kharkov",
+    "name": "Культурно-оздоровчий комплекс Nemo (Немо) на вулиці Сумська",
+    "address": "вул. Сумська, 35",
+    "specializations": "Реабілітологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/kulturno-ozdorovitelnyj-kompleks-nemo-nemo/kulturno-ozdorovitelnyj-kompleks-nemo-nemo"
+  },
+  {
+    "city": "kharkov",
+    "name": "Приватний кабінет психолога Чорноскутової Софії",
+    "address": "вул. Культури, 25а",
+    "specializations": "Психологія,, Психотерапія",
+    "link": "https://doc.ua/ua/klinika/kharkov/chastnyj-kabinet-psihologa-chernoskutovoj-sofii/chastnyj-kabinet-psihologa-chernoskutovoj-sofii"
+  },
+  {
+    "city": "kharkov",
+    "name": "Медичний кабінет очищення крові «Айнер Ворлд»",
+    "address": "вул. Шевченко, 142, 3 поверх",
+    "specializations": "",
+    "link": "https://doc.ua/ua/klinika/kharkov/medicinskij-kabinet-ochisheniya-krovi-inner-world/medicinskij-kabinet-ochisheniya-krovi-inner-world"
+  },
+  {
+    "city": "kharkov",
+    "name": "Приватний кабінет сімейного та дитячого психолога Дудченко",
+    "address": "вул. Полтавський Шлях, 123, кабинет № 6",
+    "specializations": "Психологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/chastnyj-kabinet-semejnogo-i-detskogo-psihologa-dudchenka/chastnyj-kabinet-semejnogo-i-detskogo-psihologa-dudchenka"
+  },
+  {
+    "city": "kharkov",
+    "name": "Приватний кабінет лікаря Якименко Т.С.",
+    "address": "вул. Ромен Роллана, 12",
+    "specializations": "Психіатрія,, Психотерапія",
+    "link": "https://doc.ua/ua/klinika/kharkov/privatnij-kabinet-likarya-yakimenko-ts/chastnyj-kabinet-vracha-yakimenko-ts"
+  },
+  {
+    "city": "kharkov",
+    "name": "НОРМА, медико-психологічний центр",
+    "address": "вул. Ромена Ролана, 12",
+    "specializations": "Мануальна терапія,, Психологія,, Психотерапія,, Рефлексотерапія",
+    "link": "https://doc.ua/ua/klinika/kharkov/nevroz-centr-psihologicheskogo-konsultirovaniya-i-psihokorrekcii/nevroz-centr-psihologicheskogo-konsultirovaniya-i-psihokorrekcii"
+  },
+  {
+    "city": "kharkov",
+    "name": "Медичний центр  «Safari Health»",
+    "address": "пр. Московський 51а",
+    "specializations": "Гінекологія,, Неврологія,, Оториноларингологія,, Психіатрія,, Психологія,, Терапія",
+    "link": "https://doc.ua/ua/klinika/kharkov/medicinskij-centr-safari-health/chastnyj-kabinet-nevrologa-ab-beznosenko1"
+  },
+  {
+    "city": "kharkov",
+    "name": "Salavat MED",
+    "address": "вул. Мироносицька, 34",
+    "specializations": "Андрологія,, Сексологія,, Урологія,, Дерматовенерологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/salavat-med/salavatmed"
+  },
+  {
+    "city": "kharkov",
+    "name": "Фортис медичний оздоровчий центр",
+    "address": null,
+    "specializations": "Акушерство,, Венерологія,, Гастроентерологія,, Дієтологія,, Масаж,, Неврологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/fortis-medicinskij-ozdorovitelnyj-centr"
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "просп. Незалежності, 10 (2 поверх)",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "пр. Науки, 46",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": "Lazer Medical, медичний центр",
+    "address": "вул. Героїв Харкова 37",
+    "specializations": "Акушерство,, Дерматологія,, Урологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/lazer-medical-medicinskij-centr/lazer-medical-medicinskij-centr"
+  },
+  {
+    "city": "kharkov",
+    "name": "Медіал",
+    "address": "пр. Героїв Харкова",
+    "specializations": "Оториноларингологія,, Сурдологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/medial/medial"
+  },
+  {
+    "city": "kharkov",
+    "name": "Клініка здорового хребта та суставів лікаря Костюка",
+    "address": "вул. Трінклера, 6, кабінет 33",
+    "specializations": "Мануальна терапія,, Масаж,, Ортопедія,, Рефлексотерапія,, Фізіотерапія",
+    "link": "https://doc.ua/ua/klinika/kharkov/klinika-zdorovogo-pozvonochnika-i-sustavov-doktora-kostyuka/klinika-zdorovogo-pozvonochnika-i-sustavov-doktora-kostyuka"
+  },
+  {
+    "city": "kharkov",
+    "name": "Медрелакс",
+    "address": "вул. Плеханівська, 19а",
+    "specializations": "Гастроентерологія,, Гінекологія,, Дерматологія,, Кардіологія,, Косметологія,, Масаж",
+    "link": "https://doc.ua/ua/klinika/kharkov/medrelax/medrelax-medrelaks"
+  },
+  {
+    "city": "kharkov",
+    "name": "Ваш Стоматолог",
+    "address": null,
+    "specializations": "Стоматологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/vash-stomatolog"
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "ул. Валентиновская, 13",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "пр. Гагарина, 174",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "Ахсарова, 18",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": "Espina, оздоровчий центр",
+    "address": null,
+    "specializations": "Вертебрологія,, Кардіологія,, Кінезітерапія,, Мануальна терапія,, Масаж,, Неврологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/espina-ozdorovitelnyj-centr"
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "вул. Чернишевського, 31 а",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "пр-т Гагаріна, 43/2",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": "Центр Психології та Тренінгу Т. Леонтюк",
+    "address": "вул. Отакара Яроша, 18а, офіс 108 (1 поверх)",
+    "specializations": "Психологія,, Психотерапія",
+    "link": "https://doc.ua/ua/klinika/kharkov/chastnyj-kabinet-psihologa-leontyuk-ts/chastnyj-kabinet-psihologa-leontyuk-ts"
+  },
+  {
+    "city": "kharkov",
+    "name": "Приватний кабінет професора Андрющенко О.В.",
+    "address": "вул. Пушкінська, 44, МЦ \"Беатрис\", поверх",
+    "specializations": "Мануальна терапія,, Масаж,, Реабілітологія,, Вертебрологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/chastnyj-kabinet-massazhista-andryushenko/chastnyj-kabinet-massazhista-andryushenko-a-v"
+  },
+  {
+    "city": "kharkov",
+    "name": "Психологічний центр розвитку «Тривіум»",
+    "address": "пр. Московський, 259",
+    "specializations": "Логопедія,, Психологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/psihologicheskij-centr-razvitiya-trivium/psihologicheskij-centr-razvitiya-trivium"
+  },
+  {
+    "city": "kharkov",
+    "name": "Анонімний кабінет чоловічого здоров'я",
+    "address": "вул. Ярослава Мудрого 26/28В",
+    "specializations": "Венерологія,, Гінекологія,, Дерматологія,, Урологія,, Дерматовенерологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/anonimnyj-kabinet-muzhskogo-zdorovya/anonimnyj-kabinet-muzhskogo-zdorovya"
+  },
+  {
+    "city": "kharkov",
+    "name": "Риторика, школа правильної мови",
+    "address": null,
+    "specializations": "Логопедія,, Психологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/ritorika-shkola-pravilnoj-rechi"
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "пл. Свободи, 8",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "пр. Ювілейний, 57 а",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "вул. Соколова, 4",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": "Ареміт",
+    "address": "ул. Полтавский Шлях, 115",
+    "specializations": "Акушерство,, Андрологія,, Венерологія,, Гастроентерологія,, Гепатологія,, Дерматологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/medicinskij-centr-aremit/aremit"
+  },
+  {
+    "city": "kharkov",
+    "name": "Мезенцев, стоматологічна клініка",
+    "address": "вул. Слов'янська, 8",
+    "specializations": "Стоматологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/mezencev-stomatologicheskaya-klinika/mezencev-stomatologicheskaya-klinika"
+  },
+  {
+    "city": "kharkov",
+    "name": "Стара Клініка",
+    "address": "вул. Москалевська, 61",
+    "specializations": "Флебологія,, Хірургія",
+    "link": "https://doc.ua/ua/klinika/kharkov/staraya-klinika/staraya-klinika"
+  },
+  {
+    "city": "kharkov",
+    "name": "Центр логопедії та психології",
+    "address": null,
+    "specializations": "Логопедія,, Психологія,, Психотерапія,, Сурдологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/centr-logopedii-i-psihologii"
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "вул. Полтавський шлях, 123, 2 поверх, офіс 11",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "пр. Науки, 38, поверх 4, офіс 414",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": "Медичний центр «MedHouse»",
+    "address": "вул. Суздальскі ряди, буд. 8,  3 поверх",
+    "specializations": "Алергологія,, Венерологія,, Гастроентерологія,, Дерматологія,, Дієтологія,, Імунологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/medicinskij-centr-medhouse/medcnskj-centr-medhouse"
+  },
+  {
+    "city": "kharkov",
+    "name": "Харківська міська поліклініка №11",
+    "address": "Тракторобудівників 105а, кабінет № 20",
+    "specializations": "Інфектологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/chastnyj-kabinet-infekcionista-valentiny-blazhko/chastnyj-kabinet-infekcionista-valentiny-blazhko"
+  },
+  {
+    "city": "kharkov",
+    "name": "Харківський обласний центр онкології",
+    "address": "вул. Лісопарківська, 4",
+    "specializations": "Гематологія,, Онкологія,, Урологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/oblastnoj-centr-onkologii/harkovskij-oblastnoj-centr-onkologii"
+  },
+  {
+    "city": "kharkov",
+    "name": "Медичний центр «Пратія Клінік Україна»",
+    "address": "вул. Полтавський шлях, 7",
+    "specializations": "Гастроентерологія,, Кардіологія,, Неврологія,, Онкологія,, Терапія,, Ендокринологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/medicinskij-centr-pratiya-klinik-ukraina/medcnskj-centr-pratya-klnk-ukrana"
+  },
+  {
+    "city": "kharkov",
+    "name": "Фенікс",
+    "address": "вул. Роганська, 3",
+    "specializations": "Стоматологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/feniks/feniks"
+  },
+  {
+    "city": "kharkov",
+    "name": "Приватний кабінет косметолога Зібінскої А.Ю.",
+    "address": "вул. Олімпійська, 3, кабінет №109",
+    "specializations": "Косметологія,, Масаж",
+    "link": "https://doc.ua/ua/klinika/kharkov/chastnyj-kabinet-kosmetologa-zabinskoj-ayu/chastnyj-kabinet-kosmetologa-zabinskoj-ayu"
+  },
+  {
+    "city": "kharkov",
+    "name": "Центр медично-соціальної реабілітації",
+    "address": "вул. Рижівська, 15",
+    "specializations": "Наркологія,, Психіатрія,, Психологія,, Психотерапія,, Сексологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/centr-medikosocialnoj-reabilicii/centr-medikosocialnoj-reabilicii"
+  },
+  {
+    "city": "kharkov",
+    "name": "Надія",
+    "address": "вул. Гвардійців-Широнінців, 60",
+    "specializations": "Стоматологія,, Ортодонтія",
+    "link": "https://doc.ua/ua/klinika/kharkov/nadezhda/nadezhda"
+  },
+  {
+    "city": "kharkov",
+    "name": "Сумська 26, психологічний центр",
+    "address": "вул. Сумська 7/9",
+    "specializations": "Психологія,, Психотерапія,, Сексологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/sumskaya-26-psihologicheskij-centr/sumskaya-26-psihologicheskij-centr"
+  },
+  {
+    "city": "kharkov",
+    "name": "Приватний кабінет трихології Харитонової О. С.",
+    "address": "вул. Мистецтв, 7/9",
+    "specializations": "Трихологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/chastnyj-kabinet-trihologii-haritonovo/chastnyj-kabinet-trihologii-haritonovoj-o-s"
+  },
+  {
+    "city": "kharkov",
+    "name": "Панація XXI століття",
+    "address": "вул. Кооперативна, 28",
+    "specializations": "Андрологія,, Венерологія,, Гінекологія,, Дерматологія,, Кардіологія,, Ортопедія",
+    "link": "https://doc.ua/ua/klinika/kharkov/panaceya-xxi-vek/panaceya-xxi-vek"
+  },
+  {
+    "city": "kharkov",
+    "name": "Приватний психологічний кабінет Зайцевої Ксенії",
+    "address": "пл. Конституції, 1 (Палац Праці), під'їзд 6, пов. 5, оф. 65-13",
+    "specializations": "Психологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/chastnyj-psihologicheskij-kabinet/chastnyj-psihologicheskij-kabinet-zajcevoj-ksenii"
+  },
+  {
+    "city": "kharkov",
+    "name": "Allderm (Олдерм)",
+    "address": null,
+    "specializations": "Дерматологія,, Косметологія,, Трихологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/allderm"
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "вул. Гуданова, 16",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "вул. Сумська, 77/79",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": "Приватний кабінет сексолога Кришталя Е. В.",
+    "address": "вул. Юрі Зойфера, 3-а",
+    "specializations": "Психотерапія,, Сексологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/chastnyj-kabinet-seksologa-krishtalya-e-v/chastnyj-kabinet-seksologa-krishtalya-e-v"
+  },
+  {
+    "city": "kharkov",
+    "name": "Центр розвитку особистості Вікторії Левицької",
+    "address": "вул. Сумська, 7/9",
+    "specializations": "Психологія,, Психотерапія",
+    "link": "https://doc.ua/ua/klinika/kharkov/centr-razvitiya-lichnosti-viktorii-levickoj/centr-razvitiya-lichnosti-viktorii-levickoj"
+  },
+  {
+    "city": "kharkov",
+    "name": "БлагоДар в м. Харків",
+    "address": "вул. Різдвяна 29 а",
+    "specializations": "Наркологія,, Психологія,, Психотерапія",
+    "link": "https://doc.ua/ua/klinika/kharkov/blagodar/blagodar-v-g-harkov"
+  },
+  {
+    "city": "kharkov",
+    "name": "Приватний кабінет лікаря Андрух П.Г.",
+    "address": "вул. 23 серпня, 40",
+    "specializations": "Наркологія,, Психіатрія,, Психологія,, Психотерапія",
+    "link": "https://doc.ua/ua/klinika/kharkov/chastnyj-kabinet-doktora-andruh-pg/chastnyj-kabinet-doktora-andruh-pg"
+  },
+  {
+    "city": "kharkov",
+    "name": "Центр психології А.В. Кострікіна",
+    "address": "вулиця Пушкінська 68 Харків",
+    "specializations": "Психологія,, Психотерапія",
+    "link": "https://doc.ua/ua/klinika/kharkov/centr-psihologii-avkostrikina/centr-psihologii-avkostrikina"
+  },
+  {
+    "city": "kharkov",
+    "name": "Харьківська обласна клінічна лікарня",
+    "address": "Харьков, ул. Правды, 13",
+    "specializations": "Анестезіологія,, Гінекологія,, Кардіологія,, Нейрохірургія,, Офтальмологія,, Ревматологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/harkovskaya-oblastnaya-klinicheskaya-bolnica/harkovskaya-oblastnaya-klinicheskaya-bolnica"
+  },
+  {
+    "city": "kharkov",
+    "name": "МастерМед",
+    "address": null,
+    "specializations": "Ортодонтія,, Стоматологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/mastermed"
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "пр-т Трактобудівельників, 112",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "вул. Гвардейців Широнінців, 127",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "вул. Харківських дивізій, 7",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "вул. Зубарєва, 39А",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "вул. Амосова, 13",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": "Велнес Груп, центр здоров'я",
+    "address": "пр. Гагаріна, 41/2",
+    "specializations": "Косметологія,, Мануальна терапія,, Масаж,, Гірудотерапія",
+    "link": "https://doc.ua/ua/klinika/kharkov/wellness-group-centr-zdorovya/wellness-group-centr-zdorovya"
+  },
+  {
+    "city": "kharkov",
+    "name": "Центр естетичної косметології Ольги Шевчук",
+    "address": "вул. Артема, 41",
+    "specializations": "Косметологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/centr-esteticheskoj-kosmetologiii-olgi-shevchukm/centr-esteticheskoj-kosmetologiii-olgi-shevchukm"
+  },
+  {
+    "city": "kharkov",
+    "name": "Медичний центр БЛАГО",
+    "address": "проспект Московський, 47",
+    "specializations": "Наркологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/medicinskij-centr-blago/medcnskj-centr-blago"
+  },
+  {
+    "city": "kharkov",
+    "name": "Друг людини, кабінет психологічної підтримки",
+    "address": "вул. Оренбурзька, 4",
+    "specializations": "Психологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/drug-cheloveka-kabinet-psihologicheskoj-podderzhki/drug-cheloveka-kabinet-psihologicheskoj-podderzhki"
+  },
+  {
+    "city": "kharkov",
+    "name": "Приватний кабінет інфекціоніста Інни Андрусовіч",
+    "address": "пр. Победы, 53",
+    "specializations": "Інфектологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/chastnyj-kabinet-infekcionista/chastnyj-kabinet-infekcionista-inny-andrusovich"
+  },
+  {
+    "city": "kharkov",
+    "name": "Лео дент",
+    "address": "пр. Московський, 137, 5 поверх",
+    "specializations": "Стоматологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/leo-dent-leo-dent/leo-dent-leo-dent"
+  },
+  {
+    "city": "kharkov",
+    "name": "Ортоспайн",
+    "address": "вул. Петра Широніна, 2",
+    "specializations": "Ортопедія",
+    "link": "https://doc.ua/ua/klinika/kharkov/ortospajn/ortospajn"
+  },
+  {
+    "city": "kharkov",
+    "name": "Приватний кабінет УЗД спеціаліста Лариси Івашкевич",
+    "address": "проспект Науки, 77",
+    "specializations": "УЗ-діагностика",
+    "link": "https://doc.ua/ua/klinika/kharkov/chastnyj-kabinet-uzi-specialista-larisy-ivashkevich/chastnyj-kabinet-uzi-specialista-larisy-ivashkevich"
+  },
+  {
+    "city": "kharkov",
+    "name": "Азимут, психологічний центр",
+    "address": "наб. Крупської, 5",
+    "specializations": "Психологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/azimut-psihologicheskij-centr/azimut-psihologicheskij-centr"
+  },
+  {
+    "city": "kharkov",
+    "name": "Ліза, стоматологічна клініка",
+    "address": "пр. Перемоги, 84 (кінцева зупинка, з правого боку від заправки ТНК)",
+    "specializations": "Стоматологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/liza-stomatologicheskaya-klinika/liza-stomatologicheskaya-klinika"
+  },
+  {
+    "city": "kharkov",
+    "name": "Приватний кабінет психолога Агапова Н.О",
+    "address": "вул. Максиміліанівська, 11",
+    "specializations": "Психологія,, Психотерапія",
+    "link": "https://doc.ua/ua/klinika/kharkov/chastnyj-kabinet-psihologa-agapov-no/chastnyj-kabinet-psihologa-agapova-no"
+  },
+  {
+    "city": "kharkov",
+    "name": "Наркологічний центр підвищеної дисципліни Ренесанс",
+    "address": "вул. Холодногірська (Єлізарова), 58",
+    "specializations": "Наркологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/narkologicheskij-centr-povyshennoj-discipliny-renessans/narkologicheskij-centr-povyshennoj-discipliny-renessans"
+  },
+  {
+    "city": "kharkov",
+    "name": "Lilawadee (Лілаваді)",
+    "address": "вул. Клочківська, 222",
+    "specializations": "Косметологія,, Масаж,, Фітотерапія",
+    "link": "https://doc.ua/ua/klinika/kharkov/lilawadee-lilavadi/lilawadee-lilavadi"
+  },
+  {
+    "city": "kharkov",
+    "name": "Позитив (Positive)",
+    "address": "вул. Петра Свинаренка, 9",
+    "specializations": "Наркологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/pozitiv-positive/pozitiv-positive"
+  },
+  {
+    "city": "kharkov",
+    "name": "Центр стоматологічного туризму МКС",
+    "address": "пров. Байкальський, 2",
+    "specializations": "Стоматологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/centr-stomatologicheskogo-turizma-mks/centr-stomatologicheskogo-turizma-mks"
+  },
+  {
+    "city": "kharkov",
+    "name": "Регіональний центр хребта і суглобів",
+    "address": null,
+    "specializations": "",
+    "link": "https://doc.ua/ua/klinika/kharkov/regionalnyj-centr-pozvonochnika-i-sustavov"
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": "Приватний кабінет нарколога Ананьєва В.І.",
+    "address": "в ул. Дарвіна, 9",
+    "specializations": "Наркологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/chastnyj-kabinet-narkologa-ananeva-vi/chastnyj-kabinet-narkologa-ananeva-vi"
+  },
+  {
+    "city": "kharkov",
+    "name": "Еталон",
+    "address": "вул. Пушкінська, 67",
+    "specializations": "Стоматологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/etalon/etalon"
+  },
+  {
+    "city": "kharkov",
+    "name": "Екомед",
+    "address": "ул. Бакулина, 4, 3-й этаж",
+    "specializations": "Акушерство,, Алергологія,, Венерологія,, Гастроентерологія,, Гінекологія,, Дерматологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/ekomed/ekomed"
+  },
+  {
+    "city": "kharkov",
+    "name": "Стоматологія для Вас",
+    "address": "вул. Фрунзе, 5",
+    "specializations": "Стоматологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/stomatologiya-dlya-vas/stomatologiya-dlya-vas"
+  },
+  {
+    "city": "kharkov",
+    "name": "Дентал Клінік",
+    "address": "вул. Академіка Павлова, 140А",
+    "specializations": "Стоматологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/dental-clinic/dental-clinic"
+  },
+  {
+    "city": "kharkov",
+    "name": "Бора Бора",
+    "address": "провулок Класичний, 8",
+    "specializations": "Масаж",
+    "link": "https://doc.ua/ua/klinika/kharkov/bora-bora/bora-bora"
+  },
+  {
+    "city": "kharkov",
+    "name": "Офтальмологічний кабінет Люксоптика",
+    "address": "",
+    "specializations": "",
+    "link": "https://doc.ua/ua/klinika/kharkov/luxoptica-harkov/oftalmologicheskij-kabinet-lyuksopt"
+  },
+  {
+    "city": "kharkov",
+    "name": "Приватний кабінет психолога Кіри Долбні",
+    "address": "Вул. Шатілова Дача, 4 офіс 603",
+    "specializations": "Психологія,, Психотерапія",
+    "link": "https://doc.ua/ua/klinika/kharkov/chastnyj-kabinet-psihologa-kiry-dolbni/chastnyj-kabinet-psihologa-kiry-dolbni"
+  },
+  {
+    "city": "kharkov",
+    "name": "Бережна реабілітація, фізкультурно-оздоровчий центр",
+    "address": "ул. Плехановская, 5",
+    "specializations": "Мануальна терапія,, Неврологія,, Ортопедія,, Травматологія,, Фізіотерапія,, Кінезітерапія",
+    "link": "https://doc.ua/ua/klinika/kharkov/berezhnaya-reabilitaciya/berezhnaya-reabilitaciya-fizkulturno-ozdorovitelnyj-centr"
+  },
+  {
+    "city": "kharkov",
+    "name": "Плекаючи життя, клуб усвідомленого батьківства",
+    "address": "вул. Рибалка, 56",
+    "specializations": "Психологія,, Психотерапія",
+    "link": "https://doc.ua/ua/klinika/kharkov/leleya-zhizn/leleya-zhizn-klub-osoznannogo-roditelstva"
+  },
+  {
+    "city": "kharkov",
+    "name": "Медичний центр «Вікторія»",
+    "address": "пр-т Героїв Харкова, 275",
+    "specializations": "Гастроентерологія,, Дерматологія,, Дієтологія,, Неврологія,, Нефрологія,, Проктологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/medicinskij-centr-viktoriya/medicinskij-centr-viktoriya"
+  },
+  {
+    "city": "kharkov",
+    "name": "Медлайн",
+    "address": "вул. Пушкінська 11/13",
+    "specializations": "Косметологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/medline/medline"
+  },
+  {
+    "city": "kharkov",
+    "name": "Приватний кабінет психолога Коноплевої Олены Олексіївни",
+    "address": null,
+    "specializations": "Психологія,, Психотерапія",
+    "link": "https://doc.ua/ua/klinika/kharkov/chastnyj-kabinet-psihologa-konoplevoj-eleny-alekseevny"
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "вул. Тобольська, 42",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": null,
+    "address": "вул. Трінклера 2",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "kharkov",
+    "name": "Психологічний клуб «Присутність»",
+    "address": "пл. Конституції, 1",
+    "specializations": "Психологія,, Психотерапія",
+    "link": "https://doc.ua/ua/klinika/kharkov/psihologicheskij-klub-prisutstvie/psihologicheskij-klub-prisutstvie"
+  },
+  {
+    "city": "kharkov",
+    "name": "Худякова А.А., приватний кабінет психолога",
+    "address": "площа Конституції, 1",
+    "specializations": "Психологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/chastnyj-kabinet-psihologa-hudyakovoj-aa/-hudyakova-aachastnyj-kabinet-psihologa"
+  },
+  {
+    "city": "kharkov",
+    "name": "Приватний кабінет Марії Гриньової",
+    "address": "вул. Гаршина, 9",
+    "specializations": "Психологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/chastnyj-kabinet-marii-grinevoj/chastnyj-kabinet-marii-grinevoj"
+  },
+  {
+    "city": "kharkov",
+    "name": "Логопедичний центр «Ананас»",
+    "address": "вул. Короленка, 25",
+    "specializations": "Логопедія,, Мануальна терапія,, Психологія,, Психотерапія,, Сімейна медицина",
+    "link": "https://doc.ua/ua/klinika/kharkov/logopedicheskij-centr-ananas/logopedicheskij-centr-ananas"
+  },
+  {
+    "city": "kharkov",
+    "name": "Психологічний центр «Планета удачі»",
+    "address": "вул. Пушкінська, 72",
+    "specializations": "Психологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/psihologicheskij-centr-planeta-udachi/psihologicheskij-centr-planeta-udachi"
+  },
+  {
+    "city": "kharkov",
+    "name": "Стоматологічний кабінет Сараєвой Л. В.",
+    "address": "ул. Гвардейцев-Широнинцев, 60",
+    "specializations": "Стоматологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/stomatologicheskij-kabinet-saraevoj-l-v/stomatologicheskij-kabinet-saraevoj-l-v"
+  },
+  {
+    "city": "kharkov",
+    "name": "Приватний кабінет інтегративної медицини Щербини Г.Г.",
+    "address": "пос. Песочин, вул. Санаторна, 46",
+    "specializations": "Реабілітологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/chastnyj-kabinet-integrativnoj-mediciny-sherbiny-gg/chastnyj-kabinet-integrativnoj-mediciny-sherbiny-gg"
+  },
+  {
+    "city": "kharkov",
+    "name": "Приватний кабінет стоматолога Ю.Распопова",
+    "address": "пр. Гагаріна, 43",
+    "specializations": "Стоматологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/chastnyj-kabinet-stomatologa-yuraspopova/chastnyj-kabinet-stomatologa-yuraspopova"
+  },
+  {
+    "city": "kharkov",
+    "name": "Приватний кабінет психолога Чернухи Наталії в Харкові",
+    "address": "вул. Пушкінська, 44 МЦ «Беатріс»",
+    "specializations": "Психологія,, Реабілітологія,, Вертебрологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/chastnyj-kabinet-psihologa-chernuhi-natali/chastnyj-kabinet-psihologa-chernuhi-natali-v-harkove"
+  },
+  {
+    "city": "kharkov",
+    "name": "Приваний кабінет психолога Олександра Бондаренка",
+    "address": "вул. Космічна, 21 (поверх 10, офіс 7)",
+    "specializations": "Психологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/chastnyj-kabinet-psihologa-aleksandra-bondarenko/chastnyj-kabinet-psihologa-aleksandra-bondarenko"
+  },
+  {
+    "city": "kharkov",
+    "name": "Регіональний центр клінічної медицини (Приватна Консультативна поліклініка)",
+    "address": "пл. Конституції, 21",
+    "specializations": "Алергологія,, Гастроентерологія,, Гематологія,, Гінекологія,, Дерматологія,, Кардіологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/regionalnyj-centr-klinicheskoj-mediciny-chastnaya-konsultativnaya-poliklinika/regionalnyj-centr-klinicheskoj-mediciny-chastnaya-konsultativnaya-poliklinika"
+  },
+  {
+    "city": "kharkov",
+    "name": "Стоматологія «Посмішка»",
+    "address": "вул. Гарібальді, 4",
+    "specializations": "Стоматологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/2490-stomatologiya-ulybka/2345stomatologiya-ulybka"
+  },
+  {
+    "city": "kharkov",
+    "name": "MyRay3D, центр діагностики щелепно-лицевої ділянки",
+    "address": "вул. Григорівське шосе, 55",
+    "specializations": "Рентгенологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/myray3d-centr-diagnostiki-chelyustno-licevoj-oblasti/myray3d-centr-diagnostiki-chelyustno-licevoj-oblasti"
+  },
+  {
+    "city": "kharkov",
+    "name": "Приватний кабінет психолога Суботіной Олени Юріївни",
+    "address": "вул. Сумська, 7/9",
+    "specializations": "Психологія,, Психотерапія",
+    "link": "https://doc.ua/ua/klinika/kharkov/privatnij-kabinet-psihologa-subotinoj-oleni-yurivni/privatnij-kabinet-psihologa-subotinoj-oleni-yurivni"
+  },
+  {
+    "city": "kharkov",
+    "name": "Стоматологічний центр \"Implant Center\" (Імплант Центр)",
+    "address": "проспект Перемоги, 59",
+    "specializations": "Косметологія,, Стоматологія,, Дитяча стоматологія,, Ортопедична стоматологія,, Хірургічна стоматологія,, Стоматологічна імплантологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/stomatologicheskaya-klinika-today/stomatologcheskaya-klnka-today"
+  },
+  {
+    "city": "kharkov",
+    "name": "Стоматологічна клініка Dr. Samsonov",
+    "address": "вул. Дарвіна, 12",
+    "specializations": "Стоматологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/stomatologicheskaya-klinika-dr-samsonov/stomatologcheskaya-klnka-dr-samsonov"
+  },
+  {
+    "city": "kharkov",
+    "name": "«ЕРБІАН»",
+    "address": "пр-т Московський, 21",
+    "specializations": "Косметологія,, Неврологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/erbiian/erbian"
+  },
+  {
+    "city": "kharkov",
+    "name": "Приватний кабінет практичного психолога Харченка Сергія Олеговича",
+    "address": "вул. Отакара Яроша, 14",
+    "specializations": "Психологія,, Психотерапія",
+    "link": "https://doc.ua/ua/klinika/kharkov/4200-chastnyj-kabinet-psihoterapevta-moroz-diany-nikolaevny/chastnyj-kabnet-praktcheskogo-pshologa-harchenko-sergeya-olegovcha"
+  },
+  {
+    "city": "kharkov",
+    "name": "СВОБОДА у Харкові",
+    "address": "вул. Данилевського, 21",
+    "specializations": "Наркологія,, Психіатрія",
+    "link": "https://doc.ua/ua/klinika/kharkov/svoboda-v-harkove/svoboda-v-harkove"
+  },
+  {
+    "city": "kharkov",
+    "name": "Кабінет дистанційної ударно-хвильової літотрипсії",
+    "address": "вул. Державінська, 38",
+    "specializations": "Андрологія,, Урологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/kabinet-distancionnoj-udarno-volnovoj-litotripsii/kabinet-distancionnoj-udarno-volnovoj-litotripsii"
+  },
+  {
+    "city": "kharkov",
+    "name": "Стоматологія «DentalClinic89»",
+    "address": "пр-т. Московський, 89",
+    "specializations": "Ортопедія,, Стоматологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/stomatologiya-dentalclinic89/stomatologiya-dentalclinic89"
+  },
+  {
+    "city": "kharkov",
+    "name": "Медичний центр b-healthy clinic",
+    "address": "пр.Московський 268-Б",
+    "specializations": "Алергологія,, Гематологія,, Гінекологія,, Імунологія,, Кардіологія,, Нефрологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/medicinskij-centr-b-healthy-clinic/medcnskj-centr-b-healthy-clinic"
+  },
+  {
+    "city": "kharkov",
+    "name": "Приватний кабінет онколога-хірурга Селезньова М. А.",
+    "address": "пр. Московський, 195",
+    "specializations": "Онкологія,, Хірургія",
+    "link": "https://doc.ua/ua/klinika/kharkov/chastnyj-kabinet-onkologa-hirurga-selezneva-m-a/chastnyj-kabnet-onkologa-hrurga-selezneva-m-a"
+  },
+  {
+    "city": "kharkov",
+    "name": "Ладо, центр для дітей з особливостями розвитку",
+    "address": "вул. Миколи Міхновського, 59",
+    "specializations": "Логопедія,, Терапія",
+    "link": "https://doc.ua/ua/klinika/kharkov/lado-centr-dlya-detej-s-osobennostyami-razvitiya/lado-centr-dlya-detej-s-osobennostyami-razvitiya"
+  },
+  {
+    "city": "kharkov",
+    "name": "Березівські мінеральні води",
+    "address": "Харківська область, Харківський район, с. Березівське, ДП «Клінічний санаторій «Курорт Берізівські мінеральні води»",
+    "specializations": "Гастроентерологія,, Гінекологія,, Дієтологія,, Масаж,, Неврологія,, Проктологія",
+    "link": "https://doc.ua/ua/klinika/kharkov/berezovskie-mineralnye-vody/berezovskie-mineralnye-vody"
+  },
+  {
+    "city": "kharkov",
+    "name": "«ЛП ЦЕНТР» – реабілітація та спортивна медицина",
+    "address": "вул. Благовіщенська,30",
+    "specializations": "Кардіологія,, Масаж,, Неврологія,, Ортопедія,, Педіатрія,, Психіатрія",
+    "link": "https://doc.ua/ua/klinika/kharkov/lp-centr-reabilitaciya-i-sportivnaya-medicina/lp-centr-reabilitaciya-ta-sportivna-medicina"
+  }
+]

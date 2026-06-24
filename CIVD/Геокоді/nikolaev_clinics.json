@@ -1,0 +1,443 @@
+[
+  {
+    "city": "nikolaev",
+    "name": "Медичний центр \"ОН Клінік\" Миколаїв",
+    "address": null,
+    "specializations": "Вакцинація,, Гастроентерологія,, Гінекологія,, Дерматологія,, Ендокринологія,, Ендоскопія",
+    "link": "https://doc.ua/ua/klinika/nikolaev/medicinskij-centr-on-klinik-nikolaev"
+  },
+  {
+    "city": "nikolaev",
+    "name": null,
+    "address": "вул. Велика Морська 74/3",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "nikolaev",
+    "name": null,
+    "address": "вул. Велика Морська 74/3",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "nikolaev",
+    "name": null,
+    "address": "вул. Аркасівська, 8",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "nikolaev",
+    "name": "Taurt Medical",
+    "address": "пров. Корабелів, 2Б",
+    "specializations": "Акушерство,, Гастроентерологія,, Гінекологія,, Дерматологія,, Кардіологія,, Косметологія",
+    "link": "https://doc.ua/ua/klinika/nikolaev/taurt-medical/taurt-medical"
+  },
+  {
+    "city": "nikolaev",
+    "name": "Медичний центр ZDRAVO",
+    "address": null,
+    "specializations": "Гінекологія,, Дерматологія,, Ендокринологія,, Кардіологія,, Неврологія,, Оториноларингологія",
+    "link": "https://doc.ua/ua/klinika/nikolaev/medicinskij-centr-zdravo"
+  },
+  {
+    "city": "nikolaev",
+    "name": null,
+    "address": "вул. Мала Морська, 34а",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "nikolaev",
+    "name": null,
+    "address": "вул. Шосейна, 5/1",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "nikolaev",
+    "name": null,
+    "address": "проспект Миру, 13",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "nikolaev",
+    "name": "Приватний офтальмологічний кабінет ОкоЛюкс",
+    "address": "вул. Марка Кропивницького, 46",
+    "specializations": "Офтальмологія",
+    "link": "https://doc.ua/ua/klinika/nikolaev/okolyuks/okolyuks"
+  },
+  {
+    "city": "nikolaev",
+    "name": "Центр урології, андрології, інтимної пластики АЛЕВІТ, лікаря Смерницького Володимира Сергійовича",
+    "address": "вул. Мала Морська, 5",
+    "specializations": "Андрологія,, Косметологія,, Пластична хірургія,, Сексологія,, Сексопатологія,, Урологія",
+    "link": "https://doc.ua/ua/klinika/nikolaev/centr-urologii-andrologii-intimnoj-plastiki-alevit-vracha-smernickogo-vladimira-sergeevicha/centr-urologii-andrologii-intimnoj-plastiki-alevit-vracha-smernickogo-vladimira-sergeevicha"
+  },
+  {
+    "city": "nikolaev",
+    "name": "МЕДИКАСАНО (Medicasano) клініка комплексного консервативного лікування",
+    "address": "вул. Даля, 2",
+    "specializations": "Неврологія,, Ортопедія,, Травматологія,, Флебологія,, Фізіотерапія,, Хірургія",
+    "link": "https://doc.ua/ua/klinika/nikolaev/medikasano-klinika-kompleksnogo-konservativnogo-likuvannya/medikasano-klnka-kompleksnogo-konservatvnogo-lechenya"
+  },
+  {
+    "city": "nikolaev",
+    "name": "Кабінет психотерапевта, психіатра Крапивіна Сергія Олександровича",
+    "address": "вул. Героїв України, 71",
+    "specializations": "Психіатрія,, Психологія,, Психотерапія",
+    "link": "https://doc.ua/ua/klinika/nikolaev/kabinet-psihoterapevta-psihiatra-krapivina-sergiya-oleksandrovicha/kabinet-psihoterapevta-psihiatra-krapivina-sergiya-oleksandrovicha"
+  },
+  {
+    "city": "nikolaev",
+    "name": "Медичний кабінет «Ірида» в Миколаєві",
+    "address": "вул. 6-а Слобідська, 43",
+    "specializations": "Кінезітерапія",
+    "link": "https://doc.ua/ua/klinika/nikolaev/medicinskij-kabinet-irida/medicinskij-kabinet-irida"
+  },
+  {
+    "city": "nikolaev",
+    "name": "МЕДИЧНА ЗІРКА, медичний центр у Миколаєві",
+    "address": "просп. Богоявленський, 8/1​-В",
+    "specializations": "Педіатрія,, Терапія,, Сімейна медицина",
+    "link": "https://doc.ua/ua/klinika/nikolaev/medichna-zirka-medicinskij-centr-v-nikolaeve/medichna-zirka-medicinskij-centr-v-nikolaeve"
+  },
+  {
+    "city": "nikolaev",
+    "name": "Фарби Життя, психологічний центр",
+    "address": "вул. Морехідна, 14, офіс 218",
+    "specializations": "Психологія,, Психотерапія",
+    "link": "https://doc.ua/ua/klinika/nikolaev/kraski-zhizni-psihologicheskij-centr/kraski-zhizni-psihologicheskij-centr"
+  },
+  {
+    "city": "nikolaev",
+    "name": "Приватний кабінет уролога Крестьяннікова А.І.",
+    "address": "пер. Корабелів 2Г/2 (другий поверх)",
+    "specializations": "Андрологія,, Венерологія,, Нефрологія,, Сексологія,, Урологія",
+    "link": "https://doc.ua/ua/klinika/nikolaev/chastnyj-kabinet-urologa-krestyannikova-ai/chastnyj-kabinet-urologa-krestyannikova-ai"
+  },
+  {
+    "city": "nikolaev",
+    "name": "Медіса-Н",
+    "address": "пр-т. Центральний (Леніна), 67",
+    "specializations": "Алергологія,, Гастроентерологія,, Гепатологія,, Гомеопатія,, Дерматологія,, Дієтологія",
+    "link": "https://doc.ua/ua/klinika/nikolaev/medisa-n/medisa-h"
+  },
+  {
+    "city": "nikolaev",
+    "name": "ГРАНД",
+    "address": "ул. Малая Морская, 24/33",
+    "specializations": "Стоматологія",
+    "link": "https://doc.ua/ua/klinika/nikolaev/grand/grand"
+  },
+  {
+    "city": "nikolaev",
+    "name": "Метод Слов'янська клініка",
+    "address": "Пр. Центральний, 9",
+    "specializations": "Дієтологія",
+    "link": "https://doc.ua/ua/klinika/nikolaev/metod-slavyanskaya-klinika/metod-slavyanskaya-klinika"
+  },
+  {
+    "city": "nikolaev",
+    "name": "Офтальмологічний кабінет «Люксоптика»",
+    "address": null,
+    "specializations": "Офтальмологія",
+    "link": "https://doc.ua/ua/klinika/nikolaev/luxoptica"
+  },
+  {
+    "city": "nikolaev",
+    "name": null,
+    "address": "пр. Центральний 173/1",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "nikolaev",
+    "name": null,
+    "address": "вул.  Потьомкінська (Радянська), 52/1",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "nikolaev",
+    "name": "Active-Medical",
+    "address": null,
+    "specializations": "Гастроентерологія,, Гінекологія,, Дерматовенерологія,, Дерматологія,, Ендокринологія,, Ендоскопія",
+    "link": "https://doc.ua/ua/klinika/nikolaev/active-medical-aktiv-medikal"
+  },
+  {
+    "city": "nikolaev",
+    "name": null,
+    "address": "пр-т. Центральний (Леніна), 71 а",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "nikolaev",
+    "name": null,
+    "address": "вул. Галини Петрової, 2/1",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "nikolaev",
+    "name": "Мережа стоматологій «Денталіка»",
+    "address": null,
+    "specializations": "Стоматологія",
+    "link": "https://doc.ua/ua/klinika/nikolaev/set-stomatologij-dentalika"
+  },
+  {
+    "city": "nikolaev",
+    "name": null,
+    "address": "пр. Миру, 21",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "nikolaev",
+    "name": null,
+    "address": "вул. Васляєва, 51",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "nikolaev",
+    "name": null,
+    "address": "пр. Жовтневий, 285",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "nikolaev",
+    "name": "Irinaderma (Іринадерма), центр результативної косметології",
+    "address": "вул. Чкалова, 48б",
+    "specializations": "Косметологія",
+    "link": "https://doc.ua/ua/klinika/nikolaev/irinaderma-irinaderma-centr-rezultativnoj-kosmetologii/irinaderma-irinaderma-centr-kosmetologii"
+  },
+  {
+    "city": "nikolaev",
+    "name": "City Dent (Сіті Дент)",
+    "address": "вул. Мала Морська, будинок 23/4",
+    "specializations": "Стоматологія,, Ортодонтія",
+    "link": "https://doc.ua/ua/klinika/nikolaev/1094-city-dent1/city-dent1"
+  },
+  {
+    "city": "nikolaev",
+    "name": "СТОМ-ПЛЮС",
+    "address": "вул. Галини Петрової, 10/1",
+    "specializations": "Стоматологія",
+    "link": "https://doc.ua/ua/klinika/nikolaev/stom-plyus/stom-plyus"
+  },
+  {
+    "city": "nikolaev",
+    "name": "Медичний центр “Б'юті Дент”",
+    "address": "пр. Мира, 42",
+    "specializations": "",
+    "link": "https://doc.ua/ua/klinika/nikolaev/medicinskij-centr-byuti-dent/medicinskij-centr-byuti-dent"
+  },
+  {
+    "city": "nikolaev",
+    "name": "Комплексний медичний центр",
+    "address": "вул. Червоних Майовщиків, 29",
+    "specializations": "Стоматологія",
+    "link": "https://doc.ua/ua/klinika/nikolaev/kompleksnyj-medicinskij-centr/kompleksnyj-medicinskij-centr"
+  },
+  {
+    "city": "nikolaev",
+    "name": "NEVROLOGICA, кабінет ефективної неврології, гірудотерапії і масажу",
+    "address": "вул. Велика Морська, 49",
+    "specializations": "Гомеопатія,, Мануальна терапія,, Масаж,, Неврологія,, Рефлексотерапія,, Фізіотерапія",
+    "link": "https://doc.ua/ua/klinika/nikolaev/nevrologica-kabinet-effektivnoj-nevrologii-girudoterapii-i-massazha/nevrologica-kabinet-effektivnoj-nevrologii-girudoterapii-i-massazha"
+  },
+  {
+    "city": "nikolaev",
+    "name": "Здравниця, центр природного оздоровлення",
+    "address": "вул. Рюміна, 2/7",
+    "specializations": "Мануальна терапія,, Масаж,, Рефлексотерапія,, Гірудотерапія,, Нетрадиційна медицина",
+    "link": "https://doc.ua/ua/klinika/nikolaev/zdravnica-centr-prirodnogo-ozdorovleniya/zdravnica-centr-prirodnogo-ozdorovleniya"
+  },
+  {
+    "city": "nikolaev",
+    "name": "Олександрит-Ніка",
+    "address": "вул. Будьонного, 25 (вхід з вул. Пушкінської)",
+    "specializations": "Стоматологія",
+    "link": "https://doc.ua/ua/klinika/nikolaev/aleksandrit-nika/aleksandrit-nika"
+  },
+  {
+    "city": "nikolaev",
+    "name": "Панацея",
+    "address": "вул. Адмірала Макарова, 29",
+    "specializations": "Андрологія,, Венерологія,, Гастроентерологія,, Гінекологія,, Гомеопатія,, Дерматологія",
+    "link": "https://doc.ua/ua/klinika/nikolaev/panaceya/panaceya"
+  },
+  {
+    "city": "nikolaev",
+    "name": "Кабінет психолога-психотерапевта Марії Лагодної-Елерт",
+    "address": "вул. Китобоїв, 16",
+    "specializations": "Психологія,, Психотерапія,, Сексологія",
+    "link": "https://doc.ua/ua/klinika/nikolaev/kabinet-psihologa-psihoterapevta-marii-lagodnoj-elert/kabinet-psihologa-psihoterapevta-marii-lagodnoj-elert"
+  },
+  {
+    "city": "nikolaev",
+    "name": "Приватний психологічний кабінет Вікторії Кадирової в центрі «Корисний ресурс»",
+    "address": "вул. Китобоїв, 16, офіс 311",
+    "specializations": "Психологія,, Психотерапія",
+    "link": "https://doc.ua/ua/klinika/nikolaev/poleznyj-resurs/psihologicheskij-centr-poleznyj-resurs"
+  },
+  {
+    "city": "nikolaev",
+    "name": "Златадерма",
+    "address": "вул. Бузника, 14",
+    "specializations": "Дерматологія,, Косметологія,, Пластична хірургія",
+    "link": "https://doc.ua/ua/klinika/nikolaev/zlataderma/zlataderma"
+  },
+  {
+    "city": "nikolaev",
+    "name": "Мануальна терапія",
+    "address": "пр. Богоявленський, 202",
+    "specializations": "Мануальна терапія,, Рефлексотерапія,, Терапія",
+    "link": "https://doc.ua/ua/klinika/nikolaev/manualnaya-terapiya/manualnaya-terapiya"
+  },
+  {
+    "city": "nikolaev",
+    "name": "Приватний психологічний кабінет Руслана Ткачука в центрі «Корисний ресурс»",
+    "address": "вул. Китобоїв 16, 3 поверх, оф. 311",
+    "specializations": "Психологія,, Психотерапія",
+    "link": "https://doc.ua/ua/klinika/nikolaev/chastnyj-psihologicheskij-kabinet-ruslana-tkachuka-v-centre-poleznyj-resurs/chastnyj-psihologicheskij-kabinet-ruslana-tkachuka-v-centre-poleznyj-resurs"
+  },
+  {
+    "city": "nikolaev",
+    "name": "Сертал",
+    "address": "вул. Наваринська, 15 а (5 кутів)",
+    "specializations": "Гастроентерологія,, Кардіологія,, Мануальна терапія,, Наркологія,, Неврологія,, Ортопедія",
+    "link": "https://doc.ua/ua/klinika/nikolaev/sertal/sertal"
+  },
+  {
+    "city": "nikolaev",
+    "name": "БлагоДар в м. Миколаїв",
+    "address": "вул. Московська, 47",
+    "specializations": "Наркологія,, Психологія,, Психотерапія",
+    "link": "https://doc.ua/ua/klinika/nikolaev/blagodar/blagodar-v-g-nikolaev"
+  },
+  {
+    "city": "nikolaev",
+    "name": "Медичний кабінет лікаря Мазо Романа Борисовича",
+    "address": "проспект Богоявленський, 4/1",
+    "specializations": "Андрологія,, Дієтологія,, Сексологія,, Урологія",
+    "link": "https://doc.ua/ua/klinika/nikolaev/medicinskij-kabinet-doktora-mazo-romana-borisovicha/medicinskij-kabinet-doktora-mazo-romana-borisovicha"
+  },
+  {
+    "city": "nikolaev",
+    "name": "Скіф",
+    "address": "пр. Леніна, 152/1",
+    "specializations": "Неврологія,, Терапія,, Нетрадиційна медицина",
+    "link": "https://doc.ua/ua/klinika/nikolaev/skif/skif"
+  },
+  {
+    "city": "nikolaev",
+    "name": "Arden medical center в Миколаєві",
+    "address": "проспект Миру, 17",
+    "specializations": "Гінекологія,, Дерматологія,, Дієтологія,, Косметологія,, Трихологія,, УЗ-діагностика",
+    "link": "https://doc.ua/ua/klinika/nikolaev/arden-medical-center/arden-medical-center-v-nikolaeve"
+  },
+  {
+    "city": "nikolaev",
+    "name": "Приватний кабінет психолога Ліщенко Е.А.",
+    "address": "ул. Шевченка 71, оф. №418",
+    "specializations": "Психологія,, Психотерапія",
+    "link": "https://doc.ua/ua/klinika/nikolaev/chastnyj-kabinet-psihologa-lishenko-ea/chastnyj-kabinet-psihologa-lishenko-ea"
+  },
+  {
+    "city": "nikolaev",
+    "name": "Центр реабілітації та ресоціалізації наркозалежних «Источник»",
+    "address": "Миколаївська обл. с. Осетрівка, станція «Букет»",
+    "specializations": "Наркологія",
+    "link": "https://doc.ua/ua/klinika/nikolaev/centr-reabilitacii-i-resocializacii-narkozavisimyh-istochnik/centr-reabilitacii-i-resocializacii-narkozavisimyh-istochnik"
+  },
+  {
+    "city": "nikolaev",
+    "name": "Приватний кабінет психотерапевта Кирилюка І. Н.",
+    "address": "вул. Шевченко, 5г",
+    "specializations": "Психотерапія",
+    "link": "https://doc.ua/ua/klinika/nikolaev/chastnyj-kabinet-kirilyuka/chastnyj-kabinet-psihoterapevta-kirilyuka-i-n"
+  },
+  {
+    "city": "nikolaev",
+    "name": "Приватний кабінет лікаря Губарєва",
+    "address": "ул. Адмиральская, 6, каб. 41",
+    "specializations": "Неврологія,, Хірургія,, Вертебрологія",
+    "link": "https://doc.ua/ua/klinika/nikolaev/chastnyj-kabinet-doktora-gubareva/chastnyj-kabinet-doktora-gubareva"
+  },
+  {
+    "city": "nikolaev",
+    "name": "Приватний кабінет психотерапевта Мосеєва Є.Є.",
+    "address": "вул. Адміральська, 6, каб. 33",
+    "specializations": "Психіатрія,, Психологія,, Психотерапія,, Сексологія",
+    "link": "https://doc.ua/ua/klinika/nikolaev/chastnyj-kabinet-psihoterapevta-moseeva-ee/chastnyj-kabinet-psihoterapevta-moseeva-ee"
+  },
+  {
+    "city": "nikolaev",
+    "name": "Приватний кабінет психолога Олени Іщенко",
+    "address": "вул. Шнеєрсона, 37/11",
+    "specializations": "Психологія",
+    "link": "https://doc.ua/ua/klinika/nikolaev/chastnyj-kabinet-psihologa-eleny-ishenko/chastnyj-kabinet-psihologa-eleny-ishenko"
+  },
+  {
+    "city": "nikolaev",
+    "name": "Перша приватна поліклініка",
+    "address": null,
+    "specializations": "",
+    "link": "https://doc.ua/ua/klinika/nikolaev/persha-privatna-poliklinika"
+  },
+  {
+    "city": "nikolaev",
+    "name": null,
+    "address": "вул. Космонавтів д. 120",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "nikolaev",
+    "name": null,
+    "address": "пр-т Центральний 118-А",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "nikolaev",
+    "name": "СВОБОДА в Миколаєві",
+    "address": null,
+    "specializations": "Наркологія,, Психіатрія",
+    "link": "https://doc.ua/ua/klinika/nikolaev/svoboda-v-nikolaeve"
+  },
+  {
+    "city": "nikolaev",
+    "name": null,
+    "address": "пр-т. Богоявленський, 352",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "nikolaev",
+    "name": null,
+    "address": "Южноукраїнськ, вул. Паркова, 3",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "nikolaev",
+    "name": "Наркологічний центр «СВОЇ»",
+    "address": "пр. Богоявленський, 353",
+    "specializations": "Наркологія,, Психотерапія",
+    "link": "https://doc.ua/ua/klinika/nikolaev/narkologicheskij-centr-svoi/narkologichnij-centr-svo"
+  },
+  {
+    "city": "nikolaev",
+    "name": "Andros Medical (Андрос Медікал), медичний центр",
+    "address": "вул. Марка Кропивницького, 17/4, (заст. Потьомкінська)",
+    "specializations": "",
+    "link": "https://doc.ua/ua/klinika/nikolaev/andros-medical-andros-medikal-medichnij-centr/andros-medical-andros-medikal-medichnij-centr"
+  }
+]

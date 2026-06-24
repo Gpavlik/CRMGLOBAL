@@ -1,0 +1,107 @@
+[
+  {
+    "city": "hmelnickij",
+    "name": "Центр хребта Postava (Постава) у м. Хмельницький",
+    "address": "вул. Залізняка,10/1",
+    "specializations": "Неврологія,, Ортопедія,, Травматологія,, Реабілітологія,, Вертебрологія",
+    "link": "https://doc.ua/ua/klinika/hmelnickij/centr-hrebta-postava-postava-u-m-hmelnickij/centr-hrebta-postava-postava-u-m-hmelnickij"
+  },
+  {
+    "city": "hmelnickij",
+    "name": "Центр «Естетична стоматологія»",
+    "address": "вул. Зарічанська, 11 Б (ЖК «Набережний квартал»)",
+    "specializations": "Стоматологія",
+    "link": "https://doc.ua/ua/klinika/hmelnickij/centr-estetichna-stomatologiya/centr-estetichna-stomatologiya"
+  },
+  {
+    "city": "hmelnickij",
+    "name": "Стоматологія “Ветушинського”",
+    "address": "вул. Львівське шосе 12/1",
+    "specializations": "Стоматологія,, Ортодонтія,, Дитяча стоматологія,, Ортопедична стоматологія,, Хірургічна стоматологія,, Стоматологічна імплантологія",
+    "link": "https://doc.ua/ua/klinika/hmelnickij/stomatologiya-vetushinskogo/stomatologya-vetushnskogo"
+  },
+  {
+    "city": "hmelnickij",
+    "name": "Центр відновлення зору Анатолія Совви в Хмельницькому",
+    "address": "вул. Святослава Хороброго, 7",
+    "specializations": "Офтальмологія",
+    "link": "https://doc.ua/ua/klinika/hmelnickij/centr-vidnovlennya-zoru-anatoliya-sovvi-v-chernivcyah/centr-vidnovlennya-zoru-anatoliya-sovvi-hmelnickij"
+  },
+  {
+    "city": "hmelnickij",
+    "name": "ВА Клінік (VA Clinic), стоматологія",
+    "address": "вул. Панаса Мирного, 18Б",
+    "specializations": "Стоматологія,, Ортодонтія,, Ендодонтія,, Ортопедична стоматологія,, Хірургічна стоматологія,, Пародонтологія",
+    "link": "https://doc.ua/ua/klinika/hmelnickij/va-klinik-va-clinic-stomatologiya/va-klinik-va-clinic-stomatologiya"
+  },
+  {
+    "city": "hmelnickij",
+    "name": "СКАНМЕД, медичний центр",
+    "address": "вул. Шухевича,13",
+    "specializations": "Гінекологія,, УЗ-діагностика,, Лабораторна діагностика,, КТ і МРТ",
+    "link": "https://doc.ua/ua/klinika/hmelnickij/skanmed-medicinskij-centr/skanmed-medicinskij-centr"
+  },
+  {
+    "city": "hmelnickij",
+    "name": "«Оксфорд Медікал Хмельницький»",
+    "address": "ул. Подольская, 93/1",
+    "specializations": "Гастроентерологія,, Гінекологія,, Дерматологія,, Кардіологія,, Косметологія,, Масаж",
+    "link": "https://doc.ua/ua/klinika/hmelnickij/oksford-medikal-hmelnickij/oksford-medikal-hmelnickij"
+  },
+  {
+    "city": "hmelnickij",
+    "name": "Репродуктивна клініка Олени Вавринчук",
+    "address": "ул. Заричанская, 3/2",
+    "specializations": "Акушерство,, Андрологія,, Венерологія,, Гінекологія,, Дієтологія,, Імунологія",
+    "link": "https://doc.ua/ua/klinika/hmelnickij/reproduktivna-klinika-oleni-vavrinchuk/reproduktivna-klinika-oleni-vavrinchuk"
+  },
+  {
+    "city": "hmelnickij",
+    "name": "Медичний центр «Ясний погляд»",
+    "address": "Старокостянтинівське шосе, 2\\1б",
+    "specializations": "Неврологія,, Офтальмологія,, Педіатрія",
+    "link": "https://doc.ua/ua/klinika/hmelnickij/medichnij-centr-yasnij-poglyad/medichnij-centr-yasnij-poglyad"
+  },
+  {
+    "city": "hmelnickij",
+    "name": "ЛДЦ «Ваше здоров’я»",
+    "address": "Шепетівка, вул. Захистників України (Валі Котика), буд. 85",
+    "specializations": "Неврологія,, Травматологія,, КТ і МРТ",
+    "link": "https://doc.ua/ua/klinika/hmelnickij/ldc-vashe-zdorovya/ldc-vashe-zdorovya"
+  },
+  {
+    "city": "hmelnickij",
+    "name": "Медичний кабінет «Меділор»",
+    "address": "вул. Кам'янецька, 78",
+    "specializations": "Неврологія,, Оториноларингологія,, Педіатрія",
+    "link": "https://doc.ua/ua/klinika/hmelnickij/medicinskij-kabinet-medilor/medcnskj-kabnet-medlor"
+  },
+  {
+    "city": "hmelnickij",
+    "name": "Амбулаторія «Меділор»",
+    "address": "вул. Панаса Мирного, 18/1 Б",
+    "specializations": "Неврологія,, Оториноларингологія,, Педіатрія,, Фізіотерапія",
+    "link": "https://doc.ua/ua/klinika/hmelnickij/ambulatoriya-medilor/ambulatoriya-medilor"
+  },
+  {
+    "city": "hmelnickij",
+    "name": "СВОБОДА в Хмельницькому",
+    "address": null,
+    "specializations": "Наркологія,, Психіатрія",
+    "link": "https://doc.ua/ua/klinika/hmelnickij/svoboda-v-hmelnickom"
+  },
+  {
+    "city": "hmelnickij",
+    "name": null,
+    "address": "Кам'янець-Подільський, вул. Гастелло, 23",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "hmelnickij",
+    "name": null,
+    "address": "пр-т. Миру, 62",
+    "specializations": "",
+    "link": null
+  }
+]

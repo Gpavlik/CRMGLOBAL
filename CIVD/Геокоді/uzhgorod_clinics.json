@@ -1,0 +1,79 @@
+[
+  {
+    "city": "uzhgorod",
+    "name": "«ОН Клінік Ужгород», медичний центр",
+    "address": "вул. Д. Богуславського 4",
+    "specializations": "Гастроентерологія,, Гінекологія,, Дерматологія,, Кардіологія,, Масаж,, Неврологія",
+    "link": "https://doc.ua/ua/klinika/uzhgorod/on-klinik-uzhgorod-medichnij-centr/on-klinik-uzhgorod-medichnij-centr"
+  },
+  {
+    "city": "uzhgorod",
+    "name": "Медичний центр «Medicover»",
+    "address": "вул. Вілмоша Ковача, 17",
+    "specializations": "Акушерство,, Андрологія,, Гастроентерологія,, Гінекологія,, Дерматологія,, Кардіологія",
+    "link": "https://doc.ua/ua/klinika/uzhgorod/medichnij-centr-medicover/medichnij-centr-medicover"
+  },
+  {
+    "city": "uzhgorod",
+    "name": "Медичний центр «Vero Med»",
+    "address": "вул. Минайська 50",
+    "specializations": "Гастроентерологія,, Гінекологія,, Дерматологія,, Кардіологія,, Косметологія,, Мамологія",
+    "link": "https://doc.ua/ua/klinika/uzhgorod/medicinskij-centr-vero-med/medicinskij-centr-vero-med"
+  },
+  {
+    "city": "uzhgorod",
+    "name": "Медичний центр \"Клініка Шкіряка\" у м. Ужгород",
+    "address": "Слов'янська набережна, 1",
+    "specializations": "Нейрохірургія,, Онкологія",
+    "link": "https://doc.ua/ua/klinika/uzhgorod/klinika-doktora-antona-shkiryaka/medicinskij-centr-klinika-shkiryaka-v-g-uzhgorod"
+  },
+  {
+    "city": "uzhgorod",
+    "name": "Клініка естетичної медицини Мирослави Новосільської",
+    "address": "Вул. Возз’єднання 7Б (ЖК „Silver Park”)",
+    "specializations": "Дерматологія,, Косметологія,, Трихологія,, Подологія",
+    "link": "https://doc.ua/ua/klinika/uzhgorod/4139-klinika-esteticheskoj-mediciny-miroslavy-novoselskoj/klinika-esteticheskoj-mediciny-miroslavy-novoselskoj-v-uzhgorode"
+  },
+  {
+    "city": "uzhgorod",
+    "name": "«ДЖІН. ДЖІ КЛІНІК», GYN. G CLINIC",
+    "address": "вул. Івана Коршинського (Грибоєдова), 19",
+    "specializations": "Гінекологія,, Дерматологія,, Косметологія,, УЗ-діагностика,, Ведення вагітності",
+    "link": "https://doc.ua/ua/klinika/uzhgorod/dzhin-dzhi-klinik-gyn-g-clinic/dzhin-dzhi-klinik-gyn-g-clinic"
+  },
+  {
+    "city": "uzhgorod",
+    "name": "Лікарня ЕКСПЕРТ в Ужгороді",
+    "address": null,
+    "specializations": "Акушерство,, Алергологія,, Гастроентерологія,, Гінекологія,, Ендокринологія,, Ендоскопія",
+    "link": "https://doc.ua/ua/klinika/uzhgorod/bolnica-ekspert-v-uzhgorode"
+  },
+  {
+    "city": "uzhgorod",
+    "name": null,
+    "address": "вул. Капушанська, 23 А",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "uzhgorod",
+    "name": null,
+    "address": "вул. Капушанська, 145 Д",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "uzhgorod",
+    "name": "Стоматологія УжДент",
+    "address": "Наб. Незалежності, 21",
+    "specializations": "Ортопедія,, Стоматологія,, Хірургія,, Ортодонтія",
+    "link": "https://doc.ua/ua/klinika/uzhgorod/ctomatologiya-uzhdent/stomatologiya-uzhdent"
+  },
+  {
+    "city": "uzhgorod",
+    "name": "СВОБОДА в Ужгороді",
+    "address": "вул. Паризької Комуни, 4",
+    "specializations": "Наркологія,, Психіатрія",
+    "link": "https://doc.ua/ua/klinika/uzhgorod/svoboda-v-uzhgorode/svoboda-v-uzhgorode"
+  }
+]

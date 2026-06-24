@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Авторизація</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0; padding: 0;
+      background: linear-gradient(135deg, #006400, #004d00);
+      color: #ffffff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    h1 { margin-top: 30px; text-align: center; }
+    .login-box, .dashboard {
+      max-width: 500px; width: 90%;
+      margin: 40px auto; padding: 25px;
+      background: #008000; border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.6);
+    }
+    input {
+      width: 96%; padding: 10px; margin: 0 auto 15px auto;
+      border: none; border-radius: 6px; font-size: 1rem;
+    }
+    button {
+      width: 100%; padding: 12px; margin-top: 10px;
+      background-color: #004d00; color: #ffffff;
+      border: none; border-radius: 6px; font-size: 1rem;
+      cursor: pointer; transition: background 0.3s ease;
+    }
+    button:hover { background-color: #003300; }
+    .result { margin-top: 15px; font-size: 0.85rem; text-align: center; }
+    .menu { display: flex; flex-direction: column; gap: 12px; }
+    .menu button { background: #006400; }
+    #progressBox { display:none; padding:10px; border:1px solid #ccc; margin:10px 0; background:#fff; color:#000; border-radius:8px; }
+    #progressBox h4 { margin:0 0 8px 0; }
+    .promo-modal {
+  position: fixed;
+  top:0; left:0; right:0; bottom:0;
+  background: rgba(0,0,0,0.5);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+.promo-content {
+  background: #008000;
+  padding:20px;
+  border-radius:8px;
+  width:90%;
+  max-width:1000px;
+  max-height:90vh;
+  overflow-y:auto; /* ✅ скрол */
+}
+.promo-grid {
+  display:flex;
+  flex-wrap:wrap; /* ✅ врап */
+  gap:20px;
+}
+.promo-item {
+  flex:1 1 250px;
+  border:1px solid #ccc;
+  padding:10px;
+  border-radius:6px;
+}
+.promo-item h4 {
+  margin-bottom:10px;
+}
+.promo-material {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin:4px 0;
+}
+.promo-material input[type="number"] {
+  width:60px;
+}
+.promo-material textarea {
+  width:100%;
+  margin-top:5px;
+  resize:none;
+}
+@media (max-width:600px) {
+  .promo-item {
+    flex:1 1 100%; /* ✅ на мобільних одна колонка */
+  }
+}
+.promo-item img {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+  margin-bottom: 8px;
+  border-radius: 10px;
+}
+
+</style>
+</head>
+<body>
+  <h1>🔬 Pharmasco CRM</h1>
+  <img src="./logo.svg" alt="logo" width="260">
+
+  <!-- Вхід -->
+  <div class="login-box" id="loginBox">
+    <h2>Вхід у систему</h2>
+    <input type="text" id="login" placeholder="Логін">
+    <input type="password" id="password" placeholder="Пароль">
+    <button onclick="authenticate()">Увійти</button>
+    <div class="result" id="result"></div>
+  </div>
+<div id="output"></div>
+  <!-- Dashboard -->
+  <div class="dashboard" id="dashboard" style="display:none;">
+    <h2>👋 Ласкаво просимо!</h2>
+    <p id="userRole"></p>
+    <div class="menu">
+      <button type="button" onclick="startDay()">🌅 Почати день</button>
+      <button onclick="goToCalendar()">📅 Календар</button>
+      <button onclick="goToLabs()">🧪 Перелік лабораторій</button>
+      <button type="button" onclick="createNewLab()">➕ Створити лабораторію</button>
+      <a href="https://gpavlik.github.io/farm_work/portfolio.html" target="_blank" rel="noopener"><button type="button">Корисні документи</button></a>
+      <button onclick="goToReport()">📊 Переглянути звіти</button>
+      <button type="button" onclick="askForPromo()">🧹 Замовити промо</button>
+      <button type="button" onclick="endDay()">🌇 Завершити день</button>
+      <button onclick="logout()">🚪 Вийти</button>
+    </div>
+    <div id="progressBox">
+      <h4>📊 Стан процесу</h4>
+      <ul id="progressList"></ul>
+    </div>
+    <!-- Прогресбар -->
+<div id="progressContainer" style="width:100%; background:#333; border-radius:8px; margin:10px 0; height:24px;">
+  <div id="progressBar" style="width:0%; height:100%; background:red; border-radius:8px; text-align:center; color:#fff; font-size:12px;">
+    0%
+  </div>
+</div>
+
+  </div>
+
+  <img src="./ivd.png" alt="logo" width="260">
+<div id="promoModal" class="promo-modal" style="display:none;">
+  <div class="promo-content">
+    <h2>Замовлення промо матеріалів</h2>
+    <div id="promoGrid" class="promo-grid"></div>
+
+    <h3>🎁 Сервісні подарунки</h3>
+    <div id="giftGrid" class="promo-grid"></div>
+
+    <button onclick="submitPromoOrder()">📤 Замовити</button>
+    <button onclick="closePromoModal()">❌ Закрити</button>
+  </div>
+</div>
+
+<script>
+let currentUser = null;
+let token = null;
+let allFields = [];
+
+// Авторизація
+async function authenticate() {
+const login = document.getElementById("login").value;
+const password = document.getElementById("password").value;
+
+try {
+const response = await fetch("https://nodejs-production-7176.up.railway.app/login", {
+method: "POST",
+headers: { "Content-Type": "application/json" },
+body: JSON.stringify({ login, password })
+});
+
+const result = await response.json();
+
+if (response.status === 200) {
+currentUser = login;
+token = result.token;
+sessionStorage.setItem("token", token);
+showDashboard(result.role);
+showProgress("✅ Авторизація успішна", "success");
+} else {
+document.getElementById("result").innerHTML =
+`<p style='color:red'>❌ ${result.error}</p>`;
+showProgress("❌ Авторизація не вдалася", "error");
+ }
+ } catch (err) {
+ console.error("❌ Помилка авторизації:", err);
+ showProgress("⚠️ Помилка з'єднання при авторизації", "error");
+ }
+}
+/*async function authenticate() {
+  const login = document.getElementById("login").value;
+  const password = document.getElementById("password").value;
+
+  if (login === "admin" && password === "admin") {
+    currentUser = login;
+    token = "fake-token"; // можна зберегти будь-який рядок як токен
+    sessionStorage.setItem("token", token);
+
+    showDashboard("Адміністратор");
+    showProgress("✅ Авторизація успішна", "success");
+  } else {
+    document.getElementById("result").innerHTML =
+      `<p style='color:red'>❌ Невірний логін або пароль</p>`;
+    showProgress("❌ Авторизація не вдалася", "error");
+  }
+}*/
+
+function showDashboard(role) {
+  document.getElementById("loginBox").style.display = "none";
+  document.getElementById("dashboard").style.display = "block";
+  document.getElementById("userRole").innerHTML =
+    `✅ Ви увійшли як <b>${role}</b>`;
+}
+
+function showLogin() {
+  document.getElementById("dashboard").style.display = "none";
+  document.getElementById("loginBox").style.display = "block";
+}
+
+function isTokenValid(token) {
+  try {
+    const payload = JSON.parse(atob(token.split(".")[1]));
+    return payload.exp * 1000 > Date.now();
+  } catch {
+    return false;
+  }
+}
+
+// 🔎 Перевірка токена при завантаженні сторінки
+window.onload = async () => {
+  const savedToken = sessionStorage.getItem("token");
+  if (savedToken && isTokenValid(savedToken)) {
+    try {
+      const res = await fetch("https://nodejs-production-7176.up.railway.app/labs", {
+        headers: { "Authorization": "Bearer " + savedToken }
+      });
+
+      if (res.status === 403) {
+        showLogin();
+      } else {
+        const payload = JSON.parse(atob(savedToken.split(".")[1]));
+        showDashboard(payload.role);
+        showProgress("✅ Токен валідний, ви увійшли як " + payload.role, "success");
+      }
+    } catch {
+      showLogin();
+    }
+  } else {
+    showLogin();
+  }
+};
+
+// Навігація
+function goToLabs() { window.location.href = "./labcards/labs.html"; }
+function goToLabCard() { sessionStorage.removeItem("editLabId"); window.location.href = "./labcards/labcard.html"; }
+function goToCalendar() { window.location.href = "./calendar/calendar.html"; }
+function goToReport() { window.location.href = "./reports/index.html"; }
+
+function logout() {
+  currentUser = null;
+  token = null;
+  sessionStorage.removeItem("token");
+  showLogin();
+  document.getElementById("result").innerHTML = `<p>🚪 Ви вийшли із системи</p>`;
+  showProgress("🚪 Ви вийшли із системи", "info");
+}
+// === progress.js ===
+function showProgress(message, type="info") {
+  const box = document.getElementById("progressBox");
+  const list = document.getElementById("progressList");
+  box.style.display = "block";
+
+  const li = document.createElement("li");
+  li.textContent = message;
+
+  switch (type) {
+    case "success":
+      li.style.color = "green";
+      break;
+    case "error":
+      li.style.color = "red";
+      break;
+    case "info":
+      li.style.color = "blue";
+      break;
+  }
+
+  list.appendChild(li);
+}
+
+// === IndexedDB helpers ===
+const DB_NAME = "labsDB";
+const DB_VERSION = 3; // піднята версія
+const LABS_STORE = "labs";
+const VISITS_STORE = "visits";
+const TASKS_STORE = "tasks";
+
+// ==========================
+// Ініціалізація IndexedDB
+// ==========================
+function initDB() {
+  const request = indexedDB.open(DB_NAME, DB_VERSION);
+
+  request.onupgradeneeded = (event) => {
+    const db = event.target.result;
+    console.log("onupgradeneeded fired, створюємо stores...");
+
+    if (!db.objectStoreNames.contains(LABS_STORE)) {
+      db.createObjectStore(LABS_STORE);
+    }
+    if (!db.objectStoreNames.contains(VISITS_STORE)) {
+      db.createObjectStore(VISITS_STORE);
+    }
+    if (!db.objectStoreNames.contains(TASKS_STORE)) {
+      db.createObjectStore(TASKS_STORE);
+    }
+  };
+
+  request.onsuccess = () => {
+    console.log("✅ IndexedDB ініціалізовано з labs, visits, tasks");
+  };
+
+  request.onerror = (err) => {
+    console.error("❌ Помилка ініціалізації IndexedDB:", err);
+  };
+}
+
+// ==========================
+// Збереження масиву об'єктів
+// ==========================
+async function saveToDB(storeName, items) {
+  return new Promise((resolve, reject) => {
+    const request = indexedDB.open(DB_NAME, DB_VERSION);
+    request.onsuccess = (event) => {
+      const db = event.target.result;
+      const tx = db.transaction(storeName, "readwrite");
+      const store = tx.objectStore(storeName);
+
+      items.forEach(item => {
+        if (!item.edrpou) {
+          console.warn("Пропущено об’єкт без edrpou:", item);
+          return;
+        }
+        store.put(item, item.edrpou); // ключ = edrpou
+      });
+
+      tx.oncomplete = () => resolve(true);
+      tx.onerror = (err) => reject(err);
+    };
+    request.onerror = (err) => reject(err);
+  });
+}
+
+// ==========================
+// Читання
+// ==========================
+async function getAllFromDB(storeName) {
+  return new Promise((resolve, reject) => {
+    const request = indexedDB.open(DB_NAME, DB_VERSION);
+    request.onsuccess = (event) => {
+      const db = event.target.result;
+      const tx = db.transaction(storeName, "readonly");
+      const store = tx.objectStore(storeName);
+      const getRequest = store.getAll();
+
+      getRequest.onsuccess = () => resolve(getRequest.result);
+      getRequest.onerror = (err) => reject(err);
+    };
+    request.onerror = (err) => reject(err);
+  });
+}
+// ==========================
+// Маркер часу синхронізації
+// ==========================
+function getLastSync() {
+  return parseInt(sessionStorage.getItem("lastSync") || "0", 10);
+}
+function setLastSync(timestamp) {
+  sessionStorage.setItem("lastSync", timestamp.toString());
+}
+
+// ==========================
+// Фетч змін з бекенду (дельта)
+// ==========================
+async function fetchLabsAndVisits() {
+  const API_URL = "https://nodejs-production-7176.up.railway.app";
+  const token = sessionStorage.getItem("token");
+  const lastSync = getLastSync();
+
+  try {
+    let labsRes, visitsRes;
+
+    if (lastSync === 0) {
+      labsRes = await fetch(`${API_URL}/labs`, { headers: { "Authorization": "Bearer " + token } });
+      visitsRes = await fetch(`${API_URL}/visits`, { headers: { "Authorization": "Bearer " + token } });
+    } else {
+      labsRes = await fetch(`${API_URL}/labs/changes?since=${lastSync}`, { headers: { "Authorization": "Bearer " + token } });
+      visitsRes = await fetch(`${API_URL}/visits/changes?since=${lastSync}`, { headers: { "Authorization": "Bearer " + token } });
+    }
+
+    const labsRaw = await labsRes.json();
+    const visitsRaw = await visitsRes.json();
+
+    await saveToDB("labs", labsRaw);
+    await saveToDB("visits", visitsRaw);
+
+    setLastSync(Date.now());
+    console.log("✅ Фетч завершено (дельта)");
+    return { labs: labsRaw, visits: visitsRaw };
+  } catch (err) {
+    console.error("❌ Помилка при fetch:", err);
+    return { labs: [], visits: [] };
+  }
+}
+
+// ==========================
+// Пуш змін на бекенд (дельта)
+// ==========================
+async function pushLabsAndVisits() {
+  const API_URL = "https://nodejs-production-7176.up.railway.app";
+  const token = sessionStorage.getItem("token");
+  const lastSync = getLastSync();
+
+  try {
+    const labsUnified = await getAllFromDB("labs");
+    const visits = await getAllFromDB("visits");
+
+    const labsForBackend = labsUnified.filter(l => l.updatedAt && l.updatedAt > lastSync);
+    const visitsForBackend = visits.filter(v => v.updatedAt && v.updatedAt > lastSync);
+
+    await Promise.all([
+      fetch(`${API_URL}/labs/update`, {
+        method: "POST",
+        headers: { "Authorization": "Bearer " + token, "Content-Type": "application/json" },
+        body: JSON.stringify(labsForBackend)
+      }),
+      fetch(`${API_URL}/visits/update`, {
+        method: "POST",
+        headers: { "Authorization": "Bearer " + token, "Content-Type": "application/json" },
+        body: JSON.stringify(visitsForBackend)
+      })
+    ]);
+
+    setLastSync(Date.now());
+    console.log("✅ Пуш завершено (дельта)");
+  } catch (err) {
+    console.error("❌ Помилка при push:", err);
+  }
+}
+
+// ==========================
+// Старт дня
+// ==========================
+async function startDay() {
+  try {
+    initDB(); // гарантуємо, що база створена
+    const { labs, visits } = await fetchLabsAndVisits();
+    console.log("✅ Дані завантажено у IndexedDB");
+
+    renderLabs(labs);
+    renderVisits(visits);
+
+    showProgress("🌅 Робочий день розпочато!", "success");
+  } catch (err) {
+    console.error("❌ Помилка при старті дня:", err);
+    showProgress("⚠️ Не вдалося розпочати день", "error");
+  }
+}
+
+// ==========================
+// Завершення дня
+// ==========================
+async function endDay() {
+  showProgress("📤 Відправка локальних змін на бекенд...");
+  updateProgress(0);
+
+  try {
+    for (let i = 0; i <= 50; i++) {
+      updateProgress(i);
+      await new Promise(r => setTimeout(r, 20));
+    }
+
+    await pushLabsAndVisits();
+
+    for (let i = 51; i <= 100; i++) {
+      updateProgress(i);
+      await new Promise(r => setTimeout(r, 20));
+    }
+
+    showProgress("🌇 Зміни синхронізовано!", "success");
+  } catch (err) {
+    console.error("❌ Помилка при синхронізації:", err);
+    showProgress("❌ Помилка при синхронізації", "error");
+    updateProgress(0);
+  }
+}
+function renderLabs(labs) {
+  console.log("📋 Лабораторії для рендера:", labs.length);
+  // TODO: тут можна зробити відображення у таблиці/списку
+  const box = document.getElementById("progressBox");
+  const list = document.getElementById("progressList");
+  const li = document.createElement("li");
+  li.textContent = `🧪 Завантажено ${labs.length} лабораторій`;
+  list.appendChild(li);
+}
+
+function renderVisits(visits) {
+  console.log("📋 Візити для рендера:", visits.length);
+  // TODO: тут можна зробити відображення у таблиці/списку
+  const box = document.getElementById("progressBox");
+  const list = document.getElementById("progressList");
+  const li = document.createElement("li");
+  li.textContent = `📅 Завантажено ${visits.length} візитів`;
+  list.appendChild(li);
+}
+
+// === трансформації даних ===
+
+// Допоміжна функція для останніх реагентів
+function getLatestReagentsInfo(allOrders) {
+  const latestInfo = {};
+  for (const order of allOrders) {
+    const { reagentName, lastOrderDate, lastOrderCount } = order;
+    if (
+      !latestInfo[reagentName] ||
+      new Date(lastOrderDate) > new Date(latestInfo[reagentName].lastOrderDate)
+    ) {
+      latestInfo[reagentName] = { lastOrderDate, lastOrderCount };
+    }
+  }
+  return latestInfo;
+}
+
+// Трансформація з бекенду у локальний формат
+function transformLabFromBackend(lab) {
+  return {
+    ...lab,
+    updatedAt: lab.updatedAt || Date.now(), // гарантуємо наявність updatedAt
+    devices: (lab.devices || []).map(d => {
+      const reagentsOrders = (d.reagents || []).map(r => ({
+        reagentName: r.name,
+        lastOrderDate: r.date,
+        lastOrderCount: r.quantity
+      }));
+      const reagentsInfo = getLatestReagentsInfo(reagentsOrders);
+      return {
+        ...d,
+        reagentsOrders,
+        reagentsInfo,
+        analyses: d.analyses || {}
+      };
+    })
+  };
+}
+
+// Зворотна трансформація у формат бекенду
+function transformLabToBackend(lab) {
+  return {
+    ...lab,
+    updatedAt: lab.updatedAt || Date.now(), // завжди додаємо мітку часу
+    devices: (lab.devices || []).map(d => ({
+      ...d,
+      reagents: (d.reagentsOrders || []).map(r => ({
+        name: r.reagentName,
+        date: r.lastOrderDate,
+        quantity: r.lastOrderCount
+      }))
+    }))
+  };
+}
+
+// === Навігація для створення нової лабораторії ===
+function createNewLab() {
+  sessionStorage.removeItem("currentLabEdrpou");
+  window.location.href = "./labcards/labcard.html";
+}
+
+// Прогресбар
+function updateProgress(percent) {
+  const bar = document.getElementById("progressBar");
+  bar.style.width = percent + "%";
+  bar.textContent = percent + "%";
+
+  // плавний перехід кольору від червоного до зеленого
+  const red = Math.max(0, 255 - Math.floor(percent * 2.55));
+  const green = Math.min(255, Math.floor(percent * 2.55));
+  bar.style.backgroundColor = `rgb(${red},${green},0)`;
+}
+
+// Симуляція завантаження
+async function simulateLoading() {
+  for (let i = 0; i <= 100; i++) {
+    updateProgress(i);
+    await new Promise(r => setTimeout(r, 50));
+  }
+}
+
+// Очистка IndexedDB
+async function clearIndexedDB() {
+  return new Promise((resolve, reject) => {
+    const request = indexedDB.deleteDatabase("labsDB");
+
+    request.onsuccess = () => {
+      console.log("🧹 IndexedDB повністю очищено");
+      resolve(true);
+    };
+    request.onerror = (event) => {
+      console.error("❌ Помилка при видаленні IndexedDB:", event);
+      reject(event);
+    };
+    request.onblocked = () => {
+      console.warn("⚠️ Видалення заблоковано. Закрий інші вкладки з цією базою.");
+    };
+  });
+}
+//========================
+// Замовлення промо матеріалів
+//========================
+function askForPromo() {
+  const devices = [
+    "CLreader300","LS1100","DH36","DF50","UN73",
+    "YHLO","BK120","Bioassays240Plus","ISE","DP-C16","CA1200"
+  ];
+
+  const promoTypes = ["листівка"];
+  const gifts = ["Календар","Блокнот","Ручка"];
+
+  const imageMap = {
+    "CLreader300": "CL300.webp",
+    "LS1100": "ls1100.webp",
+    "DH36": "dh36.webp",
+    "DF50": "df50.webp",
+    "UN73": "un73.webp",
+    "YHLO": "yhlo.webp",
+    "BK120": "BK120.jpeg",
+    "Bioassays240Plus": "240.webp",
+    "ISE": "ise.png",
+    "DP-C16": "dpc16.bmp",
+    "CA1200": "CA1200.png",
+    // подарунки
+    "Календар": "cal.webp",
+    "Блокнот": "bloc.jpg",
+    "Ручка": "pen.jpeg"
+  };
+
+  // прилади
+  const grid = document.getElementById("promoGrid");
+  grid.innerHTML = "";
+
+  devices.forEach(dev => {
+    const div = document.createElement("div");
+    div.className = "promo-item";
+    const imgFile = imageMap[dev] || "default.png"; // fallback
+    div.innerHTML = `
+      <img src="images/${imgFile}" alt="${dev}">
+      <h4>${dev}</h4>
+    `;
+    promoTypes.forEach(type => {
+      div.innerHTML += `
+        <div class="promo-material">
+          <span>${type}</span>
+          <input type="number" id="qty_${dev}_${type}" min="0" placeholder="0">
+        </div>`;
+    });
+    grid.appendChild(div);
+  });
+
+  // подарунки
+  const giftGrid = document.getElementById("giftGrid");
+  giftGrid.innerHTML = "";
+
+  gifts.forEach(gift => {
+    const div = document.createElement("div");
+    div.className = "promo-item";
+    const imgFile = imageMap[gift] || "default.png";
+    div.innerHTML = `
+      <img src="images/${imgFile}" alt="${gift}">
+      <h4>${gift}</h4>
+      <div class="promo-material">
+        <span>Кількість</span>
+        <input type="number" id="qty_gift_${gift}" min="0" placeholder="0">
+      </div>
+      <textarea id="comment_gift_${gift}" placeholder="Коментар"></textarea>
+    `;
+    giftGrid.appendChild(div);
+  });
+
+  document.getElementById("promoModal").style.display = "flex";
+}
+
+function closePromoModal() {
+  document.getElementById("promoModal").style.display = "none";
+}
+
+function login(username, password) {
+  // тут твоя логіка перевірки логіну/паролю
+  if (username && password) {
+    document.getElementById("dashboard").style.display = "block";
+    document.getElementById("userRole").textContent = `☑ Ви увійшли як ${username}`;
+  }
+}
+
+function getLoginName() {
+  const text = document.getElementById("userRole")?.textContent || "";
+  const match = text.match(/як\s+(.+)/);
+  return match ? match[1].trim() : "невідомий";
+}
+
+function submitPromoOrder() {
+  const order = {};
+
+  // збір по приладах
+  document.querySelectorAll("#promoGrid .promo-item").forEach(div => {
+    const dev = div.querySelector("h4").textContent;
+    order[dev] = {};
+    div.querySelectorAll("input[type='number']").forEach(inp => {
+      if (inp.value > 0) {
+        const type = inp.id.split("_").slice(2).join("_");
+        order[dev][type] = inp.value;
+      }
+    });
+  });
+
+  // збір подарунків
+  order["Подарунки"] = {};
+  document.querySelectorAll("#giftGrid .promo-item").forEach(div => {
+    const gift = div.querySelector("h4").textContent;
+    const qty = div.querySelector("input[type='number']").value;
+    const comment = div.querySelector("textarea").value;
+    if (qty > 0) {
+      order["Подарунки"][gift] = {quantity: qty, comment};
+    }
+  });
+
+  // формуємо текст замовлення
+  let orderText = "";
+  Object.keys(order).forEach(section => {
+    orderText += `\n${section}:\n`;
+    Object.keys(order[section]).forEach(item => {
+      const val = order[section][item];
+      if (typeof val === "object") {
+        orderText += `- ${item}: ${val.quantity} (${val.comment})\n`;
+      } else {
+        orderText += `- ${item}: ${val}\n`;
+      }
+    });
+  });
+
+  const login = getLoginName();
+
+  // --- формуємо масив для Google Sheets ---
+  const rows = [];
+  Object.keys(order).forEach(section => {
+    Object.keys(order[section]).forEach(item => {
+      const val = order[section][item];
+      rows.push({
+        manager: login,
+        type: section,
+        name: item,
+        quantity: typeof val === "object" ? val.quantity : val,
+        comment: typeof val === "object" ? val.comment : ""
+      });
+    });
+  });
+
+  // один запит на всі рядки
+  fetch("https://script.google.com/macros/s/AKfycby_-OwpYYAjDpKh0FkKio6fkD_pENWescMSnWyInx4orD8mkXkQegKNVAT8jsxfVt2W/exec", {
+    method: "POST",
+
+    headers: { "Content-Type": "text/plain" },
+    body: JSON.stringify(rows)
+  })
+  .then(r => r.text())
+  .then(txt => console.log("Записано у Sheets:", txt))
+  .catch(err => console.error("Помилка запису:", err));
+
+  // --- формування листа ---
+  const now = new Date();
+  const monthNames = [
+    "січень","лютий","березень","квітень","травень","червень",
+    "липень","серпень","вересень","жовтень","листопад","грудень"
+  ];
+  const month = monthNames[now.getMonth()];
+  const year = now.getFullYear();
+
+  const mailBody = encodeURIComponent(
+    `Добрий день, шановний адміністраторе!\n` +
+    `Надсилаю Вам замовлення промо на ${month} ${year}.\n\n` +
+    `${orderText}\n` +
+    `З повагою,\n${login} менеджер`
+  );
+
+  const subject = encodeURIComponent(`Замовлення промо для ${login}`);
+
+  window.location.href = `mailto:oplevish66@gmail.com?subject=${subject}&body=${mailBody}`;
+  closePromoModal();
+}
+// Очистка колекції labs
+async function clearLabs() {
+  const API_URL = "https://nodejs-production-7176.up.railway.app";
+  const token = sessionStorage.getItem("token");
+
+  try {
+    const res = await fetch(`${API_URL}/labs/clear`, {
+      method: "DELETE",
+      headers: {
+        "Authorization": "Bearer " + token,
+        "Content-Type": "application/json"
+      }
+    });
+
+    const result = await res.json();
+    console.log("✅ Очистка завершена:", result);
+  } catch (err) {
+    console.error("❌ Помилка при очистці:", err);
+  }
+}
+
+// Масове перенесення з IndexedDB у MongoDB
+async function migrateLabsFromIndexedDB() {
+  const API_URL = "https://nodejs-production-7176.up.railway.app";
+  const token = sessionStorage.getItem("token");
+
+  try {
+    const labs = await getAllFromDB("labs"); // твоя IndexedDB
+    console.log("📤 Переносимо", labs.length, "лабораторій");
+
+    const res = await fetch(`${API_URL}/labs/migrate`, {
+      method: "POST",
+      headers: {
+        "Authorization": "Bearer " + token,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(labs)
+    });
+
+    const result = await res.json();
+    console.log("✅ Міграція завершена:", result);
+  } catch (err) {
+    console.error("❌ Помилка при міграції:", err);
+  }
+}
+
+async function syncLabsAndVisits() {
+  // беремо токен із sessionStorage
+  const token = sessionStorage.getItem("token");
+
+  if (!token) {
+    console.error("❌ Немає токена у sessionStorage. Спочатку залогінься!");
+    return;
+  }
+
+  try {
+    // тягнемо дані з бекенду
+    const labsResp = await fetch("https://nodejs-production-7176.up.railway.app/labs/all", {
+      headers: { "Authorization": "Bearer " + token }
+    });
+    const labs = await labsResp.json();
+
+    const visitsResp = await fetch("https://nodejs-production-7176.up.railway.app/visits/all", {
+      headers: { "Authorization": "Bearer " + token }
+    });
+    const visits = await visitsResp.json();
+
+    // відкриваємо IndexedDB (labsDB, версія 3)
+    const request = indexedDB.open("labsDB", 3);
+    request.onupgradeneeded = function(event) {
+      const db = event.target.result;
+      if (!db.objectStoreNames.contains("labs")) {
+        db.createObjectStore("labs", { keyPath: "_id" });
+      }
+      if (!db.objectStoreNames.contains("visits")) {
+        db.createObjectStore("visits", { keyPath: "_id" });
+      }
+    };
+
+    request.onsuccess = function(event) {
+      const db = event.target.result;
+
+      // очищаємо і записуємо
+      const labsStore = db.transaction("labs", "readwrite").objectStore("labs");
+      labsStore.clear();
+      labs.forEach(lab => labsStore.put(lab));
+
+      const visitsStore = db.transaction("visits", "readwrite").objectStore("visits");
+      visitsStore.clear();
+      visits.forEach(visit => visitsStore.put(visit));
+
+      console.log(`✅ Синхронізовано: ${labs.length} лабораторій, ${visits.length} візитів`);
+    };
+
+    request.onerror = function(event) {
+      console.error("❌ Помилка відкриття IndexedDB:", event.target.errorCode);
+    };
+  } catch (err) {
+    console.error("❌ Помилка синхронізації:", err);
+  }
+}
+
+// 3. Оновити MongoDB
+    async function updateMongoDB() {
+      if (allFields.length === 0) {
+        document.getElementById("output").textContent = "⚠️ Спочатку створіть структуру!";
+        return;
+      }
+
+      const token = sessionStorage.getItem("token");
+      if (!token) {
+        document.getElementById("output").textContent = "❌ Немає токена у sessionStorage!";
+        return;
+      }
+
+      const request = indexedDB.open("labsDB", 3);
+      request.onsuccess = async function(event) {
+        const db = event.target.result;
+        const tx = db.transaction("labs", "readonly");
+        const store = tx.objectStore("labs");
+        const getAllReq = store.getAll();
+
+        getAllReq.onsuccess = async function() {
+          const labs = getAllReq.result;
+
+          try {
+            const resp = await fetch("https://nodejs-production-7176.up.railway.app/labs/updateAll", {
+              method: "POST",
+              headers: {
+                "Authorization": "Bearer " + token,
+                "Content-Type": "application/json"
+              },
+              body: JSON.stringify(labs)
+            });
+
+            if (resp.ok) {
+              document.getElementById("output").textContent =
+                "✅ MongoDB оновлено. Відправлено " + labs.length + " записів.";
+            } else {
+              document.getElementById("output").textContent =
+                "❌ Помилка оновлення MongoDB: " + resp.status;
+            }
+          } catch (err) {
+            document.getElementById("output").textContent =
+              "❌ Помилка запиту: " + err;
+          }
+        };
+      };
+    }
+function openDB() {
+  return new Promise((resolve, reject) => {
+    const request = indexedDB.open("labsDB", 3);
+
+    request.onupgradeneeded = e => {
+      const db = e.target.result;
+      if (!db.objectStoreNames.contains("labs")) {
+        db.createObjectStore("labs", { keyPath: "edrpou" });
+      }
+      if (!db.objectStoreNames.contains("visits")) {
+        db.createObjectStore("visits", { keyPath: "id" });
+      }
+      if (!db.objectStoreNames.contains("tasks")) {
+        db.createObjectStore("tasks", { keyPath: "id" });
+      }
+    };
+
+    request.onsuccess = e => resolve(e.target.result);
+    request.onerror = e => reject(e.target.error);
+  });
+}
+
+async function insertLabsGeocoded(jsonData) {
+  const db = await openDB("labsDB", 3); // твоя IndexedDB
+  const tx = db.transaction("labs", "readwrite");
+  const store = tx.objectStore("labs");
+
+  jsonData.forEach(item => {
+    item.updatedAt = Date.now(); // щоб pushLabsAndVisits підхопив
+    store.put(item);
+  });
+
+  await tx.done;
+  console.log("✅ labs_geocoded.json вставлено в IndexedDB");
+}
+
+
+</script>
+</body>
+</html>

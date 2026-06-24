@@ -1,0 +1,121 @@
+[
+  {
+    "city": "sumy",
+    "name": "Медичний центр ОН Клінік Суми",
+    "address": "вул. Харківська, 23",
+    "specializations": "Гастроентерологія,, Гінекологія,, Дерматологія,, Кардіологія,, Проктологія,, УЗ-діагностика",
+    "link": "https://doc.ua/ua/klinika/sumy/medicinskij-centr-on-klinik-sumy/medicinskij-centr-on-klinik-sumy"
+  },
+  {
+    "city": "sumy",
+    "name": "Клініка академіка Грищенко (Імплант) в м. Суми",
+    "address": "пл. Троїцька, 1/1",
+    "specializations": "Акушерство,, Генетика,, Гінекологія,, Репродуктологія,, УЗ-діагностика,, Урологія",
+    "link": "https://doc.ua/ua/klinika/sumy/klinika-akademika-grishenko-implant-v-g-sumy/klinika-akademika-grishenko-implant-v-g-sumy"
+  },
+  {
+    "city": "sumy",
+    "name": "Нейромед, Центр МРТ діагностики та реабілітації в Сумах",
+    "address": "вул. Ковпака 22 А/1",
+    "specializations": "Неврологія,, Реабілітологія,, КТ і МРТ",
+    "link": "https://doc.ua/ua/klinika/sumy/nejromed-centr-mrt-ta-reabilitaci-v-sumah/nejromed-centr-mrt-reabltac-v-sumah"
+  },
+  {
+    "city": "sumy",
+    "name": "Оздоровчий центр «Дивосил»",
+    "address": "вул. Металургів, 5",
+    "specializations": "Гастроентерологія,, Гінекологія,, Дерматологія,, Терапія,, Урологія,, Флебологія",
+    "link": "https://doc.ua/ua/klinika/sumy/ozdorovitelnyj-centr-divosil/ozdorovitelnyj-centr-divosil"
+  },
+  {
+    "city": "sumy",
+    "name": "Мед-Союз",
+    "address": null,
+    "specializations": "Акушерство,, Гінекологія,, Ендокринологія,, Ендоскопія,, Кардіологія,, Неврологія",
+    "link": "https://doc.ua/ua/klinika/sumy/med-soyuz"
+  },
+  {
+    "city": "sumy",
+    "name": null,
+    "address": "ул.Привокзальная, 33",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "sumy",
+    "name": null,
+    "address": "ул. Харитоненко 6/1",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "sumy",
+    "name": "Центр лазерної косметології «Лінлайн»",
+    "address": "вул. Петропавлівська, 49",
+    "specializations": "Дерматологія,, Косметологія,, Масаж",
+    "link": "https://doc.ua/ua/klinika/sumy/centr-lazernoj-kosmetologii-linline/centr-lazernoj-kosmetologii-linline"
+  },
+  {
+    "city": "sumy",
+    "name": "Стоматологічна клініка лікаря Вардаєва",
+    "address": "проспект М. Лушпи, 9",
+    "specializations": "Стоматологія",
+    "link": "https://doc.ua/ua/klinika/sumy/stomatologicheskaya-klinika-doktora-vardaeva/stomatologicheskaya-klinika-doktora-vardaeva"
+  },
+  {
+    "city": "sumy",
+    "name": "Панакея, центр лазерної хірургії",
+    "address": "вул. Троїцька, 9",
+    "specializations": "Гінекологія,, Проктологія,, Урологія,, Флебологія,, Хірургія",
+    "link": "https://doc.ua/ua/klinika/sumy/panakeya-centr-lazernoj-hirurgii/panakeya-centr-lazernoj-hirurgii1"
+  },
+  {
+    "city": "sumy",
+    "name": "Мед-онлайн",
+    "address": "вул. Троїцька, 17",
+    "specializations": "Гепатологія,, Дієтологія,, Імунологія,, Інфектологія,, Косметологія,, Логопедія",
+    "link": "https://doc.ua/ua/klinika/sumy/med-onlajn/med-onlajn"
+  },
+  {
+    "city": "sumy",
+    "name": "Сумська клініка лазерної медицини",
+    "address": "Воскресенская, 1",
+    "specializations": "Гінекологія,, Дерматологія,, Косметологія,, Неврологія,, Оториноларингологія,, Терапія",
+    "link": "https://doc.ua/ua/klinika/sumy/sumskaya-klinika-lazernoj-mediciny/sumskaya-klinika-lazernoj-mediciny"
+  },
+  {
+    "city": "sumy",
+    "name": "«Жіноча гармонія»",
+    "address": "вул. Санаторна, 3",
+    "specializations": "Гінекологія",
+    "link": "https://doc.ua/ua/klinika/sumy/zhenskaya-garmoniya/zhenskaya-garmoniya"
+  },
+  {
+    "city": "sumy",
+    "name": "Бріліант Смайл",
+    "address": "Промисловий провулок, 12/2",
+    "specializations": "Стоматологія",
+    "link": "https://doc.ua/ua/klinika/sumy/brilliant-smile/brilliant-smile"
+  },
+  {
+    "city": "sumy",
+    "name": "Приватна практика психолога Ірини Долинської",
+    "address": "вул. Набережна річки Стрілки, 10",
+    "specializations": "Психологія",
+    "link": "https://doc.ua/ua/klinika/sumy/chastnaya-praktika-psihologa-iriny-dolinskoj/chastnaya-praktika-psihologa-iriny-dolinskoj"
+  },
+  {
+    "city": "sumy",
+    "name": "Приватний кабінет хірурга Тхір І.І.",
+    "address": "",
+    "specializations": "Хірургія",
+    "link": "https://doc.ua/ua/klinika/sumy/chastnyj-kabinet-hirurga-thir-ii/chastnyj-kabinet-hirurga-thir-ii"
+  },
+  {
+    "city": "sumy",
+    "name": "СВОБОДА в Сумах",
+    "address": "пр-т. Михайла Лушпи",
+    "specializations": "Наркологія,, Психіатрія",
+    "link": "https://doc.ua/ua/klinika/sumy/svoboda-v-summah/svoboda-v-summah"
+  }
+]

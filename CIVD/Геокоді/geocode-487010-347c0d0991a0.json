@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "geocode-487010",
+  "private_key_id": "347c0d0991a038b26a2644284cee0810bc41774c",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCdAWtAocEBp5O+\n28Ztgg466V+5L5300uiWgN6EiMammtcRnFn9sFnoHPM+QNXp7lQQbHJIwWaW7onN\nfJqwZViP4VBNEsNPlVzwFOVRbaJROyYZelGrev/KaZhhOY4K8LKWPEMqeUlOsB2+\n+I3F5vGS+iJxkeXaf7DgVg2EeIZHn+qMKr8PsUGzn8xVj9ip2CDfs3JB/sBMwPhG\nxc36VYc9E2io8MAXMfUm8o2TbPH2NON8cNMS6zejWPlfPzHlAzUQYcQXu3d/dlQG\nLwx4ZNJIkRhQ8+S1sccqytSSG227Ae7pj2yrZTN2fHCgUkNUvTTfGyQm08gKsE/W\n+7dN0m5dAgMBAAECgf8UCMT8JP0mjjuhdGndj2WWyYYYG1C3QjJrrLC4OLvLMUxA\nSF3eAU13pjoOYjeUTNUX7hP8igaNO+MEVYy89YcCKmi/bPrUgjqvEqYwaHejOz5M\nAfpp50gR4WeQVcfKSEHW6dmoPHxzjgWTA3m+cbm3B4ldn0Bf9pXwtQpZ3QdFcZnw\n8H4/ZtvVe3IFAHqQLDMKySYtdj5pvOUX0uU/lnLgYKRaB8asPvB7vyGILNM+UhYd\n18Z89vniMRG/7qJNHLhpyNf80N2j8VCOFGscHb61BeOUxdwHXYlaGWUa4SoSf+zS\nrE6uS6genOGm603/idSntII301ZOgwuJLM8Y3MECgYEA0SwX2zX9uYrpGfBCV5h/\no2udRLbNO/ivY+xvC1AWYQ7yQMOa9Rt7cEoutfBFoGWJnREdaqJLm27DDiQ0npvJ\nQisjyNgOBdgi0e27t1JpsI0h03N8M+strfAn421JZJ0agOjuSasS13iLu2McEP6t\n+UXytfX73RgORt2L/XoXYZUCgYEAwCeXUrX0ARZeTc+DEYmg4aXV/DLQLH4CGub+\nCKE8TFasxCP7+befb3lZJm8fS6xC0A3W3gJVcPxp4T2kTYnozNGcnv5tSYGk1wMS\n41YJVL/diUX+r7uxTROx/JrVJjqowa2TDfEl6wZG52iR9ub2c40fT3Iki97rCJmr\nt7G8N6kCgYEAtHdlccToTo+xw6ZNpsO0w+sR+fn5oldSA1U3DTygwkah7gyVggme\n+2eVW3WcrOFN1Iyyo5C4yLbMZUQJfhqMjqEns53so1Ax4otI3Mam1yM83vGRZD3w\n4FQGJirhGoSNHFFbXYXSsMKZVCgTS/pfYWTfHezHy554mt2EbUJML+0CgYBhevRC\ninnpn05iDPbCC97o+jdPRPvkxlwNB8gx2pH7bDEjI9oteeDRLW9zlwX6Xr5aS9sI\nL4jm07ZnBN14VJEcbu4UnqAUnUdhqHaJi9kZ/GfHvxGQVxiAMJCnxGiDh1ibQJIM\njZyd2UZZGOyLo+m8/we2RwKRTppPd53sh6cjWQKBgQCOH6mUYcalCX8+Fe74d2KZ\nX/eBGX53M5frY7T0bdozm5h+JdgTtZZO+vaSr805pll3hZGSqiECmzv/iWl6dxkF\n5TFWxZ2ZdYJ+9712q6CMwRx7lr7BKVX852w0ez0Rhq5AnsX5FTCnXK1QgL0dSM41\nLTAhpXDPT5BvpijDGlCdbg==\n-----END PRIVATE KEY-----\n",
+  "client_email": "railway-prozorro-sync@geocode-487010.iam.gserviceaccount.com",
+  "client_id": "108720631165924385687",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/railway-prozorro-sync%40geocode-487010.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

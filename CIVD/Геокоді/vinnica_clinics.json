@@ -1,0 +1,485 @@
+[
+  {
+    "city": "vinnica",
+    "name": "Євромед",
+    "address": null,
+    "specializations": "Кардіологія,, Неврологія,, Психіатрія",
+    "link": "https://doc.ua/ua/klinika/vinnica/evromed"
+  },
+  {
+    "city": "vinnica",
+    "name": null,
+    "address": "вул. Архітектора Артинова, 38",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "vinnica",
+    "name": null,
+    "address": "вул. Гоголя, 2",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "vinnica",
+    "name": "Медичний центр Моє здоров'я",
+    "address": null,
+    "specializations": "Інфектологія,, Алергологія,, Вертебрологія,, Гастроентерологія,, Гепатологія,, Дерматологія",
+    "link": "https://doc.ua/ua/klinika/vinnica/medicinskij-centr-moe-zdorove"
+  },
+  {
+    "city": "vinnica",
+    "name": null,
+    "address": "вул. Хмельницьке шосе, 92 (2 поверх)",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "vinnica",
+    "name": null,
+    "address": "проспект Юності 16 Б",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "vinnica",
+    "name": null,
+    "address": "вул. Янгеля, 58",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "vinnica",
+    "name": "MED OK медичний центр",
+    "address": null,
+    "specializations": "Акушерство,, Вакцинація,, Гастроентерологія,, Гематологія,, Гінекологія,, Дерматовенерологія",
+    "link": "https://doc.ua/ua/klinika/vinnica/medok-medicinskij-centr"
+  },
+  {
+    "city": "vinnica",
+    "name": null,
+    "address": "вул. М. Ващука 20 Б",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "vinnica",
+    "name": null,
+    "address": "вул. Зодчих, 20",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "vinnica",
+    "name": null,
+    "address": "вул. Соборна, 18",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "vinnica",
+    "name": "ЛюксМедік",
+    "address": "вул. Шевченка, 7",
+    "specializations": "Алергологія,, Гастроентерологія,, Гінекологія,, Дерматологія,, Кардіологія,, Неврологія",
+    "link": "https://doc.ua/ua/klinika/vinnica/universum-klinik-na-shevchenka/universum-klinik-na-shevchenka"
+  },
+  {
+    "city": "vinnica",
+    "name": "Центр гастроентерології та дієтології",
+    "address": null,
+    "specializations": "Вертебрологія,, Гастроентерологія,, Дієтологія,, Ендокринологія,, Ендоскопія,, Кардіологія",
+    "link": "https://doc.ua/ua/klinika/vinnica/centr-gastroenterologii-i-dietologii"
+  },
+  {
+    "city": "vinnica",
+    "name": null,
+    "address": "вул. Пирогова 46, 13 корпус",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "vinnica",
+    "name": null,
+    "address": "вул. Гоголя, 2",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "vinnica",
+    "name": "Медичний центр \"Інститут планування сім'ї\" (IPF)",
+    "address": "вул. Пирогова, 10",
+    "specializations": "Акушерство,, Андрологія,, Гінекологія,, Дерматологія,, Кардіологія,, Косметологія",
+    "link": "https://doc.ua/ua/klinika/vinnica/institut-planirovaniya-semi-ipf/medichnij-centr-institut-planuvannya-sim-ipf"
+  },
+  {
+    "city": "vinnica",
+    "name": "GastroClinic",
+    "address": "вул. Келецька, 50Б",
+    "specializations": "Гастроентерологія,, Неврологія,, Проктологія,, Психологія,, УЗ-діагностика,, Ендоскопія",
+    "link": "https://doc.ua/ua/klinika/vinnica/gastroclinic/gastroclinic"
+  },
+  {
+    "city": "vinnica",
+    "name": "Кабінет дерматовенерології MV Private Center («МВ Приват Центр»)",
+    "address": "вул. Магістратська, 3/7",
+    "specializations": "Дерматологія,, Дерматовенерологія",
+    "link": "https://doc.ua/ua/klinika/vinnica/mv-private-center/kabinet-dermatovenerologi-mv-private-center-mv-privat-centr"
+  },
+  {
+    "city": "vinnica",
+    "name": "НЕЙРОМЕД, Центр сучасної діагностики",
+    "address": null,
+    "specializations": "Денний стаціонар,, КТ і МРТ,, Кардіологія,, Неврологія,, Психотерапія,, УЗ-діагностика",
+    "link": "https://doc.ua/ua/klinika/vinnica/nejromed-centr-mrt-diagnostiki"
+  },
+  {
+    "city": "vinnica",
+    "name": null,
+    "address": "вул. Пирогова, 109",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "vinnica",
+    "name": null,
+    "address": "Хмельницьке шосе, 92",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "vinnica",
+    "name": null,
+    "address": "вул. Київська, 16а",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "vinnica",
+    "name": null,
+    "address": "вул. Магістратська, 20",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "vinnica",
+    "name": "Центр контактної корекції зору «Ваша Оптика» у м. Вінниця",
+    "address": null,
+    "specializations": "Офтальмологія",
+    "link": "https://doc.ua/ua/klinika/vinnica/centr-kontaktnoj-korrekcii-zreniya-vasha-optika-v-g-vinnica"
+  },
+  {
+    "city": "vinnica",
+    "name": null,
+    "address": "вул. Грушевського, 48",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "vinnica",
+    "name": null,
+    "address": "вул. Келецька, буд. 78",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "vinnica",
+    "name": "Клініка репродуктивної  медицини ім. академіка В.І. Грищенка в м. Вінниця",
+    "address": "вул. Данила Галицького, 6Б",
+    "specializations": "Гінекологія,, Репродуктологія",
+    "link": "https://doc.ua/ua/klinika/vinnica/klinika-reproduktivno-medicini-im-akademika-vi-grishenka-v-m-vinnicya/klnka-reproduktvnoj-medcny-m-akademka-vi-grenko-v-g-vnnca"
+  },
+  {
+    "city": "vinnica",
+    "name": "Стоматологічна клініка «ORTOVIN»",
+    "address": "вул. Замостянська 18-В",
+    "specializations": "Стоматологія,, Ортодонтія",
+    "link": "https://doc.ua/ua/klinika/vinnica/stomatologicheskaya-klinika-ortovin/stomatologicheskaya-klinika-ortovin"
+  },
+  {
+    "city": "vinnica",
+    "name": "Берегиня на вул. Келецька",
+    "address": "вул. Келецька, 53",
+    "specializations": "Гінекологія,, Дерматологія,, Мамологія,, Психологія,, Урологія",
+    "link": "https://doc.ua/ua/klinika/vinnica/bereginya/bereginya-na-ul-keleckaya"
+  },
+  {
+    "city": "vinnica",
+    "name": "Skymedical",
+    "address": "вул. Князів Коріатовичів, 118-А/1",
+    "specializations": "Гастроентерологія,, Дерматологія,, Дієтологія,, Кардіологія,, Масаж,, Неврологія",
+    "link": "https://doc.ua/ua/klinika/vinnica/skymedical/skymedical"
+  },
+  {
+    "city": "vinnica",
+    "name": "Імеда, клініка сучасної медицини",
+    "address": "вул. Соборна, 20",
+    "specializations": "Акушерство,, Гінекологія,, Дерматологія,, Кардіологія,, Косметологія,, Мамологія",
+    "link": "https://doc.ua/ua/klinika/vinnica/imeda-klinika-sovremennoj-mediciny/imeda-klinika-sovremennoj-mediciny"
+  },
+  {
+    "city": "vinnica",
+    "name": "Медичний центр «Репродуктивна клініка Вікторії Гудзяк»",
+    "address": "вул Пирогова, 23-Б",
+    "specializations": "Андрологія,, Гінекологія,, Психологія,, Репродуктологія,, УЗ-діагностика,, Урологія",
+    "link": "https://doc.ua/ua/klinika/vinnica/medicinskij-centr-reproduktivnaya-klinika-viktorii-gudzyak/medichnij-centr-reproduktivna-klinika-viktori-gudzyak"
+  },
+  {
+    "city": "vinnica",
+    "name": "«МЕДИЧНА ЗІРКА», медичний центр в Вінниці",
+    "address": "вул. Келецька, 121",
+    "specializations": "Акушерство,, Гінекологія,, Неврологія,, Оториноларингологія,, Офтальмологія,, Педіатрія",
+    "link": "https://doc.ua/ua/klinika/vinnica/medichna-zirka-medichnij-centr-v-vinnici/medichna-zirka-medichnij-centr-v-vinnici"
+  },
+  {
+    "city": "vinnica",
+    "name": "Центр лазерної проктології (Вінниця)",
+    "address": "вул. Київська, буд. 68",
+    "specializations": "Гастроентерологія,, Онкологія,, Проктологія,, Хірургія,, Ендоскопія",
+    "link": "https://doc.ua/ua/klinika/vinnica/centr-lazernoj-proktologii/centr-lazernoj-proktologii-vinnica"
+  },
+  {
+    "city": "vinnica",
+    "name": "Медіскан, діагностичний центр в Вінниці",
+    "address": null,
+    "specializations": "Функціональна діагностика",
+    "link": "https://doc.ua/ua/klinika/vinnica/mediskan-diagnostichnij-centr-v-vinnici"
+  },
+  {
+    "city": "vinnica",
+    "name": null,
+    "address": "вул. Георгія Нарбута 3",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "vinnica",
+    "name": null,
+    "address": "вул. Хмельницьке шосе 92",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "vinnica",
+    "name": "Стоматологічна клініка Dr.Oryshchuk",
+    "address": "вул. Київська 27",
+    "specializations": "Стоматологія,, Ендодонтія,, Пародонтологія",
+    "link": "https://doc.ua/ua/klinika/vinnica/stomatologicheskaya-klinika-droryshchuk/stomatologicheskaya-klinika-droryshchuk"
+  },
+  {
+    "city": "vinnica",
+    "name": "Центр-В",
+    "address": null,
+    "specializations": "Імунологія,, Алергологія,, Вертебрологія,, Гінекологія,, Дерматологія,, Дієтологія",
+    "link": "https://doc.ua/ua/klinika/vinnica/centr-v"
+  },
+  {
+    "city": "vinnica",
+    "name": null,
+    "address": "вул. Ак. Ющенко, 8",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "vinnica",
+    "name": null,
+    "address": "вул. Пирогова, 3а",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "vinnica",
+    "name": null,
+    "address": "вул. Київська, 5",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "vinnica",
+    "name": null,
+    "address": "вул. Космонавтів, 53",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "vinnica",
+    "name": null,
+    "address": "вул. Космонавтів, 39",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "vinnica",
+    "name": "Офтальмологічний кабінет «Люксоптика»",
+    "address": null,
+    "specializations": "Офтальмологія",
+    "link": "https://doc.ua/ua/klinika/vinnica/luxoptica"
+  },
+  {
+    "city": "vinnica",
+    "name": null,
+    "address": "вул. Козицького, 51",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "vinnica",
+    "name": null,
+    "address": "вул. 600-ліття, 17",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "vinnica",
+    "name": null,
+    "address": "вул. Соборна, 56",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "vinnica",
+    "name": "Подільський центр зору",
+    "address": "вул. Зодчих, 7",
+    "specializations": "Офтальмологія",
+    "link": "https://doc.ua/ua/klinika/vinnica/podolskij-centr-zreniya/podolskij-centr-zreniya"
+  },
+  {
+    "city": "vinnica",
+    "name": "Медікор 2",
+    "address": "вул. Стуса, 16, офіс 3",
+    "specializations": "Нетрадиційна медицина",
+    "link": "https://doc.ua/ua/klinika/vinnica/medikor-2/medikor-2"
+  },
+  {
+    "city": "vinnica",
+    "name": "Центр лазерна епіляція та косметологія «МедЕстет»",
+    "address": "ул. Хлебная, 7",
+    "specializations": "Дерматологія,, Косметологія",
+    "link": "https://doc.ua/ua/klinika/vinnica/centr-lazernaya-epilyaciya-i-kosmetologiya-medestet/centr-lazernaya-epilyaciya-i-kosmetologiya-medestet"
+  },
+  {
+    "city": "vinnica",
+    "name": "Амадея, центр психо-соціального розвитку",
+    "address": "вул. Володарського, 39а",
+    "specializations": "Психологія,, Психотерапія",
+    "link": "https://doc.ua/ua/klinika/vinnica/amadeya/amadeya-centr-psiho-socialnogo-razvitiya"
+  },
+  {
+    "city": "vinnica",
+    "name": "Приватна лікарська практика 36.6",
+    "address": "ул. Маяковского, 141",
+    "specializations": "Оториноларингологія,, Педіатрія",
+    "link": "https://doc.ua/ua/klinika/vinnica/chastnaya-vrachebnaya-praktika/chastnaya-vrachebnaya-praktika-366"
+  },
+  {
+    "city": "vinnica",
+    "name": "Приватний кабінет лікаря кардіолога Вітюк О.В.",
+    "address": "вул. Хмельницьке шосе, 92 (3 поверх, каб. № 316)",
+    "specializations": "Кардіологія",
+    "link": "https://doc.ua/ua/klinika/vinnica/chastnyj-kabinet-doktora-kardiologa-vityuk-ov/chastnyj-kabinet-doktora-kardiologa-vityuk-ov"
+  },
+  {
+    "city": "vinnica",
+    "name": "Приватний лікарський консультативний кабінет проф. Чернобрового В. М.",
+    "address": "вул. Хмельницьке шосе 23",
+    "specializations": "Гастроентерологія,, Терапія",
+    "link": "https://doc.ua/ua/klinika/vinnica/chastnyj-doktorskij-konsultativnyj-kabinet-chernobrovogo-v-n/chastnyj-doktorskij-konsultativnyj-kabinet-chernobrovogo-v-n"
+  },
+  {
+    "city": "vinnica",
+    "name": "Angels clinic",
+    "address": "вул. Трамвайна 3В, корпус 3, приміщення 36",
+    "specializations": "Акушерство,, Гінекологія,, Кардіологія,, Косметологія,, Масаж,, Неврологія",
+    "link": "https://doc.ua/ua/klinika/vinnica/angels-clinic/angels-clinic"
+  },
+  {
+    "city": "vinnica",
+    "name": "Статус",
+    "address": "ул. Келецкая, 41",
+    "specializations": "Гастроентерологія,, Гінекологія,, Дерматологія,, Кардіологія,, Неврологія,, Нефрологія",
+    "link": "https://doc.ua/ua/klinika/vinnica/status/status"
+  },
+  {
+    "city": "vinnica",
+    "name": "Філія вертебрально-оздоровчого центру Євмінова",
+    "address": "вулиця Винниченка, 18/1",
+    "specializations": "Мануальна терапія,, Нейрохірургія,, Психотерапія,, Рефлексотерапія,, Кінезітерапія",
+    "link": "https://doc.ua/ua/klinika/vinnica/nikolaevskij-filial-vertebralno-ozdorovitelnogo-centra-evminova/nikolaevskij-filial-vertebralno-ozdorovitelnogo-centra-evminova"
+  },
+  {
+    "city": "vinnica",
+    "name": "Радамед",
+    "address": "пр. Юності 10 А",
+    "specializations": "Акушерство,, Андрологія,, Венерологія,, Гінекологія,, Дерматологія,, Дієтологія",
+    "link": "https://doc.ua/ua/klinika/vinnica/radamed/radamed"
+  },
+  {
+    "city": "vinnica",
+    "name": "Приватний медичний кабінет психолога Редько Тетяни Георгіївни",
+    "address": "Хмельницьке шосе, 23, каб.115",
+    "specializations": "Психіатрія,, Психологія",
+    "link": "https://doc.ua/ua/klinika/vinnica/chastnyj-kabinet-psihologa-redko-tatyany-georgievny/chastnyj-medicinskij-kabinet-psihologa-redko-tatyany-georgievny"
+  },
+  {
+    "city": "vinnica",
+    "name": "МІГІС, Міжрегіональний інститут гештальт-терапії та мистецтва",
+    "address": "вул. Київська, 16, оф. 2, поверх 9",
+    "specializations": "Психологія",
+    "link": "https://doc.ua/ua/klinika/vinnica/migis-mezhregionalnyj-institut-geshtalt-terapii-i-iskusstva/migis-mezhregionalnyj-institut-geshtalt-terapii-i-iskusstva-vinnica"
+  },
+  {
+    "city": "vinnica",
+    "name": "Медицинский центр «Нова_Я»",
+    "address": "м. Вінниця, вул. Трамвайна 3, корпус 2, каб. 39",
+    "specializations": "Дерматологія,, Косметологія",
+    "link": "https://doc.ua/ua/klinika/vinnica/medicinskij-centr-nova-ya/medicinskij-centr-nova-ya"
+  },
+  {
+    "city": "vinnica",
+    "name": "Офтальмологічний кабінет Люксоптика",
+    "address": "",
+    "specializations": "",
+    "link": "https://doc.ua/ua/klinika/vinnica/luxoptica-vinnica/ofalmologicheskij-kabinet-lyuksoptika"
+  },
+  {
+    "city": "vinnica",
+    "name": "Приватний кабінет психотерапії і консультування Цирульника Д. А.",
+    "address": "вул. Соборна 66, каб. 307",
+    "specializations": "Психологія,, Психотерапія",
+    "link": "https://doc.ua/ua/klinika/vinnica/chastnyj-kabinet-psihoterapii-i-konsultirovaniya-cirulnika-d-a/chastnyj-kabinet-psihoterapii-i-konsultirovaniya-cirulnika-d-a"
+  },
+  {
+    "city": "vinnica",
+    "name": "Приватний кабінет сімейного лікаря Семенюк Катерини",
+    "address": "ул. Александра Довженка, 36",
+    "specializations": "Педіатрія,, Терапія,, Сімейна медицина",
+    "link": "https://doc.ua/ua/klinika/vinnica/chastnyj-kabinet-semejnogo-doktora-semenyuk-kateriny/chastnyj-kabinet-semejnogo-doktora-semenyuk-ekateriny"
+  },
+  {
+    "city": "vinnica",
+    "name": "Клініка сучасної хірургії «Спайнекс»",
+    "address": "м. Вінниця, вул. Князів Коріатовичів, 209а",
+    "specializations": "Анестезіологія,, Нейрохірургія,, Ортопедія,, Пластична хірургія,, Психологія,, Рентгенологія",
+    "link": "https://doc.ua/ua/klinika/vinnica/2458-klinika-sovremennoj-hirurgii-spinex/klinika-sovremennoj-hirurgii-spinex"
+  },
+  {
+    "city": "vinnica",
+    "name": "\"Вінницький районний медичний центр первинної медико-санітарної допомоги\" Вінницької районної ради",
+    "address": "Хмельницьке шосе, 92",
+    "specializations": "",
+    "link": "https://doc.ua/ua/klinika/vinnica/vinnickij-rajonnyj-medicinskij-centr-pervichnoj-mediko-sanitarnoj-pomoshi-vinnickogo-rajonnogo-soveta/vinnickij-rajonnyj-medicinskij-centr-pervichnoj-mediko-sanitarnoj-pomoshi-vinnickogo-rajonnogo-soveta"
+  },
+  {
+    "city": "vinnica",
+    "name": "Нейрон Клінік",
+    "address": "вул. Магістратська, 20",
+    "specializations": "Неврологія,, Терапія",
+    "link": "https://doc.ua/ua/klinika/vinnica/nejron-klinik/nejron-klinik"
+  },
+  {
+    "city": "vinnica",
+    "name": "Офтальмологічний центр відновлення зору «Візіум» у м. Вінниця",
+    "address": "вул. Марії Литвиненко-Вольгемут, 5",
+    "specializations": "Офтальмологія",
+    "link": "https://doc.ua/ua/klinika/vinnica/oftalmologicheskij-centr-vosstanovleniya-zreniya-vizium-v-g-vinnica/oftalmologicheskij-centr-vosstanovleniya-zreniya-vizium-v-g-vinnica"
+  }
+]

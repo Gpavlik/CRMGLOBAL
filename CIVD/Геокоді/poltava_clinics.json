@@ -1,0 +1,310 @@
+[
+  {
+    "city": "poltava",
+    "name": "Медичний центр ОН Клінік Полтава",
+    "address": null,
+    "specializations": "Вакцинація,, Гастроентерологія,, Гінекологія,, Дерматологія,, Ендокринологія,, Лабораторна діагностика",
+    "link": "https://doc.ua/ua/klinika/poltava/medicinskij-centr-on-klinik-poltava"
+  },
+  {
+    "city": "poltava",
+    "name": null,
+    "address": "пр-т Віталія Грицаєнка 18-А (пр-т Першотравневий)",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "poltava",
+    "name": null,
+    "address": "пр-т Віталія Грицаєнка 18-А (пр-т Першотравневий)",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "poltava",
+    "name": "Центр Медико-Санітарної Допомоги",
+    "address": null,
+    "specializations": "Імунологія,, Інфектологія,, Акушерство,, Алергологія,, Гастроентерологія,, Гематологія",
+    "link": "https://doc.ua/ua/klinika/poltava/centr-mediko-sanitarnoj-pomoshi"
+  },
+  {
+    "city": "poltava",
+    "name": null,
+    "address": "вул. Симона Петлюри, 3",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "poltava",
+    "name": null,
+    "address": "вул. Соборності, 60 А",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "poltava",
+    "name": "Медичний Центр Здоров’я",
+    "address": "вул. Олександра Оксанченка 6",
+    "specializations": "Алергологія,, Андрологія,, Гастроентерологія,, Гінекологія,, Дерматологія,, Дієтологія",
+    "link": "https://doc.ua/ua/klinika/poltava/medichnij-centr-zdorovya/mmedichnij-centr-zdorovya"
+  },
+  {
+    "city": "poltava",
+    "name": "Медичний Центр \"100% Життя\" у Полтаві",
+    "address": "вул. Миколи Дмітрієва, 6 Д",
+    "specializations": "Інфектологія,, Терапія,, Сімейна медицина,, Вакцинація",
+    "link": "https://doc.ua/ua/klinika/poltava/medichnij-centr-100-zhittya-u-poltavi/medcnskj-centr-100-zhttya-v-poltave"
+  },
+  {
+    "city": "poltava",
+    "name": "Скаймедікал",
+    "address": "вул. Європейська, 21 (пов. 3, каб. 302)",
+    "specializations": "Дерматологія,, Косметологія,, Флебологія",
+    "link": "https://doc.ua/ua/klinika/poltava/skajmedikal/skajmedkal"
+  },
+  {
+    "city": "poltava",
+    "name": "Клініка терапії і реабілітації суглобів та хребта OrtoSano у Полтаві",
+    "address": "майдан Незалежності, 20",
+    "specializations": "Неврологія,, Ортопедія",
+    "link": "https://doc.ua/ua/klinika/poltava/klinika-terapii-i-reabilitacii-sustavov-i-pozvonochnika-ortosano-v-poltave/klinika-terapii-i-reabilitacii-sustavov-i-pozvonochnika-ortosano-v-poltave"
+  },
+  {
+    "city": "poltava",
+    "name": "Dr. Kateryna Manzhula Clinic (Клініка лікаря Катерини Манжули)",
+    "address": "пл. Павленківська, 3 А",
+    "specializations": "Дерматологія,, Косметологія,, Трихологія",
+    "link": "https://doc.ua/ua/klinika/poltava/dr-kateryna-manzhula-clinic-klinika-likarya-katerini-manzhuli/dr-kateryna-manzhula-clinic-klinika-likarya-katerini-manzhuli"
+  },
+  {
+    "city": "poltava",
+    "name": "Сімейна клініка",
+    "address": null,
+    "specializations": "Гастроентерологія,, Гінекологія,, Дерматологія,, Ендокринологія,, Кардіологія,, Неврологія",
+    "link": "https://doc.ua/ua/klinika/poltava/simejna-klinika"
+  },
+  {
+    "city": "poltava",
+    "name": null,
+    "address": "Старий Поділ, 4а",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "poltava",
+    "name": null,
+    "address": "вул. Європейська 108",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "poltava",
+    "name": "«Урологічний центр доктора Решетнікова»",
+    "address": "вул. Миколи Дмитрієва, 6д",
+    "specializations": "Андрологія,, Урологія",
+    "link": "https://doc.ua/ua/klinika/poltava/urologicheskij-centr-doktora-reshetnikova/urologicheskij-centr-doktora-reshetnikova"
+  },
+  {
+    "city": "poltava",
+    "name": "Клініка Мироненко",
+    "address": null,
+    "specializations": "Акушерство,, Гінекологія,, Дерматовенерологія,, Ендокринологія,, Кардіологія,, Неврологія",
+    "link": "https://doc.ua/ua/klinika/poltava/klinika-mironenko"
+  },
+  {
+    "city": "poltava",
+    "name": null,
+    "address": "вул. Котляревського, 3",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "poltava",
+    "name": null,
+    "address": "вул. Котляревського, 6",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "poltava",
+    "name": "CentroLab лікувально-діагностичний центр Полтава",
+    "address": null,
+    "specializations": "Лабораторна діагностика,, Функціональна діагностика",
+    "link": "https://doc.ua/ua/klinika/poltava/centrolab-lechebno-diagnosticheskij-centr-poltava"
+  },
+  {
+    "city": "poltava",
+    "name": null,
+    "address": "вул. Шевченко, 24/37",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "poltava",
+    "name": null,
+    "address": "вул. Олександра Бідного 16",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "poltava",
+    "name": "Медичний центр Аналітика",
+    "address": null,
+    "specializations": "Дерматологія,, Лабораторна діагностика,, Терапія,, УЗ-діагностика,, Функціональна діагностика",
+    "link": "https://doc.ua/ua/klinika/poltava/medichnij-centr-analitika"
+  },
+  {
+    "city": "poltava",
+    "name": null,
+    "address": "вул. Соборності, 60",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "poltava",
+    "name": null,
+    "address": "вул. Небесної сотні, 81",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "poltava",
+    "name": "Офтальмологічний кабінет «Люксоптика»",
+    "address": null,
+    "specializations": "Офтальмологія",
+    "link": "https://doc.ua/ua/klinika/poltava/luxoptica"
+  },
+  {
+    "city": "poltava",
+    "name": null,
+    "address": "вул. Фрунзе, 60-А (ТРЦ «Конкорд»)",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "poltava",
+    "name": null,
+    "address": "вул. Жовтнева, 28/13",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "poltava",
+    "name": "Літвиненко клінік",
+    "address": null,
+    "specializations": "Гінекологія,, Дерматологія,, Косметологія,, Неврологія,, Реабілітологія,, Урологія",
+    "link": "https://doc.ua/ua/klinika/poltava/lytvynenko-clinic"
+  },
+  {
+    "city": "poltava",
+    "name": null,
+    "address": "вул. М. Дмітрієва, 6Д",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "poltava",
+    "name": null,
+    "address": "вул. М. Дмітрієва, 6Д",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "poltava",
+    "name": null,
+    "address": "вул. М. Дмітрієва, 6Д",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "poltava",
+    "name": "Медіон, медичний лікувально-діагностичний центр",
+    "address": "вул. Сінна, 37",
+    "specializations": "Акушерство,, Анестезіологія,, Гастроентерологія,, Гематологія,, Гінекологія,, Дерматологія",
+    "link": "https://doc.ua/ua/klinika/poltava/medion-medicinskij-lechebno-diagnosticheskij-centr/medion-medicinskij-lechebno-diagnosticheskij-centr"
+  },
+  {
+    "city": "poltava",
+    "name": "Елітмед+",
+    "address": "вул. Небесної сотні, 74",
+    "specializations": "Алергологія,, Гінекологія,, Дерматологія,, Косметологія,, Неврологія,, Стоматологія",
+    "link": "https://doc.ua/ua/klinika/poltava/elitmed/elitmed"
+  },
+  {
+    "city": "poltava",
+    "name": "Світогляд, медичний центр",
+    "address": "вул. Геннадія Біліченка, 29-Б",
+    "specializations": "Офтальмологія",
+    "link": "https://doc.ua/ua/klinika/poltava/svitoglyad-medichnij-centr/svitoglyad-medicinskij-centr"
+  },
+  {
+    "city": "poltava",
+    "name": "МРТ-центр",
+    "address": "вул. Енгельса, 27а",
+    "specializations": "Неврологія,, Ортопедія,, Терапія,, Травматологія,, КТ і МРТ",
+    "link": "https://doc.ua/ua/klinika/poltava/mrt-centr/mrt-centr"
+  },
+  {
+    "city": "poltava",
+    "name": "Ворошилов Мій Зубний",
+    "address": "вул. Жовтнева, 40Д",
+    "specializations": "Стоматологія",
+    "link": "https://doc.ua/ua/klinika/poltava/voroshilov-moj-zubnoj/voroshilov-moj-zubnoj"
+  },
+  {
+    "city": "poltava",
+    "name": "Офтальмологічний кабінет Люксоптика",
+    "address": "",
+    "specializations": "",
+    "link": "https://doc.ua/ua/klinika/poltava/luxoptica-poltava/oftalmologicheskij-kabinet-lyuksopti"
+  },
+  {
+    "city": "poltava",
+    "name": "Приватний кабінет нарколога-психіатра Власенко І.В.",
+    "address": "вул. Матросова 4, каб. 318",
+    "specializations": "Наркологія,, Психіатрія",
+    "link": "https://doc.ua/ua/klinika/poltava/chastnyj-kabinet-narkologa-psihiatra-vlasenko-iv/chastnyj-kabinet-narkologa-psihiatra-vlasenko-iv"
+  },
+  {
+    "city": "poltava",
+    "name": "Безега і К",
+    "address": "вул. Київське шосе, 56",
+    "specializations": "Гінекологія,, Мануальна терапія,, Оториноларингологія,, Педіатрія,, Пластична хірургія,, УЗ-діагностика",
+    "link": "https://doc.ua/ua/klinika/poltava/bezega-i-k-chastnaya-klinika/bezega-i-k-chastnaya-klinika"
+  },
+  {
+    "city": "poltava",
+    "name": "Приватний кабінет психолога Світлани Господинюк",
+    "address": "вул. Котляревського, 1/27",
+    "specializations": "Психологія,, Психотерапія",
+    "link": "https://doc.ua/ua/klinika/poltava/chastnyj-kabinet-psihologa-svetlany-gospodinyuk/chastnyj-kabinet-psihologa-svetlany-gospodinyuk"
+  },
+  {
+    "city": "poltava",
+    "name": "Приватний кабінет психолога Афонічкіной Тетяни",
+    "address": "м. Полтава, вул. Жовтнева, 66",
+    "specializations": "Психологія,, Психотерапія",
+    "link": "https://doc.ua/ua/klinika/poltava/992-chastnyj-kabinet-psihologa/chastnyj-kabinet-psihologa-afonichkinoj-tatyany"
+  },
+  {
+    "city": "poltava",
+    "name": "Приватний кабінет «Стань щасливим»",
+    "address": "вул. Соборності, 66 оф. 707/2",
+    "specializations": "Психологія,, Психотерапія",
+    "link": "https://doc.ua/ua/klinika/poltava/chastnyj-kabinet-stan-schastlivym/chastnyj-kabinet-stan-schastlivym"
+  },
+  {
+    "city": "poltava",
+    "name": "Приватний кабінет психолога Савельєвої Юлії",
+    "address": "вул. Степного фронту, 29",
+    "specializations": "Психологія",
+    "link": "https://doc.ua/ua/klinika/poltava/chastnyj-kabinet-psihologa-savelevoj-yulii/chastnyj-kabinet-psihologa-savelevoj-yulii"
+  },
+  {
+    "city": "poltava",
+    "name": "Частный кабинет психолога Ольги Шевченко",
+    "address": "ул. Европейская, 225, 4 этаж, офис 405",
+    "specializations": "Психологія,, Психотерапія",
+    "link": "https://doc.ua/ua/klinika/poltava/chastnyj-kabinet-psihologa-olgi-shevchenko/chastnyj-kabinet-psihologa-olgi-shevchenko"
+  }
+]

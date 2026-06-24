@@ -1,0 +1,156 @@
+[
+  {
+    "city": "cherkasi",
+    "name": "Добра Клініка",
+    "address": "вул. Михайла Грушевського 50",
+    "specializations": "",
+    "link": "https://doc.ua/ua/klinika/cherkasi/dobra-klinika/dobraya-klnka"
+  },
+  {
+    "city": "cherkasi",
+    "name": "«ОН Клінік» в Черкасах",
+    "address": "вул. Чехова, 43",
+    "specializations": "Алергологія,, Гастроентерологія,, Гінекологія,, Дерматологія,, Кардіологія,, Мамологія",
+    "link": "https://doc.ua/ua/klinika/cherkasi/doktorpro-medicinskij-centr/doktorpro-medicinskij-centr"
+  },
+  {
+    "city": "cherkasi",
+    "name": "Ваш лікар поруч, центр сімейної медицини",
+    "address": "вул. Верхня Горова 36/1",
+    "specializations": "Алергологія,, Андрологія,, Гастроентерологія,, Гематологія,, Гінекологія,, Дерматологія",
+    "link": "https://doc.ua/ua/klinika/cherkasi/vash-likar-poruch-centr-simejno-medicini/vash-likar-poruch-centr-semejnoj-mediciny"
+  },
+  {
+    "city": "cherkasi",
+    "name": "Оптіма медікал сервіс",
+    "address": "Бульвар Шевченка, 264",
+    "specializations": "Гінекологія,, Дерматологія,, Кардіологія,, Косметологія,, Неврологія,, Оториноларингологія",
+    "link": "https://doc.ua/ua/klinika/cherkasi/optima-medikal-servis/optima-medikal-service"
+  },
+  {
+    "city": "cherkasi",
+    "name": "KULISH NEUROLAB (КУЛІШ НЕЙРОЛАБ), неврологічний кабінет",
+    "address": "бульв. Шевченка 52/1",
+    "specializations": "Неврологія",
+    "link": "https://doc.ua/ua/klinika/cherkasi/kulish-neurolab-kulish-nejrolab-nevrologichnij-kabinet/kulish-neurolab-kulish-nejrolab-nevrologichnij-kabinet"
+  },
+  {
+    "city": "cherkasi",
+    "name": "OCSARAT MEDICAL, центр ударно-хвильової терапії в Черкасах",
+    "address": "вул. Вячеслава Чорновола, 1",
+    "specializations": "Неврологія,, Травматологія,, УЗ-діагностика,, Урологія",
+    "link": "https://doc.ua/ua/klinika/cherkasi/ocsarat-medical-centr-udarno-volnovoj-terapii-v-cherkassah/ocsarat-medical-centr-udarno-volnovoj-terapii-v-cherkassah"
+  },
+  {
+    "city": "cherkasi",
+    "name": "Медичний центр Здоров’я Черкаси",
+    "address": "вул. 30-річчя Перемоги, 30",
+    "specializations": "Гастроентерологія,, Гінекологія,, Дерматологія,, Кардіологія,, Неврологія,, Педіатрія",
+    "link": "https://doc.ua/ua/klinika/cherkasi/hospital-medichnij-centr-zdorovya/medcnskj-centr-zdorove"
+  },
+  {
+    "city": "cherkasi",
+    "name": "Наркологічний центр «Статус» у Черкасах",
+    "address": "вул. Надпільна, буд. 208",
+    "specializations": "Наркологія,, Психіатрія,, Реабілітологія",
+    "link": "https://doc.ua/ua/klinika/cherkasi/narkologicheskij-centr-status-v-cherkasah/narkologichnij-centr-status-u-cherkasah"
+  },
+  {
+    "city": "cherkasi",
+    "name": "DRS.YASHATOVY, стоматологія",
+    "address": "вул. Віталія Вергая, 7/1",
+    "specializations": "Стоматологія,, Дитяча стоматологія,, Ортопедична стоматологія,, Хірургічна стоматологія",
+    "link": "https://doc.ua/ua/klinika/cherkasi/drsyashatovy-stomatologiya/drsyashatovy-stomatologiya"
+  },
+  {
+    "city": "cherkasi",
+    "name": "Медичний центр «ЛІКАРІ ЧЕРКАС»",
+    "address": "б-р Шевченка, 325",
+    "specializations": "Гастроентерологія,, Гінекологія,, Інфектологія,, Кардіологія,, Мамологія,, Неврологія",
+    "link": "https://doc.ua/ua/klinika/cherkasi/medicinskij-centr-likari-cherkas/vrachi-cherkass"
+  },
+  {
+    "city": "cherkasi",
+    "name": "«Інтегро плюс», медичний центр",
+    "address": "бул. Шевченка, 352",
+    "specializations": "Гастроентерологія,, Гінекологія,, Дерматологія,, Інфектологія,, Неврологія,, Оториноларингологія",
+    "link": "https://doc.ua/ua/klinika/cherkasi/medicinskij-centr-integro/medicinskij-centr-integro"
+  },
+  {
+    "city": "cherkasi",
+    "name": "Сімейна клініка «Лікар Ковальчук»",
+    "address": "вул. Гоголя 219",
+    "specializations": "Алергологія,, Дерматологія,, Кардіологія,, Неврологія,, Оториноларингологія,, Пульмонологія",
+    "link": "https://doc.ua/ua/klinika/cherkasi/semejnaya-klinika-vrach-kovalchuk/semejnaya-klinika-vrach-kovalchuk"
+  },
+  {
+    "city": "cherkasi",
+    "name": "Приватний кабінет уролога Чепурного Юрія Миколайовича",
+    "address": "вул. Дахнівська, 34",
+    "specializations": "Урологія",
+    "link": "https://doc.ua/ua/klinika/cherkasi/privatnij-kabinet-urologa-chepurnogo/chastnyj-kabnet-chepurnogo-yun"
+  },
+  {
+    "city": "cherkasi",
+    "name": "NAZAROV, ультразвукова діагностика",
+    "address": null,
+    "specializations": "УЗ-діагностика",
+    "link": "https://doc.ua/ua/klinika/cherkasi/nazarov-ultrazvukova-diagnostika"
+  },
+  {
+    "city": "cherkasi",
+    "name": null,
+    "address": "просп. Перемоги, 20, кабінети 113 та 224",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "cherkasi",
+    "name": null,
+    "address": "просп. Перемоги, 16/1, кабінет 13",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "cherkasi",
+    "name": "Екосвіт, діагностичний кабінет",
+    "address": "ул. Ильина 289/1",
+    "specializations": "КТ і МРТ",
+    "link": "https://doc.ua/ua/klinika/cherkasi/ekosvit-diagnostichnij-kabinet/ekosvit-diagnostichnij-kabinet"
+  },
+  {
+    "city": "cherkasi",
+    "name": "Anatomia здоров'я",
+    "address": "вул.Небесної сотні 36",
+    "specializations": "Дерматологія,, Кардіологія,, Неврологія,, Урологія,, Сімейна медицина",
+    "link": "https://doc.ua/ua/klinika/cherkasi/anatomia-zdorovya/anatomia-zdorovya"
+  },
+  {
+    "city": "cherkasi",
+    "name": "Дом оптики Черкаси",
+    "address": "вул. Хрещатик, 200",
+    "specializations": "Офтальмологія",
+    "link": "https://doc.ua/ua/klinika/cherkasi/dom-optiki-cherkassy/dom-optiki-cherkasi"
+  },
+  {
+    "city": "cherkasi",
+    "name": "МЦ «Центр лікування та профілактики залежності» Амбулаторія в Черкасах",
+    "address": "вул. Надпільна, 330/5",
+    "specializations": "Наркологія,, Психіатрія",
+    "link": "https://doc.ua/ua/klinika/cherkasi/mc-centr-lecheniya-i-profilaktiki-zavisimosti-cherkassy/mc-centr-likuvannya-ta-profilaktiki-zalezhnosti-ambulvatoriya-v-cherkasah"
+  },
+  {
+    "city": "cherkasi",
+    "name": "Медіскан Груп Черкаси",
+    "address": "вул. Дахновська, 52",
+    "specializations": "УЗ-діагностика,, КТ і МРТ",
+    "link": "https://doc.ua/ua/klinika/cherkasi/mediskan-grup-cherkassy/mediskan-grup-cherkassy"
+  },
+  {
+    "city": "cherkasi",
+    "name": "Оптика Новий Зір в Черкасах",
+    "address": "вул. Івана Мазепи, 49/1",
+    "specializations": "Офтальмологія",
+    "link": "https://doc.ua/ua/klinika/cherkasi/optika-novij-zir-v-cherkasah/optika-novij-zir-v-cherkassah"
+  }
+]

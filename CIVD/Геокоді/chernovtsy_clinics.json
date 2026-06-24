@@ -1,0 +1,184 @@
+[
+  {
+    "city": "chernovtsy",
+    "name": "Юзько медікал центр",
+    "address": null,
+    "specializations": "Акушерство,, Ведення вагітності,, Гінекологія,, Дерматологія,, Ендокринологія,, Кардіологія",
+    "link": "https://doc.ua/ua/klinika/chernovtsy/medicinskij-centr-lecheniya-besplodiya"
+  },
+  {
+    "city": "chernovtsy",
+    "name": null,
+    "address": "вул. Трепка (О. Боярка), 1а",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "chernovtsy",
+    "name": null,
+    "address": "пр-т Незалежності, 116 Б",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "chernovtsy",
+    "name": "Оксфорд Медікал Чернівці",
+    "address": null,
+    "specializations": "Інфектологія,, Акушерство,, Алергологія,, Гінекологія,, Дерматологія,, Ендокринологія",
+    "link": "https://doc.ua/ua/klinika/chernovtsy/oksford-medikal-chernovcy"
+  },
+  {
+    "city": "chernovtsy",
+    "name": null,
+    "address": "пр. Независимости, 121А",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "chernovtsy",
+    "name": null,
+    "address": "вул. С. Воробкевича, 33",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "chernovtsy",
+    "name": "Базисмед, медичний центр",
+    "address": null,
+    "specializations": "Ведення вагітності,, Гастроентерологія,, Гінекологія,, Дерматовенерологія,, Дерматоонкологія,, Ендоскопія",
+    "link": "https://doc.ua/ua/klinika/chernovtsy/bazismed-medicinskij-centr"
+  },
+  {
+    "city": "chernovtsy",
+    "name": null,
+    "address": "вул. Рівненська, 5а",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "chernovtsy",
+    "name": null,
+    "address": "вул. С.Скальда, 15",
+    "specializations": "",
+    "link": null
+  },
+  {
+    "city": "chernovtsy",
+    "name": "Центр Хребта Постава (Postava) Чернівці",
+    "address": "вул.. В.Винниченка, 12",
+    "specializations": "Неврологія,, Ортопедія,, Травматологія,, Реабілітологія,, Вертебрологія",
+    "link": "https://doc.ua/ua/klinika/chernovtsy/centr-hrebta-postava-postava-chernivci/centr-pozvonochnka-postava-postava-chernovcy"
+  },
+  {
+    "city": "chernovtsy",
+    "name": "Центр малоінвазивної урології та лазерної хірургії",
+    "address": "вул. Чорноморська 4-а",
+    "specializations": "Урологія",
+    "link": "https://doc.ua/ua/klinika/chernovtsy/centr-maloinvazivnoj-urologii-i-lazernoj-hirurgii/centr-malonvazvnoj-urolog-lazernoj-hrurg"
+  },
+  {
+    "city": "chernovtsy",
+    "name": "Приватний кабінет лікаря Карпенка Олександра Вікторовича Героїв Майдану",
+    "address": "вул., Героїв майдану 226; КНП \"Центральна міська клінічна лікарня.\"",
+    "specializations": "Пластична хірургія,, Проктологія,, Хірургія",
+    "link": "https://doc.ua/ua/klinika/chernovtsy/chastnyj-kabinet-vracha-karpenko-aleksandra-viktorovicha-v-chernovcah/chastnyj-kabinet-vracha-karpenko-aleksandra-viktorovicha-geroev-majdana"
+  },
+  {
+    "city": "chernovtsy",
+    "name": "Центр відновлення зору Анатолія Совви в Чернівцях",
+    "address": "вул. Скальда, 32 Б",
+    "specializations": "Офтальмологія",
+    "link": "https://doc.ua/ua/klinika/chernovtsy/centr-vidnovlennya-zoru-anatoliya-sovvi-v-chernivcyah/centr-vidnovlennya-zoru-anatoliya-sovvi"
+  },
+  {
+    "city": "chernovtsy",
+    "name": "«С-Клінік»",
+    "address": "проїзд Парковий, 10В",
+    "specializations": "Анестезіологія,, Оториноларингологія,, Офтальмологія,, Пластична хірургія,, Флебологія,, Хірургія",
+    "link": "https://doc.ua/ua/klinika/chernovtsy/s-klinik/s-klinik"
+  },
+  {
+    "city": "chernovtsy",
+    "name": "Plast ART",
+    "address": "ул. Владислава Трепка, 1А",
+    "specializations": "Пластична хірургія,, Хірургія",
+    "link": "https://doc.ua/ua/klinika/chernovtsy/plastart/plastart"
+  },
+  {
+    "city": "chernovtsy",
+    "name": "Офтальмологічний центр «Візіум» у м. Чернівці",
+    "address": "вул. Героїв Майдану 150",
+    "specializations": "Офтальмологія",
+    "link": "https://doc.ua/ua/klinika/chernovtsy/oftalmologicheskij-centr-vizium-v-g-chernovcy/oftalmologichnij-centr-vizium-u-m-chernivci"
+  },
+  {
+    "city": "chernovtsy",
+    "name": "Норма, медичний центр в Чернівцях",
+    "address": "вул. Целана, 8",
+    "specializations": "Психіатрія,, Психотерапія",
+    "link": "https://doc.ua/ua/klinika/chernovtsy/norma-medicinskij-centr-v-chernovcah/norma-medicinskij-centr-v-chernovcah"
+  },
+  {
+    "city": "chernovtsy",
+    "name": "Центр здоров'я, приватне медичне підприємство",
+    "address": "вул. Чехова 101",
+    "specializations": "Акушерство,, Гінекологія,, Косметологія,, Пластична хірургія,, Репродуктологія,, Сексологія",
+    "link": "https://doc.ua/ua/klinika/chernovtsy/centr-zdorovya-privatne-medichne-pidprimstvo/centr-zdorovya-privatne-medichne-pidprimstvo"
+  },
+  {
+    "city": "chernovtsy",
+    "name": "Ортопедо-травматологічне відділення обласної клінічної лікарні",
+    "address": "ул. Головна, 137 (корпус 4)",
+    "specializations": "Ортопедія,, Травматологія",
+    "link": "https://doc.ua/ua/klinika/chernovtsy/ortopedo-travmatologicheskoe-otdelenie-oblastnoj-klinicheskoj-bolnicy/ortopedo-travmatologicheskoe-otdelenie-oblastnoj-klinicheskoj-bolnicy"
+  },
+  {
+    "city": "chernovtsy",
+    "name": "Грація, центр естетичної медицини",
+    "address": "вул. 28 Червня, 25",
+    "specializations": "Дієтологія,, Пластична хірургія",
+    "link": "https://doc.ua/ua/klinika/chernovtsy/graciya-centr-esteticheskoj-mediciny/graciya-centr-esteticheskoj-mediciny"
+  },
+  {
+    "city": "chernovtsy",
+    "name": "СінМедікал",
+    "address": "пр-т. Незалежності, 109",
+    "specializations": "Оториноларингологія",
+    "link": "https://doc.ua/ua/klinika/chernovtsy/sin-medikal/sinmedical-sin-medikal"
+  },
+  {
+    "city": "chernovtsy",
+    "name": "Стоматологія «Джулія»",
+    "address": "Маршала Красовського, б.8",
+    "specializations": "Ортопедія,, Стоматологія,, Ортодонтія",
+    "link": "https://doc.ua/ua/klinika/chernovtsy/stomatologiya-dzhuliya/stomatologiya-dzhuliya"
+  },
+  {
+    "city": "chernovtsy",
+    "name": "Студія розвитку Олі Чіпенко «Наснага»",
+    "address": "Верхня Горова, 1",
+    "specializations": "Психологія,, Психотерапія",
+    "link": "https://doc.ua/ua/klinika/chernovtsy/studiya-rozvitku-oli-chipenko-nasnaga/studiya-rozvitku-oli-chipenko-nasnaga"
+  },
+  {
+    "city": "chernovtsy",
+    "name": "Центр медичного гіпнозу і психотерапії \"Консиліум\"",
+    "address": "пров. Хоменко 18/2",
+    "specializations": "Психіатрія,, Психологія,, Психотерапія,, Сексологія",
+    "link": "https://doc.ua/ua/klinika/chernovtsy/centr-medichnogo-gipnozu-i-psihoterapi-konsilium/centr-medichnogo-gipnozu-i-psihoterapi-konsilium"
+  },
+  {
+    "city": "chernovtsy",
+    "name": "Приватний кабінет психолога Тирінової Наталії",
+    "address": "вул. Гагаріна, 77",
+    "specializations": "Психологія,, Психотерапія",
+    "link": "https://doc.ua/ua/klinika/chernovtsy/chastnyj-kabinet-psihologa-tyrinovoj-natalii/chastnyj-kabinet-psihologa-tyrinovoj-natalii"
+  },
+  {
+    "city": "chernovtsy",
+    "name": "СВОБОДА в Чернівцях",
+    "address": "вул. Миколаївська 30А",
+    "specializations": "Наркологія,, Психіатрія",
+    "link": "https://doc.ua/ua/klinika/chernovtsy/svoboda-v-chernovcah/svoboda-v-chernovcah"
+  }
+]
