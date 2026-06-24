@@ -1064,10 +1064,31 @@ window.renderFullReport = function(proc, tasks) {
   const todo = total - done - progress;
   const percent = total > 0 ? Math.round((done / total) * 100) : 0;
   
+  // 1. АНАЛІТИКА КОМАНДИ (Беремо всіх учасників з Dashboard)
   const teamStats = {};
+  
+  // КРОК 1: Створюємо "каркас" з усіх, хто офіційно доданий у процес
+  if (proc.participants && Array.isArray(proc.participants)) {
+      proc.participants.forEach(p => {
+          const cleanName = p.split(" (")[0].trim(); // Відрізаємо ролі типу "(Оунер)"
+          teamStats[cleanName] = { total: 0, done: 0, progress: 0, todo: 0 };
+      });
+  }
+const statusOrder = { 'todo': 1, 'inprogress': 2, 'done': 3 };
+tasks.sort((a, b) => {
+    const getWeight = (s) => {
+        if (["done", "виконано", "completed"].includes(s)) return 3;
+        if (["inprogress", "в процесі", "progress"].includes(s)) return 2;
+        return 1; // todo
+    };
+    return getWeight(a.status) - getWeight(b.status);
+});
+  // КРОК 2: Розкидаємо існуючі задачі по цих людях
   tasks.forEach(t => {
-      const u = t.username;
+      const u = t.username || "Не призначено";
+      // Якщо хтось є в задачах, але не був офіційно в списку (наприклад, помилка або зміна виконавця)
       if (!teamStats[u]) teamStats[u] = { total: 0, done: 0, progress: 0, todo: 0 };
+      
       teamStats[u].total++;
       if (["done", "виконано", "completed"].includes(t.status)) teamStats[u].done++;
       else if (["inprogress", "в процесі", "progress"].includes(t.status)) teamStats[u].progress++;
@@ -1075,7 +1096,7 @@ window.renderFullReport = function(proc, tasks) {
   });
 
   let teamHtml = `<table style="width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 20px;">
-                    <tr style="background:#f1f5f9;"><th style="border:1px solid #cbd5e1; padding:6px; text-align:left;">Учасник</th><th style="border:1px solid #cbd5e1; padding:6px;">Всього</th><th style="border:1px solid #cbd5e1; padding:6px; color:#10b981;">Виконано</th><th style="border:1px solid #cbd5e1; padding:6px; color:#f59e0b;">В процесі</th><th style="border:1px solid #cbd5e1; padding:6px; color:#3b82f6;">В черзі</th></tr>`;
+                    <tr style="background:#f1f5f9;"><th style="border:1px solid #cbd5e1; padding:6px; text-align:left;">Учасник</th><th style="border:1px solid #cbd5e1; padding:6px;">Всього задач</th><th style="border:1px solid #cbd5e1; padding:6px; color:#10b981;">Виконано</th><th style="border:1px solid #cbd5e1; padding:6px; color:#f59e0b;">В процесі</th><th style="border:1px solid #cbd5e1; padding:6px; color:#3b82f6;">В черзі</th></tr>`;
   Object.keys(teamStats).forEach(u => {
       teamHtml += `<tr><td style="border:1px solid #cbd5e1; padding:6px; font-weight:bold;">${u}</td>
                        <td style="border:1px solid #cbd5e1; padding:6px; text-align:center;">${teamStats[u].total}</td>
@@ -1085,13 +1106,16 @@ window.renderFullReport = function(proc, tasks) {
   });
   teamHtml += `</table>`;
 
+  // 2. ТЕКСТОВИЙ СПИСОК ЗАДАЧ ТА КОМЕНТАРІВ
   let tasksListHtml = `<ul style="list-style: none; padding: 0; margin: 0; font-size: 12px; line-height: 1.6;">`;
   tasks.forEach(t => {
     let isDone = ["done", "виконано", "completed"].includes(t.status);
     let isInProg = ["inprogress", "в процесі", "progress"].includes(t.status);
+    
     let badge = isDone ? `<span style="color:#10b981; font-weight:bold;">[✅ Виконано]</span>` 
               : isInProg ? `<span style="color:#f59e0b; font-weight:bold;">[⚙️ В процесі]</span>` 
               : `<span style="color:#3b82f6; font-weight:bold;">[📋 В черзі]</span>`;
+              
     let cleanComment = t.comment ? t.comment.replace(/<[^>]*>?/gm, ' ').trim() : "";
     let commentHtml = cleanComment ? `<br><span style="color: #64748b; padding-left: 15px;">💬 <i>${cleanComment}</i></span>` : "";
 
@@ -1113,7 +1137,7 @@ window.renderFullReport = function(proc, tasks) {
       ${tasksListHtml}
 
       <h4 style="margin: 20px 0 5px 0;">📈 Графік виконання (Гант):</h4>
-      <div id="reportGanttContainer" style="width: 100%; overflow-x: auto; border: 1px solid #cbd5e1; border-radius: 6px; background: #fff; position: relative;"></div>
+      <div id="reportGanttContainer" style="width: 100%; overflow-x: auto; border: 1px solid #cbd5e1; border-radius: 6px; padding: 10px; background: #fff;"></div>
     </div>
   `;
 
