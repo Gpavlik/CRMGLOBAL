@@ -496,7 +496,7 @@ input, select {
 </div>
 </div>
 <script>
-(async function(){
+(function(){
   const u = sessionStorage.getItem("currentUser");
   const token = sessionStorage.getItem("sessionToken");
   
@@ -505,18 +505,34 @@ input, select {
     return; 
   }
 
+  // Отримуємо елементи
+  const loader = document.getElementById("loadingScreen");
+  const app = document.getElementById("appContent");
+
   fetch("https://script.google.com/macros/s/AKfycbwV4A-TF_G1yCOoQY_wofk1hq1kf-KP3EerfEgYhqXh-aWB8Vc1evFaxJuv5FlQ6Wcr/exec?action=675&user=" + encodeURIComponent(u) + "&token=" + encodeURIComponent(token) + "&branch=can")
     .then(r => r.json())
     .then(data => {
       if (data.success && data.url) {
-        // 1. Ховаємо екран завантаження з логотипом
-        document.getElementById("loadingScreen").style.display = "none";
+        // --- АНІМАЦІЯ ПЕРЕХОДУ ---
         
-        // 2. Показуємо основний інтерфейс додатку
-        document.getElementById("appContent").style.display = "flex";
+        // 1. Починаємо плавне зникнення лого
+        loader.classList.add("fade-out");
         
-        // 3. Ініціалізація даних користувача
-        initUserInfoAndWeather(data.userName || data.fullName || "Павло Гриценко");
+        // 2. Чекаємо завершення анімації (800мс)
+        setTimeout(() => {
+          loader.style.display = "none"; // Повністю прибираємо лого
+          
+          // 3. Підготовлюємо appContent до появи
+          app.style.display = "flex";
+          app.style.opacity = "0"; // Починаємо з прозорості
+          
+          // 4. Запускаємо появу контенту
+          app.classList.add("fade-in");
+          app.style.opacity = "1";
+          
+          initUserInfoAndWeather(data.userName || data.fullName || "Павло Гриценко");
+        }, 800);
+
       } else {
         sessionStorage.clear(); 
         window.location.href = "index.html";
