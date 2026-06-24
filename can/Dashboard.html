@@ -979,14 +979,14 @@ function initProcessReport(processId) {
 }
 
 /**
- * ФІНАЛЬНИЙ БЛОК ЗВІТНОСТІ З ВИПРАВЛЕНИМ ГАНТОМ ТА ДУБЛЯМИ
+ * ФІНАЛЬНИЙ БЛОК ЗВІТНОСТІ: HELICOPTER VIEW ДЛЯ КЕРІВНИКА
  */
 
 window.initProcessReport = async function(processId) {
   const currentProcess = allProcesses.find(p => p.processID === processId);
   if (!currentProcess) { alert("Дані процесу не знайдені."); return; }
 
-  window.showReportModal("<div style='padding: 40px; text-align: center; color: #64748b;'>⏳ Збираємо дані та будуємо графік...</div>", currentProcess);
+  window.showReportModal("<div style='padding: 40px; text-align: center; color: #64748b;'>⏳ Збираємо аналітику та будуємо Гант...</div>", currentProcess);
 
   try {
     const res = await fetch(PROCESSES_SHEET_URL);
@@ -1000,7 +1000,6 @@ window.initProcessReport = async function(processId) {
       const pID = String(r.c[0]?.v || "").trim();
       if (pID !== processId) return;
 
-      // ВІДСІКАЄМО ДУБЛІ (беремо лише базовий ID до знаку підкреслення)
       const rawTaskID = String(r.c[5]?.v || "").trim();
       const taskID = rawTaskID.split('_')[0]; 
       if (!taskID) return;
@@ -1012,13 +1011,14 @@ window.initProcessReport = async function(processId) {
         uniqueTasks[taskID] = {
            id: taskID,
            title: String(r.c[6]?.v || "Без назви"),
-           username: String(r.c[10]?.v || ""),
+           username: String(r.c[10]?.v || "Не призначено"),
            start: parsedStart,
            deadline: parsedDeadline,
+           dependencyTitle: String(r.c[12]?.v || ""), // Колонка залежностей
+           comment: String(r.c[15]?.v || ""),         // Колонка Чату/Коментарів
            status: String(r.c[16]?.v || "").toLowerCase().trim()
         };
       } else {
-         // Якщо це фрагмент існуючої задачі, розширюємо діапазон дат
          if (parsedStart && (!uniqueTasks[taskID].start || new Date(parsedStart) < new Date(uniqueTasks[taskID].start))) {
              uniqueTasks[taskID].start = parsedStart;
          }
@@ -1036,23 +1036,17 @@ window.initProcessReport = async function(processId) {
   }
 };
 
-// БРОНЕБІЙНИЙ ПАРСЕР ДАТ
 function parseGoogleDateSafe(cell) {
    if (!cell) return null;
-   
-   // Якщо це Google Date object: Date(2026,4,26)
    if (cell.v && String(cell.v).startsWith('Date')) {
        const parts = String(cell.v).match(/Date\((\d+),(\d+),(\d+)/);
        if (parts) return `${parts[1]}-${String(parseInt(parts[2]) + 1).padStart(2, '0')}-${String(parts[3]).padStart(2, '0')}`;
    }
-   
-   // Якщо це стрічка формату DD.MM.YYYY (наприклад, 26.05.2026)
    let str = cell.f || cell.v;
    if (typeof str === 'string') {
        str = str.trim();
        const dmY = str.match(/^(\d{2})\.(\d{2})\.(\d{4})/);
-       if (dmY) return `${dmY[3]}-${dmY[2]}-${dmY[1]}`; // Перетворюємо в YYYY-MM-DD
-       
+       if (dmY) return `${dmY[3]}-${dmY[2]}-${dmY[1]}`; 
        const yMd = str.match(/^(\d{4})-(\d{2})-(\d{2})/);
        if (yMd) return `${yMd[1]}-${yMd[2]}-${yMd[3]}`;
    }
@@ -1063,21 +1057,46 @@ window.renderFullReport = function(proc, tasks) {
   const total = tasks.length;
   const done = tasks.filter(t => ["done", "виконано", "completed"].includes(t.status)).length;
   const progress = tasks.filter(t => ["inprogress", "в процесі", "progress"].includes(t.status)).length;
+  const todo = total - done - progress;
   const percent = total > 0 ? Math.round((done / total) * 100) : 0;
   
-  // ВІДНОВЛЕНИЙ ТЕКСТОВИЙ ОПИС ЗАДАЧ
+  // АНАЛІТИКА КОМАНДИ (Кого хвалити, кого бити)
+  const teamStats = {};
+  tasks.forEach(t => {
+      const u = t.username;
+      if (!teamStats[u]) teamStats[u] = { total: 0, done: 0, progress: 0, todo: 0 };
+      teamStats[u].total++;
+      if (["done", "виконано", "completed"].includes(t.status)) teamStats[u].done++;
+      else if (["inprogress", "в процесі", "progress"].includes(t.status)) teamStats[u].progress++;
+      else teamStats[u].todo++;
+  });
+
+  let teamHtml = `<table style="width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 20px;">
+                    <tr style="background:#f1f5f9;"><th style="border:1px solid #cbd5e1; padding:6px; text-align:left;">Учасник</th><th style="border:1px solid #cbd5e1; padding:6px;">Всього</th><th style="border:1px solid #cbd5e1; padding:6px; color:#10b981;">Виконано</th><th style="border:1px solid #cbd5e1; padding:6px; color:#f59e0b;">В процесі</th><th style="border:1px solid #cbd5e1; padding:6px; color:#3b82f6;">В черзі</th></tr>`;
+  Object.keys(teamStats).forEach(u => {
+      teamHtml += `<tr><td style="border:1px solid #cbd5e1; padding:6px; font-weight:bold;">${u}</td>
+                       <td style="border:1px solid #cbd5e1; padding:6px; text-align:center;">${teamStats[u].total}</td>
+                       <td style="border:1px solid #cbd5e1; padding:6px; text-align:center;">${teamStats[u].done}</td>
+                       <td style="border:1px solid #cbd5e1; padding:6px; text-align:center;">${teamStats[u].progress}</td>
+                       <td style="border:1px solid #cbd5e1; padding:6px; text-align:center;">${teamStats[u].todo}</td></tr>`;
+  });
+  teamHtml += `</table>`;
+
+  // ТАБЛИЦЯ ЗАДАЧ З КОМЕНТАРЯМИ
   let tasksRows = "";
   tasks.forEach(t => {
     let statusText = ["done", "виконано", "completed"].includes(t.status) ? "Виконано" : ["inprogress", "в процесі", "progress"].includes(t.status) ? "В процесі" : "В черзі";
-    let statusColor = statusText === "Виконано" ? "#10b981" : statusText === "В процесі" ? "#f59e0b" : "#64748b";
+    let statusColor = statusText === "Виконано" ? "#10b981" : statusText === "В процесі" ? "#f59e0b" : "#3b82f6";
     
+    // Форматування коментаря (очищення від зайвих тегів)
+    let cleanComment = t.comment ? t.comment.replace(/<[^>]*>?/gm, ' ') : "—";
+
     tasksRows += `
       <tr>
-        <td style="border: 1px solid #cbd5e1; padding: 6px;">${t.title || '—'}</td>
-        <td style="border: 1px solid #cbd5e1; padding: 6px;">${t.username || '—'}</td>
-        <td style="border: 1px solid #cbd5e1; padding: 6px; text-align:center;">${t.start || '—'}</td>
-        <td style="border: 1px solid #cbd5e1; padding: 6px; text-align:center;">${t.deadline || '—'}</td>
+        <td style="border: 1px solid #cbd5e1; padding: 6px; font-weight:bold;">${t.title || '—'}</td>
+        <td style="border: 1px solid #cbd5e1; padding: 6px;">${t.username}</td>
         <td style="border: 1px solid #cbd5e1; padding: 6px; text-align:center; color: white; background-color: ${statusColor}; font-size: 11px;">${statusText}</td>
+        <td style="border: 1px solid #cbd5e1; padding: 6px; font-size: 11px; color:#475569;">${cleanComment}</td>
       </tr>
     `;
   });
@@ -1085,24 +1104,26 @@ window.renderFullReport = function(proc, tasks) {
   const htmlContent = `
     <div id="print-report-area" style="font-family: Arial, sans-serif; color: #1e293b; padding: 10px;">
       <h2 style="border-bottom: 2px solid #3b82f6; padding-bottom: 8px;">📊 Звіт: ${proc.title}</h2>
-      <p><b>Загальний прогрес:</b> ${percent}% (✅ ${done} | ⚙️ ${progress} | 📋 ${total - done - progress})</p>
+      <p><b>Загальний прогрес:</b> ${percent}% (✅ ${done} | ⚙️ ${progress} | 📋 ${todo})</p>
       
-      <h4 style="margin: 15px 0 5px 0; color: #1e293b;">📋 Деталі задач:</h4>
+      <h4 style="margin: 15px 0 5px 0; color: #1e293b;">👥 Навантаження команди:</h4>
+      ${teamHtml}
+
+      <h4 style="margin: 15px 0 5px 0; color: #1e293b;">📋 Статуси та коментарі:</h4>
       <table style="width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 20px;">
         <thead>
           <tr style="background-color: #f1f5f9; text-align: left;">
-            <th style="border: 1px solid #cbd5e1; padding: 6px;">Задача</th>
-            <th style="border: 1px solid #cbd5e1; padding: 6px;">Виконавець</th>
-            <th style="border: 1px solid #cbd5e1; padding: 6px; text-align:center;">Початок</th>
-            <th style="border: 1px solid #cbd5e1; padding: 6px; text-align:center;">Дедлайн</th>
-            <th style="border: 1px solid #cbd5e1; padding: 6px; text-align:center;">Статус</th>
+            <th style="border: 1px solid #cbd5e1; padding: 6px; width:35%;">Задача</th>
+            <th style="border: 1px solid #cbd5e1; padding: 6px; width:20%;">Виконавець</th>
+            <th style="border: 1px solid #cbd5e1; padding: 6px; text-align:center; width:15%;">Статус</th>
+            <th style="border: 1px solid #cbd5e1; padding: 6px; width:30%;">Останній коментар</th>
           </tr>
         </thead>
-        <tbody>${tasksRows || '<tr><td colspan="5" style="text-align:center;">Немає задач</td></tr>'}</tbody>
+        <tbody>${tasksRows || '<tr><td colspan="4" style="text-align:center;">Немає задач</td></tr>'}</tbody>
       </table>
 
       <h4 style="margin: 15px 0 5px 0;">📈 Графік виконання (Гант):</h4>
-      <div id="reportGanttContainer" style="width: 100%; overflow-x: auto; border: 1px solid #cbd5e1; padding: 10px; background: #fff;"></div>
+      <div id="reportGanttContainer" style="width: 100%; overflow-x: auto; border: 1px solid #cbd5e1; padding: 10px; background: #fff; position: relative;"></div>
     </div>
   `;
 
@@ -1114,7 +1135,6 @@ window.renderGanttForReport = function(tasks) {
   const container = document.getElementById("reportGanttContainer");
   if (!container) return;
   
-  // Фільтруємо лише задачі з коректними датами
   const validTasks = tasks.filter(t => t.start && !isNaN(new Date(t.start).getTime()));
   if(validTasks.length === 0) { container.innerHTML = "<p style='text-align:center;'>Жодна задача не має коректної дати</p>"; return; }
 
@@ -1124,38 +1144,122 @@ window.renderGanttForReport = function(tasks) {
   
   const minDate = new Date(Math.min(...starts));
   const maxDate = new Date(Math.max(...ends)); 
-  // ПРИБРАНО ДОДАТКОВІ ДНІ, закінчуємо чітко в дедлайн
   
   const diffDays = Math.ceil((maxDate - minDate)/(86400000)) + 1;
   const dateList = Array.from({length: diffDays}, (_, i) => { const d = new Date(minDate); d.setDate(minDate.getDate() + i); return d; });
 
+  const innerWrapper = document.createElement("div");
+  innerWrapper.style.position = "relative";
+  innerWrapper.style.width = "max-content";
+
   const table = document.createElement("table"); 
   table.style.borderCollapse = "collapse"; table.style.fontSize = "11px"; table.style.width = "100%";
 
-  const thead = "<thead><tr style='background:#1e293b; color:#fff;'><th style='padding:6px;'>Задача</th><th style='padding:6px;'>Виконавець</th>" + 
-                dateList.map(d => `<th style='border:1px solid #cbd5e1; padding:4px;'>${d.toLocaleDateString("uk-UA", {day:"2-digit", month:"2-digit"})}</th>`).join('') + 
-                "</tr></thead>";
-  table.innerHTML = thead;
+  // Заголовок з датами
+  const thead = document.createElement("thead");
+  let trHeadHtml = `<tr style='background:#1e293b; color:#fff;'><th style='padding:6px; min-width:180px;'>Задача</th><th style='padding:6px; min-width:100px;'>Виконавець</th>`;
+  dateList.forEach(d => {
+      const isToday = d.toDateString() === new Date().toDateString();
+      trHeadHtml += `<th class="date-header" style='border:1px solid #cbd5e1; padding:4px; ${isToday ? "background:#fbbf24; color:#000; border-bottom:2px solid #d97706; font-weight:bold;" : ""}'>${d.toLocaleDateString("uk-UA", {day:"2-digit", month:"2-digit"})}</th>`;
+  });
+  trHeadHtml += "</tr>";
+  thead.innerHTML = trHeadHtml;
+  table.appendChild(thead);
 
   const tbody = document.createElement("tbody");
   validTasks.forEach(t => {
     const taskStart = new Date(t.start); taskStart.setHours(0,0,0,0);
     const taskEnd = new Date(t.deadline || t.start); taskEnd.setHours(0,0,0,0);
     
-    let bgColor = ["done", "виконано", "completed"].includes(t.status) ? "#10b981" : 
-                  ["inprogress", "в процесі", "progress"].includes(t.status) ? "#f59e0b" : "#cbd5e1";
+    let isDone = ["done", "виконано", "completed"].includes(t.status);
+    let isInProgress = ["inprogress", "в процесі", "progress"].includes(t.status);
+    let bgColor = isDone ? "#10b981" : isInProgress ? "#f59e0b" : "#3b82f6";
+    let icon = isDone ? "&#10003;" : isInProgress ? "&#9654;" : "&#9675;";
 
-    let row = `<tr><td style='border:1px solid #cbd5e1; padding:4px; font-weight:bold;'>${t.title}</td><td style='border:1px solid #cbd5e1; padding:4px;'>${t.username}</td>`;
+    const tr = document.createElement("tr");
+    let rowHtml = `<td style='border:1px solid #cbd5e1; padding:4px; font-weight:bold;'>${t.title}</td><td style='border:1px solid #cbd5e1; padding:4px;'>${t.username}</td>`;
+    
+    let firstCell = null; let lastCell = null;
+
     dateList.forEach(d => {
        const isMatch = d >= taskStart && d <= taskEnd;
-       row += `<td style='border:1px solid #cbd5e1; text-align:center; background:${isMatch ? bgColor : "#fff"}; color: ${isMatch ? "#fff" : "transparent"};'>${isMatch ? "■" : ""}</td>`;
+       const isToday = d.toDateString() === new Date().toDateString();
+       
+       const td = document.createElement("td");
+       td.style.border = "1px solid #cbd5e1";
+       td.style.textAlign = "center";
+       td.style.verticalAlign = "middle";
+       td.style.height = "24px";
+       
+       if (isToday) { td.style.borderLeft = "2px solid #fbbf24"; td.style.borderRight = "2px solid #fbbf24"; }
+       
+       if (isMatch) {
+           td.style.backgroundColor = bgColor;
+           td.style.color = "#fff";
+           td.innerHTML = `<span style="position:relative; z-index:10;">${icon}</span>`;
+           if (!firstCell) firstCell = td;
+           lastCell = td;
+       } else {
+           td.style.backgroundColor = "#f8fafc";
+       }
+       tr.appendChild(td);
     });
-    row += "</tr>";
-    tbody.innerHTML += row;
+
+    if (firstCell) firstCell.id = `rep-cell-${t.id}-start`;
+    if (lastCell) lastCell.id = `rep-cell-${t.id}-end`;
+
+    tr.insertAdjacentHTML('afterbegin', rowHtml);
+    tbody.appendChild(tr);
   });
   
   table.appendChild(tbody);
-  container.appendChild(table);
+  innerWrapper.appendChild(table);
+
+  // Стрілки залежностей (SVG)
+  const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  svg.style.position = "absolute"; svg.style.top = "0"; svg.style.left = "0";
+  svg.style.width = "100%"; svg.style.height = "100%";
+  svg.style.pointerEvents = "none"; svg.style.zIndex = "10";
+  svg.innerHTML = `<defs><marker id="arrowheadRep" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#ef4444" /></marker></defs>`;
+  innerWrapper.appendChild(svg);
+
+  container.appendChild(innerWrapper);
+
+  // Малюємо стрілки після рендеру
+  setTimeout(() => {
+    validTasks.forEach(t => {
+      if (t.dependencyTitle) {
+        const depTask = validTasks.find(x => x.title === t.dependencyTitle);
+        if (depTask) {
+          const sourceCell = document.getElementById(`rep-cell-${depTask.id}-end`);
+          const targetCell = document.getElementById(`rep-cell-${t.id}-start`);
+          
+          if(sourceCell && targetCell) {
+            const iRect = innerWrapper.getBoundingClientRect(); 
+            const sRect = sourceCell.getBoundingClientRect();
+            const tRect = targetCell.getBoundingClientRect();
+            
+            const startX = sRect.right - iRect.left;
+            const startY = sRect.top + (sRect.height/2) - iRect.top;
+            const endX = tRect.left - iRect.left;
+            const endY = tRect.top + (tRect.height/2) - iRect.top;
+            
+            const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+            let d = "";
+            if (endX >= startX) d = `M ${startX} ${startY} L ${startX + 12} ${startY} L ${startX + 12} ${endY} L ${endX - 4} ${endY}`;
+            else d = `M ${startX} ${startY} L ${startX + 12} ${startY} L ${startX + 12} ${startY + 14} L ${endX - 12} ${startY + 14} L ${endX - 12} ${endY} L ${endX - 4} ${endY}`;
+            
+            path.setAttribute("d", d);
+            path.setAttribute("fill", "transparent");
+            path.setAttribute("stroke", "#ef4444");
+            path.setAttribute("stroke-width", "2");
+            path.setAttribute("marker-end", "url(#arrowheadRep)");
+            svg.appendChild(path);
+          }
+        }
+      }
+    });
+  }, 300);
 };
 
 window.showReportModal = function(htmlContent, proc) {
@@ -1164,7 +1268,7 @@ window.showReportModal = function(htmlContent, proc) {
   modal.id = "reportModal"; modal.className = "report-modal-overlay";
   modal.innerHTML = `
     <div class="report-modal-window">
-      <div class="report-modal-header"><h3>Огляд процесу</h3><button class="report-modal-close" onclick="this.closest('#reportModal').remove()">&times;</button></div>
+      <div class="report-modal-header"><h3>Звіт для керівника</h3><button class="report-modal-close" onclick="this.closest('#reportModal').remove()">&times;</button></div>
       <div class="report-modal-actions">
         <button onclick="window.exportReportToWord('${proc.title}')">📝 Word</button>
         <button onclick="window.sendReportByEmail('${proc.title}')">✉️ Пошта</button>
