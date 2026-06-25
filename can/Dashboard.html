@@ -589,7 +589,6 @@ const usersMap = {
 };
 
 // Сесія авторизації та перевірки токена
-// Сесія авторизації та перевірки токена
 (function(){
   const u = sessionStorage.getItem("currentUser");
   const token = sessionStorage.getItem("sessionToken");
@@ -602,6 +601,13 @@ const usersMap = {
   // Отримуємо елементи
   const loader = document.getElementById("loadingScreen");
   const app = document.getElementById("appContent");
+  const audio = document.getElementById("relaxAudio"); // 1. Шукаємо аудіо-елемент
+
+  // 2. Запускаємо релакс-фон перед відправкою запиту (якщо браузер дозволить)
+  if (audio) {
+    audio.volume = 0.2;
+    audio.play().catch(err => console.log("Автоплей музики заблоковано (це нормально):", err));
+  }
 
   fetch("https://script.google.com/macros/s/AKfycbwV4A-TF_G1yCOoQY_wofk1hq1kf-KP3EerfEgYhqXh-aWB8Vc1evFaxJuv5FlQ6Wcr/exec?action=675&user=" + encodeURIComponent(u) + "&token=" + encodeURIComponent(token) + "&branch=can")
     .then(r => r.json())
@@ -624,6 +630,11 @@ const usersMap = {
           app.classList.add("fade-in");
           app.style.opacity = "1";
           
+          // 5. ВИМИКАЄМО МУЗИКУ, коли з'явився робочий стіл
+          if (audio) {
+            afadeAudio(audio, 'out', 800);
+  }
+          
           initUserInfoAndWeather(data.userName || data.fullName || "Павло Гриценко");
         }, 800);
 
@@ -637,6 +648,23 @@ const usersMap = {
       window.location.href = "index.html"; 
     });
 })();
+function fadeAudio(audio, direction, duration = 800) {
+    const step = 50; // крок у мілісекундах
+    const frames = duration / step;
+    const volumeStep = direction === 'out' ? -(audio.volume / frames) : (0.2 / frames);
+    
+    let currentFrame = 0;
+    const interval = setInterval(() => {
+        currentFrame++;
+        audio.volume = Math.max(0, Math.min(0.2, audio.volume + volumeStep));
+        
+        if (currentFrame >= frames) {
+            clearInterval(interval);
+            if (direction === 'out') audio.pause();
+        }
+    }, step);
+}
+
 
 async function initUserInfoAndWeather(userName) {
   const userInfoTop = document.getElementById('userInfoTop');
@@ -1480,5 +1508,8 @@ window.sendReportByEmail = function(filename) {
   window.location.href = `mailto:?subject=${encodeURIComponent('Звіт: ' + filename)}&body=${encodeURIComponent(area.innerText)}`;
 };
 </script>
+<audio id="relaxAudio" loop>
+  <source src="./relax-pad.mp3" type="audio/mpeg">
+</audio>
 </body>
 </html>

@@ -507,14 +507,21 @@ document.addEventListener("DOMContentLoaded", async function() {
     setupProcessSelector();
 
 document.getElementById("saveBtn").addEventListener("click", () => {
-  // 1. Пошук кнопки та нашого оверлея
+  // 1. Пошук кнопки, оверлея та аудіо
   const btn = document.getElementById("saveBtn");
-  const overlay = document.getElementById("savingOverlay"); // Той самий div, що ми додали раніше
+  const overlay = document.getElementById("savingOverlay"); 
+  const audio = document.getElementById("relaxAudio");
   
-  // 2. Блокуємо кнопку та показуємо лоадер
+  // 2. Блокуємо кнопку, показуємо лоадер та запускаємо музику
   btn.disabled = true;
   btn.innerText = "Зберігаю...";
-  overlay.style.display = "flex"; // Показуємо "Зберігаємо дані..."
+  overlay.style.display = "flex"; 
+  
+  // Вмикаємо релакс (гучність 20%)
+  if (audio) {
+    audio.volume = 0.4; 
+    audio.play().catch(e => console.log("Браузер заблокував аудіо:", e));
+  }
   
   console.log("=== ДАНІ ДЛЯ ЗБЕРЕЖЕННЯ ===");
   console.log("Кількість задач:", globalTasks.length);
@@ -532,17 +539,23 @@ document.getElementById("saveBtn").addEventListener("click", () => {
     body: JSON.stringify({ action: "updateCalendar", processes: globalTasks })
   })
   .then(() => {
-    alert("Зміни успішно надіслані!");
+    //alert("Зміни успішно надіслані!");
   })
   .catch(err => {
     console.error(err);
     alert("Помилка при збереженні: " + err);
   })
   .finally(() => {
-    // 4. Повертаємо все як було у будь-якому випадку
+    // 4. Повертаємо все як було і вимикаємо музику
     btn.disabled = false;
     btn.innerText = "Зберегти зміни";
     overlay.style.display = "none";
+    
+    // Вимикаємо аудіо та скидаємо на початок
+    if (audio) {
+      audio.pause();
+      audio.currentTime = 0; 
+    }
   });
 });
 
@@ -655,5 +668,8 @@ document.getElementById("saveBtn").addEventListener("click", () => {
     </g>
   </svg>
 </div>
+<audio id="relaxAudio" loop>
+  <source src="./relax-pad.mp3" type="audio/mpeg">
+</audio>
 </body>
 </html>

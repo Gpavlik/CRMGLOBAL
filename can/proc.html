@@ -1063,12 +1063,16 @@ function renderGantt(tasks) {
 document.getElementById("saveAndBackBtn").addEventListener("click", async () => {
   const btn = document.getElementById("saveAndBackBtn");
   const overlay = document.getElementById("savingOverlay");
-
+const audio = document.getElementById("relaxAudio");
   overlay.style.display = "flex"; 
   btn.innerText = "Зберігаю..."; 
   btn.disabled = true;
 
   try {
+    if (audio) {
+      audio.volume = 0.4; 
+      audio.play().catch(e => console.log("Браузер заблокував аудіо:", e));
+    }
     syncTasks();
 
     const safeTasks = (processData.rawTasks || []).map(t => ({
@@ -1109,6 +1113,10 @@ document.getElementById("saveAndBackBtn").addEventListener("click", async () => 
     overlay.style.display = "none";
     btn.innerText = "Зберегти і повернутися";
     btn.disabled = false;
+    if (audio) {
+      audio.pause();
+      audio.currentTime = 0; // Скидаємо на початок
+    }
   }
 });
 </script>
@@ -1215,5 +1223,8 @@ document.getElementById("saveAndBackBtn").addEventListener("click", async () => 
     </g>
   </svg>
 </div>
+<audio id="relaxAudio" loop>
+  <source src="./relax-pad.mp3" type="audio/mpeg">
+</audio>
 </body>
 </html>
