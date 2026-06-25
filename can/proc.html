@@ -28,7 +28,7 @@
     .list { background: rgba(255, 255, 255, 0.05); flex: 1; padding: 12px; border-radius: 16px; min-height: 450px; border: 1px solid rgba(255, 255, 255, 0.08); backdrop-filter: blur(5px); box-sizing: border-box; display: flex; flex-direction: column; }
     .list h2 { text-align: center; font-size: 15px; text-transform: uppercase; margin: 4px 0 12px 0; letter-spacing: 0.5px; font-weight: 700; padding: 8px; background: rgba(255,255,255,0.1); border-radius: 8px; }
     .cards { display: flex; flex-direction: column; gap: 12px; flex: 1; }
-    .card { margin: 0; border-radius: 12px !important; padding: 12px; box-sizing: border-box; background: rgba(234, 244, 254, 0.42) !important; backdrop-filter: blur(14px) !important; -webkit-backdrop-filter: blur(14px) !important; border: 1px solid rgba(255, 255, 255, 0.5) !important; box-shadow: 0 6px 15px rgba(0, 45, 0, 0.1), inset 2px 2px 4px rgba(255, 255, 255, 0.85) !important; color: #1e293b !important; transition: transform 0.2s ease, box-shadow 0.2s ease; }
+    .card { margin: 0; border-radius: 12px !important; padding: 12px; box-sizing: border-box; background: rgba(234, 244, 254, 0.42) !important; backdrop-filter: blur(14px) !important; -webkit-backdrop-filter: blur(14px) !important; border: 4px solid rgba(255, 255, 255, 0.5) !important; box-shadow: 0 6px 15px rgba(0, 45, 0, 0.1), inset 2px 2px 4px rgba(255, 255, 255, 0.85) !important; color: #1e293b !important; transition: transform 0.2s ease, box-shadow 0.2s ease; }
     .card:hover { transform: translateY(-2px); background: rgba(234, 244, 254, 0.52) !important; }
     .spoiler summary { font-weight: 700; cursor: pointer; padding: 0 0 4px 0; font-size: 14px; color: #0f172a; outline: none; display: flex; justify-content: space-between; align-items: center; }
     .spoiler div { padding: 8px 0 0 0; border-top: 1px solid rgba(0, 0, 0, 0.08); display: flex; flex-direction: column; gap: 6px; }
@@ -36,8 +36,8 @@
     .spoiler input[type="text"], .spoiler input[type="date"], .spoiler select { width: 100%; box-sizing: border-box; padding: 5px 8px; border: 1px solid #cbd5e1; border-radius: 6px; background: #f8fafc; font-size: 12px; color: #1e293b; margin-top: 2px; }
     .taskUser { display: inline-block; font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 6px; color: white !important; white-space: nowrap; }
     .card.owner .taskUser { background: #3b82f6; } .card.manager .taskUser { background: #10b981; } .card.executor .taskUser { background: #8b5cf6; }
-    .newTasks, .card.newTasks { border: 2px solid #3b82f6 !important; } .urgent, .card.indigo-border { border: 2px solid #8b5cf6 !important; } .completed, .card.completed { border: 2px solid #10b981 !important; } .overdue, .card.overdue { border: 4px solid #ef4444 !important; background: rgba(254, 242, 242, 0.55) !important; }
-    .card.requires-approval { border: 3px solid #ef4444 !important; box-shadow: 0 0 12px rgba(239, 68, 68, 0.25), inset 2px 2px 4px rgba(255, 255, 255, 0.85) !important; }
+    .newTasks, .card.newTasks { border: 4px solid #3b82f6 !important; } .urgent, .card.indigo-border { border: 2px solid #8b5cf6 !important; } .completed, .card.completed { border: 2px solid #10b981 !important; } .overdue, .card.overdue { border: 4px solid #ef4444 !important; background: rgba(254, 242, 242, 0.55) !important; }
+    .card.requires-approval { border: 4px solid #ef4444 !important; box-shadow: 0 0 12px rgba(239, 68, 68, 0.25), inset 2px 2px 4px rgba(255, 255, 255, 0.85) !important; }
     
     /* ЧАТ ТА ФАЙЛИ */
     .chatBox { background: rgba(255, 255, 255, 0.6) !important; border: 1px solid #cbd5e1; border-radius: 8px; padding: 8px; margin-top: 10px; }
