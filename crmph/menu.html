@@ -569,7 +569,7 @@ document.getElementById("logoutBtn").addEventListener("click", async function() 
  <script>
 document.addEventListener("DOMContentLoaded", () => {
   const restrictedUsers = ["andriy", "maria", "serhiy"];
-  const currentUser = sessionStorage.getItem("currentUser") || "admin";
+  const currentUser = sessionStorage.getItem("currentUser") || "adminp";
 
   if (restrictedUsers.includes(currentUser)) {
     // приховуємо всі кнопки крім "Візити в мережі" та "Вийти"
@@ -627,7 +627,7 @@ async function refreshAllData(userKey) {
     const currentUser = sessionStorage.getItem("currentUser");
 
     // показуємо кнопку лише адміну
-    if (currentUser === "admin") {
+    if (currentUser === "adminp") {
       document.getElementById("reportMenuItem").style.display = "block";
     }
   });
@@ -641,10 +641,10 @@ const userNames = {
   andriy: "Тетяна Кліменко",
   maria: "Тетяна Демус",
   serhiy: "Ілона Бабенко",
-  admin: "admin"
+  adminp: "Адміністратор"
 };
 
-const currentUser = sessionStorage.getItem("currentUser") || "admin";
+const currentUser = sessionStorage.getItem("currentUser") || "adminp";
 
 // ===== План на день =====
 const planDay = { gastro:1, oto:2, gyn:5, partner:1, pharmacy:4 };
@@ -900,7 +900,7 @@ async function refreshData(type, userKey) {
   refreshData("pharmacy", currentUser);
   // При зміні фільтрів — перемальовуємо з кешу
   $("#userFilter, #specialtyFilter, #partnerSelect, #productSelect, #startDate").on("change", function() {
-    const userKey = (currentUser === "admin") ? $("#userFilter").val() : currentUser;
+    const userKey = (currentUser === "adminp") ? $("#userFilter").val() : currentUser;
     loadData(userKey);
   });
 
@@ -963,7 +963,7 @@ const userMap = {
   andriy: [18,19],
   maria: [49,46,36,7,28,30,37,14,56,38,60],
   serhiy: [12,75,13,8,21,67,48],
-  admin: [9,798,31,15,41,26,32,66,47,17,121,61,52,76,29,22,94,23,16,55,11,53,45,146,181,27,601,108,10,51,49,18,19,49,46,36,7,28,30,37,14,56,38,60,12,75,13,8,21,67,48] // якщо треба, можна додати і для admin
+  adminp: [9,798,31,15,41,26,32,66,47,17,121,61,52,76,29,22,94,23,16,55,11,53,45,146,181,27,601,108,10,51,49,18,19,49,46,36,7,28,30,37,14,56,38,60,12,75,13,8,21,67,48] // якщо треба, можна додати і для adminp
 };
 const productNames = [
   "CLK№50","CLK№5","CLK№25","CL2GK№50","HPAg","Ultra","Solomini№5","Secret№2",
@@ -1095,7 +1095,7 @@ function getHistoryUrl(userKey) {
 
 // ===== Визначення користувача =====
 function resolveUserKey() {
-  if (currentUser === "admin") {
+  if (currentUser === "adminp") {
     const selectedUser = $("#userFilter").val();
     return selectedUser || "office";
   }
@@ -1354,7 +1354,7 @@ async function fetchPartners(morionUrl, userKey) {
 
   // фільтрація під конкретного користувача
   const ids = userMap[userKey] || [];
-  return (userKey === "admin") ? allPartners : allPartners.filter(p => ids.includes(p.id));
+  return (userKey === "adminp") ? allPartners : allPartners.filter(p => ids.includes(p.id));
 }
 
 
@@ -1362,7 +1362,7 @@ async function fetchPartners(morionUrl, userKey) {
 function initPartners(userKey) {
   const partners = JSON.parse(sessionStorage.getItem("partners")) || [];
   const ids = userMap[userKey] || [];
-  const filtered = (userKey === "admin") ? partners : partners.filter(p => ids.includes(Number(p.id)));
+  const filtered = (userKey === "adminp") ? partners : partners.filter(p => ids.includes(Number(p.id)));
 
   const partnerSelect = $("#partnerSelect");
   partnerSelect.empty();
@@ -1412,7 +1412,7 @@ $(document).ready(function() {
   $("#partnerSelect").select2({ placeholder: "Оберіть партнера", allowClear: true, width: '300px' });
   $("#productSelect").select2({ placeholder: "Оберіть продукт", allowClear: true, width: '300px' });
 
-  if (currentUser === "admin") {
+  if (currentUser === "adminp") {
     document.getElementById("userFilter").style.display = "block";
   }
 

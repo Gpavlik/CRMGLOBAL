@@ -129,19 +129,19 @@ const userMap = {
   "andriy": "Тетяна Кліменко",
   "maria": "Тетяна Демус",
   "serhiy": "Ілона Бабенко",
-  "admin": "Адміністратор"
+  "adminp": "Адміністратор"
 };
 
 // ===== Ініціалізація =====
 document.addEventListener("DOMContentLoaded", () => {
-  const currentUser = sessionStorage.getItem("currentUser") || "admin";
+  const currentUser = sessionStorage.getItem("currentUser") || "adminp";
   const employeeName = userMap[currentUser] || currentUser;
   document.getElementById("employeeName").textContent = employeeName;
 });
 
 // ===== Відправка відрядження =====
 function submitTrip() {
-  const currentUser = sessionStorage.getItem("currentUser") || "admin";
+  const currentUser = sessionStorage.getItem("currentUser") || "adminp";
   const employeeName = userMap[currentUser] || currentUser;
 
   const trip = {

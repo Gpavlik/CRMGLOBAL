@@ -344,7 +344,7 @@ const userNames = {
   andriy: "Тетяна Кліменко",
   maria: "Тетяна Демус",
   serhiy: "Ілона Бабенко",
-  admin: "admin"
+  adminp: "Адміністратор"
 };
 
 const userMap = {
@@ -373,7 +373,7 @@ if (currentUser && userNames[currentUser]) {
 }
 
 // селект користувача показуємо лише адміну
-if (currentUser === "admin") {
+if (currentUser === "adminp") {
   document.getElementById("userFilter").style.display = "block";
 }
 
@@ -388,7 +388,7 @@ function initPartners(userKey) {
   const ids = userMap[userKey] || [];
 
   // Перевіряємо типи: приводимо все до рядка
-  const filtered = (userKey === "admin") 
+  const filtered = (userKey === "adminp") 
     ? partners 
     : partners.filter(p => ids.map(String).includes(String(p.id)));
 
@@ -454,7 +454,7 @@ async function loadReport(type) {
 
   let userKey = currentUser;
   let selectedUserKey = null;
-  if (userKey === "admin") {
+  if (userKey === "adminp") {
     selectedUserKey = document.getElementById("userName").value;
   }
 
@@ -465,7 +465,7 @@ async function loadReport(type) {
   if (type !== "contacts") {
     data = data.filter(row => {
       let matchUser = true;
-      if (userKey === "admin" && selectedUserKey) {
+      if (userKey === "adminp" && selectedUserKey) {
         matchUser = row.userName === userNames[selectedUserKey];
       } else {
         matchUser = row.userName === userNames[userKey];
@@ -573,7 +573,7 @@ function resetFilters() {
   document.getElementById("partnerSelect").value = "";
   document.getElementById("productSelect").value = "";
 
-  if (currentUser === "admin") {
+  if (currentUser === "adminp") {
     document.getElementById("userName").value = "";
   }
 
@@ -772,7 +772,7 @@ function renderContactsReport() {
 
   let userKey = currentUser;
   let selectedUserKey = null;
-  if (userKey === "admin") {
+  if (userKey === "adminp") {
     selectedUserKey = document.getElementById("userName").value;
   }
 
@@ -781,7 +781,7 @@ function renderContactsReport() {
 
   // фільтрація по користувачу
   allContacts = allContacts.filter(v => {
-    if (userKey === "admin" && selectedUserKey) {
+    if (userKey === "adminp" && selectedUserKey) {
       return v.userName === userNames[selectedUserKey];
     } else {
       return v.userName === userNames[userKey];

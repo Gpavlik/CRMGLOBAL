@@ -139,7 +139,7 @@ const userNames = {
   "andriy": "Тетяна Кліменко",
   "maria": "Тетяна Демус",
   "serhiy": "Ілона Бабенко",
-  "admin": "Адміністратор"
+  "adminp": "Адміністратор"
 };
 if (!currentUser) {
   alert("Будь ласка, увійдіть спочатку!");
@@ -259,7 +259,7 @@ function buildPromoPage() {
 
 // ===== Відправка замовлення =====
 function submitPromoOrder() {
-  const currentUser = sessionStorage.getItem("currentUser") || "admin";
+  const currentUser = sessionStorage.getItem("currentUser") || "adminp";
   const employeeName = userNames[currentUser] || currentUser;
   const cityBranch = document.getElementById("cityBranch").value;
 
