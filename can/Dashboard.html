@@ -572,7 +572,7 @@
 let allProcesses = [];
 let globalTaskCounters = {}; 
 
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx4YjkBPmyHR9vLGnVGlT5Xt5jaXeUyYDpRCgW5JO8MgvNU4vLVcVR2-d4Oldl4j8En/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwwhH9I8hEa7hWVYLl_JonEE6QSc5i_RXn7sUNFVbleYoWCTXXA3gFzWHkeX6GNr1f9/exec";
 const DASHBOARD_SHEET_URL = "https://docs.google.com/spreadsheets/d/1vjxURM8HlNTxdk-XGEh-99sYuHhtEgNKLf-39jRm8-Q/gviz/tq?tqx=out:json&sheet=Dashboard";
 const PROCESSES_SHEET_URL = "https://docs.google.com/spreadsheets/d/1vjxURM8HlNTxdk-XGEh-99sYuHhtEgNKLf-39jRm8-Q/gviz/tq?tqx=out:json&sheet=Processes";
 const currentUser = sessionStorage.getItem("currentUser") || "невідомий";
@@ -975,11 +975,45 @@ function showProcessModal(proc) {
     document.getElementById("modalTitle").innerText = proc.title;
     modal.style.display = "flex";
 
-    document.getElementById("deleteBtn").onclick = async () => { /* ...твій старий код... */ };
+    // === ВІДНОВЛЕНА ЛОГІКА ВИДАЛЕННЯ ===
+    document.getElementById("deleteBtn").onclick = async () => {
+      // Запитуємо підтвердження, бо дія незворотна
+      if (!confirm(`Ви дійсно хочете видалити процес "${proc.title}" та всі його задачі?`)) return;
+
+      const btn = document.getElementById("deleteBtn");
+      btn.innerText = "Видалення...";
+      btn.disabled = true;
+
+      try {
+        // 1. Оновлюємо локальний стан (щоб процес миттєво зник з екрану)
+        allProcesses = allProcesses.filter(p => p.processID !== proc.processID);
+        sessionStorage.setItem("dashboardData", JSON.stringify({ processes: allProcesses }));
+        renderFilteredDashboard();
+        modal.style.display = "none";
+
+        // 2. Відправляємо команду на сервер
+        await fetch(SCRIPT_URL, {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ 
+            action: "deleteProcess", 
+            processID: proc.processID 
+          })
+        });
+
+      } catch (err) {
+        console.error("Помилка видалення:", err);
+        alert("Сталася помилка при видаленні.");
+      } finally {
+        btn.innerText = "Видалити";
+        btn.disabled = false;
+      }
+    };
+
     document.getElementById("editBtn").onclick = () => { modal.style.display = "none"; showEditModal(proc); };
     document.getElementById("goBtn").onclick = () => { redirectToProcess(proc); };
     
-    // ДОДАНО: Прив'язка кнопки звіту!
     document.getElementById("btnReportMain").onclick = () => { 
         modal.style.display = "none"; 
         initProcessReport(proc.processID); 
