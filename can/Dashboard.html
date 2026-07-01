@@ -988,12 +988,12 @@ function renderDashboard(dashboardData, taskCounters = {}) {
         <span class="counter-badge badge-todo">📋 Зробити: ${pCounts.todo}</span>
         <span class="counter-badge badge-progress">⚙️ В процесі: ${pCounts.progress}</span>
         <span class="counter-badge badge-done">✅ Виконано: ${pCounts.done}</span>
-      }
+      
       <details onclick="event.stopPropagation();" style="width: 100%; margin-top: 8px;">
         <summary style="color: #1e293b; font-weight: 600; cursor: pointer;">👥 Учасники (${proc.participants.length})</summary>
         <div style="margin-top: 5px; line-height: 1.6; display: flex; flex-direction: column; gap: 4px;">
           ${participantsFormatted.join("")}
-        }
+        
       </details>
     `;
 
