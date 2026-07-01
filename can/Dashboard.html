@@ -569,6 +569,10 @@
   </div>
 </div>
 <script>
+// ==========================================================================
+// dashbaord.js — Модуль управління робочим столом, Канбаном та модалками
+// ==========================================================================
+
 let allProcesses = [];
 let globalTaskCounters = {}; 
 
@@ -588,7 +592,10 @@ const usersMap = {
   tetiana: "Тетяна Яковець"
 };
 
-// Сесія авторизації та перевірки токена
+// ==========================================================================
+// 1. СЕСІЯ АВТОРИЗАЦІЇ ТА ПЕРЕВІРКИ ТОКЕНА
+// (Повністю фіксуємо, прибираємо типо та оптимізуємо швидкість)
+// ==========================================================================
 (function(){
   const u = sessionStorage.getItem("currentUser");
   const token = sessionStorage.getItem("sessionToken");
@@ -598,12 +605,12 @@ const usersMap = {
     return; 
   }
 
-  // Отримуємо елементи
+  // Отримуємо елементи DOM
   const loader = document.getElementById("loadingScreen");
   const app = document.getElementById("appContent");
-  const audio = document.getElementById("relaxAudio"); // 1. Шукаємо аудіо-елемент
+  const audio = document.getElementById("relaxAudio"); // Шукаємо аудіо
 
-  // 2. Запускаємо релакс-фон перед відправкою запиту (якщо браузер дозволить)
+  // 1. Одразу запускаємо релакс-фон перед відправкою запиту (якщо браузер дозволить)
   if (audio) {
     audio.volume = 0.2;
     audio.play().catch(err => console.log("Автоплей музики заблоковано (це нормально):", err));
@@ -615,7 +622,7 @@ const usersMap = {
       if (data.success && data.url) {
         // --- АНІМАЦІЯ ПЕРЕХОДУ ---
         
-        // 1. Починаємо плавне зникнення лого
+        // 1. Починаємо плавне зникнення логотипу
         loader.classList.add("fade-out");
         
         // 2. Чекаємо завершення анімації (800мс)
@@ -630,12 +637,16 @@ const usersMap = {
           app.classList.add("fade-in");
           app.style.opacity = "1";
           
-          // 5. ВИМИКАЄМО МУЗИКУ, коли з'явився робочий стіл
+          // 5. ВИПРАВЛЕНО: Викликаємо правильну функцію fadeAudio
           if (audio) {
-            afadeAudio(audio, 'out', 800);
-  }
+            fadeAudio(audio, 'out', 800);
+          }
           
           initUserInfoAndWeather(data.userName || data.fullName || "Павло Гриценко");
+          
+          // 🔑 ТЕПЕР Ми можемо ініціалізувати дашборд БЕЗПЕЧНО
+          // Бо `#appContent` вже точно існує в DOM
+          initDashboard();
         }, 800);
 
       } else {
@@ -648,6 +659,8 @@ const usersMap = {
       window.location.href = "index.html"; 
     });
 })();
+
+// Допоміжна функція плавного регулювання звуку
 function fadeAudio(audio, direction, duration = 800) {
     const step = 50; // крок у мілісекундах
     const frames = duration / step;
@@ -665,7 +678,7 @@ function fadeAudio(audio, direction, duration = 800) {
     }, step);
 }
 
-
+// Погода та інфо про юзера
 async function initUserInfoAndWeather(userName) {
   const userInfoTop = document.getElementById('userInfoTop');
   if (!userInfoTop) return;
@@ -689,18 +702,26 @@ async function initUserInfoAndWeather(userName) {
       else if (code >= 1 && code <= 3) { em = '⛅'; txt = 'Хмарно'; } 
       else if ([51,53,55,61,63,65,80,81,82].includes(code)) { em = '🌧️'; txt = 'Дощ'; }
       else if (code >= 95) { em = '⛈️'; txt = 'Гроза'; }
-      document.getElementById('weather-load').innerHTML = `| ${em} ${txt} ${temp > 0 ? `+${temp}` : temp}°C`;
+      const weatherNode = document.getElementById('weather-load');
+      if(weatherNode) weatherNode.innerHTML = `| ${em} ${txt} ${temp > 0 ? `+${temp}` : temp}°C`;
     }
   } catch (e) { const s = document.getElementById('weather-load'); if (s) s.remove(); }
 }
 
-// --- Ініціалізація Дашборду ---
-window.addEventListener("DOMContentLoaded", initDashboard);
+// ==========================================================================
+// 2. УПРАВЛІННЯ ДАШБОРДОМ ТА МОДАЛКАМИ (Новий, стабільний рівень)
+// ==========================================================================
 
+// Оновлена функція завантаження даних
 async function initDashboard() {
-  document.getElementById("boardOwner").value = usersMap[currentUser] || currentUser;
+  const app = document.getElementById("appContent");
+  if (!app || app.style.display === "none") return; // 🛑 Захист: не йдемо за даними, якщо робочий стіл приховано
 
-  // 🔑 Перевірка ролі поточного користувача для фільтрації
+  // 1. Налаштовуємо форму створення (її більше не треба викликати через toggleForm)
+  const boardOwnerInput = document.getElementById("boardOwner");
+  if(boardOwnerInput) boardOwnerInput.value = usersMap[currentUser] || currentUser;
+
+  // 2. Ініціалізуємо фільтр користувачів (якщо права дозволяють)
   const currentKey = normalizeUser(currentUser);
   const privilegedKeys = ["adminp", "gala", "pasha"];
 
@@ -710,14 +731,20 @@ async function initDashboard() {
     document.getElementById("userFilterSelector").style.display = "inline-block";
   }
 
+  // 3. ПЕРЕД Завантаженням: Показуємо в Канбані "⏳ Вантажимо процеси..."
+  renderDashboardLoading();
+
+  // 4. Одразу відмальовуємо дані з кешу (якщо вони є)
   const localData = sessionStorage.getItem("dashboardData");
   if (localData) {
     allProcesses = JSON.parse(localData).processes || [];
     renderFilteredDashboard();
   }
 
+  // 5. Відправляємо два паралельні запити на Google Sheets
   const [data, taskCounters] = await Promise.all([fetchDashboardData(), fetchTaskCounters()]);
 
+  // 6. ПІСЛЯ завантаження: Оновлюємо кеш та малюємо реальні дані
   if (data.status === "ok") {
     allProcesses = data.processes;
     globalTaskCounters = taskCounters;
@@ -728,8 +755,104 @@ async function initDashboard() {
   }
 }
 
+// --- Унікальна і швидка логіка відкриття/закриття форми ---
+function toggleForm() {
+  const form = document.getElementById("newBoardForm"); 
+  if (!form) return;
+  
+  if (form.style.display === "flex") {
+    // Якщо форма відкрита — закриваємо і ОЧИЩАЄМО її
+    form.style.display = "none";
+    document.getElementById("boardTitle").value = ""; 
+    document.getElementById("participants").innerHTML = "";
+  } else {
+    // Якщо закрита — відкриваємо і підтягуємо ім'я поточного юзера
+    form.style.display = "flex";
+    document.getElementById("boardOwner").value = usersMap[currentUser] || currentUser;
+  }
+}
+
+// --- Стабільна логіка створення (з блокуванням кнопки) ---
+function createBoard() {
+  const titleInput = document.getElementById("boardTitle");
+  const title = titleInput.value.trim();
+  if (!title) { 
+    alert("Введіть назву процесу"); 
+    return; 
+  }
+  
+  // Знаходимо кнопку і блокуємо її від подвійних кліків
+  const btn = document.getElementById("saveBtn");
+  btn.innerText = "Створення...";
+  btn.disabled = true;
+
+  // Виправляємо баг з можливим null у власника
+  const ownerName = usersMap[currentUser] || currentUser;
+  let participants = [`${ownerName} (Оунер)`];
+
+  document.querySelectorAll("#participants .participant-row").forEach(row => {
+    const selects = row.querySelectorAll("select");
+    participants.push(`${usersMap[selects[0].value]} (${selects[1].value === "executor" ? "Виконавець" : "Керівник"})`);
+  });
+
+  const processData = { 
+    processID: Date.now().toString(), 
+    title, 
+    owner: currentUser, // Зберігаємо точний ключ
+    participants, 
+    status: "new" 
+  };
+  
+  // 1. Оновлюємо локальний стан
+  allProcesses.push(processData);
+  sessionStorage.setItem("dashboardData", JSON.stringify({ processes: allProcesses }));
+  
+  // 2. Одразу малюємо, щоб юзер бачив результат миттєво
+  renderFilteredDashboard();
+  
+  // 3. Відправляємо команду на сервер у фоні
+  fetch(SCRIPT_URL, { 
+    method: "POST", 
+    mode: "no-cors", 
+    headers: { "Content-Type": "application/json" }, 
+    body: JSON.stringify({ action: "saveDashboard", data: { processes: allProcesses } }) 
+  }).then(() => {
+    // Повертаємо форму і кнопку у вихідний стан
+    toggleForm(); 
+    btn.innerText = "Створити";
+    btn.disabled = false;
+  }).catch(err => {
+    console.error("Помилка створення:", err);
+    btn.innerText = "Створити";
+    btn.disabled = false;
+    alert("Помилка зв'язку з сервером. Перевірте консоль.");
+  });
+}
+
+// Ініціалізація закриття модалок по кліку на фон
+window.addEventListener('DOMContentLoaded', () => {
+  const newBoardModal = document.getElementById("newBoardForm");
+  if(newBoardModal) {
+    newBoardModal.addEventListener("click", (e) => {
+      if (e.target === newBoardModal) toggleForm();
+    });
+  }
+
+  const editModal = document.getElementById("editProcessModal");
+  if(editModal) {
+    editModal.addEventListener("click", (e) => {
+      if (e.target === editModal) editModal.style.display = "none";
+    });
+  }
+});
+
+// ==========================================================================
+// ВСІ ІНШІ ТВОЇ ДАНІ (Без змін, крім візуального відображення завантаження)
+// ==========================================================================
+
 function populateUserFilterSelector() {
   const filterSel = document.getElementById("userFilterSelector");
+  if(!filterSel) return;
   filterSel.innerHTML = '<option value="all">Всі користувачі</option>';
   Object.entries(usersMap).forEach(([key, name]) => {
     const opt = document.createElement("option"); opt.value = name; opt.textContent = name; filterSel.appendChild(opt);
@@ -755,7 +878,6 @@ function normalizeUser(userKeyOrName) {
   return Object.keys(usersMap).find(k => usersMap[k] === userKeyOrName) || userKeyOrName;
 }
 
-// Безпечне отримання списку процесів за рівнем доступу
 function getVisibleProcesses(currentUserKey, processes) {
   const currentKey = normalizeUser(currentUserKey);
   const currentName = usersMap[currentKey] || currentUserKey;
@@ -767,7 +889,13 @@ function getVisibleProcesses(currentUserKey, processes) {
   });
 }
 
-// --- Розрахунок лічильників з Google-таблиці з урахуванням дедуплікації ---
+// Показати "Вантажимо процеси..."
+function renderDashboardLoading() {
+  const columns = { 'new': document.getElementById("list-new"), 'urgent': document.getElementById("list-urgent"), 'newTasks': document.getElementById("list-newTasks"), 'deadline': document.getElementById("list-deadline"), 'overdue': document.getElementById("list-overdue"), 'completed': document.getElementById("list-completed") };
+  Object.values(columns).forEach(col => { if (col) col.innerHTML = "<p style='color: rgba(255,255,255,0.3); text-align:center; font-size:12px; margin: 20px 0;'>⏳ Вантажимо процеси...</p>"; });
+}
+
+// Завантаження лічильників
 async function fetchTaskCounters() {
   try {
     const res = await fetch(PROCESSES_SHEET_URL);
@@ -775,70 +903,42 @@ async function fetchTaskCounters() {
     const json = JSON.parse(text.substr(47).slice(0, -2));
     const today = new Date(); today.setHours(0, 0, 0, 0);
     
-    // Структура для збору даних: procID -> { taskID -> { status, deadline, ... } }
     const procData = {};
 
     json.table.rows.slice(1).forEach(r => {
       if (!r || !r.c) return;
-      
       const procID = String(r.c[0]?.v || "").trim();
-      // Беремо базовий TaskID (до підкреслення), щоб ігнорувати фрагменти Календаря
       const fullTaskID = String(r.c[5]?.v || "").trim();
       const baseTaskID = fullTaskID.split('_')[0]; 
-      
       if (!procID || !baseTaskID) return;
-
       if (!procData[procID]) procData[procID] = {};
-      
-      // Зберігаємо тільки ОСТАННІЙ відомий статус задачі (щоб не рахувати дублі фрагментів)
       const taskStatus = String(r.c[16]?.v || "").toLowerCase().trim();
       const deadlineStr = r.c[8]?.v || "";
-      
-      procData[procID][baseTaskID] = {
-        status: taskStatus,
-        deadline: deadlineStr ? new Date(deadlineStr) : null
-      };
+      procData[procID][baseTaskID] = { status: taskStatus, deadline: deadlineStr ? new Date(deadlineStr) : null };
     });
 
     const finalCounters = {};
-    
-    // Тепер рахуємо по унікальних задачах у кожному процесі
     Object.entries(procData).forEach(([procID, tasks]) => {
       let counts = { todo: 0, progress: 0, done: 0, total: 0 };
       let hasOverdue = false;
-
       Object.values(tasks).forEach(t => {
         counts.total++;
         if (["done", "виконано", "completed"].includes(t.status)) counts.done++;
         else if (["inprogress", "в процесі", "progress"].includes(t.status)) counts.progress++;
         else counts.todo++;
-
-        if (t.deadline && t.deadline < today && !["done", "виконано", "completed"].includes(t.status)) {
-          hasOverdue = true;
-        }
+        if (t.deadline && t.deadline < today && !["done", "виконано", "completed"].includes(t.status)) hasOverdue = true;
       });
-
-      // Визначаємо статус для Канбану
       let autoStatus = "active";
       if (counts.total === 0) autoStatus = "new";
       else if (hasOverdue) autoStatus = "overdue";
       else if (counts.done === counts.total) autoStatus = "completed";
-
-      finalCounters[procID] = { 
-        todo: counts.todo, 
-        progress: counts.progress, 
-        done: counts.done, 
-        autoStatus: autoStatus 
-      };
+      finalCounters[procID] = { todo: counts.todo, progress: counts.progress, done: counts.done, autoStatus: autoStatus };
     });
-
     return finalCounters;
-  } catch (e) { 
-    console.error("Помилка лічильників:", e); 
-    return {}; 
-  }
+  } catch (e) { console.error("Помилка лічильників:", e); return {}; }
 }
 
+// Завантаження дашборду
 async function fetchDashboardData() {
   try {
     const res = await fetch(DASHBOARD_SHEET_URL);
@@ -862,25 +962,13 @@ function renderDashboard(dashboardData, taskCounters = {}) {
 
  dashboardData.processes.forEach(proc => {
     const div = document.createElement("div");
-    // Отримуємо результати з нашої нової логіки
-    const pCounts = taskCounters[proc.processID] || { 
-        todo: 0, 
-        progress: 0, 
-        done: 0, 
-        autoStatus: "new" 
-    };
-    
-    // Тут важливо: статус беремо саме той, що розрахував лічильник
+    const pCounts = taskCounters[proc.processID] || { todo: 0, progress: 0, done: 0, autoStatus: "new" };
     const status = pCounts.autoStatus;
-    
-    // Визначаємо клас для CSS
     let borderClass = ["urgent", "deadline", "newTasks", "overdue", "completed"].includes(status) ? status : "";
-    
-    // Якщо треба додатковий візуальний акцент
     if (pCounts.visualModifier === "manager-overdue") borderClass += " manager-fire"; 
 
     div.className = `process-card ${borderClass}`;
-    div.dataset.status = status; // Це важливо для JS-фільтрації
+    div.dataset.status = status; 
     div.dataset.processId = proc.processID || "";
 
     const ownerName = usersMap[proc.owner] || proc.owner;
@@ -900,12 +988,12 @@ function renderDashboard(dashboardData, taskCounters = {}) {
         <span class="counter-badge badge-todo">📋 Зробити: ${pCounts.todo}</span>
         <span class="counter-badge badge-progress">⚙️ В процесі: ${pCounts.progress}</span>
         <span class="counter-badge badge-done">✅ Виконано: ${pCounts.done}</span>
-      </div>
+      }
       <details onclick="event.stopPropagation();" style="width: 100%; margin-top: 8px;">
         <summary style="color: #1e293b; font-weight: 600; cursor: pointer;">👥 Учасники (${proc.participants.length})</summary>
         <div style="margin-top: 5px; line-height: 1.6; display: flex; flex-direction: column; gap: 4px;">
           ${participantsFormatted.join("")}
-        </div>
+        }
       </details>
     `;
 
@@ -921,6 +1009,7 @@ function renderDashboard(dashboardData, taskCounters = {}) {
 
 function populateProcessSelector(processes) {
   const selector = document.getElementById("processSelector");
+  if(!selector) return;
   selector.innerHTML = '<option value="">— виберіть процес —</option>';
   processes.forEach(proc => {
     const opt = document.createElement("option"); opt.value = proc.processID; opt.textContent = proc.title; selector.appendChild(opt);
@@ -928,23 +1017,10 @@ function populateProcessSelector(processes) {
   selector.onchange = () => { const id = selector.value; if (id) showProcessModal(processes.find(p => p.processID === id)); };
 }
 
-// --- 1. Оновлена і стабільна логіка відкриття/закриття форми ---
-function toggleForm() {
-  const form = document.getElementById("newBoardForm"); 
-  if (!form) return;
-  
-  if (form.style.display === "flex") {
-    // Якщо форма відкрита — закриваємо і ОЧИЩАЄМО її
-    form.style.display = "none";
-    document.getElementById("boardTitle").value = ""; 
-    document.getElementById("participants").innerHTML = "";
-  } else {
-    // Якщо закрита — відкриваємо і підтягуємо ім'я поточного юзера
-    form.style.display = "flex";
-    document.getElementById("boardOwner").value = usersMap[currentUser] || currentUser;
-  }
-}
+// Додавання учасника
 function addParticipant() {
+  const container = document.getElementById("participants");
+  if(!container) return;
   const div = document.createElement("div"); div.className = "participant-row";
   const uSel = document.createElement("select");
   Object.entries(usersMap).forEach(([k, v]) => { const o = document.createElement("option"); o.value = k; o.textContent = v; uSel.appendChild(o); });
@@ -952,136 +1028,61 @@ function addParticipant() {
   [["executor","Виконавець"], ["manager","Керівник"]].forEach(([k,v]) => { const o = document.createElement("option"); o.value = k; o.textContent = v; rSel.appendChild(o); });
   const btn = document.createElement("button"); btn.type = "button"; btn.textContent = "×"; btn.onclick = () => div.remove();
   div.appendChild(uSel); div.appendChild(rSel); div.appendChild(btn);
-  document.getElementById("participants").appendChild(div);
+  container.appendChild(div);
 }
 
-// --- 2. Оновлена логіка створення (з блокуванням кнопки від подвійних кліків) ---
-function createBoard() {
-  const title = document.getElementById("boardTitle").value.trim();
-  if (!title) { 
-    alert("Введіть назву процесу"); 
-    return; 
-  }
-  
-  // Знаходимо кнопку і блокуємо її, щоб не натиснули 10 разів
-  const btn = document.getElementById("saveBtn");
-  btn.innerText = "Створення...";
-  btn.disabled = true;
-
-  // Виправляємо баг з можливим null у власника
-  const ownerName = usersMap[currentUser] || currentUser;
-  let participants = [`${ownerName} (Оунер)`];
-
-  document.querySelectorAll("#participants .participant-row").forEach(row => {
-    const selects = row.querySelectorAll("select");
-    participants.push(`${usersMap[selects[0].value]} (${selects[1].value === "executor" ? "Виконавець" : "Керівник"})`);
-  });
-
-  const processData = { 
-    processID: Date.now().toString(), 
-    title, 
-    owner: currentUser, // Зберігаємо точний ключ
-    participants, 
-    status: "new" 
-  };
-  
-  allProcesses.push(processData);
-  sessionStorage.setItem("dashboardData", JSON.stringify({ processes: allProcesses }));
-  
-  // Одразу малюємо на екрані, щоб юзер бачив результат миттєво
-  renderFilteredDashboard();
-  
-  // Відправляємо у фоні
-  fetch(SCRIPT_URL, { 
-    method: "POST", 
-    mode: "no-cors", 
-    headers: { "Content-Type": "application/json" }, 
-    body: JSON.stringify({ action: "saveDashboard", data: { processes: allProcesses } }) 
-  }).then(() => {
-    // Повертаємо форму і кнопку у вихідний стан
-    toggleForm(); 
-    btn.innerText = "Створити";
-    btn.disabled = false;
-  }).catch(err => {
-    console.error("Помилка створення:", err);
-    btn.innerText = "Створити";
-    btn.disabled = false;
-    alert("Помилка зв'язку з сервером.");
-  });
+// Перенаправлення
+function redirectToProcess(proc) {
+  sessionStorage.setItem("currentProcess", JSON.stringify(proc));
+  fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "openProcess", data: { title: proc.title, owner: usersMap[currentUser] || currentUser } }) });
+  window.location.href = "proc.html";
 }
 
-// --- 3. Додаємо закриття модалок по кліку на темний фон ---
-// Цей код можна вставити просто знизу після твоїх функцій
-window.addEventListener('DOMContentLoaded', () => {
-  // Для форми створення
-  const newBoardModal = document.getElementById("newBoardForm");
-  if(newBoardModal) {
-    newBoardModal.addEventListener("click", (e) => {
-      if (e.target === newBoardModal) toggleForm();
-    });
-  }
-
-  // Для форми редагування
-  const editModal = document.getElementById("editProcessModal");
-  if(editModal) {
-    editModal.addEventListener("click", (e) => {
-      if (e.target === editModal) editModal.style.display = "none";
-    });
-  }
-});
-
+// Модалка дій
 function showProcessModal(proc) {
   const currentKey = normalizeUser(currentUser);
   const ownerKey = normalizeUser(proc.owner);
 
   if (currentKey === ownerKey) {
     const modal = document.getElementById("processModal");
+    if(!modal) return;
     document.getElementById("modalTitle").innerText = proc.title;
     modal.style.display = "flex";
 
-    // === ВІДНОВЛЕНА ЛОГІКА ВИДАЛЕННЯ ===
-    document.getElementById("deleteBtn").onclick = async () => {
-      // Запитуємо підтвердження, бо дія незворотна
-      if (!confirm(`Ви дійсно хочете видалити процес "${proc.title}" та всі його задачі?`)) return;
+    // === ЛОГІКА ВИДАЛЕННЯ ===
+    const deleteBtn = document.getElementById("deleteBtn");
+    if(deleteBtn) {
+        deleteBtn.onclick = async () => {
+          if (!confirm(`Ви дійсно хочете видалити процес "${proc.title}" та всі його задачі?`)) return;
+          const btn = document.getElementById("deleteBtn");
+          btn.innerText = "Видалення...";
+          btn.disabled = true;
+          try {
+            allProcesses = allProcesses.filter(p => p.processID !== proc.processID);
+            sessionStorage.setItem("dashboardData", JSON.stringify({ processes: allProcesses }));
+            renderFilteredDashboard();
+            modal.style.display = "none";
+            await fetch(SCRIPT_URL, {
+              method: "POST",
+              mode: "no-cors",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ action: "deleteProcess", processID: proc.processID })
+            });
+          } catch (err) { console.error("Помилка видалення:", err); alert("Сталася помилка.");
+          } finally { btn.innerText = "Видалити"; btn.disabled = false; }
+        };
+    }
 
-      const btn = document.getElementById("deleteBtn");
-      btn.innerText = "Видалення...";
-      btn.disabled = true;
-
-      try {
-        // 1. Оновлюємо локальний стан (щоб процес миттєво зник з екрану)
-        allProcesses = allProcesses.filter(p => p.processID !== proc.processID);
-        sessionStorage.setItem("dashboardData", JSON.stringify({ processes: allProcesses }));
-        renderFilteredDashboard();
-        modal.style.display = "none";
-
-        // 2. Відправляємо команду на сервер
-        await fetch(SCRIPT_URL, {
-          method: "POST",
-          mode: "no-cors",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ 
-            action: "deleteProcess", 
-            processID: proc.processID 
-          })
-        });
-
-      } catch (err) {
-        console.error("Помилка видалення:", err);
-        alert("Сталася помилка при видаленні.");
-      } finally {
-        btn.innerText = "Видалити";
-        btn.disabled = false;
-      }
-    };
-
-    document.getElementById("editBtn").onclick = () => { modal.style.display = "none"; showEditModal(proc); };
-    document.getElementById("goBtn").onclick = () => { redirectToProcess(proc); };
+    const editBtn = document.getElementById("editBtn");
+    if(editBtn) editBtn.onclick = () => { modal.style.display = "none"; showEditModal(proc); };
     
-    document.getElementById("btnReportMain").onclick = () => { 
-        modal.style.display = "none"; 
-        initProcessReport(proc.processID); 
-    };
+    const goBtn = document.getElementById("goBtn");
+    if(goBtn) goBtn.onclick = () => { redirectToProcess(proc); };
+    
+    const reportBtn = document.getElementById("btnReportMain");
+    if(reportBtn) {
+        reportBtn.onclick = () => { modal.style.display = "none"; initProcessReport(proc.processID); };
+    }
 
     modal.onclick = (e) => { if (e.target === modal) modal.style.display = "none"; };
   } else {
@@ -1089,522 +1090,79 @@ function showProcessModal(proc) {
   }
 }
 
+// Модалка редагування
 function showEditModal(proc) {
   const modal = document.getElementById("editProcessModal");
+  if(!modal) return;
   modal.style.display = "flex";
-  // ... (весь твій старий код налаштування учасників) ...
+  const titleInput = document.getElementById("editTitle");
+  if(titleInput) titleInput.value = proc.title;
 
-  document.getElementById("saveEditBtn").onclick = () => { /* ...твій старий код... */ };
-  
-  // ДОДАНО: Прив'язка кнопки звіту в редагуванні!
-  const btnEdit = document.getElementById("btnReportEdit");
-  if(btnEdit) {
-      btnEdit.onclick = () => { 
-          modal.style.display = "none"; 
-          initProcessReport(proc.processID); 
+  const container = document.getElementById("editParticipants");
+  if(container) {
+      container.innerHTML = "";
+      proc.participants.forEach(p => {
+        if (p.includes("Оунер") || p.includes("Власник")) return; 
+        const div = document.createElement("div"); div.className = "participant-row";
+        const uSel = document.createElement("select");
+        Object.entries(usersMap).forEach(([key, name]) => {
+          const opt = document.createElement("option"); opt.value = key; opt.textContent = name;
+          if (p.includes(name)) opt.selected = true;
+          uSel.appendChild(opt);
+        });
+        const rSel = document.createElement("select");
+        [["executor","Виконавець"], ["manager","Керівник"]].forEach(([k,v]) => {
+          const opt = document.createElement("option"); opt.value = k; opt.textContent = v;
+          if (p.includes(v)) opt.selected = true;
+          rSel.appendChild(opt);
+        });
+        const removeBtn = document.createElement("button"); removeBtn.type = "button"; removeBtn.textContent = "×"; removeBtn.onclick = () => div.remove();
+        div.appendChild(uSel); div.appendChild(rSel); div.appendChild(removeBtn);
+        container.appendChild(div);
+      });
+  }
+
+  const saveEditBtn = document.getElementById("saveEditBtn");
+  if(saveEditBtn) {
+      saveEditBtn.onclick = () => {
+        const newTitleNode = document.getElementById("editTitle");
+        const newTitle = newTitleNode ? newTitleNode.value : proc.title;
+        const ownerName = usersMap[normalizeUser(proc.owner)] || proc.owner;
+        let newParticipants = [`${ownerName} (Оунер)`];
+        container.querySelectorAll(".participant-row").forEach(row => {
+          const selects = row.querySelectorAll("select");
+          newParticipants.push(`${usersMap[selects[0].value]} (${selects[1].value === "executor" ? "Виконавець" : "Керівник"})`);
+        });
+        proc.title = newTitle;
+        proc.participants = newParticipants;
+        allProcesses = allProcesses.map(p => p.processID === proc.processID ? proc : p);
+        sessionStorage.setItem("dashboardData", JSON.stringify({ processes: allProcesses }));
+        renderFilteredDashboard();
+        fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", headers: {"Content-Type":"application/json"}, body: JSON.stringify({ action:"saveDashboard", data:{processes: allProcesses} }) });
+        modal.style.display = "none";
       };
   }
 }
 
-function redirectToProcess(proc) {
-  sessionStorage.setItem("currentProcess", JSON.stringify(proc));
-  fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "openProcess", data: { title: proc.title, owner: usersMap[currentUser] || currentUser } }) });
-  window.location.href = "proc.html";
-}
-
-// --- Логіка вікна редагування процесу ---
-function showEditModal(proc) {
-  const modal = document.getElementById("editProcessModal");
-  modal.style.display = "flex";
-  document.getElementById("editTitle").value = proc.title;
-
-  const container = document.getElementById("editParticipants");
-  container.innerHTML = "";
-  
-  proc.participants.forEach(p => {
-    if (p.includes("Оунер") || p.includes("Власник")) return; 
-    const div = document.createElement("div"); div.className = "participant-row";
-    
-    const uSel = document.createElement("select");
-    Object.entries(usersMap).forEach(([key, name]) => {
-      const opt = document.createElement("option"); opt.value = key; opt.textContent = name;
-      if (p.includes(name)) opt.selected = true;
-      uSel.appendChild(opt);
-    });
-
-    const rSel = document.createElement("select");
-    [["executor","Виконавець"], ["manager","Керівник"]].forEach(([k,v]) => {
-      const opt = document.createElement("option"); opt.value = k; opt.textContent = v;
-      if (p.includes(v)) opt.selected = true;
-      rSel.appendChild(opt);
-    });
-
-    const removeBtn = document.createElement("button"); removeBtn.textContent = "×"; removeBtn.onclick = () => div.remove();
-    div.appendChild(uSel); div.appendChild(rSel); div.appendChild(removeBtn);
-    container.appendChild(div);
-  });
-
-  document.getElementById("saveEditBtn").onclick = () => {
-    proc.title = document.getElementById("editTitle").value;
-    const ownerName = usersMap[normalizeUser(proc.owner)] || proc.owner;
-    let newParticipants = [`${ownerName} (Оунер)`];
-
-    container.querySelectorAll(".participant-row").forEach(row => {
-      const selects = row.querySelectorAll("select");
-      newParticipants.push(`${usersMap[selects[0].value]} (${selects[1].value === "executor" ? "Виконавець" : "Керівник"})`);
-    });
-    proc.participants = newParticipants;
-
-    allProcesses = allProcesses.map(p => p.processID === proc.processID ? proc : p);
-    sessionStorage.setItem("dashboardData", JSON.stringify({ processes: allProcesses }));
-    renderFilteredDashboard();
-
-    fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", headers: {"Content-Type":"application/json"}, body: JSON.stringify({ action:"saveDashboard", data:{processes: allProcesses} }) });
-    modal.style.display = "none";
-  };
-}
-
+// Додати учасника в редагування
 function addEditParticipant() {
   const container = document.getElementById("editParticipants");
+  if(!container) return;
   const div = document.createElement("div"); div.className = "participant-row";
   const uSel = document.createElement("select");
   Object.entries(usersMap).forEach(([k, v]) => { const o = document.createElement("option"); o.value = k; o.textContent = v; uSel.appendChild(o); });
   const rSel = document.createElement("select");
   [["executor","Виконавець"], ["manager","Керівник"]].forEach(([k,v]) => { const o = document.createElement("option"); o.value = k; o.textContent = v; rSel.appendChild(o); });
-  const btn = document.createElement("button"); btn.textContent = "×"; btn.onclick = () => div.remove();
+  const btn = document.createElement("button"); btn.type = "button"; btn.textContent = "×"; btn.onclick = () => div.remove();
   div.appendChild(uSel); div.appendChild(rSel); div.appendChild(btn);
   container.appendChild(div);
 }
 
 // Вихід
-document.getElementById("logoutBtn").addEventListener("click", function() {
-  sessionStorage.clear(); window.location.href = "index.html";
-});
-
-/**
- * report.js — Модуль генерації ручних та автоматичних звітів
- */
-
-// Головна функція, яка запускається при кліку на картку
-function initProcessReport(processId) {
-  // Припускаємо, що всі процеси доступні у глобальній змінній (наприклад, ALL_PROCESSES або через пошук)
-  // Якщо у тебе дані завантажені в processData, адаптуй цей рядок:
-  const currentProcess = typeof processData !== 'undefined' && processData.id === processId 
-    ? processData 
-    : (typeof allProcesses !== 'undefined' ? allProcesses.find(p => p.id === processId) : null);
-
-  if (!currentProcess) {
-    alert("Дані процесу не знайдені.");
-    return;
-  }
-
-  const reportHTML = generateProcessReportHTML(currentProcess);
-  showReportModal(reportHTML, currentProcess);
+const logoutBtn = document.getElementById("logoutBtn");
+if(logoutBtn) {
+    logoutBtn.addEventListener("click", function() { sessionStorage.clear(); window.location.href = "index.html"; });
 }
-
-/**
- * ФІНАЛЬНИЙ БЛОК ЗВІТНОСТІ: HELICOPTER VIEW (Ідеальний Гант)
- */
-
-window.initProcessReport = async function(processId) {
-  const currentProcess = allProcesses.find(p => p.processID === processId);
-  if (!currentProcess) { alert("Дані процесу не знайдені."); return; }
-
-  window.showReportModal("<div style='padding: 40px; text-align: center; color: #64748b; font-weight: bold;'>⏳ Збираємо аналітику та будуємо Гант...</div>", currentProcess);
-
-  try {
-    const res = await fetch(PROCESSES_SHEET_URL);
-    const text = await res.text();
-    const json = JSON.parse(text.substr(47).slice(0, -2));
-
-    const uniqueTasks = {}; 
-    
-    json.table.rows.slice(1).forEach(r => {
-      if (!r || !r.c) return;
-      const pID = String(r.c[0]?.v || "").trim();
-      if (pID !== processId) return;
-
-      const rawTaskID = String(r.c[5]?.v || "").trim();
-      const taskID = rawTaskID.split('_')[0]; 
-      if (!taskID) return;
-
-      let parsedStart = parseGoogleDateSafe(r.c[7]);
-      let parsedDeadline = parseGoogleDateSafe(r.c[8]);
-      if (!parsedStart && parsedDeadline) parsedStart = parsedDeadline;
-      if (!parsedDeadline && parsedStart) parsedDeadline = parsedStart;
-
-      if (!uniqueTasks[taskID]) {
-        uniqueTasks[taskID] = {
-           id: taskID,
-           title: String(r.c[6]?.v || "Без назви"),
-           username: String(r.c[10]?.v || "Не призначено"),
-           start: parsedStart,
-           deadline: parsedDeadline,
-           dependencyTitle: String(r.c[12]?.v || ""),
-           comment: String(r.c[15]?.v || ""),
-           status: String(r.c[16]?.v || "").toLowerCase().trim()
-        };
-      } else {
-         if (parsedStart && (!uniqueTasks[taskID].start || new Date(parsedStart) < new Date(uniqueTasks[taskID].start))) {
-             uniqueTasks[taskID].start = parsedStart;
-         }
-         if (parsedDeadline && (!uniqueTasks[taskID].deadline || new Date(parsedDeadline) > new Date(uniqueTasks[taskID].deadline))) {
-             uniqueTasks[taskID].deadline = parsedDeadline;
-         }
-      }
-    });
-
-    const tasks = Object.values(uniqueTasks);
-    window.renderFullReport(currentProcess, tasks);
-  } catch (err) {
-    console.error(err);
-    document.querySelector('.report-modal-body').innerHTML = "<p style='color:red; text-align:center;'>Помилка завантаження даних.</p>";
-  }
-};
-
-function parseGoogleDateSafe(cell) {
-   if (!cell) return null;
-   let str = cell.f || cell.v;
-   if (typeof str !== 'string') return null;
-   str = str.trim();
-   
-   if (str.startsWith('Date')) {
-       const parts = str.match(/Date\((\d+),(\d+),(\d+)/);
-       if (parts) return `${parts[1]}-${String(parseInt(parts[2]) + 1).padStart(2, '0')}-${String(parts[3]).padStart(2, '0')}`;
-   }
-   const dmY = str.match(/^(\d{2})[\.\/](\d{2})[\.\/](\d{4})/);
-   if (dmY) return `${dmY[3]}-${dmY[2]}-${dmY[1]}`; 
-   
-   const yMd = str.match(/^(\d{4})-(\d{2})-(\d{2})/);
-   if (yMd) return `${yMd[1]}-${yMd[2]}-${yMd[3]}`;
-   
-   return null;
-}
-
-window.renderFullReport = function(proc, tasks) {
-  const total = tasks.length;
-  const done = tasks.filter(t => ["done", "виконано", "completed"].includes(t.status)).length;
-  const progress = tasks.filter(t => ["inprogress", "в процесі", "progress"].includes(t.status)).length;
-  const todo = total - done - progress;
-  const percent = total > 0 ? Math.round((done / total) * 100) : 0;
-  
-  // 1. АНАЛІТИКА КОМАНДИ (Беремо всіх учасників з Dashboard)
-  const teamStats = {};
-  
-  // КРОК 1: Створюємо "каркас" з усіх, хто офіційно доданий у процес
-  if (proc.participants && Array.isArray(proc.participants)) {
-      proc.participants.forEach(p => {
-          const cleanName = p.split(" (")[0].trim(); // Відрізаємо ролі типу "(Оунер)"
-          teamStats[cleanName] = { total: 0, done: 0, progress: 0, todo: 0 };
-      });
-  }
-const statusOrder = { 'todo': 1, 'inprogress': 2, 'done': 3 };
-tasks.sort((a, b) => {
-    const getWeight = (s) => {
-        if (["done", "виконано", "completed"].includes(s)) return 3;
-        if (["inprogress", "в процесі", "progress"].includes(s)) return 2;
-        return 1; // todo
-    };
-    return getWeight(a.status) - getWeight(b.status);
-});
-  // КРОК 2: Розкидаємо існуючі задачі по цих людях
-  tasks.forEach(t => {
-      const u = t.username || "Не призначено";
-      // Якщо хтось є в задачах, але не був офіційно в списку (наприклад, помилка або зміна виконавця)
-      if (!teamStats[u]) teamStats[u] = { total: 0, done: 0, progress: 0, todo: 0 };
-      
-      teamStats[u].total++;
-      if (["done", "виконано", "completed"].includes(t.status)) teamStats[u].done++;
-      else if (["inprogress", "в процесі", "progress"].includes(t.status)) teamStats[u].progress++;
-      else teamStats[u].todo++;
-  });
-
-  let teamHtml = `<table style="width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 20px;">
-                    <tr style="background:#f1f5f9;"><th style="border:1px solid #cbd5e1; padding:6px; text-align:left;">Учасник</th><th style="border:1px solid #cbd5e1; padding:6px;">Всього задач</th><th style="border:1px solid #cbd5e1; padding:6px; color:#10b981;">Виконано</th><th style="border:1px solid #cbd5e1; padding:6px; color:#f59e0b;">В процесі</th><th style="border:1px solid #cbd5e1; padding:6px; color:#3b82f6;">В черзі</th></tr>`;
-  Object.keys(teamStats).forEach(u => {
-      teamHtml += `<tr><td style="border:1px solid #cbd5e1; padding:6px; font-weight:bold;">${u}</td>
-                       <td style="border:1px solid #cbd5e1; padding:6px; text-align:center;">${teamStats[u].total}</td>
-                       <td style="border:1px solid #cbd5e1; padding:6px; text-align:center;">${teamStats[u].done}</td>
-                       <td style="border:1px solid #cbd5e1; padding:6px; text-align:center;">${teamStats[u].progress}</td>
-                       <td style="border:1px solid #cbd5e1; padding:6px; text-align:center;">${teamStats[u].todo}</td></tr>`;
-  });
-  teamHtml += `</table>`;
-
-  // 2. ТЕКСТОВИЙ СПИСОК ЗАДАЧ ТА КОМЕНТАРІВ
-  let tasksListHtml = `<ul style="list-style: none; padding: 0; margin: 0; font-size: 12px; line-height: 1.6;">`;
-  tasks.forEach(t => {
-    let isDone = ["done", "виконано", "completed"].includes(t.status);
-    let isInProg = ["inprogress", "в процесі", "progress"].includes(t.status);
-    
-    let badge = isDone ? `<span style="color:#10b981; font-weight:bold;">[✅ Виконано]</span>` 
-              : isInProg ? `<span style="color:#f59e0b; font-weight:bold;">[⚙️ В процесі]</span>` 
-              : `<span style="color:#3b82f6; font-weight:bold;">[📋 В черзі]</span>`;
-              
-    let cleanComment = t.comment ? t.comment.replace(/<[^>]*>?/gm, ' ').trim() : "";
-    let commentHtml = cleanComment ? `<br><span style="color: #64748b; padding-left: 15px;">💬 <i>${cleanComment}</i></span>` : "";
-
-    tasksListHtml += `<li style="margin-bottom: 8px; border-bottom: 1px dashed #e2e8f0; padding-bottom: 8px;">
-                        ${badge} <b>${t.title}</b> <span style="color: #475569;">(${t.username})</span>${commentHtml}
-                      </li>`;
-  });
-  tasksListHtml += `</ul>`;
-
-  const htmlContent = `
-    <div id="print-report-area" style="font-family: Arial, sans-serif; color: #1e293b; padding: 10px;">
-      <h2 style="border-bottom: 2px solid #3b82f6; padding-bottom: 8px;">📊 Звіт: ${proc.title}</h2>
-      <p style="font-size: 14px;"><b>Загальний прогрес:</b> ${percent}% (✅ ${done} | ⚙️ ${progress} | 📋 ${todo})</p>
-      
-      <h4 style="margin: 15px 0 5px 0; color: #1e293b;">👥 Навантаження команди:</h4>
-      ${teamHtml}
-
-      <h4 style="margin: 15px 0 10px 0; color: #1e293b;">💬 Статуси та останні коментарі:</h4>
-      ${tasksListHtml}
-
-      <h4 style="margin: 20px 0 5px 0;">📈 Графік виконання (Гант):</h4>
-      <div id="reportGanttContainer" style="width: 100%; overflow-x: auto; border: 1px solid #cbd5e1; border-radius: 6px; padding: 10px; background: #fff;"></div>
-    </div>
-  `;
-
-  document.querySelector('.report-modal-body').innerHTML = htmlContent;
-  window.renderGanttForReport(tasks);
-};
-
-window.renderGanttForReport = function(tasks) {
-  const container = document.getElementById("reportGanttContainer");
-  if (!container) return;
-  container.innerHTML = ""; 
-  
-  const validTasks = tasks.filter(t => t.start && !isNaN(new Date(t.start).getTime()));
-  if(validTasks.length === 0) { container.innerHTML = "<p style='padding: 20px; text-align: center;'>Немає задач для відображення</p>"; return; }
-
-  validTasks.sort((a,b) => new Date(a.start) - new Date(b.start));
-  const starts = validTasks.map(t => new Date(t.start));
-  const ends = validTasks.map(t => new Date(t.deadline || t.start));
-  
-  const minDate = new Date(Math.min(...starts));
-  const maxDate = new Date(Math.max(...ends)); 
-  const diffDays = Math.ceil((maxDate - minDate)/(86400000)) + 1;
-  const dateList = [];
-  for (let i = 0; i < diffDays; i++) { const d = new Date(minDate); d.setDate(minDate.getDate() + i); dateList.push(d); }
-
-  const daysUA = ["нд", "пн", "вт", "ср", "чт", "пт", "сб"];
-  const today = new Date();
-  const nowHour = today.getHours() + (today.getMinutes() / 60);
-  const dayProgress = nowHour / 24;
-
-  const innerWrapper = document.createElement("div"); 
-  innerWrapper.style.position = "relative";
-  innerWrapper.style.width = "max-content"; 
-
-  const table = document.createElement("table"); 
-  table.style.borderCollapse = "collapse"; 
-  table.style.fontSize = "11px";
-  table.style.width = "100%";
-  table.style.fontFamily = "Arial, sans-serif";
-
-  const thead = document.createElement("thead"); 
-  const trHead = document.createElement("tr");
-
-  // Колонки з жорсткими inline-стилями для Word
-  [{ text: "Задача", width: "180px" }, { text: "Виконавець", width: "100px" }].forEach(h => {
-    const th = document.createElement("th"); 
-    th.innerText = h.text; 
-    th.style.border = "1px solid #cbd5e1"; th.style.backgroundColor = "#1e293b"; th.style.color = "#fff"; th.style.padding = "6px"; th.style.minWidth = h.width; 
-    trHead.appendChild(th);
-  });
-
-  // Функція для градієнту (сумісна з Word)
-  function hslToHex(h, s, l) {
-      l /= 100; const a = s * Math.min(l, 1 - l) / 100;
-      const f = n => { const k = (n + h / 30) % 12; const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1); return Math.round(255 * color).toString(16).padStart(2, '0'); };
-      return `#${f(0)}${f(8)}${f(4)}`;
-  }
-
-  dateList.forEach((d, index) => { 
-    const th = document.createElement("th"); 
-    const dayStr = daysUA[d.getDay()];
-    const dateStr = d.toLocaleDateString("uk-UA", { day:"2-digit", month:"2-digit" });
-    th.innerHTML = `${dayStr}<br>${dateStr}`; 
-    th.className = "date-header-report"; // Спеціальний клас для лінії сьогодні
-    
-    let hue = 120;
-    if (diffDays > 1) hue = 120 - Math.floor((index / (diffDays - 1)) * 120);
-    const isToday = d.toDateString() === today.toDateString();
-    
-    th.style.backgroundColor = hslToHex(hue, 80, 85);
-    th.style.color = "#1e293b";
-    th.style.border = "1px solid #cbd5e1";
-    th.style.borderBottom = `2px solid ${hslToHex(hue, 80, 50)}`;
-    th.style.padding = "4px";
-    if (isToday) th.style.fontWeight = "bold";
-
-    trHead.appendChild(th); 
-  });
-  thead.appendChild(trHead); table.appendChild(thead);
-
-  const tbody = document.createElement("tbody");
-  const todayDateOnly = new Date(today); todayDateOnly.setHours(0,0,0,0);
-
-  validTasks.forEach(t => {
-    const tr = document.createElement("tr");
-    
-    let isDone = ["done", "виконано", "completed"].includes(t.status);
-    let isInProg = ["inprogress", "в процесі", "progress"].includes(t.status);
-    let bgColor = isDone ? "#10b981" : isInProg ? "#f59e0b" : "#64748b"; // Класичні кольори
-    let icon = isDone ? "&#10003;" : isInProg ? "&#9654;" : "&#9675;";
-
-    const taskStart = new Date(t.start); taskStart.setHours(0,0,0,0);
-    const taskEnd = new Date(t.deadline || t.start); taskEnd.setHours(0,0,0,0);
-
-    tr.innerHTML = `<td style="border:1px solid #cbd5e1; padding:4px; font-weight:bold;">${t.title || "—"}</td>
-                    <td style="border:1px solid #cbd5e1; padding:4px;">${t.username || "—"}</td>`;
-
-    let firstMatchTd = null;
-    let lastMatchTd = null;
-
-    dateList.forEach((currentDate, index) => {
-      const td = document.createElement("td");
-      const dCurrent = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate());
-      
-      let hue = 120;
-      if (diffDays > 1) hue = 120 - Math.floor((index / (diffDays - 1)) * 120);
-
-      td.style.border = "1px solid #cbd5e1";
-      td.style.textAlign = "center";
-      td.style.verticalAlign = "middle";
-      td.style.height = "24px";
-
-      if (dCurrent >= taskStart && dCurrent <= taskEnd) { 
-        td.style.backgroundColor = bgColor;
-        td.style.color = "#ffffff";
-        td.innerHTML = `<span style="position:relative; z-index:10;">${icon}</span>`; 
-        if(!firstMatchTd) firstMatchTd = td;
-        lastMatchTd = td;
-      } else { 
-        td.style.backgroundColor = hslToHex(hue, 80, 96);
-      }
-      tr.appendChild(td);
-    });
-    
-    if(firstMatchTd) firstMatchTd.id = `rep-cell-${t.id}-start`;
-    if(lastMatchTd) lastMatchTd.id = `rep-cell-${t.id}-end`;
-
-    tbody.appendChild(tr);
-  });
-
-  table.appendChild(tbody); 
-  innerWrapper.appendChild(table); 
-
-  // Створюємо саму лінію заздалегідь
-  let line = null;
-  const todayIndex = dateList.findIndex(d => d.getFullYear() === today.getFullYear() && d.getMonth() === today.getMonth() && d.getDate() === today.getDate());
-
-  if (todayIndex !== -1) {
-    line = document.createElement("div");
-    line.style.position = "absolute";
-    line.style.top = "0";
-    line.style.bottom = "0";
-    line.style.width = "0px";
-    line.style.zIndex = "15";
-    innerWrapper.appendChild(line);
-  }
-
-  // Стрілочки залежностей (SVG)
-  const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-  svg.style.position = "absolute"; svg.style.top = "0"; svg.style.left = "0";
-  svg.style.width = "100%"; svg.style.height = "100%";
-  svg.style.pointerEvents = "none"; svg.style.zIndex = "10";
-  svg.innerHTML = `<defs><marker id="arrowheadRep" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#ef4444" /></marker></defs>`;
-  innerWrapper.appendChild(svg);
-
-  container.appendChild(innerWrapper);
-
-  // Відмальовуємо лінію та стрілки
-  setTimeout(() => {
-    // 1. Позиціонуємо лінію сьогодні
-    if (line && todayIndex !== -1) {
-      const headerCells = table.querySelectorAll('.date-header-report');
-      const todayHeader = headerCells[todayIndex];
-      if (todayHeader) {
-        let hue = 120;
-        if (diffDays > 1) hue = 120 - Math.floor((todayIndex / (diffDays - 1)) * 120);
-        
-        const iRect = innerWrapper.getBoundingClientRect();
-        const thRect = todayHeader.getBoundingClientRect();
-        const offsetLeft = thRect.left - iRect.left + (thRect.width * dayProgress);
-        
-        line.style.left = offsetLeft + "px";
-        line.style.borderLeft = `2px solid ${hslToHex(hue, 100, 40)}`;
-      }
-    }
-
-    // 2. Позиціонуємо стрілочки
-    validTasks.forEach(t => {
-      if (t.dependencyTitle) {
-        const depTask = validTasks.find(x => x.title === t.dependencyTitle);
-        if (depTask) {
-          const sourceCell = document.getElementById(`rep-cell-${depTask.id}-end`);
-          const targetCell = document.getElementById(`rep-cell-${t.id}-start`);
-          
-          if(sourceCell && targetCell) {
-            const iRect = innerWrapper.getBoundingClientRect(); 
-            const sRect = sourceCell.getBoundingClientRect();
-            const tRect = targetCell.getBoundingClientRect();
-            
-            const startX = sRect.right - iRect.left;
-            const startY = sRect.top + (sRect.height/2) - iRect.top;
-            const endX = tRect.left - iRect.left;
-            const endY = tRect.top + (tRect.height/2) - iRect.top;
-            
-            const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-            let d = "";
-            if (endX >= startX) d = `M ${startX} ${startY} L ${startX + 12} ${startY} L ${startX + 12} ${endY} L ${endX - 4} ${endY}`;
-            else d = `M ${startX} ${startY} L ${startX + 12} ${startY} L ${startX + 12} ${startY + 14} L ${endX - 12} ${startY + 14} L ${endX - 12} ${endY} L ${endX - 4} ${endY}`;
-            
-            path.setAttribute("d", d);
-            path.setAttribute("fill", "transparent");
-            path.setAttribute("stroke", "#ef4444");
-            path.setAttribute("stroke-width", "2");
-            path.setAttribute("marker-end", "url(#arrowheadRep)");
-            svg.appendChild(path);
-          }
-        }
-      }
-    });
-  }, 200);
-};
-
-window.showReportModal = function(htmlContent, proc) {
-  const old = document.getElementById("reportModal"); if (old) old.remove();
-  const modal = document.createElement("div");
-  modal.id = "reportModal"; modal.className = "report-modal-overlay";
-  modal.innerHTML = `
-    <div class="report-modal-window">
-      <div class="report-modal-header"><h3>Огляд процесу</h3><button class="report-modal-close" onclick="this.closest('#reportModal').remove()">&times;</button></div>
-      <div class="report-modal-actions">
-        <button onclick="window.exportReportToWord('${proc.title}')">📝 Word</button>
-        <button onclick="window.sendReportByEmail('${proc.title}')">✉️ Пошта</button>
-      </div>
-      <div class="report-modal-body">${htmlContent}</div>
-    </div>
-  `;
-  document.body.appendChild(modal);
-};
-
-window.exportReportToWord = function(filename) {
-  const area = document.getElementById("print-report-area");
-  const html = `<html><head><meta charset="utf-8"></head><body>${area.innerHTML}</body></html>`;
-  const blob = new Blob(['\uFEFF' + html], { type: 'application/msword' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url; a.download = `Звіт_${filename.replace(/[/\\?%*:|"<>\s]/g, '_')}.doc`;
-  a.click();
-};
-
-window.sendReportByEmail = function(filename) {
-  const area = document.getElementById("print-report-area");
-  window.location.href = `mailto:?subject=${encodeURIComponent('Звіт: ' + filename)}&body=${encodeURIComponent(area.innerText)}`;
-};
 </script>
 <audio id="relaxAudio" loop>
   <source src="./relax-pad.mp3" type="audio/mpeg">
