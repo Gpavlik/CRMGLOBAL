@@ -928,11 +928,22 @@ function populateProcessSelector(processes) {
   selector.onchange = () => { const id = selector.value; if (id) showProcessModal(processes.find(p => p.processID === id)); };
 }
 
+// --- 1. Оновлена і стабільна логіка відкриття/закриття форми ---
 function toggleForm() {
-  const form = document.getElementById("newBoardForm"); if (!form) return;
-  form.style.display = ["none", ""].includes(form.style.display) ? "flex" : "none";
+  const form = document.getElementById("newBoardForm"); 
+  if (!form) return;
+  
+  if (form.style.display === "flex") {
+    // Якщо форма відкрита — закриваємо і ОЧИЩАЄМО її
+    form.style.display = "none";
+    document.getElementById("boardTitle").value = ""; 
+    document.getElementById("participants").innerHTML = "";
+  } else {
+    // Якщо закрита — відкриваємо і підтягуємо ім'я поточного юзера
+    form.style.display = "flex";
+    document.getElementById("boardOwner").value = usersMap[currentUser] || currentUser;
+  }
 }
-
 function addParticipant() {
   const div = document.createElement("div"); div.className = "participant-row";
   const uSel = document.createElement("select");
@@ -944,11 +955,21 @@ function addParticipant() {
   document.getElementById("participants").appendChild(div);
 }
 
+// --- 2. Оновлена логіка створення (з блокуванням кнопки від подвійних кліків) ---
 function createBoard() {
   const title = document.getElementById("boardTitle").value.trim();
-  if (!title) { alert("Введіть назву дошки"); return; }
-  const ownerKey = usersMap[currentUser] ? currentUser : null;
-  const ownerName = usersMap[ownerKey] || ownerKey;
+  if (!title) { 
+    alert("Введіть назву процесу"); 
+    return; 
+  }
+  
+  // Знаходимо кнопку і блокуємо її, щоб не натиснули 10 разів
+  const btn = document.getElementById("saveBtn");
+  btn.innerText = "Створення...";
+  btn.disabled = true;
+
+  // Виправляємо баг з можливим null у власника
+  const ownerName = usersMap[currentUser] || currentUser;
   let participants = [`${ownerName} (Оунер)`];
 
   document.querySelectorAll("#participants .participant-row").forEach(row => {
@@ -956,15 +977,58 @@ function createBoard() {
     participants.push(`${usersMap[selects[0].value]} (${selects[1].value === "executor" ? "Виконавець" : "Керівник"})`);
   });
 
-  const processData = { processID: Date.now().toString(), title, owner: ownerKey, participants, status: "new" };
+  const processData = { 
+    processID: Date.now().toString(), 
+    title, 
+    owner: currentUser, // Зберігаємо точний ключ
+    participants, 
+    status: "new" 
+  };
+  
   allProcesses.push(processData);
   sessionStorage.setItem("dashboardData", JSON.stringify({ processes: allProcesses }));
   
+  // Одразу малюємо на екрані, щоб юзер бачив результат миттєво
   renderFilteredDashboard();
-  fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "saveDashboard", data: { processes: allProcesses } }) });
-
-  document.getElementById("boardTitle").value = ""; document.getElementById("participants").innerHTML = ""; document.getElementById("newBoardForm").style.display = "none";
+  
+  // Відправляємо у фоні
+  fetch(SCRIPT_URL, { 
+    method: "POST", 
+    mode: "no-cors", 
+    headers: { "Content-Type": "application/json" }, 
+    body: JSON.stringify({ action: "saveDashboard", data: { processes: allProcesses } }) 
+  }).then(() => {
+    // Повертаємо форму і кнопку у вихідний стан
+    toggleForm(); 
+    btn.innerText = "Створити";
+    btn.disabled = false;
+  }).catch(err => {
+    console.error("Помилка створення:", err);
+    btn.innerText = "Створити";
+    btn.disabled = false;
+    alert("Помилка зв'язку з сервером.");
+  });
 }
+
+// --- 3. Додаємо закриття модалок по кліку на темний фон ---
+// Цей код можна вставити просто знизу після твоїх функцій
+window.addEventListener('DOMContentLoaded', () => {
+  // Для форми створення
+  const newBoardModal = document.getElementById("newBoardForm");
+  if(newBoardModal) {
+    newBoardModal.addEventListener("click", (e) => {
+      if (e.target === newBoardModal) toggleForm();
+    });
+  }
+
+  // Для форми редагування
+  const editModal = document.getElementById("editProcessModal");
+  if(editModal) {
+    editModal.addEventListener("click", (e) => {
+      if (e.target === editModal) editModal.style.display = "none";
+    });
+  }
+});
 
 function showProcessModal(proc) {
   const currentKey = normalizeUser(currentUser);
