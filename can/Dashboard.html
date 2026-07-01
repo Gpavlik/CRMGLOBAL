@@ -1163,6 +1163,401 @@ const logoutBtn = document.getElementById("logoutBtn");
 if(logoutBtn) {
     logoutBtn.addEventListener("click", function() { sessionStorage.clear(); window.location.href = "index.html"; });
 }
+// ==========================================================================
+// 3. БЛОК ЗВІТНОСТІ ТА ГАНТ-ГРАФІКІВ (Helicopter View)
+// ==========================================================================
+
+async function initProcessReport(processId) {
+  const currentProcess = allProcesses.find(p => p.processID === processId);
+  if (!currentProcess) { alert("Дані процесу не знайдені."); return; }
+
+  showReportModal("<div style='padding: 40px; text-align: center; color: #64748b; font-weight: bold;'>⏳ Збираємо аналітику та будуємо Гант...</div>", currentProcess);
+
+  try {
+    const res = await fetch(PROCESSES_SHEET_URL);
+    const text = await res.text();
+    const json = JSON.parse(text.substr(47).slice(0, -2));
+
+    const uniqueTasks = {}; 
+    
+    json.table.rows.slice(1).forEach(r => {
+      if (!r || !r.c) return;
+      const pID = String(r.c[0]?.v || "").trim();
+      if (pID !== processId) return;
+
+      const rawTaskID = String(r.c[5]?.v || "").trim();
+      const taskID = rawTaskID.split('_')[0]; 
+      if (!taskID) return;
+
+      let parsedStart = parseGoogleDateSafe(r.c[7]);
+      let parsedDeadline = parseGoogleDateSafe(r.c[8]);
+      if (!parsedStart && parsedDeadline) parsedStart = parsedDeadline;
+      if (!parsedDeadline && parsedStart) parsedDeadline = parsedStart;
+
+      if (!uniqueTasks[taskID]) {
+        uniqueTasks[taskID] = {
+           id: taskID,
+           title: String(r.c[6]?.v || "Без назви"),
+           username: String(r.c[10]?.v || "Не призначено"),
+           start: parsedStart,
+           deadline: parsedDeadline,
+           dependencyTitle: String(r.c[12]?.v || ""),
+           comment: String(r.c[15]?.v || ""),
+           status: String(r.c[16]?.v || "").toLowerCase().trim()
+        };
+      } else {
+         if (parsedStart && (!uniqueTasks[taskID].start || new Date(parsedStart) < new Date(uniqueTasks[taskID].start))) {
+             uniqueTasks[taskID].start = parsedStart;
+         }
+         if (parsedDeadline && (!uniqueTasks[taskID].deadline || new Date(parsedDeadline) > new Date(uniqueTasks[taskID].deadline))) {
+             uniqueTasks[taskID].deadline = parsedDeadline;
+         }
+      }
+    });
+
+    const tasks = Object.values(uniqueTasks);
+    renderFullReport(currentProcess, tasks);
+  } catch (err) {
+    console.error(err);
+    document.querySelector('.report-modal-body').innerHTML = "<p style='color:red; text-align:center;'>Помилка завантаження даних.</p>";
+  }
+}
+
+function parseGoogleDateSafe(cell) {
+   if (!cell) return null;
+   let str = cell.f || cell.v;
+   if (typeof str !== 'string') return null;
+   str = str.trim();
+   
+   if (str.startsWith('Date')) {
+       const parts = str.match(/Date\((\d+),(\d+),(\d+)/);
+       if (parts) return `${parts[1]}-${String(parseInt(parts[2]) + 1).padStart(2, '0')}-${String(parts[3]).padStart(2, '0')}`;
+   }
+   const dmY = str.match(/^(\d{2})[\.\/](\d{2})[\.\/](\d{4})/);
+   if (dmY) return `${dmY[3]}-${dmY[2]}-${dmY[1]}`; 
+   
+   const yMd = str.match(/^(\d{4})-(\d{2})-(\d{2})/);
+   if (yMd) return `${yMd[1]}-${yMd[2]}-${yMd[3]}`;
+   
+   return null;
+}
+
+function renderFullReport(proc, tasks) {
+  const total = tasks.length;
+  const done = tasks.filter(t => ["done", "виконано", "completed"].includes(t.status)).length;
+  const progress = tasks.filter(t => ["inprogress", "в процесі", "progress"].includes(t.status)).length;
+  const todo = total - done - progress;
+  const percent = total > 0 ? Math.round((done / total) * 100) : 0;
+  
+  const teamStats = {};
+  
+  if (proc.participants && Array.isArray(proc.participants)) {
+      proc.participants.forEach(p => {
+          const cleanName = p.split(" (")[0].trim();
+          teamStats[cleanName] = { total: 0, done: 0, progress: 0, todo: 0 };
+      });
+  }
+
+  const statusOrder = { 'todo': 1, 'inprogress': 2, 'done': 3 };
+  tasks.sort((a, b) => {
+    const getWeight = (s) => {
+        if (["done", "виконано", "completed"].includes(s)) return 3;
+        if (["inprogress", "в процесі", "progress"].includes(s)) return 2;
+        return 1;
+    };
+    return getWeight(a.status) - getWeight(b.status);
+  });
+
+  tasks.forEach(t => {
+      const u = t.username || "Не призначено";
+      if (!teamStats[u]) teamStats[u] = { total: 0, done: 0, progress: 0, todo: 0 };
+      
+      teamStats[u].total++;
+      if (["done", "виконано", "completed"].includes(t.status)) teamStats[u].done++;
+      else if (["inprogress", "в процесі", "progress"].includes(t.status)) teamStats[u].progress++;
+      else teamStats[u].todo++;
+  });
+
+  let teamHtml = `<table style="width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 20px;">
+                    <tr style="background:#f1f5f9;"><th style="border:1px solid #cbd5e1; padding:6px; text-align:left;">Учасник</th><th style="border:1px solid #cbd5e1; padding:6px;">Всього задач</th><th style="border:1px solid #cbd5e1; padding:6px; color:#10b981;">Виконано</th><th style="border:1px solid #cbd5e1; padding:6px; color:#f59e0b;">В процесі</th><th style="border:1px solid #cbd5e1; padding:6px; color:#3b82f6;">В черзі</th></tr>`;
+  Object.keys(teamStats).forEach(u => {
+      teamHtml += `<tr><td style="border:1px solid #cbd5e1; padding:6px; font-weight:bold;">${u}</td>
+                       <td style="border:1px solid #cbd5e1; padding:6px; text-align:center;">${teamStats[u].total}</td>
+                       <td style="border:1px solid #cbd5e1; padding:6px; text-align:center;">${teamStats[u].done}</td>
+                       <td style="border:1px solid #cbd5e1; padding:6px; text-align:center;">${teamStats[u].progress}</td>
+                       <td style="border:1px solid #cbd5e1; padding:6px; text-align:center;">${teamStats[u].todo}</td></tr>`;
+  });
+  teamHtml += `</table>`;
+
+  let tasksListHtml = `<ul style="list-style: none; padding: 0; margin: 0; font-size: 12px; line-height: 1.6;">`;
+  tasks.forEach(t => {
+    let isDone = ["done", "виконано", "completed"].includes(t.status);
+    let isInProg = ["inprogress", "в процесі", "progress"].includes(t.status);
+    
+    let badge = isDone ? `<span style="color:#10b981; font-weight:bold;">[✅ Виконано]</span>` 
+              : isInProg ? `<span style="color:#f59e0b; font-weight:bold;">[⚙️ В процесі]</span>` 
+              : `<span style="color:#3b82f6; font-weight:bold;">[📋 В черзі]</span>`;
+              
+    let cleanComment = t.comment ? t.comment.replace(/<[^>]*>?/gm, ' ').trim() : "";
+    let commentHtml = cleanComment ? `<br><span style="color: #64748b; padding-left: 15px;">💬 <i>${cleanComment}</i></span>` : "";
+
+    tasksListHtml += `<li style="margin-bottom: 8px; border-bottom: 1px dashed #e2e8f0; padding-bottom: 8px;">
+                        ${badge} <b>${t.title}</b> <span style="color: #475569;">(${t.username})</span>${commentHtml}
+                      </li>`;
+  });
+  tasksListHtml += `</ul>`;
+
+  const htmlContent = `
+    <div id="print-report-area" style="font-family: Arial, sans-serif; color: #1e293b; padding: 10px;">
+      <h2 style="border-bottom: 2px solid #3b82f6; padding-bottom: 8px;">📊 Звіт: ${proc.title}</h2>
+      <p style="font-size: 14px;"><b>Загальний прогрес:</b> ${percent}% (✅ ${done} | ⚙️ ${progress} | 📋 ${todo})</p>
+      
+      <h4 style="margin: 15px 0 5px 0; color: #1e293b;">👥 Навантаження команди:</h4>
+      ${teamHtml}
+
+      <h4 style="margin: 15px 0 10px 0; color: #1e293b;">💬 Статуси та останні коментарі:</h4>
+      ${tasksListHtml}
+
+      <h4 style="margin: 20px 0 5px 0;">📈 Графік виконання (Гант):</h4>
+      <div id="reportGanttContainer" style="width: 100%; overflow-x: auto; border: 1px solid #cbd5e1; border-radius: 6px; padding: 10px; background: #fff;"></div>
+    </div>
+  `;
+
+  document.querySelector('.report-modal-body').innerHTML = htmlContent;
+  renderGanttForReport(tasks);
+}
+
+function renderGanttForReport(tasks) {
+  const container = document.getElementById("reportGanttContainer");
+  if (!container) return;
+  container.innerHTML = ""; 
+  
+  const validTasks = tasks.filter(t => t.start && !isNaN(new Date(t.start).getTime()));
+  if(validTasks.length === 0) { container.innerHTML = "<p style='padding: 20px; text-align: center;'>Немає задач для відображення</p>"; return; }
+
+  validTasks.sort((a,b) => new Date(a.start) - new Date(b.start));
+  const starts = validTasks.map(t => new Date(t.start));
+  const ends = validTasks.map(t => new Date(t.deadline || t.start));
+  
+  const minDate = new Date(Math.min(...starts));
+  const maxDate = new Date(Math.max(...ends)); 
+  const diffDays = Math.ceil((maxDate - minDate)/(86400000)) + 1;
+  const dateList = [];
+  for (let i = 0; i < diffDays; i++) { const d = new Date(minDate); d.setDate(minDate.getDate() + i); dateList.push(d); }
+
+  const daysUA = ["нд", "пн", "вт", "ср", "чт", "пт", "сб"];
+  const today = new Date();
+  const nowHour = today.getHours() + (today.getMinutes() / 60);
+  const dayProgress = nowHour / 24;
+
+  const innerWrapper = document.createElement("div"); 
+  innerWrapper.style.position = "relative";
+  innerWrapper.style.width = "max-content"; 
+
+  const table = document.createElement("table"); 
+  table.style.borderCollapse = "collapse"; 
+  table.style.fontSize = "11px";
+  table.style.width = "100%";
+  table.style.fontFamily = "Arial, sans-serif";
+
+  const thead = document.createElement("thead"); 
+  const trHead = document.createElement("tr");
+
+  [{ text: "Задача", width: "180px" }, { text: "Виконавець", width: "100px" }].forEach(h => {
+    const th = document.createElement("th"); 
+    th.innerText = h.text; 
+    th.style.border = "1px solid #cbd5e1"; th.style.backgroundColor = "#1e293b"; th.style.color = "#fff"; th.style.padding = "6px"; th.style.minWidth = h.width; 
+    trHead.appendChild(th);
+  });
+
+  function hslToHex(h, s, l) {
+      l /= 100; const a = s * Math.min(l, 1 - l) / 100;
+      const f = n => { const k = (n + h / 30) % 12; const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1); return Math.round(255 * color).toString(16).padStart(2, '0'); };
+      return `#${f(0)}${f(8)}${f(4)}`;
+  }
+
+  dateList.forEach((d, index) => { 
+    const th = document.createElement("th"); 
+    const dayStr = daysUA[d.getDay()];
+    const dateStr = d.toLocaleDateString("uk-UA", { day:"2-digit", month:"2-digit" });
+    th.innerHTML = `${dayStr}<br>${dateStr}`; 
+    th.className = "date-header-report"; 
+    
+    let hue = 120;
+    if (diffDays > 1) hue = 120 - Math.floor((index / (diffDays - 1)) * 120);
+    const isToday = d.toDateString() === today.toDateString();
+    
+    th.style.backgroundColor = hslToHex(hue, 80, 85);
+    th.style.color = "#1e293b";
+    th.style.border = "1px solid #cbd5e1";
+    th.style.borderBottom = `2px solid ${hslToHex(hue, 80, 50)}`;
+    th.style.padding = "4px";
+    if (isToday) th.style.fontWeight = "bold";
+
+    trHead.appendChild(th); 
+  });
+  thead.appendChild(trHead); table.appendChild(thead);
+
+  const tbody = document.createElement("tbody");
+  const todayDateOnly = new Date(today); todayDateOnly.setHours(0,0,0,0);
+
+  validTasks.forEach(t => {
+    const tr = document.createElement("tr");
+    
+    let isDone = ["done", "виконано", "completed"].includes(t.status);
+    let isInProg = ["inprogress", "в процесі", "progress"].includes(t.status);
+    let bgColor = isDone ? "#10b981" : isInProg ? "#f59e0b" : "#64748b"; 
+    let icon = isDone ? "&#10003;" : isInProg ? "&#9654;" : "&#9675;";
+
+    const taskStart = new Date(t.start); taskStart.setHours(0,0,0,0);
+    const taskEnd = new Date(t.deadline || t.start); taskEnd.setHours(0,0,0,0);
+
+    tr.innerHTML = `<td style="border:1px solid #cbd5e1; padding:4px; font-weight:bold;">${t.title || "—"}</td>
+                    <td style="border:1px solid #cbd5e1; padding:4px;">${t.username || "—"}</td>`;
+
+    let firstMatchTd = null;
+    let lastMatchTd = null;
+
+    dateList.forEach((currentDate, index) => {
+      const td = document.createElement("td");
+      const dCurrent = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate());
+      
+      let hue = 120;
+      if (diffDays > 1) hue = 120 - Math.floor((index / (diffDays - 1)) * 120);
+
+      td.style.border = "1px solid #cbd5e1";
+      td.style.textAlign = "center";
+      td.style.verticalAlign = "middle";
+      td.style.height = "24px";
+
+      if (dCurrent >= taskStart && dCurrent <= taskEnd) { 
+        td.style.backgroundColor = bgColor;
+        td.style.color = "#ffffff";
+        td.innerHTML = `<span style="position:relative; z-index:10;">${icon}</span>`; 
+        if(!firstMatchTd) firstMatchTd = td;
+        lastMatchTd = td;
+      } else { 
+        td.style.backgroundColor = hslToHex(hue, 80, 96);
+      }
+      tr.appendChild(td);
+    });
+    
+    if(firstMatchTd) firstMatchTd.id = `rep-cell-${t.id}-start`;
+    if(lastMatchTd) lastMatchTd.id = `rep-cell-${t.id}-end`;
+
+    tbody.appendChild(tr);
+  });
+
+  table.appendChild(tbody); 
+  innerWrapper.appendChild(table); 
+
+  let line = null;
+  const todayIndex = dateList.findIndex(d => d.getFullYear() === today.getFullYear() && d.getMonth() === today.getMonth() && d.getDate() === today.getDate());
+
+  if (todayIndex !== -1) {
+    line = document.createElement("div");
+    line.style.position = "absolute";
+    line.style.top = "0";
+    line.style.bottom = "0";
+    line.style.width = "0px";
+    line.style.zIndex = "15";
+    innerWrapper.appendChild(line);
+  }
+
+  const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  svg.style.position = "absolute"; svg.style.top = "0"; svg.style.left = "0";
+  svg.style.width = "100%"; svg.style.height = "100%";
+  svg.style.pointerEvents = "none"; svg.style.zIndex = "10";
+  svg.innerHTML = `<defs><marker id="arrowheadRep" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#ef4444" /></marker></defs>`;
+  innerWrapper.appendChild(svg);
+
+  container.appendChild(innerWrapper);
+
+  setTimeout(() => {
+    if (line && todayIndex !== -1) {
+      const headerCells = table.querySelectorAll('.date-header-report');
+      const todayHeader = headerCells[todayIndex];
+      if (todayHeader) {
+        let hue = 120;
+        if (diffDays > 1) hue = 120 - Math.floor((todayIndex / (diffDays - 1)) * 120);
+        
+        const iRect = innerWrapper.getBoundingClientRect();
+        const thRect = todayHeader.getBoundingClientRect();
+        const offsetLeft = thRect.left - iRect.left + (thRect.width * dayProgress);
+        
+        line.style.left = offsetLeft + "px";
+        line.style.borderLeft = `2px solid ${hslToHex(hue, 100, 40)}`;
+      }
+    }
+
+    validTasks.forEach(t => {
+      if (t.dependencyTitle) {
+        const depTask = validTasks.find(x => x.title === t.dependencyTitle);
+        if (depTask) {
+          const sourceCell = document.getElementById(`rep-cell-${depTask.id}-end`);
+          const targetCell = document.getElementById(`rep-cell-${t.id}-start`);
+          
+          if(sourceCell && targetCell) {
+            const iRect = innerWrapper.getBoundingClientRect(); 
+            const sRect = sourceCell.getBoundingClientRect();
+            const tRect = targetCell.getBoundingClientRect();
+            
+            const startX = sRect.right - iRect.left;
+            const startY = sRect.top + (sRect.height/2) - iRect.top;
+            const endX = tRect.left - iRect.left;
+            const endY = tRect.top + (tRect.height/2) - iRect.top;
+            
+            const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+            let d = "";
+            if (endX >= startX) d = `M ${startX} ${startY} L ${startX + 12} ${startY} L ${startX + 12} ${endY} L ${endX - 4} ${endY}`;
+            else d = `M ${startX} ${startY} L ${startX + 12} ${startY} L ${startX + 12} ${startY + 14} L ${endX - 12} ${startY + 14} L ${endX - 12} ${endY} L ${endX - 4} ${endY}`;
+            
+            path.setAttribute("d", d);
+            path.setAttribute("fill", "transparent");
+            path.setAttribute("stroke", "#ef4444");
+            path.setAttribute("stroke-width", "2");
+            path.setAttribute("marker-end", "url(#arrowheadRep)");
+            svg.appendChild(path);
+          }
+        }
+      }
+    });
+  }, 200);
+}
+
+function showReportModal(htmlContent, proc) {
+  const old = document.getElementById("reportModal"); if (old) old.remove();
+  const modal = document.createElement("div");
+  modal.id = "reportModal"; modal.className = "report-modal-overlay";
+  modal.innerHTML = `
+    <div class="report-modal-window">
+      <div class="report-modal-header"><h3>Огляд процесу</h3><button class="report-modal-close" onclick="this.closest('#reportModal').remove()">&times;</button></div>
+      <div class="report-modal-actions">
+        <button onclick="window.exportReportToWord('${proc.title}')">📝 Word</button>
+        <button onclick="window.sendReportByEmail('${proc.title}')">✉️ Пошта</button>
+      </div>
+      <div class="report-modal-body">${htmlContent}</div>
+    </div>
+  `;
+  document.body.appendChild(modal);
+}
+
+// Прикріплюємо функції до об'єкта window, щоб вони працювали з кнопок модалки
+window.exportReportToWord = function(filename) {
+  const area = document.getElementById("print-report-area");
+  const html = `<html><head><meta charset="utf-8"></head><body>${area.innerHTML}</body></html>`;
+  const blob = new Blob(['\uFEFF' + html], { type: 'application/msword' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url; a.download = `Звіт_${filename.replace(/[/\\?%*:|"<>\s]/g, '_')}.doc`;
+  a.click();
+};
+
+window.sendReportByEmail = function(filename) {
+  const area = document.getElementById("print-report-area");
+  window.location.href = `mailto:?subject=${encodeURIComponent('Звіт: ' + filename)}&body=${encodeURIComponent(area.innerText)}`;
+};
+
 </script>
 <audio id="relaxAudio" loop>
   <source src="./relax-pad.mp3" type="audio/mpeg">
