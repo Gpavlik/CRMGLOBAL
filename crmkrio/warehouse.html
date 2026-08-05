@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ERP Склад - Відправки</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0; padding: 0;
+      background: linear-gradient(135deg, #1c3b57, #112233);
+      color: #ffffff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    h1 { margin-top: 20px; }
+    
+    /* Таблиця замовлень */
+    table {
+      border-collapse: collapse;
+      width: 95%;
+      margin-top: 20px;
+      overflow-x: auto;
+      display: block;
+      background-color: #2a4b6e;
+      border-radius: 8px;
+    }
+    th, td {
+      border: 1px solid #4a729e;
+      padding: 10px;
+      text-align: center;
+      word-wrap: break-word;
+    }
+    th { background: #0f1c29; color: #fff; }
+    tbody tr:hover { background-color: #3b638f; }
+
+    /* Кнопки */
+    button {
+      padding: 8px 12px;
+      margin: 2px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+      color: #fff;
+    }
+    .btn-edit { background-color: #f39c12; }
+    .btn-print { background-color: #27ae60; }
+    .btn-edit:hover { background-color: #d68910; }
+    .btn-print:hover { background-color: #219150; }
+
+    /* Модальне вікно оновлення статусу */
+    .modal {
+      display: none; position: fixed; z-index: 1000;
+      left: 0; top: 0; width: 100%; height: 100%;
+      background-color: rgba(0,0,0,0.8);
+    }
+    .modal-content {
+      background: #effff0; color: #000;
+      margin: 15% auto; padding: 20px;
+      width: 90%; max-width: 400px;
+      border-radius: 12px; text-align: center;
+    }
+    select, input {
+      width: 100%; padding: 10px; margin: 10px 0;
+      box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px;
+    }
+    .save-btn { background-color: #2980b9; width: 100%; font-size: 16px; padding: 12px;}
+    .save-btn:hover { background-color: #1f618d; }
+
+    /* --- СТИЛІ ДЛЯ ДРУКУ НАКЛАДНОЇ --- */
+    #printSection { display: none; } /* Ховаємо на екрані */
+    
+    @media print {
+      body * { display: none !important; } /* Ховаємо ВСЕ */
+      #printSection, #printSection * { 
+        display: block !important; 
+        color: #000; /* Чорний текст для принтера */
+      }
+      #printSection {
+        position: absolute; left: 0; top: 0;
+        width: 100%; padding: 20px;
+        background: #fff; 
+      }
+      .invoice-header { text-align: center; font-size: 24px; font-weight: bold; margin-bottom: 20px; border-bottom: 2px solid #000;}
+      .invoice-details { font-size: 16px; line-height: 1.6; margin-bottom: 30px;}
+      .invoice-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+      .invoice-table th, .invoice-table td { border: 1px solid #000; padding: 8px; text-align: left; }
+      .invoice-footer { margin-top: 50px; display: flex; justify-content: space-between; }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Склад: Очікувані відправки</h1>
+  <div id="loader">Завантаження замовлень... ⏳</div>
+
+  <table id="ordersTable" style="display:none;">
+    <thead>
+      <tr>
+        <th>Дата</th>
+        <th>Менеджер</th>
+        <th>Отримувач (ЛПЗ / Лікар)</th>
+        <th>Продукт</th>
+        <th>К-ть</th>
+        <th>Статус</th>
+        <th>ТТН</th>
+        <th>Дії</th>
+      </tr>
+    </thead>
+    <tbody id="ordersBody"></tbody>
+  </table>
+
+  <!-- Модалка для зміни статусу -->
+  <div id="statusModal" class="modal">
+    <div class="modal-content">
+      <h3 style="margin-top:0;">Оновити замовлення</h3>
+      <p id="modalOrderInfo" style="font-size: 14px; color: #555;"></p>
+      
+      <label>Статус:</label>
+      <select id="statusSelect">
+        <option value="Нова 🟡 (Очікує обробки)">Нова 🟡 (Очікує обробки)</option>
+        <option value="Зібрано 🟠 (Готово до відправки)">Зібрано 🟠 (Готово до відправки)</option>
+        <option value="Відправлено 🟢">Відправлено 🟢</option>
+        <option value="Скасовано 🔴">Скасовано 🔴</option>
+      </select>
+
+      <label>Номер ТТН (Нова Пошта):</label>
+      <input type="text" id="ttnInput" placeholder="20450000000000">
+
+      <input type="hidden" id="editingRowIndex">
+      <button class="save-btn" onclick="saveOrderStatus()">💾 Зберегти зміни</button>
+      <button style="width: 100%; background: #ccc; color: #000; margin-top: 10px;" onclick="document.getElementById('statusModal').style.display='none'">Скасувати</button>
+    </div>
+  </div>
+
+  <!-- Блок для друку (Видно тільки принтеру) -->
+  <div id="printSection">
+    <div class="invoice-header">ВИДАТКОВА НАКЛАДНА № <span id="printId"></span></div>
+    <div class="invoice-details">
+      <b>Постачальник:</b> ТОВ "НВК ФАРМАСКО"<br>
+      <b>Відповідальний менеджер:</b> <span id="printManager"></span><br>
+      <b>Дата замовлення:</b> <span id="printDate"></span><br><br>
+      <b>Отримувач (Клієнт):</b> <span id="printDoctor"></span><br>
+      <b>Місце доставки:</b> <span id="printAddress"></span>
+    </div>
+    
+    <table class="invoice-table">
+      <thead>
+        <tr><th>№</th><th>Найменування товару</th><th>Кількість</th><th>Одиниці</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td id="printProduct"></td><td id="printQty"></td><td>шт.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="invoice-footer">
+      <div><b>Відпустив (Склад):</b> _________________</div>
+      <div><b>Отримав:</b> _________________</div>
+    </div>
+  </div>
+
+  <script>
+    // ❗️ Встав сюди свій лінк на Google Apps Script
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzOs4WfSSrYsbpdL_YMSnjdn15OedzhhPsjGD5XWONSPJDjQlZq6UE5s2QOO0QSubcw/exec";
+    
+    let globalOrders = [];
+
+    async function loadOrders() {
+      try {
+        const response = await fetch(SCRIPT_URL + "?type=logistics");
+        globalOrders = await response.json();
+        
+        const tbody = document.getElementById("ordersBody");
+        tbody.innerHTML = "";
+        
+        // Відображаємо з кінця (найновіші зверху)
+        globalOrders.reverse().forEach((order, index) => {
+          // Реальний індекс рядка в Google Таблиці (для оновлення)
+          // reverse змінює порядок, тому вираховуємо оригінальний індекс + 2 (бо 1 це заголовки)
+          const rowIndex = globalOrders.length - index + 1; 
+
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td>${order.date}</td>
+            <td>${order.manager}</td>
+            <td>${order.city}, ${order.lpz}<br><b>${order.doctor}</b></td>
+            <td><b>${order.product}</b></td>
+            <td style="font-size: 18px; font-weight: bold;">${order.qty}</td>
+            <td>${order.status}</td>
+            <td>${order.ttn || "—"}</td>
+            <td>
+              <button class="btn-print" onclick="printInvoice('${order.date}', '${order.manager}', '${order.doctor}', '${order.region}, ${order.city}, ${order.lpz}', '${order.product}', '${order.qty}')">🖨 Друк</button>
+              <button class="btn-edit" onclick="openEditModal(${rowIndex}, '${order.product}', '${order.qty}', '${order.status}', '${order.ttn}')">✏️ Змінити</button>
+            </td>
+          `;
+          tbody.appendChild(tr);
+        });
+
+        document.getElementById("loader").style.display = "none";
+        document.getElementById("ordersTable").style.display = "block";
+      } catch (err) {
+        document.getElementById("loader").innerHTML = "❌ Помилка завантаження даних.";
+      }
+    }
+
+    function openEditModal(rowIndex, product, qty, currentStatus, currentTtn) {
+      document.getElementById("editingRowIndex").value = rowIndex;
+      document.getElementById("statusSelect").value = currentStatus || "Нова 🟡 (Очікує обробки)";
+      document.getElementById("ttnInput").value = currentTtn !== "undefined" ? currentTtn : "";
+      
+      document.getElementById("modalOrderInfo").innerText = `Товар: ${product} (${qty} шт)`;
+      document.getElementById("statusModal").style.display = "block";
+    }
+
+    async function saveOrderStatus() {
+      const rowIndex = document.getElementById("editingRowIndex").value;
+      const newStatus = document.getElementById("statusSelect").value;
+      const newTtn = document.getElementById("ttnInput").value;
+      
+      document.querySelector(".save-btn").innerText = "Оновлення... ⏳";
+      
+      try {
+        await fetch(SCRIPT_URL, {
+          method: "POST",
+          body: JSON.stringify({
+            action: "updateLogistics",
+            row: rowIndex,
+            status: newStatus,
+            ttn: newTtn
+          }),
+          headers: { "Content-Type": "text/plain;charset=utf-8" }
+        });
+        
+        document.getElementById("statusModal").style.display = "none";
+        document.querySelector(".save-btn").innerText = "💾 Зберегти зміни";
+        
+        // Перезавантажуємо таблицю
+        document.getElementById("loader").style.display = "block";
+        document.getElementById("ordersTable").style.display = "none";
+        loadOrders();
+        
+      } catch (err) {
+        alert("Помилка при оновленні.");
+        document.querySelector(".save-btn").innerText = "💾 Зберегти зміни";
+      }
+    }
+
+    function printInvoice(date, manager, doctor, address, product, qty) {
+      // Заповнюємо прихований HTML блок даними
+      document.getElementById("printId").innerText = Date.now().toString().slice(-6); // Генерація випадкового номера
+      document.getElementById("printDate").innerText = date;
+      document.getElementById("printManager").innerText = manager;
+      document.getElementById("printDoctor").innerText = doctor;
+      document.getElementById("printAddress").innerText = address;
+      document.getElementById("printProduct").innerText = product;
+      document.getElementById("printQty").innerText = qty;
+      
+      // Викликаємо системне вікно друку браузера
+      window.print();
+    }
+
+    // Завантажуємо при відкритті
+    window.onload = loadOrders;
+  </script>
+</body>
+</html>
