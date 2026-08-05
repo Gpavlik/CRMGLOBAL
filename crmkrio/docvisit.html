@@ -16,7 +16,60 @@ body {
   flex-direction: column;
   align-items: center;
 }
+/* --- СТИЛІ ДЛЯ ШІ-ВІЗИТУ --- */
+.ai-btn {
+  background-color: #007bff;
+  border-color: #0056b3;
+  font-weight: bold;
+}
+.ai-btn:hover { background-color: #0056b3; }
 
+#aiModal {
+  display: none;
+  position: fixed; z-index: 1000;
+  left: 0; top: 0; width: 100%; height: 100%;
+  background-color: rgba(0,0,0,0.8);
+}
+.ai-modal-content {
+  background: #effff0;
+  color: #000;
+  margin: 10% auto;
+  padding: 20px;
+  width: 90%;
+  max-width: 600px;
+  border-radius: 12px;
+  text-align: center;
+}
+#transcriptArea {
+  width: 100%;
+  height: 150px;
+  margin-top: 15px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+  resize: vertical;
+}
+.record-btn {
+  background-color: #dc3545; /* червона кнопка */
+  border-radius: 50px;
+  width: 180px;
+}
+.record-btn.recording {
+  animation: pulse 1.5s infinite;
+  background-color: #a71d2a;
+}
+@keyframes pulse {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.7); }
+  70% { transform: scale(1); box-shadow: 0 0 0 15px rgba(220, 53, 69, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(220, 53, 69, 0); }
+}
+.analyze-btn {
+  background-color: #28a745;
+  width: 100%;
+  margin-top: 15px;
+}
+/* -------------------------- */
 /* Таблиця */
 table {
   border-collapse: collapse;
@@ -327,7 +380,7 @@ canvas.thumbnail.active {
   
 <div class="buttons">  
 
-  
+<button class="ai-btn" onclick="openAiModal()">🎙 Записати ШІ-візит</button>
   <button style="background-color: #4caf50;" onclick="saveDoctorVisit()" onclick="window.location.href='calendar.html'">Зберегти візит</button>
   <button onclick="window.location.href='calendar.html'">Перейти в календар</button>
   <button onclick="window.location.href='menu.html'">Перейти в меню</button>
@@ -347,7 +400,24 @@ canvas.thumbnail.active {
     </div>
   </div>
 </div>
-
+<!-- Модалка для ШІ-асистента -->
+<div id="aiModal" class="modal">
+  <div class="ai-modal-content">
+    <span class="close" onclick="closeAiModal()">&times;</span>
+    <h2 style="color: #004d00; margin-top: 0;">ШІ-Асистент візиту</h2>
+    <p>Натисніть кнопку та надиктуйте, як пройшов візит. Система сама розпізнає текст та рознесе дані по полях.</p>
+    
+    <button id="recordBtn" class="record-btn" onclick="toggleRecording()">🎤 Почати запис</button>
+    
+    <textarea id="transcriptArea" placeholder="Тут з'явиться розпізнаний текст... Ви можете відредагувати його вручну."></textarea>
+    
+    <button id="analyzeBtn" class="analyze-btn" onclick="sendToAI()" style="display:none;">🧠 Аналізувати та заповнити</button>
+    
+    <div id="aiLoader" style="display:none; color: #004d00; margin-top:10px;">
+      <b>Обробка ШІ... Це займе кілька секунд ⏳</b>
+    </div>
+  </div>
+</div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js"></script>
   <script src="https://mozilla.github.io/pdf.js/build/pdf.js"></script>
@@ -992,7 +1062,117 @@ function normalizeSpecialty(specialty) {
   };
   return map[specialty] || specialty;
 }
+// --- ЛОГІКА ШІ АСИСТЕНТА (Speech-to-Text) ---
+let recognition;
+let isRecording = false;
 
+// Ініціалізація Web Speech API
+if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  recognition = new SpeechRecognition();
+  recognition.lang = 'uk-UA'; // Українська мова
+  recognition.continuous = true; // Слухати безперервно
+  recognition.interimResults = true; // Показувати попередні результати
+
+  recognition.onresult = (event) => {
+    let finalTranscript = '';
+    let interimTranscript = '';
+    
+    for (let i = event.resultIndex; i < event.results.length; ++i) {
+      if (event.results[i].isFinal) {
+        finalTranscript += event.results[i][0].transcript + ' ';
+      } else {
+        interimTranscript += event.results[i][0].transcript;
+      }
+    }
+    
+    const textarea = document.getElementById('transcriptArea');
+    // Додаємо новий фінальний текст до того, що вже є в textarea
+    if (finalTranscript) {
+      textarea.value += finalTranscript;
+    }
+  };
+
+  recognition.onerror = (event) => {
+    console.error("Помилка мікрофону:", event.error);
+    if(event.error === 'not-allowed') {
+      alert("Надайте доступ до мікрофону в налаштуваннях браузера!");
+      stopRecording();
+    }
+  };
+} else {
+  alert("Ваш браузер не підтримує розпізнавання голосу. Використовуйте Google Chrome.");
+}
+
+function openAiModal() {
+  document.getElementById('aiModal').style.display = 'block';
+}
+
+function closeAiModal() {
+  if (isRecording) stopRecording();
+  document.getElementById('aiModal').style.display = 'none';
+}
+
+function toggleRecording() {
+  if (!recognition) return;
+  
+  if (isRecording) {
+    stopRecording();
+  } else {
+    startRecording();
+  }
+}
+
+function startRecording() {
+  recognition.start();
+  isRecording = true;
+  
+  const btn = document.getElementById('recordBtn');
+  btn.textContent = "🛑 Зупинити запис";
+  btn.classList.add('recording');
+  
+  document.getElementById('analyzeBtn').style.display = 'none';
+}
+
+function stopRecording() {
+  recognition.stop();
+  isRecording = false;
+  
+  const btn = document.getElementById('recordBtn');
+  btn.textContent = "🎤 Почати запис";
+  btn.classList.remove('recording');
+  
+  // Якщо текст є, показуємо кнопку "Аналізувати"
+  if (document.getElementById('transcriptArea').value.trim() !== "") {
+    document.getElementById('analyzeBtn').style.display = 'block';
+  }
+}
+
+// Заглушка для наступного кроку (відправка на бекенд)
+function sendToAI() {
+  const text = document.getElementById('transcriptArea').value;
+  if (!text) {
+    alert("Спочатку надиктуйте або напишіть текст!");
+    return;
+  }
+  
+  // Ховаємо кнопку, показуємо лоадер
+  document.getElementById('analyzeBtn').style.display = 'none';
+  document.getElementById('aiLoader').style.display = 'block';
+  
+  console.log("Відправляємо текст на ШІ:", text);
+  
+  // ТУТ БУДЕ ФЕТЧ ДО GOOGLE APPS SCRIPT
+  // ...
+  
+  // Тимчасова імітація роботи ШІ (через 2 секунди закриється)
+  setTimeout(() => {
+    document.getElementById('aiLoader').style.display = 'none';
+    closeAiModal();
+    alert("Текст готовий до відправки! Наступним кроком напишемо Google Script для ChatGPT.");
+  }, 2000);
+}
+// --------------------------------------------
 </script>
 </body>
 </html>
