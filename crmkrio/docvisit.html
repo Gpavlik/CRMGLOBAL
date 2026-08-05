@@ -863,17 +863,18 @@ async function saveDoctorVisit() {
   rows.forEach(row => {
     const product = row.querySelector("td.product").innerText;
     const potential = row.querySelector("input.potential")?.value || "";
-    const opening = row.querySelector("input.opening")?.value || ""; // 👈 узгоджено з HTML
-    const toSell = row.querySelector("input.to-sell")?.value || "";
-    const agreement = row.querySelector("input.agreement")?.value || "";
+    const opening = row.querySelector("input.opening")?.value || ""; 
+    const toSell = row.querySelector("input.to-sell")?.value || ""; // Плановий показник
+    const agreement = row.querySelector("input.agreement")?.value || ""; // 👈 Реальна домовленість (кількість для накладної)
     const competitors = row.querySelector("input.competitors")?.value || "";
     const comment = row.querySelector("input.comment")?.value || "";
+    
     visitsData.push({
       product,
       potential,
       opening,
       toSell,
-      agreement,
+      agreement, // Передаємо саме домовленість на склад
       competitors,
       comment,
       presentationShown: shownSlides.length > 0 ? "Так" : "Ні",
@@ -892,7 +893,7 @@ async function saveDoctorVisit() {
     const lon = pos.coords.longitude;
 
     try {
-      await fetch("https://script.google.com/macros/s/AKfycbzOs4WfSSrYsbpdL_YMSnjdn15OedzhhPsjGD5XWONSPJDjQlZq6UE5s2QOO0QSubcw/exec", {
+      await fetch("https://script.google.com/macros/s/AKfycbzdCGD5XcAlzyK707F7fDg67z3gMHib-rfuykXU2jWSPjm1bV-LIAWLVKa6APkuTrS1/exec", {
         method: "POST",
         mode: "no-cors",
         body: JSON.stringify({
@@ -933,7 +934,7 @@ async function saveDoctorVisit() {
     console.error("❌ Помилка GPS:", err);
     alert("Не вдалося отримати координати, але візит буде збережено без них.");
     // fallback: відправка без координат
-    await fetch("https://script.google.com/macros/s/AKfycbzOs4WfSSrYsbpdL_YMSnjdn15OedzhhPsjGD5XWONSPJDjQlZq6UE5s2QOO0QSubcw/exec", {
+    await fetch("https://script.google.com/macros/s/AKfycbzdCGD5XcAlzyK707F7fDg67z3gMHib-rfuykXU2jWSPjm1bV-LIAWLVKa6APkuTrS1/exec", {
       method: "POST",
       mode: "no-cors",
       body: JSON.stringify({
@@ -980,7 +981,7 @@ function validateVisitForm() {
 async function loadPreviousVisit(doctorName) {
   try {
     const res = await fetch(
-      "https://script.google.com/macros/s/AKfycbzOs4WfSSrYsbpdL_YMSnjdn15OedzhhPsjGD5XWONSPJDjQlZq6UE5s2QOO0QSubcw/exec?type=doctor&doctor=" 
+      "https://script.google.com/macros/s/AKfycbzdCGD5XcAlzyK707F7fDg67z3gMHib-rfuykXU2jWSPjm1bV-LIAWLVKa6APkuTrS1/exec?type=doctor&doctor=" 
       + encodeURIComponent(doctorName)
     );
 
@@ -1066,7 +1067,7 @@ function normalizeSpecialty(specialty) {
 let recognition;
 let isRecording = false;
 
-const AI_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzOs4WfSSrYsbpdL_YMSnjdn15OedzhhPsjGD5XWONSPJDjQlZq6UE5s2QOO0QSubcw/exec"; 
+const AI_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzdCGD5XcAlzyK707F7fDg67z3gMHib-rfuykXU2jWSPjm1bV-LIAWLVKa6APkuTrS1/exec"; 
 
 if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
