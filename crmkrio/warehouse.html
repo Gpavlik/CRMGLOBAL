@@ -71,24 +71,22 @@
     .save-btn:hover { background-color: #1f618d; }
 
     /* --- СТИЛІ ДЛЯ ДРУКУ НАКЛАДНОЇ --- */
-    #printSection { display: none; } /* Ховаємо на екрані */
+    #printSection { display: none; } 
     
     @media print {
-      body * { display: none !important; } /* Ховаємо ВСЕ */
-      #printSection, #printSection * { 
+      body > *:not(#printSection) { display: none !important; }
+      #printSection { 
         display: block !important; 
-        color: #000; /* Чорний текст для принтера */
-      }
-      #printSection {
+        color: #000;
         position: absolute; left: 0; top: 0;
         width: 100%; padding: 20px;
         background: #fff; 
       }
-      .invoice-header { text-align: center; font-size: 24px; font-weight: bold; margin-bottom: 20px; border-bottom: 2px solid #000;}
+      .invoice-header { text-align: center; font-size: 24px; font-weight: bold; margin-bottom: 20px; border-bottom: 2px solid #000; padding-bottom: 10px;}
       .invoice-details { font-size: 16px; line-height: 1.6; margin-bottom: 30px;}
       .invoice-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-      .invoice-table th, .invoice-table td { border: 1px solid #000; padding: 8px; text-align: left; }
-      .invoice-footer { margin-top: 50px; display: flex; justify-content: space-between; }
+      .invoice-table th, .invoice-table td { border: 1px solid #000; padding: 10px; text-align: left; }
+      .invoice-footer { margin-top: 60px; display: flex; justify-content: space-between; font-size: 16px; }
     }
   </style>
 </head>
@@ -136,7 +134,7 @@
     </div>
   </div>
 
-  <!-- Блок для друку (Видно тільки принтеру) -->
+  <!-- Блок для друку -->
   <div id="printSection">
     <div class="invoice-header">ВИДАТКОВА НАКЛАДНА № <span id="printId"></span></div>
     <div class="invoice-details">
@@ -163,7 +161,6 @@
   </div>
 
   <script>
-    // ❗️ Встав сюди свій лінк на Google Apps Script
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzdCGD5XcAlzyK707F7fDg67z3gMHib-rfuykXU2jWSPjm1bV-LIAWLVKa6APkuTrS1/exec";
     
     let globalOrders = [];
@@ -171,16 +168,17 @@
     async function loadOrders() {
       try {
         const response = await fetch(SCRIPT_URL + "?type=logistics");
-        globalOrders = await response.json();
+        const rawData = await response.json();
+        
+        // Зберігаємо замовлення у глобальний масив
+        globalOrders = rawData.reverse();
         
         const tbody = document.getElementById("ordersBody");
         tbody.innerHTML = "";
         
-        // Відображаємо з кінця (найновіші зверху)
-        globalOrders.reverse().forEach((order, index) => {
-          // Реальний індекс рядка в Google Таблиці (для оновлення)
-          // reverse змінює порядок, тому вираховуємо оригінальний індекс + 2 (бо 1 це заголовки)
-          const rowIndex = globalOrders.length - index + 1; 
+        globalOrders.forEach((order, index) => {
+          // Реальний рядок у Google Таблиці (індекс масиву + 2 для заголовків)
+          const rowIndex = index + 2; 
 
           const tr = document.createElement("tr");
           tr.innerHTML = `
@@ -192,7 +190,7 @@
             <td>${order.status}</td>
             <td>${order.ttn || "—"}</td>
             <td>
-              <button class="btn-print" onclick="printInvoice('${order.date}', '${order.manager}', '${order.doctor}', '${order.region}, ${order.city}, ${order.lpz}', '${order.product}', '${order.qty}')">🖨 Друк</button>
+              <button class="btn-print" onclick="printInvoice(${index})">🖨 Друк</button>
               <button class="btn-edit" onclick="openEditModal(${rowIndex}, '${order.product}', '${order.qty}', '${order.status}', '${order.ttn}')">✏️ Змінити</button>
             </td>
           `;
@@ -237,7 +235,6 @@
         document.getElementById("statusModal").style.display = "none";
         document.querySelector(".save-btn").innerText = "💾 Зберегти зміни";
         
-        // Перезавантажуємо таблицю
         document.getElementById("loader").style.display = "block";
         document.getElementById("ordersTable").style.display = "none";
         loadOrders();
@@ -248,21 +245,22 @@
       }
     }
 
-    function printInvoice(date, manager, doctor, address, product, qty) {
-      // Заповнюємо прихований HTML блок даними
-      document.getElementById("printId").innerText = Date.now().toString().slice(-6); // Генерація випадкового номера
-      document.getElementById("printDate").innerText = date;
-      document.getElementById("printManager").innerText = manager;
-      document.getElementById("printDoctor").innerText = doctor;
-      document.getElementById("printAddress").innerText = address;
-      document.getElementById("printProduct").innerText = product;
-      document.getElementById("printQty").innerText = qty;
+    // Безпечна функція друку по індексу з масиву globalOrders
+    function printInvoice(index) {
+      const order = globalOrders[index];
+      if (!order) return;
+
+      document.getElementById("printId").innerText = Date.now().toString().slice(-6);
+      document.getElementById("printDate").innerText = order.date;
+      document.getElementById("printManager").innerText = order.manager;
+      document.getElementById("printDoctor").innerText = order.doctor;
+      document.getElementById("printAddress").innerText = `${order.region}, ${order.city}, ${order.lpz}`;
+      document.getElementById("printProduct").innerText = order.product;
+      document.getElementById("printQty").innerText = order.qty;
       
-      // Викликаємо системне вікно друку браузера
       window.print();
     }
 
-    // Завантажуємо при відкритті
     window.onload = loadOrders;
   </script>
 </body>
