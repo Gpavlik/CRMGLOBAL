@@ -1062,18 +1062,16 @@ function normalizeSpecialty(specialty) {
   };
   return map[specialty] || specialty;
 }
-// === ЛОГІКА ШІ АСИСТЕНТА (Speech-to-Text та зв'язок з бекендом) ===
+// === ЛОГІКА ШІ АСИСТЕНТА (Speech-to-Text у фоні та зв'язок з бекендом) ===
 let recognition;
 let isRecording = false;
 
-// ❗️ ВАЖЛИВО: Встав сюди свій URL розгортання Google Apps Script! ❗️
 const AI_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzxsvyENjZEPi-NIvomvLLwFzO16owssK0ua2OjbWSXOSV59I8oCqxHzJ_K3MvcIyDk/exec"; 
 
-// Ініціалізація Web Speech API (Диктофон)
 if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
   recognition = new SpeechRecognition();
-  recognition.lang = 'uk-UA'; // Українська мова
+  recognition.lang = 'uk-UA'; 
   recognition.continuous = true; 
   recognition.interimResults = true; 
 
@@ -1087,6 +1085,14 @@ if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
     if (finalTranscript) {
       const textarea = document.getElementById('transcriptArea');
       textarea.value += finalTranscript;
+    }
+  };
+
+  // ❗️ Захист від авто-вимкнення мікрофону браузером при паузах
+  recognition.onend = () => {
+    if (isRecording) {
+      console.log("Браузер призупинив запис через тишу. Перезапуск...");
+      recognition.start();
     }
   };
 
@@ -1106,7 +1112,7 @@ function openAiModal() {
 }
 
 function closeAiModal() {
-  if (isRecording) stopRecording();
+  // ПРИБРАНО зупинку запису при закритті вікна. Тепер воно просто ховається.
   document.getElementById('aiModal').style.display = 'none';
 }
 
@@ -1117,45 +1123,65 @@ function toggleRecording() {
 }
 
 function startRecording() {
-  recognition.start();
+  try {
+    recognition.start();
+  } catch(e) {
+    // Ігноруємо помилку, якщо мікрофон вже запущено
+  }
   isRecording = true;
+  
+  // Змінюємо кнопку всередині модалки
   const btn = document.getElementById('recordBtn');
   btn.textContent = "🛑 Зупинити запис";
   btn.classList.add('recording');
   document.getElementById('analyzeBtn').style.display = 'none';
+  
+  // ❗️ Змінюємо головну кнопку на сторінці для візуалізації фонового запису
+  const mainAiBtn = document.querySelector('.ai-btn');
+  if (mainAiBtn) {
+    mainAiBtn.innerHTML = "🔴 Запис іде... (відкрити меню)";
+    mainAiBtn.style.backgroundColor = "#dc3545"; // червоний
+    mainAiBtn.style.animation = "pulse 1.5s infinite";
+  }
+
+  // Автоматично ховаємо модалку, щоб менеджер міг показувати презентацію
+  closeAiModal();
 }
 
 function stopRecording() {
+  isRecording = false; // Ставимо false ДО зупинки, щоб onend не перезапустив його
   recognition.stop();
-  isRecording = false;
+  
+  // Повертаємо кнопку в модалці до норми
   const btn = document.getElementById('recordBtn');
-  btn.textContent = "🎤 Почати запис";
+  btn.textContent = "🎤 Почати запис знову";
   btn.classList.remove('recording');
+  
+  // Повертаємо головну кнопку на сторінці до норми
+  const mainAiBtn = document.querySelector('.ai-btn');
+  if (mainAiBtn) {
+    mainAiBtn.innerHTML = "🎙 Записати ШІ-візит";
+    mainAiBtn.style.backgroundColor = "#007bff";
+    mainAiBtn.style.animation = "none";
+  }
   
   if (document.getElementById('transcriptArea').value.trim() !== "") {
     document.getElementById('analyzeBtn').style.display = 'block';
   }
 }
 
-// Функція відправки тексту на бекенд (замість заглушки)
+// Функція відправки тексту на бекенд
 async function sendToAI() {
   const text = document.getElementById('transcriptArea').value.trim();
   if (!text) {
     alert("Спочатку надиктуйте або напишіть текст розмови!");
     return;
   }
-
-  if (AI_SCRIPT_URL === "https://script.google.com/macros/s/AKfycbzxsvyENjZEPi-NIvomvLLwFzO16owssK0ua2OjbWSXOSV59I8oCqxHzJ_K3MvcIyDk/exec") {
-    alert("Помилка: Ви забули вставити URL веб-додатку Google Apps Script у змінну AI_SCRIPT_URL!");
-    return;
-  }
   
-  // Беремо ім'я менеджера та лікаря для контексту
   const currentUserLogin = sessionStorage.getItem("currentUser");
   const managerName = userNames[currentUserLogin] || currentUserLogin || "Невідомий менеджер";
   const doctorName = document.getElementById("doctorSelect").value || "Не обрано";
   
-  // Ховаємо кнопку, показуємо лоадер
   document.getElementById('analyzeBtn').style.display = 'none';
   document.getElementById('aiLoader').style.display = 'block';
   
@@ -1168,13 +1194,12 @@ async function sendToAI() {
         manager: managerName,
         doctor: doctorName
       }),
-      headers: { "Content-Type": "text/plain;charset=utf-8" } // text/plain дозволяє обійти блокування CORS
+      headers: { "Content-Type": "text/plain;charset=utf-8" }
     });
     
     const result = await response.json();
     
     if (result.status === "success") {
-      // Заповнюємо таблицю на сторінці (шукаємо інпути у першому рядку товарів)
       const row = document.querySelector("#currentVisitBody tr");
       if (row && result.crmData) {
         if(row.querySelector("input.potential")) row.querySelector("input.potential").value = result.crmData.potential || "";
@@ -1186,19 +1211,19 @@ async function sendToAI() {
       }
       
       closeAiModal();
-      alert("✅ ШІ успішно проаналізував діалог!\n\nДані автоматично додано в таблицю візиту. Оцінку навичок збережено для тренера. \nПеревірте дані та натисніть зелену кнопку 'Зберегти візит'!");
+      alert("✅ ШІ успішно проаналізував діалог!\n\nДані додано в таблицю. Тепер натисніть 'Зберегти візит'.");
     } else {
       alert("❌ Помилка на сервері: " + result.message);
     }
   } catch (error) {
     console.error("Помилка зв'язку з ШІ:", error);
-    alert("❌ Сталася помилка при відправці запиту. Перевірте з'єднання з інтернетом або налаштування CORS.");
+    alert("❌ Сталася помилка при відправці запиту. Перевірте з'єднання з інтернетом.");
   } finally {
     document.getElementById('aiLoader').style.display = 'none';
     document.getElementById('analyzeBtn').style.display = 'block';
   }
 }
-
-  </script>
+// ========================================================
+ </script>
 </body>
 </html>
