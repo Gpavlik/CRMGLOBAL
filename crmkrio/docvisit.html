@@ -75,7 +75,7 @@ table {
   border-collapse: collapse;
   width: 95%;
   margin-top: 20px;
-  overflow-x: auto; /* 👈 горизонтальний скрол на мобільному */
+  overflow-x: auto; /* 👈 горизонтальфскщыний скрол на мобільному */
   display: block;
 }
 
@@ -892,7 +892,7 @@ async function saveDoctorVisit() {
     const lon = pos.coords.longitude;
 
     try {
-      await fetch("https://script.google.com/macros/s/AKfycbxMDNAS6nal0EJvDk1U33cXA8l3n0CVOuiEjdozUcpFZTWMliDRAJZmPp5COUW6LRIt/exec", {
+      await fetch("https://script.google.com/macros/s/AKfycbzxsvyENjZEPi-NIvomvLLwFzO16owssK0ua2OjbWSXOSV59I8oCqxHzJ_K3MvcIyDk/exec", {
         method: "POST",
         mode: "no-cors",
         body: JSON.stringify({
@@ -933,7 +933,7 @@ async function saveDoctorVisit() {
     console.error("❌ Помилка GPS:", err);
     alert("Не вдалося отримати координати, але візит буде збережено без них.");
     // fallback: відправка без координат
-    await fetch("https://script.google.com/macros/s/AKfycbxMDNAS6nal0EJvDk1U33cXA8l3n0CVOuiEjdozUcpFZTWMliDRAJZmPp5COUW6LRIt/exec", {
+    await fetch("https://script.google.com/macros/s/AKfycbzxsvyENjZEPi-NIvomvLLwFzO16owssK0ua2OjbWSXOSV59I8oCqxHzJ_K3MvcIyDk/exec", {
       method: "POST",
       mode: "no-cors",
       body: JSON.stringify({
@@ -980,7 +980,7 @@ function validateVisitForm() {
 async function loadPreviousVisit(doctorName) {
   try {
     const res = await fetch(
-      "https://script.google.com/macros/s/AKfycbxMDNAS6nal0EJvDk1U33cXA8l3n0CVOuiEjdozUcpFZTWMliDRAJZmPp5COUW6LRIt/exec?type=doctor&doctor=" 
+      "https://script.google.com/macros/s/AKfycbzxsvyENjZEPi-NIvomvLLwFzO16owssK0ua2OjbWSXOSV59I8oCqxHzJ_K3MvcIyDk/exec?type=doctor&doctor=" 
       + encodeURIComponent(doctorName)
     );
 
@@ -1062,33 +1062,30 @@ function normalizeSpecialty(specialty) {
   };
   return map[specialty] || specialty;
 }
-// --- ЛОГІКА ШІ АСИСТЕНТА (Speech-to-Text) ---
+// === ЛОГІКА ШІ АСИСТЕНТА (Speech-to-Text та зв'язок з бекендом) ===
 let recognition;
 let isRecording = false;
 
-// Ініціалізація Web Speech API
+// ❗️ ВАЖЛИВО: Встав сюди свій URL розгортання Google Apps Script! ❗️
+const AI_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzxsvyENjZEPi-NIvomvLLwFzO16owssK0ua2OjbWSXOSV59I8oCqxHzJ_K3MvcIyDk/exec"; 
+
+// Ініціалізація Web Speech API (Диктофон)
 if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
   recognition = new SpeechRecognition();
   recognition.lang = 'uk-UA'; // Українська мова
-  recognition.continuous = true; // Слухати безперервно
-  recognition.interimResults = true; // Показувати попередні результати
+  recognition.continuous = true; 
+  recognition.interimResults = true; 
 
   recognition.onresult = (event) => {
     let finalTranscript = '';
-    let interimTranscript = '';
-    
     for (let i = event.resultIndex; i < event.results.length; ++i) {
       if (event.results[i].isFinal) {
         finalTranscript += event.results[i][0].transcript + ' ';
-      } else {
-        interimTranscript += event.results[i][0].transcript;
       }
     }
-    
-    const textarea = document.getElementById('transcriptArea');
-    // Додаємо новий фінальний текст до того, що вже є в textarea
     if (finalTranscript) {
+      const textarea = document.getElementById('transcriptArea');
       textarea.value += finalTranscript;
     }
   };
@@ -1115,64 +1112,93 @@ function closeAiModal() {
 
 function toggleRecording() {
   if (!recognition) return;
-  
-  if (isRecording) {
-    stopRecording();
-  } else {
-    startRecording();
-  }
+  if (isRecording) stopRecording();
+  else startRecording();
 }
 
 function startRecording() {
   recognition.start();
   isRecording = true;
-  
   const btn = document.getElementById('recordBtn');
   btn.textContent = "🛑 Зупинити запис";
   btn.classList.add('recording');
-  
   document.getElementById('analyzeBtn').style.display = 'none';
 }
 
 function stopRecording() {
   recognition.stop();
   isRecording = false;
-  
   const btn = document.getElementById('recordBtn');
   btn.textContent = "🎤 Почати запис";
   btn.classList.remove('recording');
   
-  // Якщо текст є, показуємо кнопку "Аналізувати"
   if (document.getElementById('transcriptArea').value.trim() !== "") {
     document.getElementById('analyzeBtn').style.display = 'block';
   }
 }
 
-// Заглушка для наступного кроку (відправка на бекенд)
-function sendToAI() {
-  const text = document.getElementById('transcriptArea').value;
+// Функція відправки тексту на бекенд (замість заглушки)
+async function sendToAI() {
+  const text = document.getElementById('transcriptArea').value.trim();
   if (!text) {
-    alert("Спочатку надиктуйте або напишіть текст!");
+    alert("Спочатку надиктуйте або напишіть текст розмови!");
     return;
   }
+
+  if (AI_SCRIPT_URL === "https://script.google.com/macros/s/AKfycbzxsvyENjZEPi-NIvomvLLwFzO16owssK0ua2OjbWSXOSV59I8oCqxHzJ_K3MvcIyDk/exec") {
+    alert("Помилка: Ви забули вставити URL веб-додатку Google Apps Script у змінну AI_SCRIPT_URL!");
+    return;
+  }
+  
+  // Беремо ім'я менеджера та лікаря для контексту
+  const currentUserLogin = sessionStorage.getItem("currentUser");
+  const managerName = userNames[currentUserLogin] || currentUserLogin || "Невідомий менеджер";
+  const doctorName = document.getElementById("doctorSelect").value || "Не обрано";
   
   // Ховаємо кнопку, показуємо лоадер
   document.getElementById('analyzeBtn').style.display = 'none';
   document.getElementById('aiLoader').style.display = 'block';
   
-  console.log("Відправляємо текст на ШІ:", text);
-  
-  // ТУТ БУДЕ ФЕТЧ ДО GOOGLE APPS SCRIPT
-  // ...
-  
-  // Тимчасова імітація роботи ШІ (через 2 секунди закриється)
-  setTimeout(() => {
+  try {
+    const response = await fetch(AI_SCRIPT_URL, {
+      method: "POST",
+      body: JSON.stringify({
+        action: "analyzeVisitAi",
+        transcript: text,
+        manager: managerName,
+        doctor: doctorName
+      }),
+      headers: { "Content-Type": "text/plain;charset=utf-8" } // text/plain дозволяє обійти блокування CORS
+    });
+    
+    const result = await response.json();
+    
+    if (result.status === "success") {
+      // Заповнюємо таблицю на сторінці (шукаємо інпути у першому рядку товарів)
+      const row = document.querySelector("#currentVisitBody tr");
+      if (row && result.crmData) {
+        if(row.querySelector("input.potential")) row.querySelector("input.potential").value = result.crmData.potential || "";
+        if(row.querySelector("input.opening")) row.querySelector("input.opening").value = result.crmData.opening || "";
+        if(row.querySelector("input.to-sell")) row.querySelector("input.to-sell").value = result.crmData.toSell || "";
+        if(row.querySelector("input.agreement")) row.querySelector("input.agreement").value = result.crmData.agreement || "";
+        if(row.querySelector("input.competitors")) row.querySelector("input.competitors").value = result.crmData.competitors || "";
+        if(row.querySelector("input.comment")) row.querySelector("input.comment").value = result.crmData.comment || "";
+      }
+      
+      closeAiModal();
+      alert("✅ ШІ успішно проаналізував діалог!\n\nДані автоматично додано в таблицю візиту. Оцінку навичок збережено для тренера. \nПеревірте дані та натисніть зелену кнопку 'Зберегти візит'!");
+    } else {
+      alert("❌ Помилка на сервері: " + result.message);
+    }
+  } catch (error) {
+    console.error("Помилка зв'язку з ШІ:", error);
+    alert("❌ Сталася помилка при відправці запиту. Перевірте з'єднання з інтернетом або налаштування CORS.");
+  } finally {
     document.getElementById('aiLoader').style.display = 'none';
-    closeAiModal();
-    alert("Текст готовий до відправки! Наступним кроком напишемо Google Script для ChatGPT.");
-  }, 2000);
+    document.getElementById('analyzeBtn').style.display = 'block';
+  }
 }
-// --------------------------------------------
-</script>
+
+  </script>
 </body>
 </html>
