@@ -616,7 +616,7 @@ loadVisits();
 async function saveVisitInBackend(event) {
   try {
     const doctor = event.extendedProps;
-    const res = await fetch("https://script.google.com/macros/s/AKfycbzdCGD5XcAlzyK707F7fDg67z3gMHib-rfuykXU2jWSPjm1bV-LIAWLVKa6APkuTrS1/exec", {
+    const res = await fetch("https://script.google.com/macros/s/AKfycbz6ppu90t8Kh1qUP7Rz84cpF8J1hVRSIHyUyE4Fim_STDBJoWPVp9j5QUzrBJ9ngp7s/exec", {
 method: "POST",
   mode: "no-cors",
   body: JSON.stringify({
@@ -645,7 +645,7 @@ async function updateDateInBackend(event, newDate, newTime) {
   try {
     const doctor = event.extendedProps;
 
-    await fetch("https://script.google.com/macros/s/AKfycbzdCGD5XcAlzyK707F7fDg67z3gMHib-rfuykXU2jWSPjm1bV-LIAWLVKa6APkuTrS1/exec", {
+    await fetch("https://script.google.com/macros/s/AKfycbz6ppu90t8Kh1qUP7Rz84cpF8J1hVRSIHyUyE4Fim_STDBJoWPVp9j5QUzrBJ9ngp7s/exec", {
       method: "POST",
       mode: "no-cors", // 👈 залишаємо no-cors
       headers: { "Content-Type": "application/json" },
@@ -843,7 +843,7 @@ async function loadVisits() {
     let localVisits = JSON.parse(sessionStorage.getItem("visits")) || [];
     renderVisits(localVisits);
 
-    const res = await fetch("https://script.google.com/macros/s/AKfycbzdCGD5XcAlzyK707F7fDg67z3gMHib-rfuykXU2jWSPjm1bV-LIAWLVKa6APkuTrS1/exec?type=calendar");
+    const res = await fetch("https://script.google.com/macros/s/AKfycbz6ppu90t8Kh1qUP7Rz84cpF8J1hVRSIHyUyE4Fim_STDBJoWPVp9j5QUzrBJ9ngp7s/exec?type=calendar");
     if (!res.ok) throw new Error("Backend error: " + res.status);
 
     const backendVisits = await res.json();

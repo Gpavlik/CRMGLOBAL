@@ -893,7 +893,7 @@ async function saveDoctorVisit() {
     const lon = pos.coords.longitude;
 
     try {
-      await fetch("https://script.google.com/macros/s/AKfycbzdCGD5XcAlzyK707F7fDg67z3gMHib-rfuykXU2jWSPjm1bV-LIAWLVKa6APkuTrS1/exec", {
+      await fetch("https://script.google.com/macros/s/AKfycbz6ppu90t8Kh1qUP7Rz84cpF8J1hVRSIHyUyE4Fim_STDBJoWPVp9j5QUzrBJ9ngp7s/exec", {
         method: "POST",
         mode: "no-cors",
         body: JSON.stringify({
@@ -934,7 +934,7 @@ async function saveDoctorVisit() {
     console.error("❌ Помилка GPS:", err);
     alert("Не вдалося отримати координати, але візит буде збережено без них.");
     // fallback: відправка без координат
-    await fetch("https://script.google.com/macros/s/AKfycbzdCGD5XcAlzyK707F7fDg67z3gMHib-rfuykXU2jWSPjm1bV-LIAWLVKa6APkuTrS1/exec", {
+    await fetch("https://script.google.com/macros/s/AKfycbz6ppu90t8Kh1qUP7Rz84cpF8J1hVRSIHyUyE4Fim_STDBJoWPVp9j5QUzrBJ9ngp7s/exec", {
       method: "POST",
       mode: "no-cors",
       body: JSON.stringify({
@@ -981,7 +981,7 @@ function validateVisitForm() {
 async function loadPreviousVisit(doctorName) {
   try {
     const res = await fetch(
-      "https://script.google.com/macros/s/AKfycbzdCGD5XcAlzyK707F7fDg67z3gMHib-rfuykXU2jWSPjm1bV-LIAWLVKa6APkuTrS1/exec?type=doctor&doctor=" 
+      "https://script.google.com/macros/s/AKfycbz6ppu90t8Kh1qUP7Rz84cpF8J1hVRSIHyUyE4Fim_STDBJoWPVp9j5QUzrBJ9ngp7s/exec?type=doctor&doctor=" 
       + encodeURIComponent(doctorName)
     );
 
@@ -1067,7 +1067,7 @@ function normalizeSpecialty(specialty) {
 let recognition;
 let isRecording = false;
 
-const AI_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzdCGD5XcAlzyK707F7fDg67z3gMHib-rfuykXU2jWSPjm1bV-LIAWLVKa6APkuTrS1/exec"; 
+const AI_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz6ppu90t8Kh1qUP7Rz84cpF8J1hVRSIHyUyE4Fim_STDBJoWPVp9j5QUzrBJ9ngp7s/exec"; 
 
 if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;

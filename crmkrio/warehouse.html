@@ -8,14 +8,14 @@
     body {
       font-family: Arial, sans-serif;
       margin: 0; padding: 0;
-      background: linear-gradient(135deg, #1c3b57, #112233);
+      background: linear-gradient(135deg, #009400, #004d00);
       color: #ffffff;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
     }
-    h1 { margin-top: 20px; }
+    h1 { margin-top: 20px; text-align: center;}
     
     /* Таблиця замовлень */
     table {
@@ -24,17 +24,30 @@
       margin-top: 20px;
       overflow-x: auto;
       display: block;
-      background-color: #2a4b6e;
+      background-color: #009400;
       border-radius: 8px;
     }
     th, td {
-      border: 1px solid #4a729e;
+      border: 1px solid #fafafb;
       padding: 10px;
       text-align: center;
       word-wrap: break-word;
     }
-    th { background: #0f1c29; color: #fff; }
-    tbody tr:hover { background-color: #3b638f; }
+    th { background: #004d00; color: #fff; vertical-align: top; }
+    tbody tr:hover { background-color: #058005; }
+
+    /* Поля фільтрів у шапці */
+    .filter-input {
+      width: 90%;
+      padding: 6px;
+      margin-top: 8px;
+      font-size: 12px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+      background-color: #effff0;
+      color: #000;
+    }
 
     /* Кнопки */
     button {
@@ -63,7 +76,7 @@
       width: 90%; max-width: 400px;
       border-radius: 12px; text-align: center;
     }
-    select, input {
+    select, input[type="text"]:not(.filter-input) {
       width: 100%; padding: 10px; margin: 10px 0;
       box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px;
     }
@@ -88,23 +101,47 @@
       .invoice-table th, .invoice-table td { border: 1px solid #000; padding: 10px; text-align: left; }
       .invoice-footer { margin-top: 60px; display: flex; justify-content: space-between; font-size: 16px; }
     }
+    
+    .unit {  
+      height: 140px; width: 250px;
+      background: rgba(255, 255, 255, 0.9) !important;
+      backdrop-filter: blur(12px) !important;
+      -webkit-backdrop-filter: blur(12px) !important;
+      border: 1px solid rgba(255, 255, 255, 0.25) !important;
+      border-radius: 24px !important;
+      padding: 0; margin: 0;
+      box-sizing: border-box; overflow: hidden; cursor: pointer;
+      box-shadow: 0 10px 25px rgba(0, 45, 0, 0.15), inset 2px 2px 5px rgba(255, 255, 255, 0.2) !important;
+      display: flex; align-items: center; justify-content: center;
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+    .unit a { display: flex; width: 100%; height: 100%; align-items: center; justify-content: center; text-decoration: none; }
+    .unit img { width: 100%; height: 100%; object-fit: cover; border-radius: 23px; transition: transform 0.3s ease, opacity 0.3s ease; }
+    .unit:hover {
+      transform: translateY(-6px) scale(1.03);
+      border-color: rgba(255, 255, 255, 0.45) !important;
+      box-shadow: 0 15px 35px rgba(0, 35, 0, 0.25), inset 3px 3px 6px rgba(255, 255, 255, 0.35) !important;
+    }
+    .unit:hover img { transform: scale(1.02); opacity: 1; }
   </style>
 </head>
 <body>
-
+  <br><br>
+  <div><a href="../index.html"><img src="./logo.svg" alt="logo" width="260"></a></div>
+  
   <h1>Склад: Очікувані відправки</h1>
   <div id="loader">Завантаження замовлень... ⏳</div>
 
   <table id="ordersTable" style="display:none;">
     <thead>
       <tr>
-        <th>Дата</th>
-        <th>Менеджер</th>
-        <th>Отримувач (ЛПЗ / Лікар)</th>
-        <th>Продукт</th>
-        <th>К-ть</th>
-        <th>Статус</th>
-        <th>ТТН</th>
+        <th>Дата<br><input type="text" class="filter-input" data-col="date" oninput="applyFilters()" placeholder="Пошук..."></th>
+        <th>Менеджер<br><input type="text" class="filter-input" data-col="manager" oninput="applyFilters()" placeholder="Пошук..."></th>
+        <th>Отримувач (ЛПЗ / Лікар)<br><input type="text" class="filter-input" data-col="receiver" oninput="applyFilters()" placeholder="Пошук..."></th>
+        <th>Продукт<br><input type="text" class="filter-input" data-col="product" oninput="applyFilters()" placeholder="Пошук..."></th>
+        <th>К-ть<br><input type="text" class="filter-input" data-col="qty" oninput="applyFilters()" style="width: 50px;" placeholder="..."></th>
+        <th>Статус<br><input type="text" class="filter-input" data-col="status" oninput="applyFilters()" placeholder="Пошук..."></th>
+        <th>ТТН<br><input type="text" class="filter-input" data-col="ttn" oninput="applyFilters()" placeholder="Пошук..."></th>
         <th>Дії</th>
       </tr>
     </thead>
@@ -159,49 +196,109 @@
       <div><b>Отримав:</b> _________________</div>
     </div>
   </div>
-
+  <br><br>
+  <div class="unit"><img src="./W5.jfif" alt="logo" width="260"></div>
+  
   <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzdCGD5XcAlzyK707F7fDg67z3gMHib-rfuykXU2jWSPjm1bV-LIAWLVKa6APkuTrS1/exec";
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz6ppu90t8Kh1qUP7Rz84cpF8J1hVRSIHyUyE4Fim_STDBJoWPVp9j5QUzrBJ9ngp7s/exec";
     
     let globalOrders = [];
+
+    // ФОРМАТУВАННЯ ДАТИ
+    function formatDateTime(dateString) {
+      if (!dateString) return "—";
+      if (typeof dateString === 'string' && dateString.match(/^\d{2}\.\d{2}\.\d{4}/)) {
+        return dateString.substring(0, 16);
+      }
+      const d = new Date(dateString);
+      if (!isNaN(d.getTime())) {
+        const day = String(d.getDate()).padStart(2, '0');
+        const month = String(d.getMonth() + 1).padStart(2, '0');
+        const year = d.getFullYear();
+        const hours = String(d.getHours()).padStart(2, '0');
+        const minutes = String(d.getMinutes()).padStart(2, '0');
+        return `${day}.${month}.${year} ${hours}:${minutes}`;
+      }
+      return dateString; 
+    }
 
     async function loadOrders() {
       try {
         const response = await fetch(SCRIPT_URL + "?type=logistics");
         const rawData = await response.json();
         
-        // Зберігаємо замовлення у глобальний масив
-        globalOrders = rawData.reverse();
+        // Додаємо оригінальний індекс ДО сортування масиву, 
+        // щоб завжди зберігати в правильний рядок Google Таблиці
+        globalOrders = rawData.map((order, index) => {
+          order.originalRowIndex = index + 2; 
+          order.globalId = index; // Унікальний ID для друку
+          return order;
+        }).reverse(); // Відображаємо найновіші зверху
         
-        const tbody = document.getElementById("ordersBody");
-        tbody.innerHTML = "";
-        
-        globalOrders.forEach((order, index) => {
-          // Реальний рядок у Google Таблиці (індекс масиву + 2 для заголовків)
-          const rowIndex = index + 2; 
-
-          const tr = document.createElement("tr");
-          tr.innerHTML = `
-            <td>${order.date}</td>
-            <td>${order.manager}</td>
-            <td>${order.city}, ${order.lpz}<br><b>${order.doctor}</b></td>
-            <td><b>${order.product}</b></td>
-            <td style="font-size: 18px; font-weight: bold;">${order.qty}</td>
-            <td>${order.status}</td>
-            <td>${order.ttn || "—"}</td>
-            <td>
-              <button class="btn-print" onclick="printInvoice(${index})">🖨 Друк</button>
-              <button class="btn-edit" onclick="openEditModal(${rowIndex}, '${order.product}', '${order.qty}', '${order.status}', '${order.ttn}')">✏️ Змінити</button>
-            </td>
-          `;
-          tbody.appendChild(tr);
-        });
+        renderTable(globalOrders);
 
         document.getElementById("loader").style.display = "none";
         document.getElementById("ordersTable").style.display = "block";
       } catch (err) {
         document.getElementById("loader").innerHTML = "❌ Помилка завантаження даних.";
       }
+    }
+
+    // ВІДОБРАЖЕННЯ ТАБЛИЦІ
+    function renderTable(ordersToRender) {
+      const tbody = document.getElementById("ordersBody");
+      tbody.innerHTML = "";
+      
+      ordersToRender.forEach((order) => {
+        const formattedDate = formatDateTime(order.date);
+
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td style="white-space: nowrap;">${formattedDate}</td>
+          <td>${order.manager}</td>
+          <td>${order.city}, ${order.lpz}<br><b>${order.doctor}</b></td>
+          <td><b>${order.product}</b></td>
+          <td style="font-size: 18px; font-weight: bold;">${order.qty}</td>
+          <td>${order.status}</td>
+          <td>${order.ttn || "—"}</td>
+          <td>
+            <button class="btn-print" onclick="printInvoiceById(${order.globalId})">🖨 Друк</button>
+            <button class="btn-edit" onclick="openEditModal(${order.originalRowIndex}, '${order.product}', '${order.qty}', '${order.status}', '${order.ttn}')">✏️ Змінити</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    // ФІЛЬТРАЦІЯ
+    function applyFilters() {
+      const inputs = document.querySelectorAll('.filter-input');
+      const filters = {};
+      
+      inputs.forEach(input => {
+        if (input.value.trim().toLowerCase()) {
+          filters[input.getAttribute('data-col')] = input.value.trim().toLowerCase();
+        }
+      });
+
+      const filteredOrders = globalOrders.filter(order => {
+        // Перевірка кожної колонки
+        if (filters.date && !formatDateTime(order.date).toLowerCase().includes(filters.date)) return false;
+        if (filters.manager && !order.manager.toLowerCase().includes(filters.manager)) return false;
+        
+        // Поле "Отримувач" об'єднує місто, ЛПЗ та лікаря
+        const receiver = `${order.city} ${order.lpz} ${order.doctor}`.toLowerCase();
+        if (filters.receiver && !receiver.includes(filters.receiver)) return false;
+        
+        if (filters.product && !order.product.toLowerCase().includes(filters.product)) return false;
+        if (filters.qty && !String(order.qty).includes(filters.qty)) return false;
+        if (filters.status && !order.status.toLowerCase().includes(filters.status)) return false;
+        if (filters.ttn && !(order.ttn || "").toLowerCase().includes(filters.ttn)) return false;
+        
+        return true;
+      });
+
+      renderTable(filteredOrders);
     }
 
     function openEditModal(rowIndex, product, qty, currentStatus, currentTtn) {
@@ -237,6 +334,9 @@
         
         document.getElementById("loader").style.display = "block";
         document.getElementById("ordersTable").style.display = "none";
+        
+        // Очищаємо фільтри при перезавантаженні
+        document.querySelectorAll('.filter-input').forEach(input => input.value = "");
         loadOrders();
         
       } catch (err) {
@@ -245,13 +345,13 @@
       }
     }
 
-    // Безпечна функція друку по індексу з масиву globalOrders
-    function printInvoice(index) {
-      const order = globalOrders[index];
+    // БЕЗПЕЧНИЙ ДРУК (навіть при активних фільтрах)
+    function printInvoiceById(globalId) {
+      const order = globalOrders.find(o => o.globalId === globalId);
       if (!order) return;
 
       document.getElementById("printId").innerText = Date.now().toString().slice(-6);
-      document.getElementById("printDate").innerText = order.date;
+      document.getElementById("printDate").innerText = formatDateTime(order.date);
       document.getElementById("printManager").innerText = order.manager;
       document.getElementById("printDoctor").innerText = order.doctor;
       document.getElementById("printAddress").innerText = `${order.region}, ${order.city}, ${order.lpz}`;

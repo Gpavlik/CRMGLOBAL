@@ -218,7 +218,8 @@ input, select {
 </style>
 </head>
 <body>
-<<div id="loadingScreen" style="display: flex; flex: 1; justify-content: center; align-items: center; width: 100%; min-height: 100vh; flex-direction: column;">
+<img src="./logo.svg" alt="logo" width="260">
+  <div id="loadingScreen" style="display: flex; flex: 1; justify-content: center; align-items: center; width: 100%; min-height: 100vh; flex-direction: column;">
   
   <svg class="loading-animated-logo" version="1.1" id="Слой_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 269 135.2" style="enable-background:new 0 0 269 135.2;" xml:space="preserve">
     <style type="text/css">
@@ -520,7 +521,7 @@ function loadLastRow(type) {
 
 async function fetchIncremental(type, userKey) {
   const lastRow = loadLastRow(type);
-  const url = `https://script.google.com/macros/s/AKfycbzdCGD5XcAlzyK707F7fDg67z3gMHib-rfuykXU2jWSPjm1bV-LIAWLVKa6APkuTrS1/exec?type=${type}&userName=${userNames[userKey]}&lastRow=${lastRow}`;
+  const url = `https://script.google.com/macros/s/AKfycbz6ppu90t8Kh1qUP7Rz84cpF8J1hVRSIHyUyE4Fim_STDBJoWPVp9j5QUzrBJ9ngp7s/exec?type=${type}&userName=${userNames[userKey]}&lastRow=${lastRow}`;
   console.log(`🔗 Інкрементальний запит: ${url}`);
   mode: "no-cors"
   try {
