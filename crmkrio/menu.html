@@ -520,7 +520,7 @@ function loadLastRow(type) {
 
 async function fetchIncremental(type, userKey) {
   const lastRow = loadLastRow(type);
-  const url = `https://script.google.com/macros/s/AKfycbzTuF-kkQI_lFcey9ekOu2ndvQ5DuoL8twqFX-cL3Scu_XMhS7zwzp3OkXof35Ws12U/exec?type=${type}&userName=${userNames[userKey]}&lastRow=${lastRow}`;
+  const url = `https://script.google.com/macros/s/AKfycbyQCmrr8lsMEoqr1KKfVo5fNaHxcjm37ORVj1tKml0JVnCZEMhSD7vN1FSNugZQl7kJ/exec?type=${type}&userName=${userNames[userKey]}&lastRow=${lastRow}`;
   console.log(`🔗 Інкрементальний запит: ${url}`);
   mode: "no-cors"
   try {
