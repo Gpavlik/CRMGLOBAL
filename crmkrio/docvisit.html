@@ -69,7 +69,7 @@ body {
   width: 100%;
   margin-top: 15px;
 }
-/* -------------------------- */
+
 /* Таблиця */
 table {
   border-collapse: collapse;
@@ -385,6 +385,7 @@ canvas.thumbnail.active {
   <button onclick="window.location.href='calendar.html'">Перейти в календар</button>
   <button onclick="window.location.href='menu.html'">Перейти в меню</button>
 </div>
+<br><br>
 <div class="unit"><img src="./M3.png" alt="logo" width="260"></div>
 
 <div style="display: none;">Презентація: <span id="presentationFile"></span></div>
@@ -864,8 +865,8 @@ async function saveDoctorVisit() {
     const product = row.querySelector("td.product").innerText;
     const potential = row.querySelector("input.potential")?.value || "";
     const opening = row.querySelector("input.opening")?.value || ""; 
-    const toSell = row.querySelector("input.to-sell")?.value || ""; // Плановий показник
-    const agreement = row.querySelector("input.agreement")?.value || ""; // 👈 Реальна домовленість (кількість для накладної)
+    const toSell = row.querySelector("input.to-sell")?.value || ""; 
+    const agreement = row.querySelector("input.agreement")?.value || ""; 
     const competitors = row.querySelector("input.competitors")?.value || "";
     const comment = row.querySelector("input.comment")?.value || "";
     
@@ -874,7 +875,7 @@ async function saveDoctorVisit() {
       potential,
       opening,
       toSell,
-      agreement, // Передаємо саме домовленість на склад
+      agreement,
       competitors,
       comment,
       presentationShown: shownSlides.length > 0 ? "Так" : "Ні",
@@ -882,62 +883,23 @@ async function saveDoctorVisit() {
     });
   });
 
-  // 🆕 Генеруємо VisitID один раз
   const urlParams = new URLSearchParams(window.location.search);
   const doctorData = JSON.parse(sessionStorage.getItem("selectedDoctor"));
   let visitId = doctorData?.visitId || urlParams.get("visitId") || Date.now();
 
-  // 🔎 Отримуємо координати перед відправкою
-  navigator.geolocation.getCurrentPosition(async pos => {
-    const lat = pos.coords.latitude;
-    const lon = pos.coords.longitude;
+  const handleAfterSave = () => {
+    alert("Візит відправлено на збереження!");
+    if (doctorData?.doctor) {
+      sessionStorage.removeItem("selectedDoctor");
+      window.location.href = "calendar.html";
+    } else {
+      location.reload();
+    }
+  };
 
+  const sendData = async (lat = null, lon = null) => {
     try {
-      await fetch("https://script.google.com/macros/s/AKfycbz6ppu90t8Kh1qUP7Rz84cpF8J1hVRSIHyUyE4Fim_STDBJoWPVp9j5QUzrBJ9ngp7s/exec", {
-        method: "POST",
-        mode: "no-cors",
-        body: JSON.stringify({
-          action: "saveDoctorVisit",
-          userName,
-          date,
-          time,
-          region,
-          city,
-          lpz,
-          specialty,
-          doctor,
-          lat,
-          lon,
-          visitId,
-          data: visitsData
-        }),
-        headers: { "Content-Type": "application/json" }
-      });
-     alert("Візит відправлено на збереження!");
-
-  // 🆕 перевіряємо, чи був лікар із sessionStorage
-  const doctorData = JSON.parse(sessionStorage.getItem("selectedDoctor"));
-  if (doctorData?.doctor) {
-    // якщо був вибраний із sessionStorage → очищаємо і переходимо на календар
-    sessionStorage.removeItem("selectedDoctor");
-    window.location.href = "calendar.html";
-  } else {
-    // якщо селектори заповнювались вручну → просто перезавантажуємо сторінку
-    location.reload();
-  }
-
-} catch (error) {
-  console.error("Помилка при збереженні:", error);
-  alert("Сталася помилка при збереженні візиту.");
-}
-  }, async err => {
-    console.error("❌ Помилка GPS:", err);
-    alert("Не вдалося отримати координати, але візит буде збережено без них.");
-    // fallback: відправка без координат
-    await fetch("https://script.google.com/macros/s/AKfycbz6ppu90t8Kh1qUP7Rz84cpF8J1hVRSIHyUyE4Fim_STDBJoWPVp9j5QUzrBJ9ngp7s/exec", {
-      method: "POST",
-      mode: "no-cors",
-      body: JSON.stringify({
+      const payload = {
         action: "saveDoctorVisit",
         userName,
         date,
@@ -949,10 +911,40 @@ async function saveDoctorVisit() {
         doctor,
         visitId,
         data: visitsData
-      }),
-      headers: { "Content-Type": "application/json" }
-    });
-  });
+      };
+      if (lat && lon) {
+        payload.lat = lat;
+        payload.lon = lon;
+      }
+
+      await fetch("https://script.google.com/macros/s/AKfycbzTuF-kkQI_lFcey9ekOu2ndvQ5DuoL8twqFX-cL3Scu_XMhS7zwzp3OkXof35Ws12U/exec", {
+        method: "POST",
+        mode: "no-cors",
+        body: JSON.stringify(payload),
+        headers: { "Content-Type": "application/json" }
+      });
+      
+      handleAfterSave();
+    } catch (error) {
+      console.error("Помилка при збереженні:", error);
+      alert("Сталася помилка при збереженні візиту.");
+    }
+  };
+
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      async pos => {
+        await sendData(pos.coords.latitude, pos.coords.longitude);
+      },
+      async err => {
+        console.error("❌ Помилка GPS:", err);
+        alert("Не вдалося отримати координати, але візит буде збережено без них.");
+        await sendData();
+      }
+    );
+  } else {
+    await sendData();
+  }
 }
 
 function validateVisitForm() {
@@ -981,7 +973,7 @@ function validateVisitForm() {
 async function loadPreviousVisit(doctorName) {
   try {
     const res = await fetch(
-      "https://script.google.com/macros/s/AKfycbz6ppu90t8Kh1qUP7Rz84cpF8J1hVRSIHyUyE4Fim_STDBJoWPVp9j5QUzrBJ9ngp7s/exec?type=doctor&doctor=" 
+      "https://script.google.com/macros/s/AKfycbzTuF-kkQI_lFcey9ekOu2ndvQ5DuoL8twqFX-cL3Scu_XMhS7zwzp3OkXof35Ws12U/exec?type=doctor&doctor=" 
       + encodeURIComponent(doctorName)
     );
 
@@ -1067,7 +1059,7 @@ function normalizeSpecialty(specialty) {
 let recognition;
 let isRecording = false;
 
-const AI_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz6ppu90t8Kh1qUP7Rz84cpF8J1hVRSIHyUyE4Fim_STDBJoWPVp9j5QUzrBJ9ngp7s/exec"; 
+const AI_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzTuF-kkQI_lFcey9ekOu2ndvQ5DuoL8twqFX-cL3Scu_XMhS7zwzp3OkXof35Ws12U/exec"; 
 
 if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -1224,7 +1216,6 @@ async function sendToAI() {
     document.getElementById('analyzeBtn').style.display = 'block';
   }
 }
-// ========================================================
  </script>
 </body>
 </html>
