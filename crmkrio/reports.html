@@ -463,7 +463,7 @@ function renderDefaultTable(data) {
 
 async function preloadCalendarVisits() {
   try {
-    const res = await fetch("https://script.google.com/macros/s/AKfycbw4ZQZPAFbCDZU9DH7pUJsKSw3qsWJG89WqHDH77Nuod1oMGaruHwt0PZCHQ5mUXq6t/exec?type=calendar");
+    const res = await fetch("https://script.google.com/macros/s/AKfycbzA3pwe24znBoxGKtSH1Y-phUjt9Ny_MfX58Ui_ptNhWzbLn8WBfFwhwN-KVFACZ41N/exec?type=calendar");
     const data = await res.json();
     sessionStorage.setItem("calendarCache", JSON.stringify(data));
   } catch (err) { console.error("❌ Помилка при завантаженні календарних візитів:", err); }

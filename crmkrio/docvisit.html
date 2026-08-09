@@ -917,7 +917,7 @@ async function saveDoctorVisit() {
         payload.lon = lon;
       }
 
-      await fetch("https://script.google.com/macros/s/AKfycbw4ZQZPAFbCDZU9DH7pUJsKSw3qsWJG89WqHDH77Nuod1oMGaruHwt0PZCHQ5mUXq6t/exec", {
+      await fetch("https://script.google.com/macros/s/AKfycbzA3pwe24znBoxGKtSH1Y-phUjt9Ny_MfX58Ui_ptNhWzbLn8WBfFwhwN-KVFACZ41N/exec", {
         method: "POST",
         mode: "no-cors",
         body: JSON.stringify(payload),
@@ -973,7 +973,7 @@ function validateVisitForm() {
 async function loadPreviousVisit(doctorName) {
   try {
     const res = await fetch(
-      "https://script.google.com/macros/s/AKfycbw4ZQZPAFbCDZU9DH7pUJsKSw3qsWJG89WqHDH77Nuod1oMGaruHwt0PZCHQ5mUXq6t/exec?type=doctor&doctor=" 
+      "https://script.google.com/macros/s/AKfycbzA3pwe24znBoxGKtSH1Y-phUjt9Ny_MfX58Ui_ptNhWzbLn8WBfFwhwN-KVFACZ41N/exec?type=doctor&doctor=" 
       + encodeURIComponent(doctorName)
     );
 
@@ -1059,7 +1059,7 @@ function normalizeSpecialty(specialty) {
 let recognition;
 let isRecording = false;
 
-const AI_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw4ZQZPAFbCDZU9DH7pUJsKSw3qsWJG89WqHDH77Nuod1oMGaruHwt0PZCHQ5mUXq6t/exec"; 
+const AI_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzA3pwe24znBoxGKtSH1Y-phUjt9Ny_MfX58Ui_ptNhWzbLn8WBfFwhwN-KVFACZ41N/exec"; 
 
 if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
