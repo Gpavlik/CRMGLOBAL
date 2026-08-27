@@ -26,18 +26,18 @@
 
     /* Рівний конвеєр на 9 кроків (крок 20px, загальна довжина шляху 160px) */
     @keyframes fixedCycle {
-      0%   { transform: translate(30px, 14px); opacity: 1; }
-      11.1% { transform: translate(50px, 14px); opacity: 1; }
-      22.2% { transform: translate(70px, 14px); opacity: 1; }
-      33.3% { transform: translate(90px, 14px); opacity: 1; }
-      44.4% { transform: translate(110px, 14px); opacity: 1; }
-      55.5% { transform: translate(130px, 14px); opacity: 1; }
-      66.6% { transform: translate(150px, 14px); opacity: 1; }
-      77.7% { transform: translate(170px, 14px); opacity: 1; }
-      85%   { transform: translate(170px, 28px); opacity: 0.3; } /* плавно пірнає під рядок в кінці */
-      92%   { transform: translate(30px, 28px); opacity: 0.3; }  /* летить наліво знизу */
-      98%   { transform: translate(30px, 14px); opacity: 1; }   /* виринає на перше місце під "P" */
-      100%  { transform: translate(30px, 14px); opacity: 1; }
+      0%   { transform: translate(30px, -8px); opacity: 1; }
+      11.1% { transform: translate(50px, -8px); opacity: 1; }
+      22.2% { transform: translate(70px, -8px); opacity: 1; }
+      33.3% { transform: translate(90px, -8px); opacity: 1; }
+      44.4% { transform: translate(110px, -8px); opacity: 1; }
+      55.5% { transform: translate(130px, -8px); opacity: 1; }
+      66.6% { transform: translate(150px, -8px); opacity: 1; }
+      77.7% { transform: translate(170px, -8px); opacity: 1; }
+      85%   { transform: translate(170px, 10px); opacity: 0.3; } /* плавно пірнає під рядок в кінці */
+      92%   { transform: translate(30px, 10px); opacity: 0.3; }  /* летить наліво знизу */
+      98%   { transform: translate(30px, -8px); opacity: 1; }   /* виринає на перше місце під "P" */
+      100%  { transform: translate(30px, -8px); opacity: 1; }
     }
 
     /* Рівномірний розподіл затримок для 9 крапок з кроком в 1 секунду */
